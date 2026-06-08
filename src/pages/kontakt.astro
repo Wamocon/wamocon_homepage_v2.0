@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactPage from '../components/sections/ContactPage.astro';
+
+const lang = 'de' as const;
+---
+
+<BaseLayout
+  title="Kontakt — WAMOCON GmbH"
+  description="Kontaktieren Sie WAMOCON GmbH in Eschborn. Fragen zu Testmanagement, Qualitätssicherung und Zusammenarbeit beantworten wir gerne."
+  lang={lang}
+>
+  <ContactPage lang={lang} />
+</BaseLayout>

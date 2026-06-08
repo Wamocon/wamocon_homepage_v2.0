@@ -1,0 +1,931 @@
+---
+/**
+ * Azubi - FAE / Apprenticeship — Fachinformatiker.
+ * Faithful 1:1 rebuild of the live Tilda page (DE: page69503661, EN: page70444849).
+ */
+import ContactBlock from './ContactBlock.astro';
+import type { Lang } from '../../i18n/config';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const de = lang === 'de';
+
+const eignungstestUrl =
+  'https://docs.google.com/forms/d/e/1FAIpQLSdDC5ZhxHLFQI0vf3rMr48HEe_y28EwSeS8af59CU0gfXf4Uw/viewform?usp=dialog';
+const voicesHref = de ? '/mitarbeiter-stimmen/' : '/en/employee-voices/';
+
+const hero = de
+  ? {
+      titleWhite: 'Werde Fachinformatiker bei WAMOCON',
+      titleRed: 'Jetzt in die Zukunft starten!',
+      p1: 'Du brennst für Software, willst innovative Lösungen erfolgreich entwickeln und in einem dynamischen Team in Eschborn durchstarten? Dann ist unsere Ausbildung zum Fachinformatiker für Anwendungsentwicklung genau dein Ding!',
+      p2: 'Führe jetzt den Eignungstest aus und erfahre, ob du das Zeug zum FAE hast!',
+      cta: 'Eignungstest zum FAE',
+    }
+  : {
+      titleWhite: 'Become an IT specialist at WAMOCON',
+      titleRed: 'Start your future now!',
+      p1: 'Are you passionate about software, want to develop innovative solutions successfully and get started in a dynamic team in Eschborn? Then our apprenticeship as an IT specialist for application development is exactly your thing!',
+      p2: 'Take the aptitude test now and find out if you have what it takes to become an FIAE!',
+      cta: 'Aptitude test for FIAE',
+    };
+
+const glance = de
+  ? {
+      heading1: 'Das wichtigste',
+      heading2: 'Auf einen Blick',
+      cards: [
+        { t: 'Ausbildungsdauer', d: '3 Jahre (Verkürzung möglich)' },
+        { t: 'Standort', d: 'Eschborn' },
+        { t: 'Starttermin', d: 'Jährlich zum 01.08.' },
+        { t: 'Abschluss', d: 'Fachinformatiker (m/w/d) Anwendungsentwicklung (IHK)' },
+        { t: 'Vergütung', d: 'Attraktiv & überdurchschnittlich' },
+        { t: 'Bewerbungsfrist', d: 'Bis zum 15.07.' },
+      ],
+      advantageLabel: 'Dein Vorteil',
+      advantageValue: 'Übernahmegarantie bei guten Leistungen',
+    }
+  : {
+      heading1: 'The most important',
+      heading2: 'At a glance',
+      cards: [
+        { t: 'Training duration', d: '3 years (shortening possible)' },
+        { t: 'Location', d: 'Eschborn' },
+        { t: 'Start date', d: 'Annually on 01 Aug' },
+        { t: 'Qualification', d: 'IT specialist (m/f/d) application development (IHK)' },
+        { t: 'Remuneration', d: 'Attractive & above average' },
+        { t: 'Application deadline', d: 'By 15 July' },
+      ],
+      advantageLabel: 'Your advantage',
+      advantageValue: 'Guaranteed permanent position with good performance',
+    };
+
+const training = de
+  ? {
+      heading1: 'Deine Ausbildung',
+      heading2: 'bei WAMOCON',
+      intro:
+        'Bei uns bist du nicht nur Azubi, sondern von Tag 1 ein vollwertiges Teammitglied. Wir machen dich fit für die IT-Welt von morgen - mit spannenden Projekten, modernsten Technologien und individueller Förderung',
+      subheading: 'Was du konkret machst und lernst',
+      rows: [
+        {
+          t: 'Unser digitales Ausbildungssystem mit persönlichem KI-Assistenten',
+          d: 'Berufsschultheorie, IHK-Vorgaben, praxisnahe Szenarien und Use Cases – gebündelt in einem System, das dich über deine gesamte Ausbildungszeit begleitet. Dein KI-Assistent schafft jederzeit volle Transparenz über alle Inhalte, hilft dir den Überblick zu behalten, unterstützt dich bei jedem Schritt und hält die Kommunikation mit deinem Ausbilder direkt aufrecht.',
+        },
+        {
+          t: 'Softwareentwicklung von A bis Z',
+          d: 'Konzepte verstehen, Anforderungen analysieren, Software designen, programmieren (Java, Python, JavaScript etc.), testen und implementieren.',
+        },
+        {
+          t: 'Moderne Technologien & Tools',
+          d: 'Du arbeitest mit Git, Jira, Confluence, Docker, Kubernetes (Grundlagen), Cloud-Plattformen, Datenbanken (SQL), APIs (Rest) und lernst agile Methoden (Scrum, Kanban) kennen.',
+        },
+        {
+          t: 'Projektarbeit im Team',
+          d: 'Mitarbeit an echten Kundenprojekten und internen Entwicklungsprojekten (z.B. das digitale Ausbildungssystem).',
+        },
+        {
+          t: 'Qualitätssicherung & Testing',
+          d: 'Testfälle erstellen, automatisierte Tests durchführen, Softwarequalität sicherstellen (ISTQB-Grundlagen).',
+        },
+        {
+          t: 'Datenbanken & Datenmanagement',
+          d: 'Verstehen und Anwenden von Datenbanktechnologien.',
+        },
+        { t: 'Problembehebung & Support', d: 'Fehleranalyse und Lösungsfindung.' },
+      ],
+      highlightTitle: 'Dein Azubi Highlight Projekt',
+      highlightText:
+        'Unsere fertige Eigenentwicklung löst ein konkretes KI-Problem am Markt. Du trainierst diese spezifische KI mit LaaJ (LLM-as-a-Judge), optimierst ihre Bewertungslogik und sorgst dafür, dass sie unter realen Bedingungen zuverlässig arbeitet. So lernst du, wie man eine marktreife KI nicht nur baut, sondern auch trainiert, absichert und weiterentwickelt.',
+    }
+  : {
+      heading1: 'Your apprenticeship',
+      heading2: 'at WAMOCON',
+      intro:
+        'With us you are not just a trainee, but a full team member from day 1. We get you ready for the IT world of tomorrow - with exciting projects, state-of-the-art technologies and individual support',
+      subheading: 'What you actually do and learn',
+      rows: [
+        {
+          t: 'Our digital training system with a personal AI assistant',
+          d: 'Vocational school theory, IHK requirements, practical scenarios and use cases – bundled in one system that accompanies you throughout your entire training. Your AI assistant provides full transparency on all content at any time, helps you keep track, supports you at every step and maintains direct communication with your trainer.',
+        },
+        {
+          t: 'Software development from A to Z',
+          d: 'Understand concepts, analyse requirements, design software, program (Java, Python, JavaScript etc.), test and implement.',
+        },
+        {
+          t: 'Modern technologies & tools',
+          d: 'You work with Git, Jira, Confluence, Docker, Kubernetes (basics), cloud platforms, databases (SQL), APIs (Rest) and learn agile methods (Scrum, Kanban).',
+        },
+        {
+          t: 'Project work in a team',
+          d: 'Collaboration on real customer projects and internal development projects (e.g. the digital training system).',
+        },
+        {
+          t: 'Quality assurance & testing',
+          d: 'Create test cases, run automated tests, ensure software quality (ISTQB basics).',
+        },
+        {
+          t: 'Databases & data management',
+          d: 'Understanding and applying database technologies.',
+        },
+        { t: 'Troubleshooting & support', d: 'Error analysis and finding solutions.' },
+      ],
+      highlightTitle: 'Your apprentice highlight project',
+      highlightText:
+        'Our finished in-house development solves a concrete AI problem on the market. You train this specific AI with LaaJ (LLM-as-a-Judge), optimise its evaluation logic and ensure that it works reliably under real conditions. This way you learn how to not only build a market-ready AI, but also train, secure and further develop it.',
+    };
+
+const bring = de
+  ? {
+      heading1: 'Das bringst',
+      heading2: 'du mit',
+      intro:
+        'Du musst kein Coding-Profi sein, um bei uns durchzustarten. Viel wichtiger sind uns deine Begeisterung und dein Lernwille!',
+      list: [
+        'Großes Interesse an IT, Computern und Softwareentwicklung.',
+        'Logisches Denkvermögen und analytische Fähigkeiten.',
+        'Hohe Lernbereitschaft und Eigenmotivation.',
+        'Teamfähigkeit und Kommunikationsstärke.',
+        'Zuverlässigkeit und sorgfältige Arbeitsweise.',
+      ],
+      cta: 'Jetzt bewerben!',
+      advantageTitle: 'Von Vorteil (aber kein Muss)',
+      advantageList: [
+        'Erste Programmiererfahrungen (z.B. durch Schulprojekte, AGs, private Projekte).',
+        'Erfahrungen mit Betriebssystemen und Office-Anwendungen.',
+      ],
+    }
+  : {
+      heading1: 'This is what',
+      heading2: 'you bring',
+      intro:
+        'You do not have to be a coding pro to get started with us. What matters much more to us is your enthusiasm and your willingness to learn!',
+      list: [
+        'Great interest in IT, computers and software development.',
+        'Logical thinking and analytical skills.',
+        'High willingness to learn and self-motivation.',
+        'Team spirit and strong communication skills.',
+        'Reliability and a careful way of working.',
+      ],
+      cta: 'Apply now!',
+      advantageTitle: 'An advantage (but not a must)',
+      advantageList: [
+        'First programming experience (e.g. through school projects, clubs, private projects).',
+        'Experience with operating systems and office applications.',
+      ],
+    };
+
+const offer = de
+  ? {
+      heading1: 'Das bieten wir dir:',
+      heading2: 'Deine Vorteile bei WAMOCON',
+      cards: [
+        {
+          t: 'Top Ausbildung & Betreuung',
+          items: [
+            'Persönlicher Mentor während der gesamten Ausbildung.',
+            'Individuelle Förderung und regelmäßiges Feedback.',
+            'Einbindung in ein erfahrenes und hilfsbereites Entwicklerteam.',
+          ],
+        },
+        {
+          t: 'Spannende & Praxisnahe Aufgaben',
+          items: [
+            'Mitarbeit an realen, herausfordernden Projekten von Anfang an.',
+            'Einsatz modernster Technologien und agiler Entwicklungsmethoden.',
+          ],
+        },
+        {
+          t: 'Weiterentwicklung & Perspektiven',
+          items: [
+            'Sehr gute Übernahmechancen bei erfolgreichem Abschluss.',
+            'Möglichkeiten zur Weiterbildung und Spezialisierung nach der Ausbildung.',
+            'Zugang zu E-Learning, Fachliteratur, internen Schulungen und Lerngruppen.',
+            'Unterstützung beim Erwerb von Zertifikaten (z.B. ISTQB®, Cloud-Zertifikate).',
+            'Option auf ein duales Studium (z.B. in Kooperation mit der Provadis Hochschule) nach der Ausbildung.',
+          ],
+        },
+        {
+          t: 'Tolles Arbeitsumfeld & Team',
+          items: [
+            'Moderne Büroräume und top ausgestattete Arbeitsplätze in Eschborn.',
+            'Offene Unternehmenskultur mit flachen Hierarchien und Duz-Kultur.',
+            'Regelmäßige Team-Events und gemeinsame Aktivitäten.',
+            'Kostenlose Getränke, Obst etc.',
+          ],
+        },
+        {
+          t: 'Attraktive Rahmenbedingungen',
+          items: [
+            'Überdurchschnittliche Ausbildungsvergütung',
+            'Familiäre Umgangsform',
+            'Effiziente Fachliche und Persönliche Entwicklung',
+            'Regelmäßige Leistungsanalysen',
+            'Hohe Integration zwischen fachlicher Ausbildung zum Fachinformatiker und IT-Consulting',
+          ],
+        },
+      ],
+    }
+  : {
+      heading1: 'This is what we offer you:',
+      heading2: 'Your benefits at WAMOCON',
+      cards: [
+        {
+          t: 'Top training & support',
+          items: [
+            'Personal mentor throughout the entire training.',
+            'Individual support and regular feedback.',
+            'Integration into an experienced and helpful developer team.',
+          ],
+        },
+        {
+          t: 'Exciting & practical tasks',
+          items: [
+            'Collaboration on real, challenging projects from the start.',
+            'Use of state-of-the-art technologies and agile development methods.',
+          ],
+        },
+        {
+          t: 'Development & perspectives',
+          items: [
+            'Very good chances of being taken on after a successful completion.',
+            'Opportunities for further training and specialisation after the apprenticeship.',
+            'Access to e-learning, specialist literature, internal training and study groups.',
+            'Support in obtaining certificates (e.g. ISTQB®, cloud certificates).',
+            'Option of a dual study programme (e.g. in cooperation with Provadis University) after the apprenticeship.',
+          ],
+        },
+        {
+          t: 'Great working environment & team',
+          items: [
+            'Modern offices and top-equipped workplaces in Eschborn.',
+            'Open company culture with flat hierarchies and a first-name culture.',
+            'Regular team events and shared activities.',
+            'Free drinks, fruit etc.',
+          ],
+        },
+        {
+          t: 'Attractive conditions',
+          items: [
+            'Above-average training remuneration',
+            'Familiar way of interacting',
+            'Efficient professional and personal development',
+            'Regular performance reviews',
+            'High integration between professional training as an IT specialist and IT consulting',
+          ],
+        },
+      ],
+    };
+
+const perspectives = de
+  ? {
+      heading1: 'Deine Perspektiven',
+      heading2: 'nach der Ausbildung',
+      items: [
+        { t: 'Übernahme als Junior Entwickler', d: 'Direkter Einstieg ins WAMOCON-Team.' },
+        {
+          t: 'Spezialisierungsmöglichkeiten',
+          d: 'Z.B. in Frontend-/Backend-Entwicklung, Mobile Development, Cloud Engineering, DevOps, Testautomatisierung, IT-Consulting.',
+        },
+        {
+          t: 'Weiterbildung',
+          d: 'Unterstützung bei berufsbegleitenden Studiengängen oder Fachzertifizierungen.',
+        },
+        {
+          t: 'Karrierewege bei WAMOCON',
+          d: 'Vom Junior zum Senior Entwickler, Teamleiter, Projektmanager oder Fachexperte.',
+        },
+      ],
+    }
+  : {
+      heading1: 'Your perspectives',
+      heading2: 'after the apprenticeship',
+      items: [
+        { t: 'Takeover as a junior developer', d: 'Direct entry into the WAMOCON team.' },
+        {
+          t: 'Specialisation opportunities',
+          d: 'E.g. in frontend/backend development, mobile development, cloud engineering, DevOps, test automation, IT consulting.',
+        },
+        {
+          t: 'Further training',
+          d: 'Support for part-time study programmes or professional certifications.',
+        },
+        {
+          t: 'Career paths at WAMOCON',
+          d: 'From junior to senior developer, team leader, project manager or specialist.',
+        },
+      ],
+    };
+
+const voices = de
+  ? {
+      heading: 'Einblicke & Stimmen',
+      sub: 'Was sagen unsere ehemaligen Azubis & Dual Studenten?',
+      link: 'Mitarbeiter Meinungen!',
+    }
+  : {
+      heading: 'Insights & voices',
+      sub: 'What do our former trainees & dual students say?',
+      link: 'Employee opinions!',
+    };
+
+const apply = de
+  ? {
+      heading1: 'Was wir',
+      heading2: 'von dir brauchen',
+      docs: ['Anschreiben', 'Lebenslauf', 'Praktika', 'Schulzeugnisse'],
+      line1: 'Schicke an folgende E-Mail Adresse deine Bewerbung samt Unterlagen:',
+      line2: 'Wir antworten dir innerhalb von 48 Stunden.',
+    }
+  : {
+      heading1: 'What we',
+      heading2: 'need from you',
+      docs: ['Cover letter', 'CV', 'Internships', 'School certificates'],
+      line1: 'Send your application including documents to the following e-mail address:',
+      line2: 'We will reply to you within 48 hours.',
+    };
+---
+
+<!-- ============ HERO ============ -->
+<section class="azhero">
+  <div class="container azhero__inner">
+    <div class="azhero__text" data-reveal="right">
+      <h1 class="azhero__title">
+        <span class="azhero__title-white">{hero.titleWhite}</span>
+        <span class="azhero__title-red">{hero.titleRed}</span>
+      </h1>
+      <p class="azhero__p">{hero.p1}</p>
+      <p class="azhero__p">{hero.p2}</p>
+      <a class="az-btn" href={eignungstestUrl} target="_blank" rel="noopener">{hero.cta}</a>
+    </div>
+    <div class="azhero__media" data-reveal="left">
+      <img
+        src="/images/azubi-hero.jpg"
+        alt={de ? 'Ausbildung bei WAMOCON' : 'Apprenticeship at WAMOCON'}
+        width="760"
+        height="620"
+        loading="eager"
+      />
+    </div>
+  </div>
+</section>
+
+<!-- ============ AUF EINEN BLICK ============ -->
+<section class="section">
+  <div class="container">
+    <h2 class="az-h2 az-h2--center">
+      <span class="t-red">{glance.heading1}</span> <span class="t-white">{glance.heading2}</span>
+    </h2>
+    <div class="glance">
+      {
+        glance.cards.map((c, i) => (
+          <div class="glance__card" data-reveal="up" data-reveal-delay={(i % 3) * 60}>
+            <span class="glance__label">{c.t}</span>
+            <span class="glance__value">{c.d}</span>
+          </div>
+        ))
+      }
+    </div>
+    <div class="glance__highlight" data-reveal="up">
+      <span class="glance__label">{glance.advantageLabel}</span>
+      <span class="glance__value">{glance.advantageValue}</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEINE AUSBILDUNG / WHAT YOU LEARN ============ -->
+<section class="section section--alt">
+  <div class="container">
+    <h2 class="az-h2">
+      <span class="t-red">{training.heading1}</span> <span class="t-white">{training.heading2}</span>
+    </h2>
+    <p class="az-lead">{training.intro}</p>
+    <h3 class="az-h3">{training.subheading}</h3>
+    <dl class="learn-table">
+      {
+        training.rows.map((r, i) => (
+          <div class="learn-row" data-reveal="up" data-reveal-delay={(i % 3) * 40}>
+            <dt>{r.t}</dt>
+            <dd>{r.d}</dd>
+          </div>
+        ))
+      }
+    </dl>
+    <div class="highlight-box" data-reveal="up">
+      <h3>{training.highlightTitle}</h3>
+      <p>{training.highlightText}</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DAS BRINGST DU MIT ============ -->
+<section class="section">
+  <div class="container">
+    <h2 class="az-h2">
+      <span class="t-red">{bring.heading1}</span> <span class="t-white">{bring.heading2}</span>
+    </h2>
+    <p class="az-lead">{bring.intro}</p>
+    <ul class="check-grid">
+      {bring.list.map((b) => <li>{b}</li>)}
+    </ul>
+    <div class="az-center">
+      <a class="az-btn" href="#bewerbung">{bring.cta}</a>
+    </div>
+    <h3 class="az-h3">{bring.advantageTitle}</h3>
+    <ul class="check-grid check-grid--2">
+      {bring.advantageList.map((b) => <li>{b}</li>)}
+    </ul>
+  </div>
+</section>
+
+<!-- ============ DAS BIETEN WIR DIR ============ -->
+<section class="section section--alt">
+  <div class="container">
+    <h2 class="az-h2">
+      <span class="t-red">{offer.heading1}</span> <span class="t-white">{offer.heading2}</span>
+    </h2>
+    <div class="offer-grid">
+      {
+        offer.cards.map((c, i) => (
+          <article class="offer-card" data-reveal="up" data-reveal-delay={(i % 2) * 80}>
+            <span class="offer-card__num">{i + 1}</span>
+            <h3 class="offer-card__title">{c.t}</h3>
+            <ul class="offer-card__list">
+              {c.items.map((it) => (
+                <li>{it}</li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ============ PERSPEKTIVEN ============ -->
+<section class="section">
+  <div class="container persp">
+    <div class="persp__text" data-reveal="right">
+      <h2 class="az-h2">
+        <span class="t-red">{perspectives.heading1}</span>
+        <span class="t-white"> {perspectives.heading2}</span>
+      </h2>
+      <dl class="persp__list">
+        {
+          perspectives.items.map((p) => (
+            <div>
+              <dt>{p.t}</dt>
+              <dd>{p.d}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+    <img
+      class="persp__img"
+      src="/images/azubi-perspektiven.jpg"
+      alt={de ? 'Perspektiven nach der Ausbildung' : 'Perspectives after the apprenticeship'}
+      width="640"
+      height="520"
+      loading="lazy"
+      data-reveal="left"
+    />
+  </div>
+</section>
+
+<!-- ============ EINBLICKE & STIMMEN ============ -->
+<section class="section section--alt">
+  <div class="container">
+    <h2 class="az-h2"><span class="t-white">{voices.heading}</span></h2>
+    <p class="az-lead">{voices.sub}</p>
+    <div class="az-center az-center--mb">
+      <a class="az-btn az-btn--ghost" href={voicesHref}>{voices.link}</a>
+    </div>
+    <figure class="video-single" data-reveal="up">
+      <div class="video-single__frame">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/zhKZIDVHLgY"
+          title={voices.heading}
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ WAS WIR VON DIR BRAUCHEN ============ -->
+<section class="section" id="bewerbung">
+  <div class="container">
+    <h2 class="az-h2 az-h2--center">
+      <span class="t-red">{apply.heading1}</span> <span class="t-white">{apply.heading2}</span>
+    </h2>
+    <ul class="docs">
+      {apply.docs.map((d2) => <li>{d2}</li>)}
+    </ul>
+    <div class="apply">
+      <img
+        class="apply__img"
+        src="/images/office-developers.jpg"
+        alt={de ? 'Bewerbung bei WAMOCON' : 'Application at WAMOCON'}
+        width="640"
+        height="520"
+        loading="lazy"
+        data-reveal="right"
+      />
+      <div class="apply__text" data-reveal="left">
+        <p class="apply__line">{apply.line1}</p>
+        <a class="apply__mail" href="mailto:info@wamocon.com">info@wamocon.com</a>
+        <p class="apply__line">{apply.line2}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ContactBlock lang={lang} />
+
+<style>
+  /* ---- shared headings ---- */
+  .az-h2 {
+    font-size: var(--fs-h2);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-tight);
+    letter-spacing: -0.02em;
+    margin: 0 0 1.5rem;
+  }
+  .az-h2--center {
+    text-align: center;
+  }
+  .az-h3 {
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-bold);
+    margin: 2.5rem 0 1.25rem;
+  }
+  .t-red {
+    color: var(--color-accent);
+  }
+  .t-white {
+    color: var(--color-text);
+  }
+  .az-lead {
+    max-width: 70ch;
+    font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+    color: var(--color-text-muted);
+    line-height: var(--lh-body);
+    margin: 0 0 1rem;
+  }
+  .az-center {
+    text-align: center;
+    margin: 2.5rem 0;
+  }
+  .az-center--mb {
+    margin-bottom: 3rem;
+  }
+
+  /* ---- rectangular button (Tilda style) ---- */
+  .az-btn {
+    display: inline-block;
+    background: var(--color-accent);
+    color: #fff;
+    font-weight: var(--fw-bold);
+    font-size: 1.125rem;
+    padding: 1rem 2.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  }
+  .az-btn:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-2px);
+  }
+  .az-btn--ghost {
+    background: transparent;
+    border: 2px solid var(--color-accent);
+    color: #fff;
+  }
+  .az-btn--ghost:hover {
+    background: var(--color-accent);
+  }
+
+  /* ---- HERO ---- */
+  .azhero {
+    padding: clamp(3rem, 7vw, 6rem) 0;
+  }
+  .azhero__inner {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  .azhero__title {
+    font-size: var(--fs-h1);
+    font-weight: var(--fw-bold);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 2rem;
+  }
+  .azhero__title-white,
+  .azhero__title-red {
+    display: block;
+  }
+  .azhero__title-white {
+    color: var(--color-text);
+  }
+  .azhero__title-red {
+    color: var(--color-accent);
+  }
+  .azhero__p {
+    max-width: 56ch;
+    font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+    color: var(--color-text-muted);
+    line-height: var(--lh-body);
+    margin: 0 0 1.25rem;
+  }
+  .azhero__media img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+  }
+
+  /* ---- AUF EINEN BLICK ---- */
+  .glance {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+  }
+  .glance__card,
+  .glance__highlight {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.75rem 2rem;
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+  }
+  .glance__highlight {
+    margin-top: 1.25rem;
+    border-color: rgba(244, 14, 14, 0.4);
+    background: rgba(244, 14, 14, 0.07);
+    align-items: center;
+    text-align: center;
+  }
+  .glance__label {
+    font-weight: var(--fw-bold);
+    color: var(--color-accent);
+    font-size: 1.05rem;
+  }
+  .glance__value {
+    color: var(--color-text);
+    font-size: 1.05rem;
+  }
+
+  /* ---- LEARN TABLE ---- */
+  .learn-table {
+    margin: 0;
+    border-top: 1px solid var(--divider);
+  }
+  .learn-row {
+    display: grid;
+    grid-template-columns: 0.9fr 1.6fr;
+    gap: 1.5rem 2.5rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--divider);
+  }
+  .learn-row dt {
+    font-weight: var(--fw-bold);
+    color: var(--color-text);
+    font-size: 1.15rem;
+  }
+  .learn-row dd {
+    margin: 0;
+    color: var(--color-text-muted);
+    line-height: var(--lh-body);
+  }
+  .highlight-box {
+    margin-top: 2.5rem;
+    padding: 2rem;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(244, 14, 14, 0.4);
+    background: rgba(244, 14, 14, 0.06);
+  }
+  .highlight-box h3 {
+    margin: 0 0 0.75rem;
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-bold);
+  }
+  .highlight-box p {
+    margin: 0;
+    color: var(--color-text-muted);
+    line-height: var(--lh-body);
+  }
+
+  /* ---- CHECK LISTS ---- */
+  .check-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 2.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 0;
+  }
+  .check-grid--2 {
+    margin-top: 1.5rem;
+  }
+  .check-grid li {
+    position: relative;
+    padding-left: 2.5rem;
+    color: var(--color-text-muted);
+    line-height: var(--lh-body);
+  }
+  .check-grid li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: -0.1rem;
+    width: 1.6rem;
+    height: 1.6rem;
+    display: grid;
+    place-items: center;
+    border: 2px solid var(--color-accent);
+    border-radius: 5px;
+    color: var(--color-accent);
+    font-weight: var(--fw-bold);
+    font-size: 0.95rem;
+  }
+
+  /* ---- OFFER CARDS ---- */
+  .offer-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem 4rem;
+    margin-top: 2.5rem;
+  }
+  .offer-card__num {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--color-accent);
+    border-radius: 50%;
+    color: var(--color-text);
+    font-weight: var(--fw-bold);
+    font-size: 0.95rem;
+  }
+  .offer-card__title {
+    margin: 1.25rem 0 1rem;
+    font-size: var(--fs-h4);
+    font-weight: var(--fw-bold);
+    color: var(--color-text);
+  }
+  .offer-card__list {
+    list-style: disc;
+    padding-left: 1.25rem;
+    margin: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .offer-card__list li {
+    color: var(--color-text-muted);
+    line-height: var(--lh-body);
+  }
+
+  /* ---- PERSPEKTIVEN ---- */
+  .persp {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .persp__list {
+    margin: 1.5rem 0 0;
+    display: grid;
+    gap: 1.5rem;
+  }
+  .persp__list dt {
+    font-weight: var(--fw-bold);
+    color: var(--color-text);
+    font-size: 1.2rem;
+    margin-bottom: 0.25rem;
+  }
+  .persp__list dd {
+    margin: 0;
+    color: var(--color-text-muted);
+    line-height: var(--lh-body);
+  }
+  .persp__img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+  }
+
+  /* ---- VIDEO ---- */
+  .video-single {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .video-single__frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+  }
+  .video-single__frame iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  /* ---- APPLY ---- */
+  .docs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 3rem;
+  }
+  .docs li {
+    padding: 0.6rem 1.5rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    background: var(--surface-card);
+    color: var(--color-text);
+    font-weight: var(--fw-semibold);
+  }
+  .apply {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+    background: #1a1a1a;
+    border-radius: var(--radius-md);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .apply__img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+  }
+  .apply__line {
+    font-size: clamp(1.3rem, 2.2vw, 1.9rem);
+    font-weight: var(--fw-bold);
+    color: var(--color-text);
+    line-height: 1.3;
+    margin: 0 0 1.5rem;
+  }
+  .apply__mail {
+    display: inline-block;
+    font-size: clamp(1.3rem, 2.2vw, 1.9rem);
+    font-weight: var(--fw-bold);
+    color: var(--color-accent);
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+  }
+  .apply__mail:hover {
+    text-decoration: underline;
+  }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 900px) {
+    .azhero__inner,
+    .persp,
+    .apply {
+      grid-template-columns: 1fr;
+    }
+    .azhero__media,
+    .persp__img {
+      order: -1;
+    }
+    .glance {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .offer-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .learn-row {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+    .check-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .glance {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

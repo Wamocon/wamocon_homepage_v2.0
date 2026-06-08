@@ -1,0 +1,860 @@
+---
+/** Über uns / About us — faithful reproduction of the original WAMOCON page. */
+import ContactBlock from './ContactBlock.astro';
+import type { Lang } from '../../i18n/config';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const de = lang === 'de';
+
+const c = de
+  ? {
+      heroTitle: 'WAMOCON GmbH, Dein Partner für IT-Innovationen und nachhaltige Lösungen',
+      heroBlocks: [
+        { h: '35 Jahre Erfahrung, die zählt.', p: 'WAMOCON GmbH liefert praxisorientierte IT-Dienstleistungen entlang des gesamten Softwareentwicklungsprozesses. Unsere Experten entwickeln maßgeschneiderte Lösungen, die Wirkung zeigen.' },
+        { h: 'Innovationen, die dich voranbringen.', p: 'Mit modernsten Technologien schaffen wir Hightech-Lösungen, die deine Geschäftsziele unterstützen und dir einen entscheidenden Vorsprung verschaffen.' },
+        { h: 'Mit WAMOCON in die Zukunft.', p: 'Fortschrittliche IT-Lösungen, die dein Unternehmen stärken und deinen Erfolg nachhaltig sichern.' },
+      ],
+      factorsLead: 'Erfolgsfaktoren',
+      factorsRest: ', die den Unterschied machen',
+      factors: [
+        { h: '100+ Kunden weltweit.', p: 'Unser Erfolg spricht für sich: zufriedene Partner in über 100 Ländern.' },
+        { h: '50+ IT-Projekte erfolgreich umgesetzt.', p: 'Wir liefern Ergebnisse, die zählen, Projekt für Projekt.' },
+        { h: '35+ Partnerschaften weltweit.', p: 'Mit starken Verbindungen zu langfristigem Erfolg.' },
+        { h: '40 Jahre Expertise.', p: 'Vertraue auf jahrzehntelange Erfahrung im Test- und Qualitätsmanagement.' },
+        { h: 'Effizient. Präzise. Strukturiert.', p: 'Schnelle Umsetzung mit durchdachten Prozessen für deinen Erfolg.' },
+        { h: 'Wissen, das wächst.', p: 'Regelmäßige Weiterbildung unserer IT-Profis für Spitzenleistungen im Testmanagement.' },
+        { h: 'Immer am Puls der Zeit.', p: 'Unsere Lösungen basieren auf den neuesten Markttrends und Anforderungen.' },
+        { h: 'Gemeinsam stark.', p: 'Unsere familiäre Kultur verbindet Vertrauen, Fairness und Transparenz.' },
+        { h: '50+ neue KI-Lösungen.', p: 'Für existierende Marktprobleme mit künstlicher Intelligenz entwickelt.' },
+      ],
+      guideLead: 'Wegweiser',
+      guideRest: ' für nachhaltige Unternehmensentwicklung',
+      guideCards: [
+        {
+          h: 'Softwarelösungen und Beratung, die wirken.',
+          items: [
+            'Über 40 Jahre Praxiserfahrung in IT-Projekten für Testing und Qualitätsmanagement.',
+            'Expertise in klassischer, hybrider und agiler Projektumsetzung.',
+            'Testmanagement nach ISTQB-Richtlinien, praxisnah und bewährt.',
+            'Zugriff auf ein erfahrenes Team aus Testern, Automatisierungsexperten und Testmanagern.',
+          ],
+        },
+        {
+          h: 'Karrierebooster: Unsere Akademie',
+          items: [
+            'Kostenfreies Studium in Informatik oder Wirtschaftsinformatik an einer privaten Hochschule in Frankfurt am Main.',
+            'Spezialisierte Programme für Testmanagement und Testautomatisierung.',
+            'Persönliche Weiterentwicklung durch praktische Arbeit an realen IT-Projekten.',
+            'Individuelle Betreuung durch erfahrene Mentoren, dein Schlüssel zum Erfolg.',
+          ],
+        },
+      ],
+      solutionLead: 'WAMOCON',
+      solutionMid: ' Deine Lösung für ',
+      solutionAccent: 'IT-Innovation und Effizienz',
+      solutionParas: [
+        { s: 'Maßgeschneiderte IT-Lösungen für deinen Erfolg.', p: 'Von Projektmanagement und Testing bis zur Integration komplexer Systeme wie ERP, S4 HANA und SAP BASS, WAMOCON bietet dir ein breites Spektrum an IT-Dienstleistungen. Unsere innovativen Lösungen sichern Unternehmen aus Bauwesen, Mobilkommunikation und Automobilindustrie nachhaltige Wettbewerbsvorteile.' },
+        { s: 'Innovation und Qualität, die überzeugen.', p: 'Von Projektmanagement und Testing bis zur Integration komplexer Systeme wie ERP, S4 HANA und SAP BASS, WAMOCON bietet dir ein breites Spektrum an IT-Dienstleistungen. Unsere innovativen Lösungen sichern Unternehmen aus Bauwesen, Mobilkommunikation und Automobilindustrie nachhaltige Wettbewerbsvorteile.' },
+      ],
+      visionLead: 'Unsere Vision: ',
+      visionAccent: 'Innovation und Wachstum für nachhaltigen Erfolg',
+      visionItems: [
+        { h: 'Vision und Wachstum:', p: 'WAMOCON verfolgt das Ziel, als modernes, familienorientiertes IT-Unternehmen zu den Top 10% in Deutschland zu gehören. Mit innovativen Testmethoden, Mitarbeiterschulungen und erstklassiger Beratung im Qualitätsmanagement schaffen wir eine Plattform, die Innovation und Effizienz vereint, für nachhaltiges Wachstum und IT-Exzellenz.' },
+        { h: 'Mission und Kundenfokus:', p: 'Seit unserer Gründung steht WAMOCON für High-Tech-Lösungen, die Unternehmen bei der Erreichung ihrer Geschäftsziele unterstützen. Mit einer einzigartigen Kombination aus technologischem Know-how und kundenorientierter Beratung liefern wir Lösungen, die perfekt auf die individuellen Bedürfnisse unserer Kunden abgestimmt sind, für Erfolg in einem dynamischen Marktumfeld.' },
+      ],
+      clientsTitle: 'Wer sind unsere Kunden?',
+      teamTitle: 'Das Herz von WAMOCON: Unser qualifiziertes Team',
+      teamParas: [
+        { s: 'Leidenschaft und Expertise, die begeistern.', p: 'Entdecke, wie WAMOCON als führender IT-Dienstleister durch Zuverlässigkeit und transparente Kommunikation Projekte zum Erfolg führt, und echten Mehrwert für dich schafft.' },
+        { s: 'Höchste Standards, jeden Tag.', p: 'Unsere Expertinnen und Experten setzen sich mit Leidenschaft und Präzision dafür ein, dass unsere Lösungen stets höchste Ansprüche erfüllen.' },
+        { s: '', p: 'Lernen Sie das engagierte Team kennen, das hinter unserem Erfolg steht und unser Streben nach Innovation und Exzellenz vorantreibt.' },
+      ],
+      more: 'Mehr erfahren',
+      milestonesTitle: 'Meilensteine unserer Erfolgsgeschichte',
+      factLabel: 'Interessante Tatsache:',
+      magazinTitle: 'Erfahren Sie mehr über uns',
+      magazinText: 'Entdecken Sie unser Magazin mit spannenden Projekten, Schulungen und unserer Unternehmenskultur.',
+      magazinBtn: 'Magazin herunterladen',
+    }
+  : {
+      heroTitle: 'WAMOCON GmbH, your partner for IT innovation and sustainable solutions',
+      heroBlocks: [
+        { h: '35 years of experience that counts.', p: 'WAMOCON GmbH delivers practice-oriented IT services along the entire software development process. Our experts develop tailor-made solutions that make an impact.' },
+        { h: 'Innovations that move you forward.', p: 'With state-of-the-art technologies we create high-tech solutions that support your business goals and give you a decisive edge.' },
+        { h: 'Into the future with WAMOCON.', p: 'Advanced IT solutions that strengthen your company and secure your success sustainably.' },
+      ],
+      factorsLead: 'Success factors',
+      factorsRest: ' that make the difference',
+      factors: [
+        { h: '100+ customers worldwide.', p: 'Our success speaks for itself: satisfied partners in over 100 countries.' },
+        { h: '50+ IT projects successfully implemented.', p: 'We deliver results that count, project by project.' },
+        { h: '35+ partnerships worldwide.', p: 'With strong connections to long-term success.' },
+        { h: '40 years of expertise.', p: 'Rely on decades of experience in test and quality management.' },
+        { h: 'Efficient. Precise. Structured.', p: 'Fast implementation with well-thought-out processes for your success.' },
+        { h: 'Knowledge that grows.', p: 'Regular training of our IT professionals for top performance in test management.' },
+        { h: 'Always at the cutting edge.', p: 'Our solutions are based on the latest market trends and requirements.' },
+        { h: 'Strong together.', p: 'Our family culture combines trust, fairness and transparency.' },
+        { h: '50+ new AI solutions.', p: 'Developed with artificial intelligence for existing market problems.' },
+      ],
+      guideLead: 'Guide',
+      guideRest: ' to sustainable corporate development',
+      guideCards: [
+        {
+          h: 'Software solutions and consulting that work.',
+          items: [
+            'Over 40 years of practical experience in IT projects for testing and quality management.',
+            'Expertise in classic, hybrid and agile project implementation.',
+            'Test management according to ISTQB guidelines, practical and proven.',
+            'Access to an experienced team of testers, automation experts and test managers.',
+          ],
+        },
+        {
+          h: 'Career booster: our academy',
+          items: [
+            'Free studies in computer science or business informatics at a private university in Frankfurt am Main.',
+            'Specialized programs for test management and test automation.',
+            'Personal development through practical work on real IT projects.',
+            'Individual support from experienced mentors, your key to success.',
+          ],
+        },
+      ],
+      solutionLead: 'WAMOCON',
+      solutionMid: ' your solution for ',
+      solutionAccent: 'IT innovation and efficiency',
+      solutionParas: [
+        { s: 'Tailor-made IT solutions for your success.', p: 'From project management and testing to the integration of complex systems such as ERP, S4 HANA and SAP BASS, WAMOCON offers you a broad range of IT services. Our innovative solutions secure sustainable competitive advantages for companies in construction, mobile communications and the automotive industry.' },
+        { s: 'Innovation and quality that convince.', p: 'From project management and testing to the integration of complex systems such as ERP, S4 HANA and SAP BASS, WAMOCON offers you a broad range of IT services. Our innovative solutions secure sustainable competitive advantages for companies in construction, mobile communications and the automotive industry.' },
+      ],
+      visionLead: 'Our vision: ',
+      visionAccent: 'innovation and growth for sustainable success',
+      visionItems: [
+        { h: 'Vision and growth:', p: 'WAMOCON pursues the goal of being among the top 10% in Germany as a modern, family-oriented IT company. With innovative test methods, employee training and first-class consulting in quality management, we create a platform that combines innovation and efficiency, for sustainable growth and IT excellence.' },
+        { h: 'Mission and customer focus:', p: 'Since our foundation, WAMOCON has stood for high-tech solutions that support companies in achieving their business goals. With a unique combination of technological know-how and customer-oriented consulting, we deliver solutions that are perfectly tailored to the individual needs of our customers, for success in a dynamic market environment.' },
+      ],
+      clientsTitle: 'Who are our customers?',
+      teamTitle: 'The heart of WAMOCON: our qualified team',
+      teamParas: [
+        { s: 'Passion and expertise that inspire.', p: 'Discover how WAMOCON, as a leading IT service provider, drives projects to success through reliability and transparent communication, creating real value for you.' },
+        { s: 'The highest standards, every day.', p: 'Our experts work with passion and precision to ensure that our solutions always meet the highest demands.' },
+        { s: '', p: 'Get to know the dedicated team behind our success that drives our pursuit of innovation and excellence.' },
+      ],
+      more: 'Learn more',
+      milestonesTitle: 'Milestones of our success story',
+      factLabel: 'Interesting fact:',
+      magazinTitle: 'Find out more about us',
+      magazinText: 'Discover our magazine with exciting projects, training courses and our corporate culture.',
+      magazinBtn: 'Download magazine',
+    };
+
+const clients = [
+  '50 Hertz Transmission GmbH', 'Deutsche Bank AG', 'Intel Deutschland GmbH',
+  'BRUNATA-Metrona GmbH & Co. KG', 'Deutsche Telekom AG', 'KraussMaffei Technologies GmbH',
+  'Bundesagentur für Arbeit (BA)', 'DZ Bank AG', 'Lekkerland Deutschland GmbH & Co. KG',
+  'Capgemini Deutschland GmbH', 'EnBW Energie Baden-Württemberg AG', 'Mercedes-Benz Bank AG',
+  'Daimler AG', 'Hewlett-Packard GmbH', 'Phoenix Contact GmbH & Co. KG', 'Deutsche Bahn AG',
+  'iBS Innovative Banking Solutions AG', 'PricewaterhouseCoopers GmbH', 'Quelle GmbH',
+  'R+V Allgemeine Versicherung AG', 'Roche Diagnostics GmbH', 'Samsung Electronics GmbH',
+  'Telefónica Germany GmbH & Co. OHG', 'VGF GmbH',
+];
+
+const roleDe = [
+  'Manager des Unternehmens / Testautomatisierer / Testmanager / ISTQB®-Trainer / Projektleiter / LaaJ-Architekt für KI-Qualitätssicherung',
+  'Tester / Testautomatisierer / Testmanager / ISTQB®-Trainer / LLM-as-a-Judge-Ingenieur',
+  'Assistentin der Geschäftsführung / Tester / LaaJ-Prompt-Spezialistin',
+  'Tester / Testautomatisierer / Testmanager / ISTQB®-Trainer / LLM-as-a-Judge-Ingenieur',
+  'Tester / Testautomatisierer / LLM-as-a-Judge-Ingenieur',
+  'Tester / Testautomatisierer / LLM-as-a-Ingenieur',
+  'Tester / LaaJ-Prompt-Ingenieur',
+  'Tester / LaaJ-Prompt-Ingenieur',
+  'Testautomatisierer / LaaJ-Architekt',
+  'Testautomatisierer / LaaJ-Architekt',
+];
+const roleEn = [
+  'Company Manager / Test Automation Engineer / Test Manager / ISTQB® Trainer / Project Lead / LaaJ architect for AI quality assurance',
+  'Tester / Test Automation Engineer / Test Manager / ISTQB® Trainer / LLM-as-a-Judge engineer',
+  'Assistant to Management / Tester / LaaJ prompt specialist',
+  'Tester / Test Automation Engineer / Test Manager / ISTQB® Trainer / LLM-as-a-Judge engineer',
+  'Tester / Test Automation Engineer / LLM-as-a-Judge engineer',
+  'Tester / Test Automation Engineer / LLM-as-a engineer',
+  'Tester / LaaJ prompt engineer',
+  'Tester / LaaJ prompt engineer',
+  'Test Automation Engineer / LaaJ architect',
+  'Test Automation Engineer / LaaJ architect',
+];
+const names = ['Waleri Moretz', 'Daniel Moretz', 'Olga Moretz', 'Nikolaj Schefner', 'Erwin Moretz', 'Nurzhan Kukeyev', 'Leon Moretz', 'Elias Felsing', 'Yash Bhesaniya', 'Maanik Garg'];
+const imgs = ['/images/team-waleri.png', '/images/team-daniel.png', '/images/team-olga.png', '/images/team-nikolaj.png', '/images/team-erwin.png', '/images/team-nurzhan.png', '/images/team-leon.jpg', '/images/team-elias.jpg', '/images/team-photo.jpg', '/images/team-maanik.png'];
+
+const bioTitleDe = [
+  'Geschäftsführer und Testmanager',
+  'Testmanager, Testautomatisierer und ISTQB-Trainer',
+  'Management Assistant und Softwaretesterin',
+  'Tester / Testautomatisierer / Testmanager / ISTQB®-Trainer',
+  'Tester und Testautomatisierer',
+  'Tester und Testautomatisierer',
+  'ISTQB-zertifizierter Tester',
+  'Tester',
+  'Testautomatisierer / LaaJ-Architekt',
+  'Testautomatisierer mit KI-Spezialisierung',
+];
+const bioTitleEn = [
+  'Managing Director and Test Manager',
+  'Test manager, test automation specialist and ISTQB trainer',
+  'Management Assistant and Software Tester',
+  'Tester / test automation engineer / test manager / ISTQB® trainer',
+  'Tester and test automation specialist',
+  'Tester and test automation specialist',
+  'ISTQB-certified Tester',
+  'Tester',
+  'Test automation engineer / LaaJ architect',
+  'Test automation engineer with AI specialization',
+];
+
+const bioDe = [
+  [
+    'Er hat alle Prüf- und Qualitätsmanagementaufgaben gemäß dem internationalen ISTQB-Standard absolviert. Seine Karriere begann als traditioneller Softwaretester, aber seine kontinuierliche Weiterentwicklung führte ihn nach und nach zum agilen Tester, Testkoordinator, Testautomatisierungsingenieur und schließlich zum Testmanager und Projektmanager.',
+    'In den letzten 17 Jahren hat er seine umfangreiche Praxiserfahrung den Kunden zur Verfügung gestellt. Derzeit übernimmt er zusätzliche Verantwortung als ISTQB-Lehrer an der WAMOCON Academy und leitet verschiedene Workshops, die von Softwaretests bis hin zu persönlichem Mentoring zu Test und Qualitätsmanagement reichen.',
+    'So unterstützt Waleri nicht nur angehende Fachkräfte, sondern führt auch Seminare für IT-Projektteams mit dem Ziel durch, die Qualität von IT-Systemen stetig zu verbessern. Dadurch können seine Kunden ihre Ziele schneller und effizienter erreichen. Derzeit ist er ein führender Experte für die erfolgreiche Planung und Umsetzung von IT-Testmanagement-Projekten mit einem Team von bis zu 450 Personen.',
+  ],
+  [
+    'Daniel Moretz ist ein erfahrener Testmanager, Testkoordinator und ISTQB-Trainer mit über 7 Jahren Erfahrung im Anwendungslebenszyklusmanagement. Davon hat er 3 Jahre als Testmanager und 3 Jahre als ISTQB-Trainer gearbeitet, was ihm tiefgreifende Kenntnisse in funktionalen und nichtfunktionalen Tests, Last- und Leistungstests sowie der Testautomatisierung vermittelt hat.',
+    'Zu seinen Hauptaufgaben gehören die Planung, Vorbereitung, Koordination und Berichterstattung von Testaktivitäten. Daniel ist verantwortlich für die Erstellung von Testfällen, die Definition von Testdaten und die Durchführung von Integrationstests, Systemtests, Abnahme- und Regressionstests. In seiner Rolle als Testmanager sorgt er für eine reibungslose Kommunikation zwischen Testern und Entwicklern und moderiert Meetings und Seminare, in denen Mängel identifiziert und behoben werden.',
+    'Darüber hinaus entwickelt, führt und wartet er automatisierte Testskripte und analysiert sowie behebt dabei auftretende Fehler. Ein besonderer Fokus von Daniel liegt auf der Anwendung moderner Testmethoden. Er nutzt das V-Modell in Kombination mit flexiblen Ansätzen wie SCRUM und SAFe, um eine agile und gleichzeitig strukturierte Testumgebung zu schaffen.',
+    'Diese Methoden ermöglichen es ihm, die Qualität der Softwaretests kontinuierlich zu verbessern und gleichzeitig auf sich ändernde Projektanforderungen flexibel zu reagieren. Dank seiner umfangreichen Erfahrung und seiner Fähigkeiten in der Testautomatisierung trägt Daniel dazu bei, Testprozesse zu beschleunigen und gleichzeitig deren Genauigkeit und Verlässlichkeit zu gewährleisten. Durch seine Arbeit können Projektteams ihre Qualitätsziele effizienter erreichen und Fehler frühzeitig identifizieren und beheben.',
+  ],
+  [
+    'Olga Moretz ist stellvertretende Geschäftsführerin und Softwaretesterin, die eine einzigartige Kombination aus Organisationstalent, effektiver Kommunikation und technischem Verständnis mitbringt. Mit über 17 Jahren Erfahrung im Management und in der Geschäftsleitung hat sie ein tiefes Verständnis für komplexe organisatorische Herausforderungen und leistet einen unverzichtbaren Beitrag zum Erfolg des Unternehmens.',
+    'Ihre Hauptaufgaben umfassen die Koordination von Besprechungen, die Organisation von Reisen und die Erledigung allgemeiner Verwaltungsaufgaben, die sie mit höchster Effizienz ausführt. Olgas starke Kommunikationsfähigkeiten ermöglichen es ihr, sowohl intern als auch extern klar und überzeugend zu kommunizieren.',
+    'Neben ihren organisatorischen Aufgaben bringt Olga ihre technischen Fähigkeiten als Softwaretesterin ein. Sie entwickelt und implementiert effektive Teststrategien, die die Qualität der IT-Projekte unterstützen. Ihre Erfahrung in der Arbeitskoordination und im Testmanagement macht sie zu einer wichtigen Stütze des Unternehmens, insbesondere wenn es darum geht, Testprozesse effizient zu gestalten und Fehler frühzeitig zu erkennen.',
+    'Olgas Fähigkeit, komplexe Arbeitsabläufe zu koordinieren und gleichzeitig Teststrategien zu entwickeln, macht sie zu einer äußerst vielseitigen Mitarbeiterin. Ihre proaktive Unterstützung des Managements und ihr unermüdlicher Einsatz tragen maßgeblich zum Erfolg des Unternehmens bei.',
+  ],
+  [
+    'Nikolaj hat durch seine Arbeit als Tester und Testkoordinator in klassischen und agilen Projekten umfangreiche Praxiserfahrung gesammelt. Während seiner 7-jährigen Projektarbeit hat er verschiedene Testmethoden wie das V-Modell und SCRUM (agil) eingesetzt.',
+    'Zu seinen Aufgaben gehören derzeit die Erstellung technischer Spezifikationen, Testkonzepte, Testfälle und Testdaten, die Abnahme von Kundenanforderungen durch eine Fachabteilung, die Koordination und Durchführung von Tests in Integrations-, Abnahme- und Regressionstests, die Steuerung des Testfortschritts und die Fehlerbehandlung sowie die Schätzung des Testaufwands. Nikolaj ist außerdem für die Dokumentation und Berichterstattung der Testergebnisse verantwortlich.',
+    'Seine Qualifikation im Testmanagement wird durch vier erworbene ISTQB®-Zertifizierungen in klassischen und agilen Methoden sowie durch praktische Projekterfahrung bestätigt. Er verfügt zudem über 3 Jahre Erfahrung als Testmanager und 3 Jahre Erfahrung als ISTQB®-Trainer.',
+  ],
+  [
+    'Erwin Moretz verfügt über 7 Jahre Erfahrung im Bereich Softwaretests und 3 Jahre in der Testautomatisierung. In seinen Projekten sorgt er durch den Einsatz verschiedener Testtechniken dafür, dass Fehler frühzeitig erkannt und behoben werden.',
+    'Zu seinen Hauptaufgaben gehört die Erstellung von Testfällen und Testdaten, sowie die Annahme von Kundenanforderungen aus der Fachabteilung. Er ist verantwortlich für die Durchführung von Tests in verschiedenen Phasen, darunter Integrationstests, Systemtests, Abnahmetests, Regressionstests, Last- und Leistungstests sowie End-to-End-Tests (E2E). Erwin dokumentiert die Testergebnisse, erstellt Mängelberichte und verfolgt deren Behebung.',
+    'Ein besonderer Schwerpunkt liegt auf der Automatisierung von Tests. Erwin ist für die Neuentwicklung und Einrichtung automatisierter Tests verantwortlich, insbesondere durch den Einsatz des Capture & Replay-Ansatzes, um manuelle Testausführungen effizient zu ersetzen. Zudem hat er Erfahrung in der Erstellung von automatisierten Testfällen mit JavaScript für Microservices, die auf REST- und GraphQL-Endpunkten basieren.',
+    'Als Agile Tester bringt Erwin umfangreiche Projekterfahrung in der Erstellung technischer Spezifikationen, Testfällen und Testdaten für manuelle und automatisierte Tests mit. Durch den Einsatz agiler Methoden sorgt er für flexible und schnelle Anpassungen an sich verändernde Projektanforderungen, was die Effizienz und Qualität der Testprozesse steigert. Seine Arbeit in der Testautomatisierung trägt maßgeblich zur Beschleunigung der Testprozesse und zur Reduktion von Fehlern bei, was zu einer höheren Effizienz und Produktqualität führt.',
+  ],
+  [
+    'Nurzhan Kukeyev verfügt über mehr als 3 Jahre Erfahrung als Tester und Testautomatisierungsingenieur in IT-Projekten. Er hat umfassende Kenntnisse in der UML-Modellierung und der Umsetzung von Kundenanforderungen.',
+    'Seine ersten IT-Erfahrungen sammelte er in einem Apotheken-Digitalisierungsprojekt, wo er eng mit dem Kunden zusammenarbeitete, um ein internes Apothekensystem mit integriertem Labor zu entwickeln und umzusetzen. Seine technischen Kenntnisse vertiefte er durch die intensive Arbeit mit MQTT-Serverkonzepten und JSON-Nachrichten sowie die Anwendung in Python3-Projekten. Dies gab ihm ein fundiertes Verständnis der mathematischen und sensorischen Aspekte der Softwareentwicklung sowie der agilen Entwicklungsprozesse.',
+    'Derzeit unterstützt er als ISTQB-zertifizierter Softwaretester und Programmierer die IT-Implementierung der neuen DiTeLe-Anwendung. Zu seinen Aufgaben gehören das Schreiben von Kundenanforderungen, das Erstellen von Testfällen und die Durchführung von funktionalen und technischen Tests. Parallel dazu arbeitet er als agiler ISTQB-Tester und SAFe-Testautomatisierungsingenieur an einem großen paneuropäischen Projekt.',
+    'Nurzhan bringt seine Programmierkenntnisse und seine Erfahrungen in der Testautomatisierung aktiv in die Projekte ein und trägt dazu bei, die Testprozesse zu beschleunigen und die Qualität der Software zu verbessern. Seine Fähigkeit, sowohl manuelle als auch automatisierte Tests durchzuführen, ermöglicht es ihm, flexibel auf Projektanforderungen zu reagieren und die Implementierung effizienter zu gestalten.',
+  ],
+  [
+    'Leon Moretz ist ein erfahrener ISTQB-zertifizierter Tester, dessen fundierte Kenntnisse in der Testvorbereitung, Testdurchführung und Dokumentation von Testergebnissen ihn zu einem zuverlässigen und engagierten Mitarbeiter machen. Er verfügt über die Fähigkeit, komplexe Probleme schnell zu erkennen und effektive Teststrategien umzusetzen, die dazu beitragen, potenzielle Mängel frühzeitig zu identifizieren und zu beheben.',
+    'Dank seiner Teamfähigkeit und seinem ausgeprägten Blick für Details stellt Leon sicher, dass die Qualität der getesteten Softwareprodukte den höchsten Standards entspricht. Seine starken Kommunikationsfähigkeiten und die Fähigkeit, technische Dokumente klar und verständlich zu verfassen, tragen maßgeblich zur Effizienzsteigerung der Testprozesse bei und sorgen für eine nahtlose Zusammenarbeit im Team.',
+    'Leons Engagement für die Qualitätssicherung und seine Fähigkeit, komplexe Testprozesse effektiv zu managen, machen ihn zu einer wertvollen Unterstützung für das WAMOCON-Team. Seine Erfahrung und sein unermüdlicher Einsatz tragen entscheidend zur Sicherstellung der Funktionalität und Qualität von Softwareprodukten bei.',
+  ],
+  [
+    'Elias Felsing ist ein junger ISTQB-zertifizierter Softwaretester mit einem klaren Fokus auf Qualität, Struktur und zuverlässige Testprozesse. Er unterstützt das Team bei der Testvorbereitung, der Durchführung von Tests, der Erstellung von Testfällen sowie der systematischen Fehleranalyse.',
+    'Durch seine sorgfältige und analytische Arbeitsweise trägt er dazu bei, Risiken frühzeitig zu erkennen und die Stabilität der Software nachhaltig zu erhöhen. Mit hoher Lernbereitschaft, präziser Kommunikation und einem starken Qualitätsbewusstsein bringt Elias frische Impulse in Projekte ein und stärkt die Zusammenarbeit im Team.',
+  ],
+  [
+    'Yash Bhesaniya ist ein erfahrener Data Scientist mit einer starken akademischen Basis und praktischer Erfahrung in der Erkennung von Anomalien und der Extraktion versteckter Merkmale aus Daten. Er verfügt über fundierte Kenntnisse in statistischer Analyse, maschinellem Lernen, Deep Learning und generativer KI.',
+    'Seine technischen Fähigkeiten umfassen Python, Power BI, Datenbankmanagement und SQL, sowie Erfahrung mit Bibliotheken wie Pandas, Numpy und Pytorch. Mit seiner Erfahrung in IT-Projekten hat Yash an der Entwicklung von Anwendungen zur Anomalieerkennung und Wissensgraph-Extraktion mitgewirkt. Er hat erfolgreich ein Tool zur Visualisierung von Wissensgraphen für Hella entwickelt und Anomalien in NASAs Bearing Sensor-Daten mit LSTM-Modellen erkannt. Zudem hat er eine Android-Anwendung für sichere Online-Transaktionen entworfen.',
+    'In seinem aktuellen Projekt konzentriert sich Yash darauf, KI-Technologien in die Testautomatisierung zu integrieren, um die Effizienz und Qualität der Tests zu verbessern. Seine Stärken als AI-Entwickler liegen in der Fähigkeit zur Problemlösung, der innovativen Anwendung von KI-Methoden und der kontinuierlichen Optimierung von Prozessen.',
+  ],
+  [
+    'Maanik Garg ist ein erfahrener Data Scientist und Testautomatisierer, der sich auf die Implementierung von Machine Learning-Modellen zur Fehlererkennung spezialisiert hat. Mit einer Genauigkeit von 87 % bei der Nutzung von Random Forest und XGBoost-Algorithmen hat er seine Expertise in der Datenaggregation und Datenvorbereitung unter Beweis gestellt.',
+    'Er hat erfolgreich ML-Modelle auf Cloud-Plattformen bereitgestellt, indem er fortschrittliche Techniken der Datenanalyse integriert hat, um prädiktive Modellierungsfähigkeiten zu verbessern. In einem seiner Projekte entwickelte Maanik eine Empfehlungsmaschine, die mithilfe von Collaborative Filtering personalisierte Musikempfehlungen bietet.',
+    'Diese Erfahrung zeigt seine Fähigkeit, fortschrittliche KI-Methoden anzuwenden, um komplexe Probleme zu lösen und innovative Lösungen zu entwickeln. Seine Stärke liegt in der Problemlösung und der Anwendung fortschrittlicher KI-Techniken, um die Effizienz und Qualität der Testprozesse zu steigern. Durch die Implementierung dieser Methoden trägt Maanik maßgeblich zur Fehlerreduktion und Optimierung von Tests bei, was zu einer höheren Qualität und Leistung der IT-Systeme führt.',
+  ],
+];
+
+const bioEn = [
+  [
+    'He has completed all testing and quality management tasks in accordance with the international ISTQB standard. His career started as a traditional software tester, but his continuous development gradually led him to become an agile tester, test coordinator, test automation engineer and finally test manager and project manager.',
+    'Over the past 17 years, he has made his extensive practical experience available to customers. He currently takes on additional responsibility as an ISTQB teacher at the WAMOCON Academy and leads various workshops ranging from software testing to personal mentoring on testing and quality management.',
+    'Waleri not only supports prospective professionals, but also conducts seminars for IT project teams with the aim of continuously improving the quality of IT systems. This enables his clients to achieve their goals faster and more efficiently. He is currently a leading expert in the successful planning and implementation of IT test management projects with a team of up to 450 people.',
+  ],
+  [
+    'Daniel Moretz is an experienced test manager, test coordinator and ISTQB trainer with over 7 years of experience in application lifecycle management. He has worked as a test manager for 3 years and as an ISTQB trainer for 3 years, which has given him in-depth knowledge of functional and non-functional testing, load and performance testing and test automation.',
+    'His main tasks include the planning, preparation, coordination and reporting of test activities. Daniel is responsible for the creation of test cases, the definition of test data and the execution of integration tests, system tests, acceptance tests and regression tests. In his role as test manager, he ensures smooth communication between testers and developers and moderates meetings and seminars in which defects are identified and resolved.',
+    'In addition, he develops, runs and maintains automated test scripts and analyzes and fixes any errors that occur. Daniel has a particular focus on the application of modern test methods. He uses the V-model in combination with flexible approaches such as SCRUM and SAFe to create an agile yet structured test environment.',
+    'These methods allow him to continuously improve the quality of software testing while reacting flexibly to changing project requirements. Thanks to his extensive experience and test automation skills, Daniel helps to accelerate testing processes while ensuring their accuracy and reliability. Through his work, project teams can achieve their quality goals more efficiently and identify and correct errors at an early stage.',
+  ],
+  [
+    'Olga Moretz is a Deputy Managing Director and software tester who brings a unique combination of organizational skills, effective communication and technical understanding. With over 17 years of management and executive experience, she has a deep understanding of complex organizational challenges and is an indispensable contributor to the company\u2019s success.',
+    'Her main responsibilities include coordinating meetings, organizing travel and handling general administrative tasks, which she performs with the utmost efficiency. Olga\u2019s strong communication skills enable her to communicate clearly and persuasively both internally and externally.',
+    'In addition to her organizational duties, Olga contributes her technical skills as a software tester. She develops and implements effective testing strategies that support the quality of IT projects. Her experience in work coordination and test management makes her an important asset to the company, especially when it comes to efficiently designing test processes and detecting errors at an early stage.',
+    'Olga\u2019s ability to coordinate complex workflows while developing test strategies makes her an extremely versatile employee. Her proactive support of management and her tireless efforts contribute significantly to the success of the company.',
+  ],
+  [
+    'Nikolaj has gained extensive practical experience through his work as a tester and test coordinator in classic and agile projects. During his 7 years of project work, he has used various test methods such as the V-model and SCRUM (agile).',
+    'His tasks currently include the creation of technical specifications, test concepts, test cases and test data, the acceptance of customer requirements by a specialist department, the coordination and execution of tests in integration, acceptance and regression tests, the control of test progress and error handling as well as the estimation of test effort. Nikolaj is also responsible for the documentation and reporting of test results.',
+    'His qualification in test management is confirmed by four acquired ISTQB® certifications in classical and agile methods as well as practical experience in projects. He also has 3 years\u2019 experience as a test manager and 3 years\u2019 experience as an ISTQB® trainer.',
+  ],
+  [
+    'Erwin Moretz has 7 years of experience in software testing and 3 years in test automation. In his projects, he uses various test techniques to ensure that errors are detected and rectified at an early stage.',
+    'His main tasks include the creation of test cases and test data, as well as the acceptance of customer requirements from the specialist department. He is responsible for the execution of tests in various phases, including integration tests, system tests, acceptance tests, regression tests, load and performance tests as well as end-to-end tests (E2E). Erwin documents the test results, creates defect reports and tracks their resolution.',
+    'A particular focus is on the automation of tests. Erwin is responsible for the new development and setup of automated tests, especially by using the capture & replay approach to efficiently replace manual test executions. He also has experience in creating automated test cases with JavaScript for microservices based on REST and GraphQL endpoints.',
+    'As an agile tester, Erwin has extensive project experience in creating technical specifications, test cases and test data for manual and automated tests. By using agile methods, he ensures flexible and fast adaptations to changing project requirements, which increases the efficiency and quality of the test processes. His work in test automation contributes significantly to the acceleration of test processes and the reduction of errors, which leads to greater efficiency and product quality.',
+  ],
+  [
+    'Nurzhan Kukeyev has more than 3 years of experience as a tester and test automation engineer in IT projects. He has extensive knowledge of UML modeling and the implementation of customer requirements.',
+    'He gained his first IT experience in a pharmacy digitization project, where he worked closely with the client to develop and implement an internal pharmacy system with an integrated laboratory. He deepened his technical knowledge by working intensively with MQTT server concepts and JSON messages as well as applying them in Python3 projects. This gave him a solid understanding of the mathematical and sensory aspects of software development as well as agile development processes.',
+    'He is currently supporting the IT implementation of the new DiTeLe application as an ISTQB-certified software tester and programmer. His tasks include writing customer requirements, creating test cases and carrying out functional and technical tests. At the same time, he works as an agile ISTQB tester and SAFe test automation engineer on a large pan-European project.',
+    'Nurzhan actively contributes his programming skills and his experience in test automation to the projects and helps to accelerate the test processes and improve the quality of the software. His ability to perform both manual and automated tests enables him to react flexibly to project requirements and make implementation more efficient.',
+  ],
+  [
+    'Leon Moretz is an experienced ISTQB-certified tester whose in-depth knowledge of test preparation, test execution and documentation of test results makes him a reliable and dedicated employee. He has the ability to quickly recognize complex problems and implement effective test strategies that help to identify and resolve potential defects at an early stage.',
+    'Thanks to his teamwork skills and keen eye for detail, Leon ensures that the quality of the software products tested meets the highest standards. His strong communication skills and ability to write technical documents in a clear and understandable way help to increase the efficiency of the testing processes and ensure seamless teamwork.',
+    'Leon\u2019s commitment to quality assurance and his ability to effectively manage complex testing processes make him a valuable asset to the WAMOCON team. His experience and tireless efforts play a crucial role in ensuring the functionality and quality of software products.',
+  ],
+  [
+    'Elias Felsing is a young ISTQB-certified software tester with a clear focus on quality, structure and reliable test processes. He supports the team in test preparation, test execution, test case creation and systematic defect analysis.',
+    'Thanks to his careful and analytical way of working, he helps to identify risks at an early stage and sustainably increase the stability of the software. With a high willingness to learn, precise communication and a strong quality awareness, Elias brings fresh impetus to projects and strengthens collaboration within the team.',
+  ],
+  [
+    'Yash Bhesaniya is an experienced data scientist with a strong academic background and practical experience in anomaly detection and extracting hidden features from data. He has solid knowledge of statistical analysis, machine learning, deep learning and generative AI.',
+    'His technical skills include Python, Power BI, database management and SQL, as well as experience with libraries such as Pandas, NumPy and PyTorch. With his experience in IT projects, Yash has been involved in the development of applications for anomaly detection and knowledge graph extraction. He has successfully developed a knowledge graph visualization tool for Hella and detected anomalies in NASA\u2019s Bearing Sensor data using LSTM models. He also designed an Android application for secure online transactions.',
+    'In his current project, Yash focuses on integrating AI technologies into test automation to improve the efficiency and quality of tests. His strengths as an AI developer lie in his problem-solving ability, the innovative application of AI methods and the continuous optimization of processes.',
+  ],
+  [
+    'Maanik Garg is an experienced data scientist and test automation engineer who specializes in the implementation of machine learning models for error detection. With an accuracy of 87% using Random Forest and XGBoost algorithms, he has proven his expertise in data aggregation and data preparation.',
+    'He has successfully deployed ML models on cloud platforms by integrating advanced data analytics techniques to improve predictive modeling capabilities, and in one of his projects, Maanik developed a recommendation engine that provides personalized music recommendations using collaborative filtering.',
+    'This experience demonstrates his ability to apply advanced AI methods to solve complex problems and develop innovative solutions. His strength lies in problem solving and applying advanced AI techniques to increase the efficiency and quality of testing processes. By implementing these methods, Maanik contributes significantly to error reduction and optimization of tests, resulting in higher quality and performance of IT systems.',
+  ],
+];
+
+const team = names.map((name, i) => ({
+  name,
+  role: de ? roleDe[i] : roleEn[i],
+  img: imgs[i],
+  bioTitle: de ? bioTitleDe[i] : bioTitleEn[i],
+  bio: de ? bioDe[i] : bioEn[i],
+  slug: name.replace(/\s+/g, '-'),
+}));
+
+type Milestone = { year: string; lines: string[]; fact?: string };
+const milestones: Milestone[] = [
+  { year: '2007', lines: ['Der Start einer Vision. Waleri begann seine Karriere im IT-Test und Qualitätsmanagement bei einem führenden internationalen IT-Unternehmen.', 'Erste Marktanalysen in Deutschland legten den Grundstein für zukünftige Innovationen.'], fact: 'Waleri’s erstes internationales Projekt führte ihn 2008 als Softwaretester zu einem führenden IT-Beratungsunternehmen, ein bedeutender Schritt in seiner Karriere.' },
+  { year: '2008', lines: ['Innovativer Durchbruch. Entwicklung und Einführung einer Webanwendung für ein führendes internationales IT-Unternehmen, die neue Standards setzte.'], fact: 'Im Mai 2007 begann WAMOCON mit der Analyse von Verkaufszahlen im europäischen Elektrofachhandel. Dieser Schritt markierte den Beginn einer beeindruckenden Reise zu einem führenden IT-Dienstleister.' },
+  { year: '2009', lines: ['Entwicklung und Implementierung einer Webanwendung für ein führendes internationales IT-Unternehmen.'] },
+  { year: '2010', lines: ['Implementierung eines Unternehmensverzeichnisses für einen deutschen Energieversorger.', 'Entwicklung von internen Kontrollsystemen bei einem führenden internationalen Automobilunternehmen.'] },
+  { year: '2011', lines: ['Einführung von SAP ERP 6.0 FI/CO bei einem deutschen Nahverkehrsunternehmen.', 'Unterstützung von SAP ERP 6.0 FI/CO in einem führenden internationalen Automobilunternehmen.'] },
+  { year: '2012', lines: ['Weiterentwicklung von SAP NACOS mit Platzbelegungssteuerung bei einem führenden internationalen Automobilunternehmen.', 'Einführung von SAP MRS bei einem führenden internationalen Beratungsunternehmen.'] },
+  { year: '2013', lines: ['Einführung eines Basis-Bankensystems mit dem Schwerpunkt Testmanagement bei einer internationalen Automobilbank.', 'Entwicklung eines Multiprojektmanagementsystems bei einem deutschen Werk.'] },
+  { year: '2014', lines: ['Entwicklung eines neuen SAP ERP 6.0 FI/CO-Ledgers bei einem deutschen Nahverkehrsunternehmen.', 'Unterstützung für SAP ERP 6.0 FI bei einem führenden internationalen Automobilunternehmen.'] },
+  { year: '2015', lines: ['Implementierung des neuen SAP Rollout ERP 6 Systems in einem führenden internationalen Pharmaunternehmen.', 'Implementierung des neuen ServiceNow-Systems in einer führenden deutschen Bank.', 'Technische Dokumentation des Systems in einer führenden deutschen Bank.'], fact: 'Im November 2015 vollzog WAMOCON den entscheidenden Übergang vom Einzelunternehmen zur GmbH, begleitet von der Einstellung von vier neuen Mitarbeitern, was das Wachstum und die Entwicklung des Unternehmens auf ein neues Niveau hob.' },
+  { year: '2016', lines: ['Bereitstellung der Lösung SAP ERP 6.0 EHP 8.0 bei einer führenden deutschen Bank.', 'SAP HANA Datenbankintegration bei einem führenden deutschen Versicherungsunternehmen.', 'Technische Dokumentation der Systeme in einer führenden deutschen Bank.'] },
+  { year: '2017', lines: ['Bereitstellung einer S4 HANA-Finanzlösung für ein führendes deutsches Unternehmen der Elektroindustrie.', 'Weiterentwicklung und Betreuung eines mobilen Terminals und Servers für ein führendes deutsches Logistikunternehmen.', 'Bereitstellung einer SAP ERP 6.0 EHP 8.0 Lösung für ein führendes deutsches Logistikunternehmen.', 'Weiterentwicklung und Betreuung eines Planungssystems für ein führendes deutsches Transportunternehmen.', 'Bereitstellung einer Skype for Business Lösung für ein führendes deutsches IT-Systemhaus.'] },
+  { year: '2018', lines: ['Demonstration des SAP-Testautomatisierungskonzepts bei einem führenden deutschen Versicherungsunternehmen.', 'Einführung der SAP BASS-Lösung für Einsparungen bei einem deutschen Softwareunternehmen.', 'Weiterentwicklung und Betreuung eines Konstruktionssystems in einem führenden deutschen Verkehrsunternehmen.'] },
+  { year: '2019', lines: ['Unterstützung bei der Freigabe von Hostsystemen für führende Versicherungsunternehmen in Deutschland.', 'Einführung der SAP BASS Sparlösung bei einem deutschen Softwareunternehmen.', 'Weiterentwicklung und Betreuung eines Konstruktionssystems bei einem führenden deutschen Verkehrsunternehmen.'] },
+  { year: '2020', lines: ['Proof of Concept – DiTeLe Schulungsplattform in einem deutschen Schulungszentrum.', 'MS Office 365-Integration bei einem IT-Beratungsunternehmen.', 'Ablösung eines Bestandssystems und Weiterentwicklung eines Konstruktionssystems bei einem führenden deutschen Verkehrsunternehmen.', 'Weiterentwicklung der SAP BASS Sparlösung bei einem deutschen Softwareunternehmen.'] },
+  { year: '2021', lines: ['Ablösung des Bestandssystems und Weiterentwicklung des Konstruktionssystems bei einem führenden deutschen Verkehrsunternehmen.', 'Einführung der neuen Lernplattform DiTeLe als Technologielösung in einem deutschen Ausbildungszentrum.', 'Etablierung der WAMOCON Akademie in einem deutschen Ausbildungszentrum.'] },
+  { year: '2022', lines: ['Ablösung eines Bestandssystems und Weiterentwicklung des Konstruktionssystems bei einem führenden deutschen Verkehrsunternehmen.', 'Implementierung von S4 HANA und Ablösung eines Altsystems bei einem führenden Energiedienstleister.', 'Weiterentwicklung der DiTeLe-Lernplattform im deutschen Ausbildungszentrum.'], fact: 'Ein System für deinen Erfolg. Mit dem 360° Booster System hat WAMOCON einen ganzheitlichen Ansatz geschaffen, der alle Facetten des IT-Testens abdeckt. Dieses System führt dich Schritt für Schritt zu einer erfolgreichen Karriere, hilft dir, Herausforderungen souverän zu meistern, und zeigt dir den effektivsten Weg zum Erfolg. Unser Team nutzt das 360° Booster System, um die Qualität der Arbeit zu steigern, Tests erfolgreich durchzuführen und IT-Projekte effizient abzuschließen.' },
+  { year: '2023', lines: ['Weiterentwicklung des Produkttestprogramms ISTQB® Certified Tester v.4.0 – Foundation Level in einem deutschen Trainingszentrum.', 'Implementierung eines neuen S4 HANA Systems für einen der führenden europäischen Mobilfunkanbieter mit dem Schwerpunkt Testmanagement.', 'Einführung von SAP BI für Autohändler bei einem führenden deutschen Automobilhersteller.', 'Weiterentwicklung eines Fahrplansystems für ein führendes deutsches Verkehrsunternehmen.', 'Einführung des neuen ISTQB® Certified Tester Foundation Level Seminars in einem deutschen Schulungszentrum.'], fact: 'Zum Ende des Jahres 2023 hat WAMOCON das Team in den Schlüsselpositionen von 5 auf 10 verdoppelt. Das war der Startschuss für ein historisches Wachstum.' },
+  { year: '2024', lines: ['Weiterentwicklung eines Konstruktionssystems mit dem Schwerpunkt Testmanagement für ein führendes deutsches Verkehrsunternehmen.', 'Implementierung eines neuen SAP S4 HANA Systems mit dem Schwerpunkt Testmanagement für ein führendes deutsches Verkehrsunternehmen.', 'Ab August 2024 flächendeckende Einführung von Künstlicher Intelligenz im gesamten Unternehmen.'] },
+  { year: '2025', lines: ['Erstes eigenes KI-System für die Berufsausbildung zum Fachinformatiker Anwendungsentwicklung geht live.'] },
+  { year: '2026', lines: ['Mehr als 50 maßgeschneiderte KI-Produktlösungen für Kunden aus unterschiedlichsten Branchen entwickelt. Jede einzelne mit LaaJ trainiert, getestet und produktiv gesetzt.'] },
+];
+
+const milestonesEn: Milestone[] = [
+  { year: '2007', lines: ['The start of a vision. Waleri began his career in IT testing and quality management at a leading international IT company.', 'First market analyses in Germany laid the foundation for future innovations.'], fact: 'Waleri’s first international project took him to a leading IT consulting company as a software tester in 2008, a significant step in his career.' },
+  { year: '2008', lines: ['Innovative breakthrough. Development and launch of a web application for a leading international IT company that set new standards.'], fact: 'In May 2007, WAMOCON began analysing sales figures in the European electronics retail sector. This step marked the beginning of an impressive journey to becoming a leading IT service provider.' },
+  { year: '2009', lines: ['Development and implementation of a web application for a leading international IT company.'] },
+  { year: '2010', lines: ['Implementation of a company directory for a German energy supplier.', 'Development of internal control systems at a leading international automotive company.'] },
+  { year: '2011', lines: ['Introduction of SAP ERP 6.0 FI/CO at a German local transport company.', 'Support of SAP ERP 6.0 FI/CO at a leading international automotive company.'] },
+  { year: '2012', lines: ['Further development of SAP NACOS with parking space control at a leading international automotive company.', 'Introduction of SAP MRS at a leading international consulting company.'] },
+  { year: '2013', lines: ['Introduction of a core banking system with a focus on test management at an international automotive bank.', 'Development of a multi-project management system at a German plant.'] },
+  { year: '2014', lines: ['Development of a new SAP ERP 6.0 FI/CO ledger at a German local transport company.', 'Support for SAP ERP 6.0 FI at a leading international automotive company.'] },
+  { year: '2015', lines: ['Implementation of the new SAP Rollout ERP 6 system at a leading international pharmaceutical company.', 'Implementation of the new ServiceNow system at a leading German bank.', 'Technical documentation of the system at a leading German bank.'], fact: 'In November 2015, WAMOCON made the decisive transition from sole proprietorship to GmbH, accompanied by the hiring of four new employees, taking the company’s growth and development to a new level.' },
+  { year: '2016', lines: ['Provision of the SAP ERP 6.0 EHP 8.0 solution at a leading German bank.', 'SAP HANA database integration at a leading German insurance company.', 'Technical documentation of the systems at a leading German bank.'] },
+  { year: '2017', lines: ['Provision of an S4 HANA finance solution for a leading German electrical industry company.', 'Further development and support of a mobile terminal and server for a leading German logistics company.', 'Provision of an SAP ERP 6.0 EHP 8.0 solution for a leading German logistics company.', 'Further development and support of a planning system for a leading German transport company.', 'Provision of a Skype for Business solution for a leading German IT system house.'] },
+  { year: '2018', lines: ['Demonstration of the SAP test automation concept at a leading German insurance company.', 'Introduction of the SAP BASS solution for savings at a German software company.', 'Further development and support of a design system at a leading German transport company.'] },
+  { year: '2019', lines: ['Support with the release of host systems for leading insurance companies in Germany.', 'Introduction of the SAP BASS savings solution at a German software company.', 'Further development and support of a design system at a leading German transport company.'] },
+  { year: '2020', lines: ['Proof of Concept – DiTeLe training platform in a German training center.', 'MS Office 365 integration at an IT consulting company.', 'Replacement of a legacy system and further development of a design system at a leading German transport company.', 'Further development of the SAP BASS savings solution at a German software company.'] },
+  { year: '2021', lines: ['Replacement of the legacy system and further development of the design system at a leading German transport company.', 'Introduction of the new DiTeLe learning platform as a technology solution in a German training center.', 'Establishment of the WAMOCON Academy in a German training center.'] },
+  { year: '2022', lines: ['Replacement of a legacy system and further development of the design system at a leading German transport company.', 'Implementation of S4 HANA and replacement of a legacy system at a leading energy service provider.', 'Further development of the DiTeLe learning platform in the German training center.'], fact: 'One system for your success. With the 360° Booster System, WAMOCON has created a holistic approach that covers all facets of IT testing. This system guides you step by step to a successful career, helps you master challenges confidently, and shows you the most effective path to success. Our team uses the 360° Booster System to increase the quality of work, perform tests successfully and complete IT projects efficiently.' },
+  { year: '2023', lines: ['Further development of the product testing program ISTQB® Certified Tester v.4.0 – Foundation Level in a German training center.', 'Implementation of a new S4 HANA system for one of the leading European mobile providers with a focus on test management.', 'Introduction of SAP BI for car dealers at a leading German automotive manufacturer.', 'Further development of a timetable system for a leading German transport company.', 'Introduction of the new ISTQB® Certified Tester Foundation Level seminar in a German training center.'], fact: 'By the end of 2023, WAMOCON had doubled the team in key positions from 5 to 10. This was the starting signal for historic growth.' },
+  { year: '2024', lines: ['Further development of a design system with a focus on test management for a leading German transport company.', 'Implementation of a new SAP S4 HANA system with a focus on test management for a leading German transport company.', 'From August 2024, company-wide introduction of artificial intelligence throughout the company.'] },
+  { year: '2025', lines: ['The first in-house AI system for vocational training as an IT specialist for application development goes live.'] },
+  { year: '2026', lines: ['More than 50 tailor-made AI product solutions developed for customers from a wide range of industries. Each one trained, tested and put into production with LaaJ.'] },
+];
+
+const timeline = de ? milestones : milestonesEn;
+const magazinUrl = de
+  ? 'https://wamocon-my.sharepoint.com/:b:/p/waleri_moretz/EZUMpxrfjYdPt7g1H7xkQhkBnuG6v-tWKLCPNZIN6Wejlw?e=bQVx7k&download=1'
+  : 'https://wamocon-my.sharepoint.com/:b:/p/waleri_moretz/EZUMpxrfjYdPt7g1H7xkQhkBnuG6v-tWKLCPNZIN6Wejlw?e=bQVx7k&download=1';
+---
+
+<!-- HERO -->
+<section class="ab-hero">
+  <div class="container">
+    <h1 class="ab-hero__title">{c.heroTitle}</h1>
+    <div class="ab-hero__grid">
+      <div class="ab-hero__block" data-reveal="up">
+        <strong>{c.heroBlocks[0].h}</strong>
+        <p>{c.heroBlocks[0].p}</p>
+      </div>
+      <img class="ab-hero__img" src="/images/team-photo.jpg" alt="WAMOCON" loading="lazy" />
+      <div class="ab-hero__block" data-reveal="up" data-reveal-delay="80">
+        <strong>{c.heroBlocks[1].h}</strong>
+        <p>{c.heroBlocks[1].p}</p>
+      </div>
+      <div class="ab-hero__block" data-reveal="up" data-reveal-delay="160">
+        <strong>{c.heroBlocks[2].h}</strong>
+        <p>{c.heroBlocks[2].p}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUCCESS FACTORS -->
+<section class="section section--alt">
+  <div class="container">
+    <h2 class="ab-h2"><span class="t-red">{c.factorsLead}</span><span class="t-white">{c.factorsRest}</span></h2>
+    <ul class="ab-factors">
+      {c.factors.map((f, i) => (
+        <li class="ab-factor" data-reveal="up" data-reveal-delay={i * 50}>
+          <strong>{f.h}</strong>
+          <span>{f.p}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<!-- GUIDE -->
+<section class="section">
+  <div class="container">
+    <h2 class="ab-h2"><span class="t-red">{c.guideLead}</span><span class="t-white">{c.guideRest}</span></h2>
+    <div class="ab-guide">
+      {c.guideCards.map((card, i) => (
+        <article class="ab-guide__card" data-reveal="up" data-reveal-delay={i * 80}>
+          <h3>{card.h}</h3>
+          <ul>
+            {card.items.map((it) => <li>{it}</li>)}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section class="section section--alt">
+  <div class="container">
+    <h2 class="ab-h2"><span class="t-white">{c.solutionLead}</span><span class="t-white">{c.solutionMid}</span><span class="t-red">{c.solutionAccent}</span></h2>
+    <div class="ab-solution">
+      {c.solutionParas.map((sp, i) => (
+        <div class="ab-solution__col" data-reveal="up" data-reveal-delay={i * 80}>
+          <strong>{sp.s}</strong>
+          <p>{sp.p}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- VISION -->
+<section class="section">
+  <div class="container">
+    <h2 class="ab-h2"><span class="t-white">{c.visionLead}</span><span class="t-red">{c.visionAccent}</span></h2>
+    <div class="ab-vision">
+      {c.visionItems.map((v, i) => (
+        <article class="ab-vision__card" data-reveal="up" data-reveal-delay={i * 80}>
+          <strong>{v.h}</strong>
+          <p>{v.p}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<section class="section section--alt">
+  <div class="container">
+    <h2 class="ab-h2 ab-h2--center"><span class="t-white">{c.clientsTitle}</span></h2>
+    <ul class="ab-clients">
+      {clients.map((cl) => <li>{cl}</li>)}
+    </ul>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="section">
+  <div class="container">
+    <h2 class="ab-h2 ab-h2--center"><span class="t-white">{c.teamTitle}</span></h2>
+    <div class="ab-team-intro">
+      {c.teamParas.map((tp, i) => (
+        <p data-reveal="up" data-reveal-delay={i * 60}>
+          {tp.s && <strong>{tp.s} </strong>}{tp.p}
+        </p>
+      ))}
+    </div>
+    <div class="ab-team">
+      {team.map((m, i) => (
+        <article class="ab-team__card" data-reveal="up" data-reveal-delay={(i % 5) * 60}>
+          <div class="ab-team__photo">
+            <img src={m.img} alt={m.name} loading="lazy" />
+          </div>
+          <h3 class="ab-team__name">{m.name}</h3>
+          <p class="ab-team__role">{m.role}</p>
+          <button class="ab-team__more" type="button" data-bio={m.slug}>{c.more}</button>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- TEAM BIO MODALS -->
+<div class="ab-modal" id="ab-bio-modal" hidden>
+  <div class="ab-modal__backdrop" data-close></div>
+  <div class="ab-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="ab-bio-name">
+    <button class="ab-modal__close" type="button" data-close aria-label="Close">&times;</button>
+    {team.map((m) => (
+      <div class="ab-bio" data-bio-content={m.slug} hidden>
+        <img class="ab-bio__photo" src={m.img} alt={m.name} loading="lazy" />
+        <h3 class="ab-bio__name" id="ab-bio-name">{m.name}</h3>
+        <p class="ab-bio__title">{m.bioTitle}</p>
+        {m.bio.map((para) => <p class="ab-bio__para">{para}</p>)}
+      </div>
+    ))}
+  </div>
+</div>
+
+<!-- MILESTONES -->
+<section class="section section--alt">
+  <div class="container">
+    <h2 class="ab-h2 ab-h2--center"><span class="t-red">{c.milestonesTitle}</span></h2>
+    <div class="ab-timeline">
+      {timeline.map((m, i) => (
+        <div class="ab-tl__row" data-reveal="up" data-reveal-delay={(i % 2) * 60}>
+          <div class="ab-tl__year">{m.year}</div>
+          <div class="ab-tl__body">
+            <ul>
+              {m.lines.map((l) => <li>{l}</li>)}
+            </ul>
+            {m.fact && (
+              <p class="ab-tl__fact"><strong>{c.factLabel}</strong> {m.fact}</p>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- MAGAZINE -->
+<section class="section">
+  <div class="container">
+    <div class="ab-magazin">
+      <img src="/images/magazin-cover.jpg" alt={c.magazinTitle} loading="lazy" />
+      <div class="ab-magazin__body">
+        <h2><span class="t-white">{c.magazinTitle}</span></h2>
+        <p>{c.magazinText}</p>
+        <a class="ab-btn" href={magazinUrl} download target="_blank" rel="noopener">{c.magazinBtn}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ContactBlock lang={lang} />
+
+<style>
+  .t-red { color: var(--color-accent); }
+  .t-white { color: var(--color-text); }
+
+  .ab-hero { padding: clamp(3rem, 8vw, 6rem) 0 clamp(2rem, 5vw, 3.5rem); }
+  .ab-hero__title {
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: var(--fw-bold);
+    line-height: 1.08;
+    max-width: 16ch;
+    margin-bottom: clamp(2rem, 5vw, 3rem);
+  }
+  .ab-hero__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.2rem, 3vw, 2rem);
+    align-items: start;
+  }
+  .ab-hero__img {
+    grid-row: span 2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+  }
+  .ab-hero__block strong { display: block; font-size: 1.15rem; margin-bottom: 0.5rem; }
+  .ab-hero__block p { color: var(--color-text-muted); line-height: 1.6; }
+
+  .ab-h2 {
+    font-size: clamp(1.8rem, 4.5vw, 3rem);
+    font-weight: var(--fw-bold);
+    line-height: 1.1;
+    margin-bottom: clamp(1.6rem, 4vw, 2.6rem);
+  }
+  .ab-h2--center { text-align: center; }
+
+  .ab-factors {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+  }
+  .ab-factor {
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .ab-factor strong { font-size: 1.1rem; color: var(--color-accent); }
+  .ab-factor span { color: var(--color-text-muted); line-height: 1.55; }
+
+  .ab-guide { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .ab-guide__card {
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: clamp(1.6rem, 3vw, 2.4rem);
+  }
+  .ab-guide__card h3 { font-size: 1.4rem; margin-bottom: 1.2rem; }
+  .ab-guide__card ul { list-style: none; display: flex; flex-direction: column; gap: 0.9rem; }
+  .ab-guide__card li { position: relative; padding-left: 1.4rem; color: var(--color-text-muted); line-height: 1.55; }
+  .ab-guide__card li::before { content: '–'; position: absolute; left: 0; color: var(--color-accent); font-weight: 700; }
+
+  .ab-solution { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .ab-solution__col strong { display: block; color: var(--color-accent); font-size: 1.15rem; margin-bottom: 0.7rem; }
+  .ab-solution__col p { color: var(--color-text-muted); line-height: 1.6; }
+
+  .ab-vision { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .ab-vision__card {
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: clamp(1.6rem, 3vw, 2.4rem);
+  }
+  .ab-vision__card strong { display: block; color: var(--color-accent); font-size: 1.2rem; margin-bottom: 0.8rem; }
+  .ab-vision__card p { color: var(--color-text-muted); line-height: 1.6; }
+
+  .ab-clients {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.7rem 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .ab-clients li { position: relative; padding-left: 1.3rem; color: var(--color-text-muted); }
+  .ab-clients li::before { content: '•'; position: absolute; left: 0; color: var(--color-accent); }
+
+  .ab-team-intro { max-width: 900px; margin: 0 auto clamp(2rem, 4vw, 3rem); text-align: center; }
+  .ab-team-intro p { color: var(--color-text-muted); line-height: 1.65; margin-bottom: 1rem; }
+  .ab-team-intro strong { color: var(--color-text); }
+
+  .ab-team { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.2rem; }
+  .ab-team__card {
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 1.2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .ab-team__card:hover { transform: translateY(-6px); }
+  .ab-team__photo {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-subtle);
+  }
+  .ab-team__photo img { width: 100%; height: 100%; object-fit: cover; }
+  .ab-team__name { font-size: 1.05rem; margin-bottom: 0.4rem; }
+  .ab-team__role { font-size: 0.8rem; color: var(--color-text-muted); line-height: 1.4; margin-bottom: 1rem; }
+  .ab-team__more {
+    margin-top: auto;
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: var(--fw-semibold);
+    color: var(--color-accent);
+    background: transparent;
+    border: 1px solid var(--color-accent);
+    border-radius: 999px;
+    padding: 0.5rem 1.2rem;
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .ab-team__more:hover { background: var(--color-accent); color: #fff; }
+
+  .ab-timeline { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; max-width: 1100px; margin: 0 auto; align-items: start; }
+  .ab-tl__row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 1.2rem;
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+  }
+  .ab-tl__year { font-size: 1.7rem; font-weight: var(--fw-bold); color: var(--color-accent); }
+  .ab-tl__body ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .ab-tl__body li { position: relative; padding-left: 1.3rem; color: var(--color-text-muted); line-height: 1.55; }
+  .ab-tl__body li::before { content: '–'; position: absolute; left: 0; color: var(--color-accent); }
+  .ab-tl__fact { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle); color: var(--color-text-muted); line-height: 1.55; }
+  .ab-tl__fact strong { color: var(--color-accent); }
+
+  .ab-magazin {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.6rem, 4vw, 3rem);
+  }
+  .ab-magazin img { width: 100%; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); }
+  .ab-magazin__body h2 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); margin-bottom: 1rem; }
+  .ab-magazin__body p { color: var(--color-text-muted); line-height: 1.6; margin-bottom: 1.5rem; }
+  .ab-btn {
+    display: inline-block;
+    padding: 0.9rem 2rem;
+    background: var(--color-accent);
+    color: #fff;
+    font-weight: var(--fw-semibold);
+    border-radius: var(--radius-sm);
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+  .ab-btn:hover { background: var(--color-accent-hover); }
+
+  @media (max-width: 900px) {
+    .ab-factors { grid-template-columns: 1fr 1fr; }
+    .ab-team { grid-template-columns: repeat(3, 1fr); }
+    .ab-clients { grid-template-columns: 1fr 1fr; }
+    .ab-timeline { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 700px) {
+    .ab-hero__grid, .ab-guide, .ab-solution, .ab-vision, .ab-magazin { grid-template-columns: 1fr; }
+    .ab-hero__img { grid-row: auto; max-height: 280px; }
+    .ab-factors, .ab-team, .ab-clients { grid-template-columns: 1fr; }
+    .ab-tl__row { grid-template-columns: 1fr; gap: 0.6rem; }
+  }
+
+  /* TEAM BIO MODAL */
+  .ab-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+  }
+  .ab-modal[hidden] { display: none; }
+  .ab-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+  }
+  .ab-modal__dialog {
+    position: relative;
+    z-index: 1;
+    background: var(--color-bg-elev, #181818);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    max-width: 920px;
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: clamp(2rem, 4vw, 3.25rem);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  }
+  .ab-modal__close {
+    position: sticky;
+    top: 0;
+    float: right;
+    margin: -0.5rem -0.5rem 0 0;
+    width: 2.4rem;
+    height: 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-subtle);
+    border-radius: 50%;
+    color: #fff;
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+  .ab-modal__close:hover { background: var(--color-accent); border-color: var(--color-accent); }
+  .ab-bio__photo {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-accent);
+    margin-bottom: 1rem;
+  }
+  .ab-bio__name {
+    color: #fff;
+    font-size: 1.6rem;
+    margin: 0 0 0.25rem;
+  }
+  .ab-bio__title {
+    color: var(--color-accent);
+    font-weight: var(--fw-semibold);
+    margin: 0 0 1.5rem;
+  }
+  .ab-bio__para {
+    color: var(--color-text-muted);
+    line-height: 1.75;
+    margin: 0 0 1.1rem;
+  }
+  .ab-bio__para:last-child { margin-bottom: 0; }
+</style>
+
+<script>
+  function setupAboutBios() {
+    const modal = document.getElementById("ab-bio-modal");
+    if (!modal) return;
+    const contents = modal.querySelectorAll<HTMLElement>("[data-bio-content]");
+
+    function open(slug: string) {
+      contents.forEach((el) => {
+        el.hidden = el.dataset.bioContent !== slug;
+      });
+      modal!.hidden = false;
+      document.body.style.overflow = "hidden";
+    }
+    function close() {
+      modal!.hidden = true;
+      document.body.style.overflow = "";
+    }
+
+    document.querySelectorAll<HTMLButtonElement>("[data-bio]").forEach((btn) => {
+      btn.addEventListener("click", () => open(btn.dataset.bio!));
+    });
+    modal.querySelectorAll<HTMLElement>("[data-close]").forEach((el) => {
+      el.addEventListener("click", close);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modal.hidden) close();
+    });
+  }
+
+  setupAboutBios();
+  document.addEventListener("astro:after-swap", setupAboutBios);
+</script>

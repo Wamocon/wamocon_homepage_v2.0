@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SystemPage from '../../components/sections/SystemPage.astro';
+
+const lang = 'en' as const;
+---
+
+<BaseLayout
+  title="Our System — WAMOCON GmbH"
+  description="WAMOCON's 360° Booster System: your path to becoming an IT testing expert – in six structured steps."
+  lang={lang}
+>
+  <SystemPage lang={lang} />
+</BaseLayout>

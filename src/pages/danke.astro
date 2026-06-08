@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+
+const lang = 'de' as const;
+---
+
+<BaseLayout title="Vielen Dank — WAMOCON GmbH" description="Vielen Dank für Ihre Nachricht." lang={lang}>
+  <section class="section thanks">
+    <div class="container thanks__inner">
+      <span class="eyebrow" data-reveal="up">WAMOCON</span>
+      <h1 data-reveal="up" data-reveal-delay="60">Vielen Dank!</h1>
+      <p class="text-muted" data-reveal="up" data-reveal-delay="120">
+        Ihre Nachricht ist bei uns eingegangen. Wir melden uns so schnell wie möglich bei Ihnen –
+        in der Regel innerhalb von 48 Stunden.
+      </p>
+      <div data-reveal="up" data-reveal-delay="180">
+        <Button href="/" variant="primary" size="lg">Zurück zur Startseite</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .thanks {
+    min-height: 60vh;
+    display: grid;
+    place-items: center;
+    text-align: center;
+  }
+  .thanks__inner {
+    max-width: 640px;
+  }
+  .thanks h1 {
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    margin-bottom: 1.25rem;
+  }
+  .thanks p {
+    margin-bottom: 2rem;
+    font-size: 1.15rem;
+  }
+</style>

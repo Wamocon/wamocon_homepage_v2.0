@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CareerPage from '../../components/sections/CareerPage.astro';
+
+const lang = 'en' as const;
+---
+
+<BaseLayout
+  title="Career — WAMOCON GmbH"
+  description="Career at WAMOCON GmbH: open positions, apprenticeship, individual support and attractive conditions in IT test management."
+  lang={lang}
+>
+  <CareerPage lang={lang} />
+</BaseLayout>

@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AppsPage from '../components/sections/AppsPage.astro';
+
+const lang = 'de' as const;
+---
+
+<BaseLayout
+  title="Apps — WAMOCON GmbH"
+  description="Entdecken Sie das wachsende App-Portfolio von WAMOCON: Lösungen für Office, KI, Finanzen, Mobilität, Immobilien, Lifestyle und mehr."
+  lang={lang}
+>
+  <AppsPage lang={lang} />
+</BaseLayout>

@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LegalPage from '../../components/sections/LegalPage.astro';
+
+const lang = 'en' as const;
+---
+
+<BaseLayout title="Imprint — WAMOCON GmbH" description="Imprint of WAMOCON GmbH." lang={lang}>
+  <LegalPage title="Imprint">
+    <h2>Information pursuant to § 5 TMG</h2>
+    <p>
+      WAMOCON GmbH<br />
+      Mergenthalerallee 79 - 81<br />
+      65760 Eschborn<br />
+      Germany
+    </p>
+
+    <h2>Represented by</h2>
+    <p>Waleri Moretz (Managing Director)</p>
+
+    <h2>Contact</h2>
+    <p>
+      Phone: <a href="tel:+4961965838311">+49 6196 5838311</a><br />
+      E-mail: <a href="mailto:info@wamocon.com">info@wamocon.com</a>
+    </p>
+
+    <h2>Register entry</h2>
+    <p>
+      Entry in the commercial register.<br />
+      Register court: Amtsgericht Frankfurt am Main<br />
+      VAT identification number pursuant to § 27 a of the German VAT Act: on request.
+    </p>
+
+    <h2>Responsible for the content according to § 55 (2) RStV</h2>
+    <p>Waleri Moretz, address as above.</p>
+
+    <h2>Liability for content</h2>
+    <p>
+      As a service provider, we are responsible for our own content on these pages in accordance with §
+      7 (1) TMG. According to §§ 8 to 10 TMG, however, we as a service provider are not obligated to
+      monitor transmitted or stored third-party information.
+    </p>
+  </LegalPage>
+</BaseLayout>

@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+
+const lang = 'de' as const;
+---
+
+<BaseLayout title="Seite nicht gefunden — WAMOCON GmbH" description="Diese Seite existiert nicht." lang={lang}>
+  <section class="section notfound">
+    <div class="container notfound__inner">
+      <span class="notfound__code" aria-hidden="true">404</span>
+      <h1 data-reveal="up">Seite nicht gefunden</h1>
+      <p class="text-muted" data-reveal="up" data-reveal-delay="80">
+        Die von Ihnen gesuchte Seite existiert nicht oder wurde verschoben.
+      </p>
+      <div data-reveal="up" data-reveal-delay="140">
+        <Button href="/" variant="primary" size="lg">Zurück zur Startseite</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    min-height: 65vh;
+    display: grid;
+    place-items: center;
+    text-align: center;
+  }
+  .notfound__inner {
+    max-width: 620px;
+  }
+  .notfound__code {
+    display: block;
+    font-size: clamp(5rem, 18vw, 11rem);
+    font-weight: var(--fw-bold);
+    line-height: 1;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 1rem;
+  }
+  .notfound h1 {
+    margin-bottom: 1rem;
+  }
+  .notfound p {
+    margin-bottom: 2rem;
+    font-size: 1.15rem;
+  }
+</style>

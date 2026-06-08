@@ -1,0 +1,30 @@
+---
+/** Kontakte / Contact page — title + contact details block (matches live site). */
+import ContactBlock from './ContactBlock.astro';
+import type { Lang } from '../../i18n/config';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const title = lang === 'de' ? 'Kontakte' : 'Contact';
+---
+
+<section class="contact-head">
+  <div class="container">
+    <h1 data-reveal="up">{title}</h1>
+  </div>
+</section>
+
+<ContactBlock lang={lang} />
+
+<style>
+  .contact-head {
+    padding-top: clamp(2.5rem, 6vw, 4.5rem);
+    padding-bottom: clamp(0.5rem, 2vw, 1.5rem);
+  }
+  .contact-head h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+  }
+</style>

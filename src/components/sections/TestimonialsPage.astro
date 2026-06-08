@@ -1,0 +1,346 @@
+---
+/** Bewertungen / Testimonials — faithful reproduction of customer reviews. */
+import ContactBlock from './ContactBlock.astro';
+import type { Lang } from '../../i18n/config';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const de = lang === 'de';
+
+type Review = { name: string; role?: string; full: string; more: boolean };
+
+const reviewsDe: Review[] = [
+  { name: 'Thomas Zer', more: true, full: 'Sehr geehrte Damen und Herren, ich schreibe Ihnen, um meine positive Erfahrung mit Ihrem Unternehmen WAMOCON GmbH zu teilen. Ich hatte vor kurzem das Vergnügen, mit Ihrem professionellen Team zusammenzuarbeiten und ich war von der Qualität der Arbeit und dem Kundenservice sehr beeindruckt. Das Team von WAMOCON hat sich sehr bemüht, um sicherzustellen, dass meine Anforderungen erfüllt wurden. Sie waren immer professionell und freundlich und haben meine Fragen und Bedenken prompt beantwortet. Ich schätze die hervorragende Arbeit, die Sie geleistet haben, und ich werde Ihr Unternehmen auf jeden Fall weiterempfehlen. Es ist großartig zu sehen, dass es noch Unternehmen gibt, die sich um ihre Kunden kümmern und qualitativ hochwertige Arbeit leisten.' },
+  { name: 'Natalie Ognev', more: true, full: 'Das Seminar ist für mich ein Fachseminar, das qualitativ sehr durchdacht und mit Abstand das Beste war, das ich in den letzten 4 Jahren besuchte. Die Trainer bei WAMOCON ACADEMY haben einen perfekten Ausgleich zwischen Theorie und Praxis vermittelt. Ich konnte für mich die Theorie sehr einfach nachvollziehen. Entscheidend waren die vielen Praxisbeispiele für mich. Ab Seminar Start haben die Trainer Waleri und Daniel mich und die anderen Kursteilnehmer in die Themen schrittweise eingeführt. Durch aktives Einbinden bei allen Lerneinheiten, Beispielen und Übungen konnte ich mich alle drei Tage gut konzentrieren, Inhalte verstehen und in Übungen anwenden. Als Quereinsteigerin kann ich nur für mich sprechen und die WAMOCON ACADEMY empfehlen. Für mich wird es weitergehen, ich habe bei WAMOCON ACADEMY die Potenzialanalyse gemacht, aus dem für mich ein Ausbildungsplan hervorgeht mit Praxistraining meinen persönlichen IT-Einstieg als Softwaretesterin sicher erreichen. TOP!!!' },
+  { name: 'Scout Weissgerber', more: true, full: 'Hallo WAMOCON, unsere Positionierung in der digitalen Welt, hat reibungsfrei funktioniert. Bestandssysteme aber auch die Einführung eines neuen Zahlungssystems konnten wir Dank der WAMOCON kontrolliert und transparent einführen. Wir haben durch Ihr Testmanagement zu jederzeit die Transparenz während des gesamten Projektverlaufs erlebt. Das hat uns schnelle Entscheidungswege gesichert. Lücken und Hindernisse haben wir schnell erkannt und beseitig. Noch einmal möchte ich in aller Deutlichkeit mich bei Ihnen, Herr Moretz, und Ihrem Team herzlich bedanken für die professionelle Betreuung über die Sommermonate.' },
+  { name: 'Sarah Will', more: true, full: 'Danke WAMOCON Team für euren Einsatz! Waleri, du hast eine Testmethode bei uns installiert, mit der wir unsere ERP Lösung erfolgreich einführten. Dein Teammanagement hat uns sehr viel Zeit und Geld gespart. die Beratung und Expertise bewerte ich mit 5 Sternen. Wer testmanagement sucht dem empfehle ich, sich an WAMOCON zu wenden. Das Team von WAMOCON hat sich sehr bemüht, um sicherzustellen, dass meine Anforderungen erfüllt wurden. Sie waren immer professionell und freundlich und haben meine Fragen und Bedenken prompt beantwortet. Ich schätze die hervorragende Arbeit, die Sie geleistet haben, und ich werde Ihr Unternehmen auf jeden Fall weiterempfehlen. Es ist großartig zu sehen, dass es noch Unternehmen gibt, die sich um ihre Kunden kümmern und qualitativ hochwertige Arbeit leisten.' },
+  { name: 'Roland Weiler', role: 'iBS AG', more: true, full: 'Die iBS arbeitet seit 2018 erfolgreich mit der WAMOCON im Rahmen eines großen Entwicklungsprojektes im Testmanagement zusammen. Dabei hat die iBS ab dem ersten Einsatztag von der Expertise der WAMOCON im Test- und Qualitätsmanagement profitiert. Die Kollegen der WAMOCON erzeugen Mehrwerte, die uns dabei helfen, die hohen Ansprüche unserer Kunden zu übertreffen.' },
+  { name: 'Thomas Kolb', more: true, full: 'Hallo liebe WAMOCON, ich habe, als Lead Testmanager, mit Daniel Moretz, Erwin Moretz und Nikolaj Schefner bei unserem gemeinsamen Kunden iBS, Innovative Banking Solution AG zusammengearbeitet. Ihre IT-Experten waren im Projekt BASS Sparen für die Rolle Tester verantwortlich. Das Projekt verfolgte das Ziel, eine SAP-Lösung für die Bausparkassengruppen zu entwickeln und bereitzustellen. Ihre IT-Berater unterstützten die Fachbereiche beim Testdesign und Testdurchführung im gesamten Testlebenszyklus. Das Testmanagement verfolgte eine Hybridlösung aus der Testmethode SCRUM und Wasserfall. Die Rahmenbedingungen wurden agil aufgestellt und klassisch umgesetzt. Hervorzuheben ist die fachliche Expertise, einen sicheren Testmethodenumgang, Teamarbeit, Kommunikation, Qualitätssicherung der Spezifikationen, Erstellung von Testdaten und Testfällen, als auch ein lösungsorientiertes Denken und Handeln in den Themengebieten Bausparvertragsanlage, -änderung, Bausparvertragsabrechnung, Bausparvertragsauszahlung, Buchhaltung und Bonus. Die Arbeitsergebnisse erfüllten die Vorgaben zu vollster Zufriedenheit. Sie gewährleisteten, dass die Anwendung bei der Auslieferung, die vom Kunden gewünschten Anforderungen, erfüllt. Ich bedanke mich für die sehr gute Zusammenarbeit und die geleisteten Dienste und wünsche der WAMOCON und deren IT-Experten alles Gute sowie weiterhin viel Erfolg.' },
+  { name: 'Andreas Strasser', more: false, full: 'Vielen Dank an das Wamocon-Team, vor allem an Herrn Moretz, für die Unterstützung! Die Beratung war einzigartig, vor allem in der Tiefe!' },
+  { name: 'Orhan Kilic', more: false, full: 'Hallo Freunde, ich bin sehr zufrieden, möchte mehr, aber kann leider 5 nur Sterne geben, gute Geschäfte und bleiben Sie GESUND!' },
+  { name: 'Sylvia Borgschulte', more: false, full: 'Exzellente Arbeit und Service' },
+  { name: 'Mücke Roth & Company', more: false, full: 'Die Zusammenarbeit mit WAMOCON GmbH und SAP-Berater Waleri Moretz war von unschätzbarem Wert.' },
+  { name: 'Maanik Garg', more: false, full: '5 Sterne! Super Arbeit' },
+];
+
+const reviewsEn: Review[] = [
+  { name: 'Thomas Zer', more: true, full: 'Dear Sir or Madam, I am writing to share my positive experience with your company WAMOCON GmbH. I recently had the pleasure of working with your professional team and I was very impressed by the quality of the work and the customer service. The WAMOCON team went to great lengths to ensure that my requirements were met. They were always professional and friendly and answered my questions and concerns promptly. I appreciate the excellent work you have done and I will definitely recommend your company. It is great to see that there are still companies that care about their customers and deliver high-quality work.' },
+  { name: 'Natalie Ognev', more: true, full: 'For me, the seminar is a specialist seminar that was very well thought out in terms of quality and by far the best I have attended in the last 4 years. The trainers at WAMOCON ACADEMY conveyed a perfect balance between theory and practice. I was able to understand the theory very easily. The many practical examples were decisive for me. From the start of the seminar, the trainers Waleri and Daniel gradually introduced me and the other course participants to the topics. Through active involvement in all learning units, examples and exercises, I was able to concentrate well for all three days, understand content and apply it in exercises. As a career changer, I can only speak for myself and recommend the WAMOCON ACADEMY. For me it will continue, I did the potential analysis at WAMOCON ACADEMY, from which a training plan emerges for me with practical training to safely achieve my personal IT entry as a software tester. TOP!!!' },
+  { name: 'Scout Weissgerber', more: true, full: 'Hello WAMOCON, our positioning in the digital world worked smoothly. We were able to introduce existing systems as well as a new payment system in a controlled and transparent manner thanks to WAMOCON. Through your test management we experienced transparency at all times throughout the entire project. This secured fast decision-making for us. We quickly identified and eliminated gaps and obstacles. Once again I would like to thank you very clearly, Mr Moretz, and your team for the professional support over the summer months.' },
+  { name: 'Sarah Will', more: true, full: 'Thank you WAMOCON team for your commitment! Waleri, you installed a test method for us with which we successfully introduced our ERP solution. Your team management saved us a lot of time and money. I rate the consulting and expertise with 5 stars. Anyone looking for test management, I recommend turning to WAMOCON. The WAMOCON team went to great lengths to ensure that my requirements were met. They were always professional and friendly and answered my questions and concerns promptly. I appreciate the excellent work you have done and I will definitely recommend your company. It is great to see that there are still companies that care about their customers and deliver high-quality work.' },
+  { name: 'Roland Weiler', role: 'iBS AG', more: true, full: 'iBS has been working successfully with WAMOCON since 2018 as part of a large development project in test management. From the very first day, iBS has benefited from WAMOCON’s expertise in test and quality management. The WAMOCON colleagues create added value that helps us exceed the high demands of our customers.' },
+  { name: 'Thomas Kolb', more: true, full: 'Hello dear WAMOCON, As Lead Test Manager, I worked together with Daniel Moretz, Erwin Moretz and Nikolaj Schefner at our joint customer iBS - Innovative Banking Solution AG. Their IT experts were responsible for the tester role in the BASS Sparen project. The aim of the project was to develop and provide an SAP solution for the building society groups. Your IT consultants supported the specialist departments with test design and test execution throughout the entire test lifecycle. Test management pursued a hybrid solution consisting of the SCRUM and waterfall test methods. The framework conditions were set up agilely and implemented classically. The technical expertise, confident use of test methods, teamwork, communication, quality assurance of specifications, creation of test data and test cases, as well as solution-oriented thinking and action in the areas of building society contract creation and modification, building society contract billing, building society contract payout, accounting and bonus should be emphasized. The work results met the requirements to the fullest satisfaction. They ensured that the application met the customer\u2019s requirements on delivery. I would like to thank WAMOCON and its IT experts for the excellent cooperation and the services provided and wish them all the best and continued success.' },
+  { name: 'Andreas Strasser', more: false, full: 'Many thanks to the Wamocon team, especially Mr Moretz, for the support! The consulting was unique, especially in its depth!' },
+  { name: 'Orhan Kilic', more: false, full: 'Hello friends, I am very satisfied, would like to give more but unfortunately can only give 5 stars, good business and stay HEALTHY!' },
+  { name: 'Sylvia Borgschulte', more: false, full: 'Excellent work and service' },
+  { name: 'Mücke Roth & Company', more: false, full: 'The collaboration with WAMOCON GmbH and SAP consultant Waleri Moretz was invaluable.' },
+  { name: 'Maanik Garg', more: false, full: '5 stars! Great work' },
+];
+
+const reviews = de ? reviewsDe : reviewsEn;
+
+const academyVideos = [
+  { name: 'Artur', id: 'GIzxhk4tzmM' },
+  { name: 'Olga', id: 'YI6Jf9-T3_c' },
+  { name: 'Jonathan', id: 'C6jFQwt6E0o' },
+];
+
+const c = de
+  ? {
+      heroTitle: 'Kundenstimmen: Erfahrungen mit WAMOCON GmbH',
+      heroLead: 'Authentische Stimmen unserer Kunden.',
+      heroSub: 'Lesen Sie, was unsere Kunden über die Qualität unserer Arbeit und den erstklassigen Kundenservice bei der WAMOCON GmbH sagen.',
+      more: 'Mehr lesen',
+      academyTitle: 'Kundenstimmen: So erleben Kunden die WAMOCON Academy GmbH',
+      academyLead: 'Authentische Stimmen unserer Kunden.',
+      academySub: 'Unsere Teilnehmer berichten von der erstklassigen Ausbildung und der persönlichen Betreuung, die sie bei der WAMOCON Academy erfahren. Diese einzigartigen Erfahrungen zeigen, wie wir Karrieren fördern und individuelle Potenziale entfalten.',
+      videoRole: 'Teilnehmerin WAMOCON Academy',
+      submit: 'Senden Sie Ihre Bewertung',
+      formTitle: 'Senden Sie Ihre Bewertung',
+      formSub: 'Hinterlassen Sie Ihre Kontakte, unter denen wir Sie kontaktieren können',
+      fName: 'Ihr Name',
+      fPhone: 'Telefon',
+      fSend: 'Senden',
+      close: 'Zurück',
+    }
+  : {
+      heroTitle: 'Customer voices: experiences with WAMOCON GmbH',
+      heroLead: 'Authentic voices of our customers.',
+      heroSub: 'Read what our customers say about the quality of our work and the first-class customer service at WAMOCON GmbH.',
+      more: 'Read more',
+      academyTitle: 'Customer voices: how customers experience WAMOCON Academy GmbH',
+      academyLead: 'Authentic voices of our customers.',
+      academySub: 'Our participants report on the first-class training and personal support they experience at the WAMOCON Academy. These unique experiences show how we promote careers and unfold individual potential.',
+      videoRole: 'WAMOCON Academy participant',
+      submit: 'Send your review',
+      formTitle: 'Send your review',
+      formSub: 'Leave your contact details so we can get in touch with you',
+      fName: 'Your name',
+      fPhone: 'Phone',
+      fSend: 'Send',
+      close: 'Back',
+    };
+---
+
+<!-- HERO -->
+<section class="tm-hero">
+  <div class="container">
+    <h1 class="tm-hero__title">{c.heroTitle}</h1>
+    <p class="tm-hero__sub"><strong>{c.heroLead}</strong> {c.heroSub}</p>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="section">
+  <div class="container">
+    <div class="reviews">
+      {reviews.map((t, i) => (
+        <figure class="review-card" data-reveal="up" data-reveal-delay={(i % 3) * 70}>
+          <blockquote class={t.more ? 'review-card__quote review-card__quote--clamp' : 'review-card__quote'}>{t.full}</blockquote>
+          <figcaption>
+            <strong>{t.name}</strong>{t.role && <span class="text-muted"> · {t.role}</span>}
+          </figcaption>
+          {t.more && (
+            <button class="review-card__more" type="button" data-review-more data-name={t.name} data-role={t.role || ''} data-full={t.full}>{c.more}</button>
+          )}
+        </figure>
+      ))}
+    </div>
+    <p class="reviews__google text-muted">{de ? '11 Bewertungen auf Google' : '11 reviews on Google'}</p>
+  </div>
+</section>
+
+<!-- ACADEMY VIDEOS -->
+<section class="section section--alt">
+  <div class="container">
+    <h2 class="tm-h2"><span class="t-red">{c.academyTitle}</span></h2>
+    <p class="tm-academy-sub"><strong>{c.academyLead}</strong> {c.academySub}</p>
+    <div class="tm-videos">
+      {academyVideos.map((v, i) => (
+        <figure class="video-card" data-reveal="up" data-reveal-delay={i * 80}>
+          <div class="video-card__frame">
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${v.id}`}
+              title={`${v.name} — WAMOCON Academy`}
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            />
+          </div>
+          <figcaption>
+            <strong>{v.name}</strong>
+            <span class="text-muted">{c.videoRole}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+    <div class="tm-submit-wrap">
+      <button class="tm-submit" type="button" id="open-review-form">{c.submit}</button>
+    </div>
+  </div>
+</section>
+
+<ContactBlock lang={lang} />
+
+<!-- REVIEW TEXT MODAL -->
+<div class="tm-modal" id="review-modal" hidden>
+  <div class="tm-modal__overlay" data-close></div>
+  <div class="tm-modal__box" role="dialog" aria-modal="true" aria-labelledby="review-modal-name">
+    <button class="tm-modal__close" type="button" data-close aria-label={c.close}>×</button>
+    <p class="tm-modal__text" id="review-modal-text"></p>
+    <strong class="tm-modal__name" id="review-modal-name"></strong>
+  </div>
+</div>
+
+<!-- SUBMIT REVIEW MODAL -->
+<div class="tm-modal" id="form-modal" hidden>
+  <div class="tm-modal__overlay" data-close></div>
+  <div class="tm-modal__box" role="dialog" aria-modal="true" aria-labelledby="form-modal-title">
+    <button class="tm-modal__close" type="button" data-close aria-label={c.close}>×</button>
+    <h3 class="tm-modal__title" id="form-modal-title">{c.formTitle}</h3>
+    <p class="tm-modal__sub">{c.formSub}</p>
+    <form id="review-form" class="tm-form">
+      <input type="text" name="name" placeholder={c.fName} required />
+      <input type="tel" name="phone" placeholder={c.fPhone} required />
+      <button type="submit" class="tm-form__send">{c.fSend}</button>
+    </form>
+    <p class="tm-form__thanks" id="review-thanks" hidden>{de ? 'Vielen Dank! Wir melden uns bei Ihnen.' : 'Thank you! We will get in touch with you.'}</p>
+  </div>
+</div>
+
+<style>
+  .t-red { color: var(--color-accent); }
+
+  .tm-hero { padding: clamp(3rem, 8vw, 6rem) 0 clamp(1.5rem, 4vw, 3rem); text-align: center; }
+  .tm-hero__title { font-size: clamp(2rem, 5.5vw, 3.6rem); font-weight: var(--fw-bold); line-height: 1.08; margin-bottom: 1.2rem; }
+  .tm-hero__sub { max-width: 820px; margin: 0 auto; color: var(--color-text-muted); line-height: 1.6; }
+  .tm-hero__sub strong { color: var(--color-text); }
+
+  .reviews { columns: 3; column-gap: 1.3rem; }
+  .review-card {
+    break-inside: avoid;
+    margin: 0 0 1.3rem;
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 1.6rem;
+  }
+  .review-card__quote { color: var(--color-text-muted); line-height: 1.6; margin-bottom: 1rem; }
+  .review-card__quote--clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .review-card figcaption strong { color: var(--color-text); }
+  .review-card__more {
+    margin-top: 0.8rem;
+    color: var(--color-accent);
+    font-weight: var(--fw-semibold);
+    font-size: 0.9rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+  .review-card__more:hover { text-decoration: underline; }
+  .reviews__google { text-align: center; margin-top: 2rem; }
+
+  .tm-h2 { font-size: clamp(1.7rem, 4vw, 2.8rem); font-weight: var(--fw-bold); text-align: center; line-height: 1.15; margin-bottom: 1rem; }
+  .tm-academy-sub { max-width: 820px; margin: 0 auto clamp(2rem, 4vw, 3rem); text-align: center; color: var(--color-text-muted); line-height: 1.6; }
+  .tm-academy-sub strong { color: var(--color-text); }
+
+  .tm-videos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.3rem; }
+  .video-card { background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); overflow: hidden; }
+  .video-card__frame { position: relative; aspect-ratio: 16 / 9; background: #000; }
+  .video-card__frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .video-card figcaption { padding: 1rem 1.2rem; display: flex; flex-direction: column; gap: 0.2rem; }
+  .video-card figcaption strong { color: var(--color-text); }
+  .video-card figcaption span { font-size: 0.85rem; }
+
+  .tm-submit-wrap { text-align: center; margin-top: clamp(2rem, 4vw, 3rem); }
+  .tm-submit {
+    display: inline-block;
+    padding: 1rem 2.4rem;
+    background: var(--color-accent);
+    color: #fff;
+    font-weight: var(--fw-semibold);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+  .tm-submit:hover { background: var(--color-accent-hover); }
+
+  .tm-modal { position: fixed; inset: 0; z-index: var(--z-modal, 1000); display: grid; place-items: center; padding: 1.5rem; }
+  .tm-modal[hidden] { display: none; }
+  .tm-modal__overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(2px); }
+  .tm-modal__box {
+    position: relative;
+    max-width: 640px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    background: #303030;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: clamp(1.6rem, 4vw, 2.6rem);
+  }
+  .tm-modal__close { position: absolute; top: 12px; right: 16px; font-size: 1.6rem; line-height: 1; background: none; border: none; color: #fff; cursor: pointer; }
+  .tm-modal__text { color: #e8e8e8; line-height: 1.65; margin: 1rem 0; }
+  .tm-modal__name { color: #fff; }
+  .tm-modal__title { font-size: 1.5rem; margin-bottom: 0.6rem; }
+  .tm-modal__sub { color: var(--color-text-muted); margin-bottom: 1.4rem; }
+  .tm-form { display: flex; flex-direction: column; gap: 1rem; }
+  .tm-form input {
+    padding: 0.9rem 1rem;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    color: #fff;
+    font-size: 1rem;
+  }
+  .tm-form input::placeholder { color: rgba(255, 255, 255, 0.5); }
+  .tm-form__send {
+    padding: 0.9rem 2rem;
+    background: var(--color-accent);
+    color: #fff;
+    font-weight: var(--fw-semibold);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+  .tm-form__send:hover { background: var(--color-accent-hover); }
+  .tm-form__thanks { margin-top: 1rem; color: var(--color-accent); font-weight: var(--fw-semibold); }
+
+  @media (max-width: 900px) {
+    .reviews { columns: 2; }
+    .tm-videos { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+  }
+  @media (max-width: 600px) {
+    .reviews { columns: 1; }
+  }
+</style>
+
+<script>
+  function setupTestimonials() {
+    const textModal = document.getElementById('review-modal');
+    const textEl = document.getElementById('review-modal-text');
+    const nameEl = document.getElementById('review-modal-name');
+    const formModal = document.getElementById('form-modal');
+    const openFormBtn = document.getElementById('open-review-form');
+    const reviewForm = document.getElementById('review-form') as HTMLFormElement | null;
+    const thanks = document.getElementById('review-thanks');
+
+    function open(modal: HTMLElement | null) {
+      if (!modal) return;
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+    }
+    function close(modal: HTMLElement | null) {
+      if (!modal) return;
+      modal.hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('[data-review-more]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const el = btn as HTMLElement;
+        const role = el.dataset.role ? ' · ' + el.dataset.role : '';
+        if (textEl) textEl.textContent = el.dataset.full || '';
+        if (nameEl) nameEl.textContent = (el.dataset.name || '') + role;
+        open(textModal);
+      });
+    });
+
+    openFormBtn?.addEventListener('click', () => open(formModal));
+
+    document.querySelectorAll('.tm-modal [data-close]').forEach((el) => {
+      el.addEventListener('click', () => {
+        close(textModal);
+        close(formModal);
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        close(textModal);
+        close(formModal);
+      }
+    });
+
+    reviewForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = new FormData(reviewForm);
+      const name = encodeURIComponent(String(data.get('name') || ''));
+      const phone = encodeURIComponent(String(data.get('phone') || ''));
+      reviewForm.hidden = true;
+      if (thanks) thanks.hidden = false;
+      window.location.href = `mailto:info@wamocon.com?subject=Bewertung%20-%20${name}&body=Telefon:%20${phone}`;
+    });
+  }
+  setupTestimonials();
+  document.addEventListener('astro:after-swap', setupTestimonials);
+</script>

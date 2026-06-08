@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LegalPage from '../../components/sections/LegalPage.astro';
+
+const lang = 'en' as const;
+---
+
+<BaseLayout title="Privacy Policy — WAMOCON GmbH" description="Privacy policy of WAMOCON GmbH." lang={lang}>
+  <LegalPage title="Privacy Policy">
+    <h2>1. Data protection at a glance</h2>
+    <p>
+      The following notes provide a simple overview of what happens to your personal data when you visit
+      this website. Personal data is any data that can be used to identify you personally.
+    </p>
+
+    <h2>2. Responsible party</h2>
+    <p>
+      WAMOCON GmbH<br />
+      Mergenthalerallee 79 - 81, 65760 Eschborn, Germany<br />
+      E-mail: <a href="mailto:info@wamocon.com">info@wamocon.com</a>
+    </p>
+
+    <h2>3. Data collection on this website</h2>
+    <p>
+      Data processing on this website is carried out by the website operator. Some data is collected when
+      you provide it to us (e.g. via a contact form). Other data is collected automatically when you visit
+      the website through our IT systems (e.g. technical data).
+    </p>
+
+    <h2>4. Your rights</h2>
+    <p>You have the right at any time to information, correction, deletion and restriction of the
+      processing of your personal data. To do so, please contact the address above.</p>
+
+    <h2>5. Cookies</h2>
+    <p>
+      This website uses cookies to improve the operation of the website and your user experience. You can
+      adjust your browser settings to reject cookies.
+    </p>
+  </LegalPage>
+</BaseLayout>

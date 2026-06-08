@@ -1,0 +1,878 @@
+---
+import ContactBlock from "./ContactBlock.astro";
+import type { Lang } from "../../i18n/config";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const de = lang === "de";
+
+const VIDEO_BASE =
+  "https://github.com/Wamocon/wamocon_homepage/raw/leon-dev/public";
+
+const c = de
+  ? {
+      heroTitleRed: "Karriere bei WAMOCON,",
+      heroTitleWhite: "Ihre Zukunft im IT-Testmanagement beginnt hier",
+      heroText: [
+        "Erleben Sie eine Karriere, die Ihre Leidenschaft für Technologie mit echten Entwicklungsmöglichkeiten verbindet. Bei WAMOCON werden Sie Teil eines dynamischen Teams, das Innovation, Qualität und persönliches Wachstum lebt.",
+        "Entfalten Sie Ihr Potenzial in spannenden IT-Projekten, mit individueller Betreuung, modernster Ausstattung und einem familiären Umfeld, das Sie auf jedem Schritt Ihres Weges unterstützt.",
+      ],
+      heroBtn: "Stellenangebote anzeigen",
+      systemHeadRed: "Erfolg mit System:",
+      systemHeadWhite: "Deine berufliche Freiheit bei WAMOCON",
+      systemIntro:
+        "Bei WAMOCON gestaltest du deine Karriere selbst. Wir bieten dir den Rahmen, in dem du deine Stärken einbringen, Verantwortung übernehmen und gemeinsam mit einem starken Team Erfolge feiern kannst.",
+      systemCards: [
+        {
+          t: "Dynamische Arbeitswelten",
+          d: "Abwechslungsreiche Projekte bei führenden Unternehmen sorgen dafür, dass dir nie langweilig wird und du dich kontinuierlich weiterentwickelst.",
+        },
+        {
+          t: "Ideen teilen, Erfolg gemeinsam gestalten",
+          d: "Deine Meinung zählt. Bei uns bringst du deine Ideen aktiv ein und gestaltest die Zukunft des Unternehmens aktiv mit.",
+        },
+        {
+          t: "Dein Weg zu Erfolg und Wissen",
+          d: "Mit gezielten Weiterbildungen und erfahrenen Mentoren an deiner Seite erreichst du deine beruflichen Ziele schneller.",
+        },
+      ],
+      systemClose:
+        "Werde Teil eines Teams, das deine Ambitionen unterstützt und gemeinsam mit dir wächst. Bei WAMOCON ist deine Karriere keine Einbahnstraße, sondern ein Weg voller Möglichkeiten.",
+      benefitsHeadRed: "Starte deine Erfolgsgeschichte,",
+      benefitsHeadWhite: "Werde Teil des WAMOCON-Teams!",
+      benefits: [
+        {
+          t: "Vielfältige Aufgaben",
+          d: "Spannende, branchenübergreifende Projekte für Studenten, Absolventen und Quereinsteiger.",
+        },
+        {
+          t: "Individuelle Betreuung",
+          d: "Persönliche Mentoren und ein familiäres Expertenteam an deiner Seite.",
+        },
+        {
+          t: "Attraktive Konditionen",
+          d: "Überdurchschnittliches Gehalt und Übernahme der Studiengebühren bei Provadis.",
+        },
+        {
+          t: "Karriereförderung",
+          d: "Option auf ein Studium an einer renommierten privaten Hochschule sowie umfangreiche Weiterbildungsangebote.",
+        },
+        {
+          t: "Moderne Ausstattung",
+          d: "Neueste IT-Hardware (z. B. i9-Notebook, BOSE-Headset, Powerbank) für produktives Arbeiten.",
+        },
+        {
+          t: "Flexibilität",
+          d: "Home-Office-Option und eine ausgewogene Work-Life-Balance.",
+        },
+      ],
+      joinHeadRed: "Werde ein Teil",
+      joinHeadWhite: "unseres Teams!",
+      joinText: [
+        "Du suchst nach einer Karriere, die dich wirklich weiterbringt? Bei WAMOCON findest du mehr als nur einen Job, du findest ein Umfeld, das dich fördert, fordert und an dich glaubt.",
+        "Wir setzen auf flache Hierarchien, offene Kommunikation und echte Teamarbeit. Hier zählt nicht nur, was du kannst, sondern auch, wer du bist und wohin du willst.",
+        "Bewirb dich jetzt und werde Teil eines Teams, das gemeinsam wächst, lernt und Erfolge feiert.",
+      ],
+      jobsHead: "Stellenangebote",
+      tabs: ["Kurzbeschreibung", "Aufgaben", "Anforderungen", "Was bieten wir"],
+      applyBtn: "Antwort",
+      voicesHead: "Was unsere Mitarbeiter sagen",
+      voices: [
+        {
+          t: "Produktivität und Entwicklung",
+          q: "Bei WAMOCON profitierst du von modernen Arbeitsbedingungen und praxisnahen Projekten, die deinen beruflichen Fortschritt fördern.",
+        },
+        {
+          t: "Teamgeist",
+          q: "In unserem familiären Umfeld stehen Vertrauen und Zusammenarbeit im Mittelpunkt, für ein starkes Wir-Gefühl.",
+        },
+        {
+          t: "Geschäftsreisen",
+          q: "Unsere komfortabel organisierten Reisen ermöglichen dir, dich voll und ganz auf deine Aufgaben und Ziele zu konzentrieren.",
+        },
+        {
+          t: "Mentoring",
+          q: "Erfahrene Mentoren begleiten dich individuell und praxisnah, damit du deine beruflichen Ziele erreichst und wächst.",
+        },
+      ],
+      kununuHead: "Kununu-Bewertungen",
+      kununuBtn: "Alle Bewertungen auf Kununu ansehen",
+      teamVideoHead: "Lerne dein zukünftiges Team kennen",
+      formHeadRed: "Werde zu einem",
+      formHeadWhite: "unverzichtbaren Teammitglied",
+      formText:
+        "Hinterlasse uns deine Kontaktdaten und wir melden uns bei dir. Starte jetzt deine Erfolgsgeschichte bei WAMOCON.",
+      formName: "Vor- und Nachname",
+      formPhone: "Telefon",
+      formEmail: "E-Mail",
+      formConsent: "Ich stimme der Verarbeitung meiner Daten gemäß der",
+      formConsentLink: "Datenschutzerklärung",
+      formConsentHref: "/datenschutz",
+      formBtn: "Hinterlassen Sie eine Anfrage",
+      formClose: "Lerne von Experten, um selbst einer zu werden.",
+    }
+  : {
+      heroTitleRed: "Career at WAMOCON,",
+      heroTitleWhite: "your future in IT test management starts here",
+      heroText: [
+        "Experience a career that balances work and private life! WAMOCON supports you in realizing your professional dreams without compromising your quality of life.",
+        "Unleash your potential in the IT industry! At WAMOCON you will find development opportunities that promote your career and at the same time support your personal balance.",
+      ],
+      heroBtn: "Show vacancies",
+      systemHeadRed: "Systematic success:",
+      systemHeadWhite: "Your professional freedom at WAMOCON",
+      systemIntro:
+        "At WAMOCON, your working environment adapts exactly to your needs: Whether office or remote work, field service or remote work - we offer you maximum flexibility. If you want to combine work and study, we create the perfect conditions for you to ideally combine theory and practice. Together with us, you will achieve your professional goals and develop yourself further - with a good balance between career and private life.",
+      systemCards: [
+        {
+          t: "Dynamic working environments - office, on-site at the customer or remote",
+          d: "Decide for yourself where you are most productive: in our modern head office or directly on site with exciting customer projects. At WAMOCON, a dynamic working environment encourages the regular exchange of ideas and innovative solutions. Design your working day in a way that suits you.",
+        },
+        {
+          t: "Sharing ideas - shaping success together",
+          d: "At WAMOCON headquarters and in the field, the best ideas come from the team. Through meetings and active exchange, we create an environment in which creativity and productivity go hand in hand. Your work with us will be enriched by close contact with colleagues and customers alike.",
+        },
+        {
+          t: "Your path to success and knowledge - combining study and work",
+          d: "Combine your professional goals with your academic path. At WAMOCON, we rely on a unique concept that optimally combines study and practical work. This allows you to apply your knowledge directly, grow continuously and develop both professionally and personally.",
+        },
+      ],
+      systemClose:
+        "WAMOCON's approach to flexibility and work-life balance makes it an ideal place for those who want to develop professionally without compromising their personal life.",
+      benefitsHeadRed: "Start your success story,",
+      benefitsHeadWhite: "Become part of the WAMOCON team!",
+      benefits: [
+        {
+          t: "Diverse tasks",
+          d: "Exciting, cross-industry projects for students, graduates and career changers.",
+        },
+        {
+          t: "Supervision",
+          d: "Personal mentors and a family team of experts at your side.",
+        },
+        {
+          t: "Attractive conditions",
+          d: "Above-average salary and payment of tuition fees at Provadis.",
+        },
+        {
+          t: "Career advancement",
+          d: "Option to study at a renowned private university as well as further training opportunities.",
+        },
+        {
+          t: "Modern equipment",
+          d: "Latest IT hardware (e.g. i9 notebook, BOSE headset, power bank).",
+        },
+        {
+          t: "Flexibility",
+          d: "Home office option and a good work-life balance.",
+        },
+      ],
+      joinHeadRed: "Become part",
+      joinHeadWhite: "of our team!",
+      joinText: [
+        "If you love testing software down to the last detail and want to prove your skills in a dynamic and innovative environment, then we have an exciting opportunity for you!",
+        "As part of our team, you will contribute to the intensive testing of highly complex systems and guarantee the highest quality standards.",
+        "We are one of the leading IT consulting companies specializing in test management. Our expertise lies in developing individual and customized solutions for our customers.",
+      ],
+      jobsHead: "Vacancies",
+      tabs: ["Brief description", "Tasks", "Requirements", "What we offer"],
+      applyBtn: "Answer",
+      voicesHead: "What our employees say",
+      voices: [
+        {
+          t: "Productivity and development",
+          q: "At WAMOCON, you benefit from modern working conditions and practical projects that promote your professional progress.",
+        },
+        {
+          t: "Team spirit",
+          q: "In our family environment, the focus is on trust and cooperation - for a strong sense of unity.",
+        },
+        {
+          t: "Business trips",
+          q: "Our conveniently organized trips allow you to concentrate fully on your tasks and goals.",
+        },
+        {
+          t: "Mentoring",
+          q: "Experienced mentors provide you with individual and practical support to help you achieve your professional goals and grow.",
+        },
+      ],
+      kununuHead: "Kununu reviews",
+      kununuBtn: "View all reviews on Kununu",
+      teamVideoHead: "Get to know your future team",
+      formHeadRed: "Become an",
+      formHeadWhite: "indispensable team member",
+      formText:
+        "Leave us your contact details and we will get back to you. Start your success story at WAMOCON now.",
+      formName: "First and last name",
+      formPhone: "Phone",
+      formEmail: "Email",
+      formConsent: "I agree to the processing of my data in accordance with the",
+      formConsentLink: "privacy policy",
+      formConsentHref: "/en/privacy",
+      formBtn: "Leave a request",
+      formClose: "Learn from experts to become one yourself.",
+    };
+
+const jobs = de
+  ? [
+      {
+        title: "Ausbildungsangebot: Fachinformatiker:in Anwendungsentwicklung",
+        short:
+          "Du willst nicht nur Apps bedienen, sondern sie selbst bauen? Als Fachinformatiker:in für Anwendungsentwicklung bei WAMOCON wirst du zum digitalen Problemlöser. Du entwickelst Software, die echte Herausforderungen löst, von der ersten Idee bis zum fertigen Produkt. Ob Web-App, Test-Tool oder Cloud-Lösung: Du bist mittendrin im IT-Projektgeschäft. Dabei lernst du, wie Software entsteht, und wirst Teil eines Teams, das Technik mit Köpfchen und Kreativität verbindet.",
+        tasks: [
+          "Du entwickelst moderne Software mit Java, Python, JavaScript & Co.",
+          "Du arbeitest mit SQL-Datenbanken, REST-APIs und Frameworks wie Spring oder React.",
+          "Du nutzt Tools wie Git, Jira, Docker und entwickelst mit agilen Methoden (z. B. Scrum).",
+          "Du testest deine Software mit Tools wie Postman und Katalon, automatisiert & strukturiert.",
+          "Du analysierst Anforderungen, planst User Stories und entwickelst Lösungen.",
+          "Highlight: Du baust ein eigenes digitales Ausbildungssystem, mit KI & Cloud!",
+          "Du lernst, wie UX, Backend-Logik, Datenverarbeitung und Qualitätssicherung zusammenhängen.",
+          "Theorie & Praxis, ideal verbunden: Du wendest das Gelernte sofort im echten Projekt an.",
+        ],
+        req: [
+          "Realschulabschluss (10. Klasse) oder (Fach-)Abitur",
+          "Interesse an IT, Software & Problemlösen",
+          "Freude am Denken, Entwickeln und Verstehen",
+          "Teamfähigkeit & Kommunikationslust",
+          "Sorgfalt, Neugier und Lust auf Verantwortung",
+          "Erste Erfahrung mit Programmierung oder Technik? Nice to have, aber kein Muss.",
+        ],
+        offer: [
+          "Persönliche Förderung: Du bekommst einen festen Mentor, regelmäßige Feedbackrunden und individuelle Lernpfade.",
+          "Reale Praxis ab Tag 1: Du bist von Anfang an Teil echter Kundenprojekte.",
+          "Hightech & Innovation: Du arbeitest mit modernen Tools & Frameworks, setzt auf KI, Cloud & DevOps.",
+          "Faire Vergütung & Extras: Top-Ausbildungsvergütung, Technikzuschuss, E-Learning-Zugang, Events & vieles mehr.",
+          "Moderne Ausstattung: Eigenes Notebook, Headset, dualer Bildschirm, moderne Tools & ergonomischer Arbeitsplatz inklusive.",
+          "Verkürzung möglich: Gute Leistungen? Dann verkürzt du auf 2,5 oder 2 Jahre.",
+          "Studium on top: Nach der Ausbildung duales Studium z. B. mit Provadis (Wirtschaftsinformatik / Informatik).",
+          "Teamgeist & Kultur: Ein kollegiales Umfeld, das offen, respektvoll und auf Augenhöhe agiert.",
+          "Praktikum vor Ausbildungsstart: Lerne uns bei einem Schnupperpraktikum im Sommer kennen, ganz ohne Verpflichtung.",
+        ],
+      },
+      {
+        title: "(Junior-)Tester",
+        short:
+          "In der Rolle des IT-Beraters als Tester wirst du intensiv geschult, um Anforderungen aus User Storys und technischen Dokumenten zu verstehen und zielgerichtet im Kundensystem umzusetzen. Du führst Kunden sicher durch alle Phasen des Softwarelebenszyklus – ob klassisch oder agil – und gewährleistest dabei höchste Produktqualität. Durch deinen Beitrag stellst du sicher, dass alle Anforderungen präzise erfüllt und hochwertige Ergebnisse erzielt werden.",
+        tasks: [
+          "Du entwickelst strukturierte Testfälle nach standardisierten Methoden und führst diese in verschiedenen Testphasen (System-, Integrations-, Abnahme- und Regressionstests) durch.",
+          "Abweichungen dokumentierst du präzise mithilfe kundenspezifischer Testwerkzeuge und sorgst für eine kontinuierliche Statusüberwachung.",
+          "Sobald Fehler behoben sind, führst du Re-Tests durch, um die Korrekturen zu validieren und den Fortschritt transparent zu halten.",
+        ],
+        req: [
+          "Du bist sprachlich versiert in Deutsch und Englisch, arbeitest gerne im Team und kommunizierst offen mit deinen Kollegen.",
+          "Du bist neugierig auf neue Herausforderungen, lernst schnell, arbeitest eigenständig und bringst eine starke IT-Affinität sowie Begeisterung für Technologie mit.",
+        ],
+        offer: [
+          "Profitiere von tiefgehendem Fachwissen und entwickle dich sowohl beruflich als auch persönlich weiter.",
+          "Nutze ein umfassendes Angebot an internen und externen Weiterbildungsprogrammen.",
+          "Freu dich auf vielseitige und abwechslungsreiche Aufgaben in verschiedenen Projekten.",
+          "Genieße individuelle Unterstützung durch erfahrene Mentoren, die dich auf deinem Weg begleiten.",
+          "Erhalte bei Bedarf einen Studienplatz an der angesehenen Hochschule Provadis in Frankfurt am Main.",
+        ],
+      },
+      {
+        title: "(Junior-) Testautomatisierer",
+        short:
+          "Als Testautomatisierer automatisierst und optimierst du Testfälle, wartest bestehende Automatisierungen und sicherst so die Qualität komplexer Softwarelösungen. Dabei begleitest du unsere Kunden durch alle Phasen des Softwarelebenszyklus und stellst sicher, dass Produkte zuverlässig und leistungsstark ausgeliefert werden.",
+        tasks: [
+          "Du wirst fundiert geschult, um standardisierte und effektive Testautomatisierungen zu entwickeln.",
+          "Erstellung, Ausführung und Dokumentation automatisierter Testfälle nach modernsten Methoden.",
+          "Analyse und Optimierung bestehender Testfälle auf ihre Durchführbarkeit und Effizienz.",
+          "Entwicklung und Pflege technischer Skripte zur Automatisierung von Tests.",
+          "Bearbeitung von technischen Dokumentationen, Fehleranalysen sowie Code-Segmenten zur Qualitätssicherung.",
+        ],
+        req: [
+          "Du beherrschst die Arbeit mit MS Office-Programmen wie Excel, Word und Notes sicher und bist vertraut mit Kommunikationstools wie Skype for Business und Outlook.",
+          "Grundkenntnisse in Skript- oder Programmiersprachen verschaffen dir einen zusätzlichen Vorteil.",
+          "Deine Stärken liegen in der Teamarbeit und einem offenen, kommunikativen Umgang mit Kollegen, was dein Profil optimal ergänzt.",
+        ],
+        offer: [
+          "Profitiere von tiefgehendem Fachwissen und entwickle dich sowohl beruflich als auch persönlich weiter.",
+          "Nutze ein umfassendes Angebot an internen und externen Weiterbildungsprogrammen.",
+          "Freu dich auf vielseitige und abwechslungsreiche Aufgaben in verschiedenen Projekten.",
+          "Genieße individuelle Unterstützung durch erfahrene Mentoren, die dich auf deinem Weg begleiten.",
+          "Erhalte bei Bedarf einen Studienplatz an der angesehenen Hochschule Provadis in Frankfurt am Main.",
+        ],
+      },
+    ]
+  : [
+      {
+        title: "Apprenticeship: IT specialist for application development",
+        short:
+          "You don't just want to use apps, but build them yourself? As an IT specialist for application development at WAMOCON you become a digital problem solver. You develop software that solves real challenges, from the first idea to the finished product. Whether web app, test tool or cloud solution: you are right in the middle of the IT project business. You learn how software is created and become part of a team that combines technology with brains and creativity.",
+        tasks: [
+          "You develop modern software with Java, Python, JavaScript & Co.",
+          "You work with SQL databases, REST APIs and frameworks like Spring or React.",
+          "You use tools like Git, Jira, Docker and develop with agile methods (e.g. Scrum).",
+          "You test your software with tools like Postman and Katalon, automated & structured.",
+          "You analyze requirements, plan user stories and develop solutions.",
+          "Highlight: You build your own digital training system, with AI & cloud!",
+          "You learn how UX, backend logic, data processing and quality assurance are connected.",
+          "Theory & practice, ideally combined: you apply what you have learned immediately in a real project.",
+        ],
+        req: [
+          "Secondary school certificate (10th grade) or (technical) high school diploma",
+          "Interest in IT, software & problem solving",
+          "Joy in thinking, developing and understanding",
+          "Team spirit & desire to communicate",
+          "Diligence, curiosity and a desire for responsibility",
+          "First experience with programming or technology? Nice to have, but not a must.",
+        ],
+        offer: [
+          "Personal support: You get a permanent mentor, regular feedback rounds and individual learning paths.",
+          "Real practice from day 1: You are part of real customer projects from the start.",
+          "High-tech & innovation: You work with modern tools & frameworks, relying on AI, cloud & DevOps.",
+          "Fair pay & extras: Top training pay, technology allowance, e-learning access, events & much more.",
+          "Modern equipment: Own notebook, headset, dual screen, modern tools & ergonomic workplace included.",
+          "Shortening possible: Good performance? Then you shorten to 2.5 or 2 years.",
+          "Study on top: After the apprenticeship a dual study program e.g. with Provadis (business informatics / computer science).",
+          "Team spirit & culture: A collegial environment that acts openly, respectfully and at eye level.",
+          "Internship before the start of training: Get to know us during a taster internship in summer, without any obligation.",
+        ],
+      },
+      {
+        title: "(Junior) Tester",
+        short:
+          "In the role of an IT consultant as a tester, you will be intensively trained to understand requirements from user stories and technical documents and to implement them in a targeted manner in the customer system. You guide customers safely through all phases of the software life cycle – whether classic or agile – and guarantee the highest product quality. Through your contribution you ensure that all requirements are precisely met and high-quality results are achieved.",
+        tasks: [
+          "You develop structured test cases according to standardized methods and carry them out in various test phases (system, integration, acceptance and regression tests).",
+          "You document deviations precisely using customer-specific test tools and ensure continuous status monitoring.",
+          "As soon as errors are fixed, you carry out re-tests to validate the corrections and keep the progress transparent.",
+        ],
+        req: [
+          "You are linguistically proficient in German and English, enjoy working in a team and communicate openly with your colleagues.",
+          "You are curious about new challenges, learn quickly, work independently and bring a strong IT affinity and enthusiasm for technology.",
+        ],
+        offer: [
+          "Benefit from in-depth expertise and develop yourself both professionally and personally.",
+          "Use a comprehensive range of internal and external training programs.",
+          "Look forward to versatile and varied tasks in different projects.",
+          "Enjoy individual support from experienced mentors who accompany you on your way.",
+          "If needed, receive a study place at the renowned Provadis university in Frankfurt am Main.",
+        ],
+      },
+      {
+        title: "(Junior) Test automation engineer",
+        short:
+          "As a test automation engineer you automate and optimize test cases, maintain existing automations and thus ensure the quality of complex software solutions. You accompany our customers through all phases of the software life cycle and ensure that products are delivered reliably and powerfully.",
+        tasks: [
+          "You receive sound training to develop standardized and effective test automations.",
+          "Creation, execution and documentation of automated test cases according to the most modern methods.",
+          "Analysis and optimization of existing test cases for their feasibility and efficiency.",
+          "Development and maintenance of technical scripts for the automation of tests.",
+          "Processing of technical documentation, error analyses and code segments for quality assurance.",
+        ],
+        req: [
+          "You are confident in working with MS Office programs such as Excel, Word and Notes and are familiar with communication tools such as Skype for Business and Outlook.",
+          "Basic knowledge of scripting or programming languages gives you an additional advantage.",
+          "Your strengths lie in teamwork and an open, communicative approach with colleagues, which optimally complements your profile.",
+        ],
+        offer: [
+          "Benefit from in-depth expertise and develop yourself both professionally and personally.",
+          "Use a comprehensive range of internal and external training programs.",
+          "Look forward to versatile and varied tasks in different projects.",
+          "Enjoy individual support from experienced mentors who accompany you on your way.",
+          "If needed, receive a study place at the renowned Provadis university in Frankfurt am Main.",
+        ],
+      },
+    ];
+
+const kununu = [
+  { r: "4,8", t: "Zentralgelegener Arbeitsplatz – professionelle und angenehme Arbeitsatmosphäre", d: "Mai 2025", role: "Angestellte/r · Administration" },
+  { r: "5,0", t: "Great place to grow and learn", d: "Mai 2025", role: "Werkstudent/in · IT" },
+  { r: "5,0", t: "Familiäre Atmosphäre, super um sich extremst schnell weiterzuentwickeln.", d: "Mai 2025", role: "Praktikant/in · IT" },
+  { r: "5,0", t: "Seit über 8 Jahren stolzer WMCler!!!", d: "Mai 2025", role: "Angestellte/r · Eschborn" },
+  { r: "4,9", t: "I experience a highly positive and engaging work environment", d: "April 2025", role: "Angestellte/r · IT" },
+  { r: "4,5", t: "Bewertung ehemaliger Arbeitgeber im Bereich Softwaretesting", d: "Januar 2024", role: "Ex-Angestellte/r · IT" },
+  { r: "5,0", t: "Ein Top-Arbeitgeber mit innovativen Projekten und echten Entwicklungschancen", d: "Mai 2025", role: "Angestellte/r · IT" },
+  { r: "4,8", t: "Super Arbeitgeber mit klasse Aufstiegschancen", d: "November 2020", role: "Angestellte/r · IT" },
+  { r: "5,0", t: "Familien Atmosphäre", d: "April 2020", role: "Ex-Angestellte/r · IT" },
+  { r: "5,0", t: "Der Beste Arbeitgeber der Region!", d: "April 2020", role: "Ex-Angestellte/r · IT" },
+];
+
+const videos = [
+  { name: "Daniel Moretz", src: `${VIDEO_BASE}/Mitarbeiter-Referenzvideo-Daniel-Moretz.mp4`, poster: "/images/team-daniel.png" },
+  { name: "Erwin", src: `${VIDEO_BASE}/Mitarbeiter-Referenzvideo-Erwin.mp4`, poster: "/images/team-erwin.png" },
+  { name: "Niko", src: `${VIDEO_BASE}/Mitarbeiter-Referenzvideo-Niko.mp4`, poster: "/images/team-nikolaj.png" },
+];
+
+const mailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(
+  de ? "Bewerbung über die Website" : "Application via the website"
+)}`;
+---
+
+<section class="career">
+  <!-- HERO -->
+  <div class="wrap hero">
+    <div class="hero-text">
+      <h1><span class="t-red">{c.heroTitleRed}</span> <span class="t-white">{c.heroTitleWhite}</span></h1>
+      {c.heroText.map((p) => <p>{p}</p>)}
+      <a href="#stellenangebote" class="btn">{c.heroBtn}</a>
+    </div>
+    <div class="hero-img">
+      <img src="/images/career-hero.png" alt="WAMOCON Team" loading="lazy" />
+    </div>
+  </div>
+
+  <!-- ERFOLG MIT SYSTEM -->
+  <div class="wrap">
+    <h2 class="head"><span class="t-red">{c.systemHeadRed}</span> <span class="t-white">{c.systemHeadWhite}</span></h2>
+    <p class="lead">{c.systemIntro}</p>
+    <div class="grid3">
+      {c.systemCards.map((card) => (
+        <article class="card">
+          <h3>{card.t}</h3>
+          <p>{card.d}</p>
+        </article>
+      ))}
+    </div>
+    <p class="lead">{c.systemClose}</p>
+  </div>
+
+  <!-- BENEFITS -->
+  <div class="wrap">
+    <h2 class="head"><span class="t-red">{c.benefitsHeadRed}</span> <span class="t-white">{c.benefitsHeadWhite}</span></h2>
+    <div class="grid3">
+      {c.benefits.map((b) => (
+        <article class="card">
+          <h3>{b.t}</h3>
+          <p>{b.d}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <!-- JOIN -->
+  <div class="wrap">
+    <h2 class="head"><span class="t-red">{c.joinHeadRed}</span> <span class="t-white">{c.joinHeadWhite}</span></h2>
+    {c.joinText.map((p) => <p class="lead">{p}</p>)}
+  </div>
+
+  <!-- STELLENANGEBOTE -->
+  <div class="wrap" id="stellenangebote">
+    <h2 class="head"><span class="t-white">{c.jobsHead}</span></h2>
+    <div class="jobs">
+      {jobs.map((job, ji) => (
+        <article class="job">
+          <button class="job-head" data-job={ji} aria-expanded="false">
+            <span>{job.title}</span>
+            <span class="chev">+</span>
+          </button>
+          <div class="job-body" hidden>
+            <div class="job-tabs" role="tablist">
+              {c.tabs.map((tab, ti) => (
+                <button class={`tab${ti === 0 ? " active" : ""}`} data-job={ji} data-tab={ti}>{tab}</button>
+              ))}
+            </div>
+            <div class="tab-panels">
+              <div class="panel active" data-job={ji} data-panel="0">
+                <p>{job.short}</p>
+              </div>
+              <div class="panel" data-job={ji} data-panel="1">
+                <ul>{job.tasks.map((x) => <li>{x}</li>)}</ul>
+              </div>
+              <div class="panel" data-job={ji} data-panel="2">
+                <ul>{job.req.map((x) => <li>{x}</li>)}</ul>
+              </div>
+              <div class="panel" data-job={ji} data-panel="3">
+                <ul>{job.offer.map((x) => <li>{x}</li>)}</ul>
+              </div>
+            </div>
+            <a href="#bewerbung" class="btn">{c.applyBtn}</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <!-- VOICES -->
+  <div class="wrap">
+    <h2 class="head"><span class="t-white">{c.voicesHead}</span></h2>
+    <div class="grid4">
+      {c.voices.map((v) => (
+        <article class="voice">
+          <h3>{v.t}</h3>
+          <p>&bdquo;{v.q}&ldquo;</p>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <!-- KUNUNU -->
+  <div class="wrap">
+    <h2 class="head"><span class="t-white">{c.kununuHead}</span></h2>
+    <div class="grid3 kununu">
+      {kununu.map((k) => (
+        <article class="kcard">
+          <div class="krate">★ {k.r}</div>
+          <h3>{k.t}</h3>
+          <p class="kmeta">{k.d} · {k.role}</p>
+        </article>
+      ))}
+    </div>
+    <div class="center">
+      <a href="https://www.kununu.com/de/wamocon/kommentare" target="_blank" rel="noopener" class="btn">{c.kununuBtn}</a>
+    </div>
+  </div>
+
+  <!-- TEAM VIDEOS -->
+  <div class="wrap">
+    <h2 class="head"><span class="t-white">{c.teamVideoHead}</span></h2>
+    <div class="grid3">
+      {videos.map((v) => (
+        <article class="vidcard">
+          <video controls preload="metadata" playsinline poster={v.poster}>
+            <source src={v.src} type="video/mp4" />
+          </video>
+          <h3>{v.name}</h3>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <!-- BEWERBUNGSFORMULAR -->
+  <div class="wrap form-wrap" id="bewerbung">
+    <div class="form-img">
+      <img src="/images/career-member.jpg" alt="WAMOCON" loading="lazy" />
+    </div>
+    <div class="form-box">
+      <h2 class="head"><span class="t-red">{c.formHeadRed}</span> <span class="t-white">{c.formHeadWhite}</span></h2>
+      <p class="lead">{c.formText}</p>
+      <form class="apply-form" action={mailto} method="post" enctype="text/plain">
+        <input type="text" name="Name" placeholder={c.formName} required />
+        <input type="tel" name="Telefon" placeholder={c.formPhone} required />
+        <input type="email" name="Email" placeholder={c.formEmail} required />
+        <label class="consent">
+          <input type="checkbox" required />
+          <span>{c.formConsent} <a href={c.formConsentHref}>{c.formConsentLink}</a> zu.</span>
+        </label>
+        <button type="submit" class="btn">{c.formBtn}</button>
+      </form>
+      <p class="form-close">{c.formClose}</p>
+    </div>
+  </div>
+
+  <ContactBlock lang={lang} />
+</section>
+
+<style>
+  .career {
+    color: var(--color-text);
+  }
+  .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 5rem) 1.25rem;
+  }
+  .t-red {
+    color: var(--color-accent);
+  }
+  .t-white {
+    color: #fff;
+  }
+  h1 {
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    line-height: 1.1;
+    margin: 0 0 1.5rem;
+    font-weight: var(--fw-bold);
+  }
+  .head {
+    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+    line-height: 1.15;
+    margin: 0 0 1.75rem;
+    font-weight: var(--fw-bold);
+  }
+  .lead {
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin: 0 0 1.25rem;
+    max-width: 70ch;
+  }
+  .hero {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .hero-text p {
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin: 0 0 1.1rem;
+  }
+  .hero-img img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+  }
+  .btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.85rem 1.75rem;
+    background: var(--color-accent);
+    color: #fff;
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    font-weight: var(--fw-semibold);
+    border: none;
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+  .btn:hover {
+    background: var(--color-accent-hover);
+  }
+  .grid3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+  .grid4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+  .card,
+  .voice,
+  .kcard {
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+  }
+  .card h3,
+  .voice h3,
+  .kcard h3 {
+    color: var(--color-accent);
+    font-size: 1.15rem;
+    margin: 0 0 0.75rem;
+  }
+  .card p,
+  .voice p {
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+  .voice p {
+    font-style: italic;
+  }
+  /* JOBS */
+  .jobs {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .job {
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .job-head {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.4rem 1.75rem;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.15rem;
+    font-weight: var(--fw-semibold);
+    text-align: left;
+    cursor: pointer;
+  }
+  .job-head .chev {
+    color: var(--color-accent);
+    font-size: 1.6rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .job-body {
+    padding: 0 1.75rem 1.75rem;
+  }
+  .job-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: 0.75rem;
+  }
+  .tab {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all var(--dur-fast) var(--ease-out);
+  }
+  .tab.active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
+  }
+  .panel {
+    display: none;
+  }
+  .panel.active {
+    display: block;
+  }
+  .panel p {
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin: 0 0 1rem;
+  }
+  .panel ul {
+    margin: 0 0 1rem;
+    padding-left: 1.25rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+  .panel li {
+    margin-bottom: 0.5rem;
+  }
+  /* KUNUNU */
+  .krate {
+    color: var(--color-accent);
+    font-weight: var(--fw-bold);
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  .kmeta {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    margin: 0.5rem 0 0;
+  }
+  .center {
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+  /* VIDEOS */
+  .vidcard {
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .vidcard video {
+    width: 100%;
+    display: block;
+    background: #000;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+  }
+  .vidcard h3 {
+    color: #fff;
+    margin: 0;
+    padding: 1rem 1.25rem;
+    font-size: 1.05rem;
+  }
+  /* FORM */
+  .form-wrap {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .form-img img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+  }
+  .apply-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .apply-form input[type="text"],
+  .apply-form input[type="tel"],
+  .apply-form input[type="email"] {
+    padding: 0.9rem 1rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    color: #fff;
+    font-size: 1rem;
+  }
+  .apply-form input::placeholder {
+    color: var(--color-text-muted);
+  }
+  .consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .consent a {
+    color: var(--color-accent);
+  }
+  .form-close {
+    color: var(--color-text-muted);
+    font-style: italic;
+    margin-top: 1.25rem;
+  }
+  @media (max-width: 900px) {
+    .hero,
+    .form-wrap {
+      grid-template-columns: 1fr;
+    }
+    .grid3,
+    .grid4 {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .grid3,
+    .grid4 {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  function setupCareer() {
+    document.querySelectorAll<HTMLButtonElement>(".job-head").forEach((head) => {
+      head.addEventListener("click", () => {
+        const body = head.nextElementSibling as HTMLElement | null;
+        if (!body) return;
+        const open = head.getAttribute("aria-expanded") === "true";
+        head.setAttribute("aria-expanded", String(!open));
+        body.hidden = open;
+        const chev = head.querySelector(".chev");
+        if (chev) chev.textContent = open ? "+" : "−";
+      });
+    });
+
+    document.querySelectorAll<HTMLButtonElement>(".tab").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const job = tab.dataset.job;
+        const idx = tab.dataset.tab;
+        document
+          .querySelectorAll<HTMLElement>(`.tab[data-job="${job}"]`)
+          .forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+        document
+          .querySelectorAll<HTMLElement>(`.panel[data-job="${job}"]`)
+          .forEach((p) => p.classList.remove("active"));
+        const panel = document.querySelector<HTMLElement>(
+          `.panel[data-job="${job}"][data-panel="${idx}"]`
+        );
+        if (panel) panel.classList.add("active");
+      });
+    });
+  }
+
+  setupCareer();
+  document.addEventListener("astro:after-swap", setupCareer);
+</script>

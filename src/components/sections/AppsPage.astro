@@ -1,0 +1,91 @@
+---
+/**
+ * Apps overview page: full catalogue of WAMOCON products grouped by category.
+ * Shared by the German (`/apps/`) and English (`/en/apps/`) routes.
+ */
+import PageHero from '../ui/PageHero.astro';
+import AppCard from '../ui/AppCard.astro';
+import ContactBlock from './ContactBlock.astro';
+import { appCategories } from '../../data/apps';
+import type { Lang } from '../../i18n/config';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const de = lang === 'de';
+
+const totalApps = appCategories.reduce((sum, cat) => sum + cat.apps.length, 0);
+
+const c = de
+  ? {
+      eyebrow: 'Unsere Apps',
+      title: 'Lösungen für jede Problemstellung',
+      subtitle:
+        'Von Office &amp; Produktivität über KI bis hin zu Mobilität und Lifestyle: Entdecken Sie unser wachsendes Portfolio an Anwendungen, die wir bei WAMOCON entwickeln.',
+      countLabel: `${totalApps} Apps in ${appCategories.length} Kategorien`,
+    }
+  : {
+      eyebrow: 'Our Apps',
+      title: 'Solutions for every challenge',
+      subtitle:
+        'From office &amp; productivity through AI to mobility and lifestyle: explore our growing portfolio of applications built at WAMOCON.',
+      countLabel: `${totalApps} apps across ${appCategories.length} categories`,
+    };
+---
+
+<PageHero eyebrow={c.eyebrow} title={c.title} subtitle={c.subtitle} />
+
+<section class="section apps">
+  <div class="container">
+    <p class="apps__count text-muted">{c.countLabel}</p>
+    {
+      appCategories.map((cat) => (
+        <div class="apps__cat">
+          <h2 class="apps__cat-title" data-reveal="left">{cat.label[lang]}</h2>
+          <div class="apps__grid">
+            {cat.apps.map((app) => (
+              <AppCard app={app} category={cat.label[lang]} lang={lang} />
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<ContactBlock lang={lang} />
+
+<style>
+  .apps__count {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.8rem;
+    margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+  }
+  .apps__cat {
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  }
+  .apps__cat:first-of-type {
+    margin-top: 0;
+  }
+  .apps__cat-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .apps__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    gap: 1.25rem;
+  }
+  @media (max-width: 540px) {
+    .apps__grid {
+      grid-template-columns: 1fr;
+    }
+    .apps__cat-title {
+      font-size: 1.3rem;
+    }
+  }
+</style>

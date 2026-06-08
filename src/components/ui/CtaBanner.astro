@@ -1,0 +1,52 @@
+---
+/** Reusable call-to-action banner. */
+import Button from './Button.astro';
+interface Props {
+  title: string;
+  text?: string;
+  ctaLabel: string;
+  ctaHref: string;
+  ctaTarget?: string;
+}
+const { title, text, ctaLabel, ctaHref, ctaTarget } = Astro.props;
+---
+
+<section class="section">
+  <div class="container">
+    <div class="cta-banner" data-reveal="zoom">
+      <div class="cta-banner__glow" aria-hidden="true"></div>
+      <h2>{title}</h2>
+      {text && <p class="text-muted">{text}</p>}
+      <Button href={ctaHref} target={ctaTarget} variant="primary" size="lg">{ctaLabel}</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-banner {
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    max-width: 860px;
+    margin-inline: auto;
+    padding: clamp(2.5rem, 6vw, 4.5rem);
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+  }
+  .cta-banner__glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(60% 90% at 50% 0%, var(--glow-top), transparent 70%);
+    pointer-events: none;
+  }
+  .cta-banner h2 {
+    margin-bottom: 1rem;
+    position: relative;
+  }
+  .cta-banner p {
+    max-width: 60ch;
+    margin: 0 auto 2rem;
+    position: relative;
+  }
+</style>

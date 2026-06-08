@@ -1,0 +1,106 @@
+---
+/**
+ * Site footer — mirrors the official wamocon.com footer:
+ * logo + copyright on the left, two columns of page links, and a legal column.
+ * All links come from src/i18n/config.ts.
+ */
+import { nav, legalNav, ui, company, type Lang } from '../../i18n/config';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = (k: keyof (typeof ui)['de']) => ui[lang][k];
+const year = new Date().getFullYear();
+
+const linkFor = (key: string) => nav.find((n) => n.key === key)![lang];
+
+// Two link columns + a legal column, exactly like the official footer.
+const col1 = ['home', 'about', 'testimonials'].map(linkFor);
+const col2 = ['career', 'cooperation', 'contact'].map(linkFor);
+const legal = [legalNav.privacy[lang], legalNav.imprint[lang]];
+---
+
+<footer class="footer">
+  <div class="footer__inner container">
+    <div class="footer__brand">
+      <img
+        src="/images/logo-wamocon.png"
+        alt="WAMOCON"
+        width="170"
+        height="68"
+        class="footer__logo"
+      />
+      <p class="footer__copy">
+        Copyright © {year} {company.name}.<br />{t('footer.rights')}
+      </p>
+    </div>
+
+    <nav class="footer__links" aria-label={t('footer.navigation')}>
+      <ul>
+        {col1.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+      <ul>
+        {col2.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+      <ul>
+        {legal.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--color-bg);
+    border-top: 1px solid var(--border-subtle);
+    margin-top: var(--section-gap);
+  }
+  .footer__inner {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: clamp(2rem, 6vw, 6rem);
+    padding-block: clamp(3.5rem, 7vw, 6rem);
+    align-items: start;
+  }
+  .footer__logo {
+    height: 104px;
+    width: auto;
+    margin-bottom: 2.5rem;
+  }
+  .footer__copy {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-text);
+  }
+  .footer__links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+  }
+  .footer__links ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .footer__links a {
+    font-size: clamp(1.05rem, 1.4vw, 1.35rem);
+    font-weight: var(--fw-regular);
+    color: var(--color-text);
+  }
+  .footer__links a:hover {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 860px) {
+    .footer__inner {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+  }
+  @media (max-width: 560px) {
+    .footer__links {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

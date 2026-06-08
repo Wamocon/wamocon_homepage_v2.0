@@ -1,0 +1,186 @@
+---
+/**
+ * Contact details block — mirrors the official Kontakte section:
+ * company details on the left (phone, e-mail, opening hours, location, social)
+ * and an office photo with a Google rating badge on the right.
+ */
+import { company, type Lang } from '../../i18n/config';
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const social = [
+  { name: 'YouTube', href: company.social.youtube, icon: '/images/icon-youtube.svg' },
+  { name: 'LinkedIn', href: company.social.linkedin, icon: '/images/icon-linkedin.svg' },
+  { name: 'Instagram', href: company.social.instagram, icon: '/images/icon-instagram.svg' },
+  { name: 'Facebook', href: company.social.facebook, icon: '/images/icon-facebook.svg' },
+];
+
+const labels = {
+  de: {
+    phone: 'Telefon',
+    hours: 'Öffnungszeiten',
+    location: 'Standort',
+    follow: 'Folgen Sie uns auf sozialen Medien',
+  },
+  en: {
+    phone: 'Phone',
+    hours: 'Opening hours',
+    location: 'Location',
+    follow: 'Follow us on social media',
+  },
+}[lang];
+---
+
+<section class="section contact">
+  <div class="container contact__grid">
+    <div class="contact__info" data-reveal="left">
+      <h2 class="contact__name">{company.name}</h2>
+
+      <div class="contact__row">
+        <span class="contact__label">{labels.phone}:</span>
+        <a href={company.phoneHref}>{company.phone}</a>
+      </div>
+      <div class="contact__row">
+        <span class="contact__label">E-Mail:</span>
+        <a href={company.emailHref}>{company.email}</a>
+      </div>
+      <div class="contact__row">
+        <span class="contact__label">{labels.hours}:</span>
+        <span>{company.hours[lang].map((h) => <>{h}<br /></>)}</span>
+      </div>
+      <div class="contact__row">
+        <span class="contact__label">{labels.location}:</span>
+        <span>{company.street}<br />{company.city}</span>
+      </div>
+
+      <div class="contact__social">
+        <span class="contact__label">{labels.follow}</span>
+        <ul>
+          {
+            social.map((s) => (
+              <li>
+                <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.name}>
+                  <img src={s.icon} alt="" width="50" height="50" loading="lazy" />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <figure class="contact__media" data-reveal="right">
+      <img
+        src="/images/contact-office.jpg"
+        alt="WAMOCON Team im Büro"
+        width="720"
+        height="560"
+        loading="lazy"
+      />
+      <figcaption class="contact__rating" aria-label="Google Bewertung 5,0">
+        <svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true">
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        </svg>
+        <span class="contact__rating-value">5,0</span>
+        <span class="contact__stars" aria-hidden="true">★★★★★</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .contact__grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  .contact__name {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    margin-bottom: 2.5rem;
+  }
+  .contact__row {
+    margin-bottom: 1.75rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+  .contact__label {
+    display: block;
+    color: var(--color-accent);
+    margin-bottom: 0.35rem;
+  }
+  .contact__row a:hover {
+    color: var(--color-accent);
+  }
+  .contact__social {
+    margin-top: 2.5rem;
+  }
+  .contact__social ul {
+    display: flex;
+    gap: 0.85rem;
+    margin-top: 0.85rem;
+  }
+  .contact__social a {
+    display: grid;
+    place-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+  .contact__social a:hover {
+    transform: translateY(-3px);
+  }
+  .contact__social img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .contact__media {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+  }
+  .contact__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 5 / 4;
+  }
+  .contact__rating {
+    position: absolute;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.9rem;
+    background: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+  }
+  .contact__rating-value {
+    font-weight: var(--fw-semibold);
+    color: #fff;
+  }
+  .contact__stars {
+    color: var(--color-accent);
+    letter-spacing: 1px;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 860px) {
+    .contact__grid {
+      grid-template-columns: 1fr;
+    }
+    .contact__media {
+      order: -1;
+    }
+  }
+</style>

@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TestimonialsPage from '../../components/sections/TestimonialsPage.astro';
+
+const lang = 'en' as const;
+---
+
+<BaseLayout
+  title="Testimonials — WAMOCON GmbH"
+  description="Authentic customer voices and experiences with WAMOCON GmbH – from projects and the WAMOCON Academy."
+  lang={lang}
+>
+  <TestimonialsPage lang={lang} />
+</BaseLayout>

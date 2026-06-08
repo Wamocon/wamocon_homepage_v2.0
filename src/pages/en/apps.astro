@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AppsPage from '../../components/sections/AppsPage.astro';
+
+const lang = 'en' as const;
+---
+
+<BaseLayout
+  title="Apps — WAMOCON GmbH"
+  description="Explore WAMOCON's growing app portfolio: solutions for office, AI, finance, mobility, real estate, lifestyle and more."
+  lang={lang}
+>
+  <AppsPage lang={lang} />
+</BaseLayout>

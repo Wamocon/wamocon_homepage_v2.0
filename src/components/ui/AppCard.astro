@@ -1,0 +1,132 @@
+---
+/**
+ * App showcase card. Renders a clickable product card, or a muted
+ * "coming soon" card when the app has no live URL.
+ */
+import type { AppItem } from '../../data/apps';
+import type { Lang } from '../../i18n/config';
+
+interface Props {
+  app: AppItem;
+  category: string;
+  lang: Lang;
+}
+const { app, category, lang } = Astro.props;
+const soonLabel = lang === 'de' ? 'Bald verfügbar' : 'Coming soon';
+const isLink = !app.soon && !!app.url;
+const Tag = isLink ? 'a' : 'div';
+---
+
+<Tag
+  class:list={['app-card', { 'app-card--soon': app.soon }]}
+  href={isLink ? app.url : undefined}
+  target={isLink ? '_blank' : undefined}
+  rel={isLink ? 'noopener noreferrer' : undefined}
+  data-reveal="up"
+>
+  <div class="app-card__head">
+    <h3 class="app-card__name">{app.name}</h3>
+    {isLink && (
+      <span class="app-card__arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7" />
+          <polyline points="7 7 17 7 17 17" />
+        </svg>
+      </span>
+    )}
+  </div>
+  <span class="app-card__cat">{category}</span>
+  <p class="app-card__desc">{app.description[lang]}</p>
+  {app.soon && <span class="app-card__soon">{soonLabel}</span>}
+</Tag>
+
+<style>
+  .app-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.6rem 1.7rem 1.8rem;
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition:
+      transform var(--dur-med) var(--ease-out),
+      border-color var(--dur-med) var(--ease-out),
+      background var(--dur-med) var(--ease-out);
+  }
+  a.app-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--color-accent);
+    background: var(--surface-card-hover);
+  }
+  .app-card--soon {
+    opacity: 0.62;
+  }
+  .app-card__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .app-card__name {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: clamp(1.2rem, 1rem + 1vw, 1.55rem);
+    font-weight: var(--fw-bold);
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    color: var(--color-text);
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  .app-card__arrow {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    color: var(--color-text-subtle);
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out),
+      background var(--dur-fast) var(--ease-out);
+  }
+  a.app-card:hover .app-card__arrow {
+    color: #fff;
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+  }
+  .app-card__cat {
+    align-self: flex-start;
+    font-size: 0.66rem;
+    font-weight: var(--fw-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.32rem 0.75rem;
+    border: 1px solid rgba(244, 14, 14, 0.45);
+    border-radius: var(--radius-pill);
+    color: var(--color-accent);
+    background: rgba(244, 14, 14, 0.08);
+  }
+  .app-card__desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    overflow-wrap: anywhere;
+  }
+  .app-card__soon {
+    align-self: flex-start;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    color: var(--color-text-muted);
+  }
+</style>

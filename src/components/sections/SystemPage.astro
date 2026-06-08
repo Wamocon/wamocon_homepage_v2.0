@@ -1,0 +1,209 @@
+---
+/** Unser System / Our System — the 360° Booster System. Faithful reproduction. */
+import ContactBlock from './ContactBlock.astro';
+import type { Lang } from '../../i18n/config';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const de = lang === 'de';
+
+const c = de
+  ? {
+      heroEyebrow: 'Dein Erfolgsweg zum Experten im IT-Bereich',
+      heroParas: [
+        'WAMOCON hat einen umfassenden Ansatz entwickelt, der alle Aspekte des IT-Testens abdeckt. Dieses 360-Grad-System zum Aufbau einer erfolgreichen Karriere umfasst eine Reihe von Schritten und befähigt Sie, Herausforderungen zu meistern, indem es Ihnen den Weg zum Erfolg auf die effektivste Weise zeigt.',
+        'Das WAMOCON-Team nutzt dieses System, um die Arbeitsqualität jedes einzelnen Mitarbeiters, erfolgreiche Tests und den Abschluss von IT-Projekten zu verbessern.',
+      ],
+      heroTitle: 'Das 360 ° Booster System',
+      stepsLead: 'Erfolgreich im IT-Projekt: Das 360°-System',
+      stepsRest: ' für alle Karrierestufen',
+      steps: [
+        { h: 'Der erste Schritt zu deinem Traumprojekt', p: 'Überzeuge potenzielle Auftraggeber mit zielgerichteten Inhalten. Unsere bewährte Blueprint-Strategie zeigt dir, wie du den Weg zu deinem Wunschprojekt ebnest.' },
+        { h: 'Erfolgreiches Onboarding leicht gemacht', p: 'Starte optimal mit deinem Projektteam. Effektive Kommunikation und klare Prozesse sorgen für einen reibungslosen Ablauf, wir zeigen dir, wie es geht.' },
+        { h: 'Effiziente Planung für deinen Erfolg', p: 'Gestalte deine Projektarbeit stressfrei und strukturiert. Mit gezielten Kontrollfragen behältst du jedes Detail im Blick und sicherst dir eine optimale Planung.' },
+        { h: 'Erfolgreich starten: Deine erste Aufgabe', p: 'Lerne, wie du effizient die richtigen Projektinformationen sammelst. Mit klaren Methoden meisterst du jede Aufgabe problemlos.' },
+        { h: 'Ausführung mit Präzision', p: 'Stelle sicher, dass du jeden Testfall im Detail verstehst. Unsere bewährten Methoden helfen dir, dich abzuheben und jede Herausforderung souverän zu meistern.' },
+        { h: 'Sicherer Projektabschluss', p: 'Keine Panik, wenn die Zeit drängt! Mit unserer 40-jährigen Erfahrung und einer bewährten Schritt-für-Schritt-Anleitung meisterst du jede Herausforderung und bringst dein Projekt erfolgreich ins Ziel.' },
+      ],
+      academyTitle: 'Entdecken Sie Ihre Weiterbildungsmöglichkeiten mit IT-Testmanagement Kursen auf unserer Academy-Webseite!',
+      academyBlocks: [
+        { s: 'Ihre Unterstützung auf dem Weg zur Karriere', p: 'Unsere Academy hilft Ihnen, die Schlüsselmechanismen des Testmanagements zu meistern. Mit unserem umfassenden Ansatz begleiten wir Sie sicher auf Ihrem Karriereweg und unterstützen Sie dabei, Ihre beruflichen Ziele zu erreichen.' },
+        { s: 'Für alle, die weiterkommen wollen', p: 'Ob Student, junger Berater oder Quereinsteiger, unsere Trainings geben Ihnen die richtigen Werkzeuge an die Hand, um erfolgreich zu sein. Auch Projektleiter und Manager profitieren von praxisnahen Lösungen und fundierten Strategien, die Projekte auf das nächste Level heben.' },
+      ],
+      academyCta: 'Starten Sie jetzt Ihre Erfolgsgeschichte, mit uns!',
+      academyBtn: 'Jetzt Academy entdecken',
+    }
+  : {
+      heroEyebrow: 'Your path to success as an expert in the IT sector',
+      heroParas: [
+        'WAMOCON has developed a comprehensive approach that covers all aspects of IT testing. This 360-degree system for building a successful career comprises a series of steps and empowers you to master challenges by showing you the path to success in the most effective way.',
+        'The WAMOCON team uses this system to improve the work quality of each individual employee, successful testing and the completion of IT projects.',
+      ],
+      heroTitle: 'The 360° Booster System',
+      stepsLead: 'Successful in IT projects: the 360° system',
+      stepsRest: ' for all career levels',
+      steps: [
+        { h: 'The first step to your dream project', p: 'Convince potential clients with targeted content. Our proven blueprint strategy shows you how to pave the way to your dream project.' },
+        { h: 'Successful onboarding made easy', p: 'Get off to the best possible start with your project team. Effective communication and clear processes ensure a smooth process, we show you how it works.' },
+        { h: 'Efficient planning for your success', p: 'Design your project work stress-free and structured. With targeted control questions, you keep an eye on every detail and secure optimal planning.' },
+        { h: 'Get started successfully: your first task', p: 'Learn how to efficiently gather the right project information. With clear methods, you master every task with ease.' },
+        { h: 'Execution with precision', p: 'Make sure you understand every test case in detail. Our proven methods help you stand out and master every challenge with confidence.' },
+        { h: 'Secure project completion', p: 'No panic when time is short! With our 40 years of experience and a proven step-by-step guide, you master every challenge and bring your project to a successful conclusion.' },
+      ],
+      academyTitle: 'Discover your further training opportunities with IT test management courses on our Academy website!',
+      academyBlocks: [
+        { s: 'Your support on the path to a career', p: 'Our Academy helps you to master the key mechanisms of test management. With our comprehensive approach, we accompany you safely on your career path and support you in achieving your professional goals.' },
+        { s: 'For all those who want to get ahead', p: 'Whether student, young consultant or career changer, our training courses give you the right tools to succeed. Project managers and managers also benefit from practical solutions and well-founded strategies that take projects to the next level.' },
+      ],
+      academyCta: 'Start your success story now, with us!',
+      academyBtn: 'Discover the Academy now',
+    };
+
+const academyUrl = 'https://test-it-academy.com/';
+---
+
+<!-- HERO -->
+<section class="sys-hero">
+  <div class="container">
+    <p class="sys-hero__eyebrow">{c.heroEyebrow}</p>
+    <div class="sys-hero__lead">
+      {c.heroParas.map((p) => <p>{p}</p>)}
+    </div>
+    <h1 class="sys-hero__title">{c.heroTitle}</h1>
+    <img class="sys-hero__img" src="/images/system-360.svg" alt={c.heroTitle} loading="lazy" />
+  </div>
+</section>
+
+<!-- STEPS -->
+<section class="section section--alt">
+  <div class="container">
+    <h2 class="sys-h2"><span class="t-white">{c.stepsLead}</span><span class="t-red">{c.stepsRest}</span></h2>
+    <ol class="sys-steps">
+      {c.steps.map((s, i) => (
+        <li class="sys-step" data-reveal="up" data-reveal-delay={(i % 3) * 60}>
+          <span class="sys-step__num">{i + 1}</span>
+          <div>
+            <h3>{s.h}</h3>
+            <p>{s.p}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<!-- ACADEMY -->
+<section class="section">
+  <div class="container">
+    <div class="sys-academy">
+      <img class="sys-academy__img" src="/images/academy-person.png" alt={c.academyTitle} loading="lazy" />
+      <div class="sys-academy__body">
+        <h2><span class="t-white">{c.academyTitle}</span></h2>
+        {c.academyBlocks.map((b) => (
+          <p><strong>{b.s}</strong> {b.p}</p>
+        ))}
+        <p class="sys-academy__cta">{c.academyCta}</p>
+        <a class="sys-btn" href={academyUrl} target="_blank" rel="noopener">{c.academyBtn}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ContactBlock lang={lang} />
+
+<style>
+  .t-red { color: var(--color-accent); }
+  .t-white { color: var(--color-text); }
+
+  .sys-hero { padding: clamp(3rem, 8vw, 6rem) 0 clamp(2rem, 5vw, 3.5rem); text-align: center; }
+  .sys-hero__eyebrow {
+    font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+    font-weight: var(--fw-semibold);
+    color: var(--color-text);
+    margin-bottom: 1.5rem;
+  }
+  .sys-hero__lead { max-width: 900px; margin: 0 auto 2rem; }
+  .sys-hero__lead p { color: var(--color-text-muted); line-height: 1.65; margin-bottom: 1rem; }
+  .sys-hero__title {
+    font-size: clamp(2.4rem, 7vw, 5rem);
+    font-weight: var(--fw-bold);
+    line-height: 1.05;
+    margin-bottom: 2.5rem;
+  }
+  .sys-hero__img { max-width: 720px; width: 100%; margin: 0 auto; display: block; }
+
+  .sys-h2 {
+    font-size: clamp(1.8rem, 4.5vw, 3rem);
+    font-weight: var(--fw-bold);
+    line-height: 1.1;
+    text-align: center;
+    margin-bottom: clamp(1.8rem, 4vw, 2.8rem);
+  }
+
+  .sys-steps {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.3rem;
+    counter-reset: step;
+  }
+  .sys-step {
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 1.8rem;
+    display: flex;
+    gap: 1.1rem;
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .sys-step:hover { transform: translateY(-6px); }
+  .sys-step__num {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: #fff;
+    font-weight: var(--fw-bold);
+    font-size: 1.2rem;
+  }
+  .sys-step h3 { font-size: 1.15rem; margin-bottom: 0.6rem; }
+  .sys-step p { color: var(--color-text-muted); line-height: 1.55; }
+
+  .sys-academy {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: center;
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.6rem, 4vw, 3rem);
+  }
+  .sys-academy__img { width: 100%; border-radius: var(--radius-md); }
+  .sys-academy__body h2 { font-size: clamp(1.5rem, 3.2vw, 2.2rem); line-height: 1.2; margin-bottom: 1.4rem; }
+  .sys-academy__body p { color: var(--color-text-muted); line-height: 1.6; margin-bottom: 1.1rem; }
+  .sys-academy__body strong { color: var(--color-text); }
+  .sys-academy__cta { color: var(--color-accent) !important; font-weight: var(--fw-semibold); }
+  .sys-btn {
+    display: inline-block;
+    padding: 0.9rem 2rem;
+    background: var(--color-accent);
+    color: #fff;
+    font-weight: var(--fw-semibold);
+    border-radius: var(--radius-sm);
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+  .sys-btn:hover { background: var(--color-accent-hover); }
+
+  @media (max-width: 900px) {
+    .sys-steps { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 700px) {
+    .sys-steps, .sys-academy { grid-template-columns: 1fr; }
+  }
+</style>

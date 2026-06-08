@@ -1,0 +1,120 @@
+---
+/**
+ * Button / link component.
+ * Renders an <a> when `href` is provided, otherwise a <button>.
+ *
+ * Props:
+ *  - variant: 'primary' | 'outline' | 'ghost'
+ *  - size: 'md' | 'lg'
+ *  - href, target, rel, type
+ */
+interface Props {
+  variant?: 'primary' | 'outline' | 'ghost';
+  size?: 'md' | 'lg';
+  href?: string;
+  target?: string;
+  rel?: string;
+  type?: 'button' | 'submit';
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  href,
+  target,
+  rel,
+  type = 'button',
+  class: className = '',
+  ...rest
+} = Astro.props;
+
+const classes = ['btn', `btn--${variant}`, `btn--${size}`, className]
+  .filter(Boolean)
+  .join(' ');
+
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag
+  class={classes}
+  href={href}
+  target={target}
+  rel={target === '_blank' ? rel ?? 'noopener noreferrer' : rel}
+  type={href ? undefined : type}
+  {...rest}
+>
+  <span class="btn__label"><slot /></span>
+</Tag>
+
+<style>
+  .btn {
+    --btn-bg: var(--color-accent);
+    --btn-fg: #ffffff;
+    --btn-border: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    padding: 0.9em 1.9em;
+    font-size: 0.95rem;
+    font-weight: var(--fw-semibold);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: var(--btn-fg);
+    background: var(--btn-bg);
+    border: 1.5px solid var(--btn-border);
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition:
+      transform var(--dur-fast) var(--ease-out),
+      background var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-fast) var(--ease-out);
+  }
+
+  .btn--lg {
+    padding: 1.05em 2.4em;
+    font-size: 1.02rem;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .btn:active {
+    transform: translateY(0);
+  }
+
+  /* Primary: solid red */
+  .btn--primary {
+    --btn-bg: var(--color-accent);
+    --btn-fg: #ffffff;
+    box-shadow: var(--shadow-accent);
+  }
+  .btn--primary:hover {
+    --btn-bg: var(--color-accent-hover);
+  }
+
+  /* Outline: transparent with border */
+  .btn--outline {
+    --btn-bg: transparent;
+    --btn-fg: #ffffff;
+    --btn-border: var(--border-strong);
+  }
+  .btn--outline:hover {
+    --btn-fg: var(--color-accent);
+    --btn-border: var(--color-accent);
+  }
+
+  /* Ghost: minimal */
+  .btn--ghost {
+    --btn-bg: rgba(255, 255, 255, 0.06);
+    --btn-fg: #ffffff;
+    --btn-border: rgba(255, 255, 255, 0.12);
+  }
+  .btn--ghost:hover {
+    --btn-fg: var(--color-accent);
+  }
+</style>

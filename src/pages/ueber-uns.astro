@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AboutPage from '../components/sections/AboutPage.astro';
+
+const lang = 'de' as const;
+---
+
+<BaseLayout
+  title="Über uns — WAMOCON GmbH"
+  description="35 Jahre Erfahrung in IT-Innovationen: Lernen Sie WAMOCON GmbH, unser Team, unsere Vision und unsere Meilensteine kennen."
+  lang={lang}
+>
+  <AboutPage lang={lang} />
+</BaseLayout>

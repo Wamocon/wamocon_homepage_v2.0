@@ -1,0 +1,400 @@
+---
+import ContactBlock from "./ContactBlock.astro";
+import type { Lang } from "../../i18n/config";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const de = lang === "de";
+
+const heroTitle = de ? "Was sagen unsere Mitarbeiter?" : "What do our employees say?";
+const heroLead = de
+  ? "Unsere Mitarbeiter teilen ihre Geschichte und die gesammelte Erfahrung bei der WAMOCON."
+  : "Our employees share their story and the experience they have gained at WAMOCON.";
+
+type Video = { tab: string; title: string; desc: string; id: string };
+type Member = { name: string; img: string; bio: string[]; videos: Video[] };
+
+const members: Member[] = de
+  ? [
+      {
+        name: "Daniel Moretz",
+        img: "/images/team-daniel.png",
+        bio: [
+          "Anwender von den modernsten Testmethoden wie SAFe und SCRUM!",
+          "Am längsten bestehendes Mitglied der WAMOCON!",
+          "Erster Ansprechpartner für die Optimierung von Testprozessen, Genauigkeit und Verlässlichkeit!",
+        ],
+        videos: [
+          {
+            tab: "Daniel 3 Jahre",
+            title: "Von einer Exmatrikulation zum zertifiziertem Softwaretester!",
+            desc: "Daniel erzählt von seinem Weg zur und mit der WAMOCON. Wie er seine letzten drei Jahre empfand und wie die WAMOCON ihm geholfen hat. Schau dir das Video an um mehr zu erfahren!",
+            id: "1gUabbUHecg",
+          },
+          {
+            tab: "Daniel 6 Jahre",
+            title: "Abgeschlossener Bachelor und ISTQB zertifizierter Trainer!",
+            desc: "In diesem Video erzählt Daniel von den letzten sechs Jahren. Von seinem abgeschlossenen Bachelor und wie ihn die WAMOCON dabei unterstützt hat, bis zu seiner neuen Rolle als Trainer!",
+            id: "3MYZKQE3xvc",
+          },
+          {
+            tab: "Daniel 9 Jahre",
+            title: "Seit fast einem Jahrzehnt dabei mit mehr Erfahrung als je zuvor!",
+            desc: "Daniel redet in diesem Video über seine gesamte Zeit. All seine Erfahrungen, seine nächsten Ziele und seine größten Erfolge. Auch gibt er mit, welche Zielgruppen für die WAMOCON geeignet sind!",
+            id: "kaQGuJOHjwg",
+          },
+        ],
+      },
+      {
+        name: "Nikolaj Schefner",
+        img: "/images/team-nikolaj.png",
+        bio: [
+          "Mit dem 360° Booster System den Bachelor reibungslos abgeschlossen!",
+          "Meister aller Arten von Manuellen und Automatisierten Tests in allen Etappen!",
+          "ISTQB Zertifizierter Trainer für alle Kurse der WAMOCON Academy!",
+        ],
+        videos: [
+          {
+            tab: "Nikolaj 3 Jahre",
+            title: "Eingestiegen als Dualer Student und zum zertifiziertem Softwaretester geworden!",
+            desc: "Nikolaj hat während seiner ersten drei Jahre mehr Erfahrung als die meisten gesammelt. Als manueller Tester erzählt er von seiner Erfahrung als Softwaretester und bei WAMOCON!",
+            id: "xmJv9iLqQAo",
+          },
+          {
+            tab: "Nikolaj 5 Jahre",
+            title: "Als ISTQB zertifizierter Trainer kurz vor dem Bachelor!",
+            desc: "In diesem Video erzählt Nikolaj über sein Team, seine Errungenschaften, Erfahrungen und wie ihm das 3-Säulen-Modell dabei hilft Vollzeit zu Arbeiten und nebenbei ein Studium zu meistern!",
+            id: "EiIe5ndbKXc",
+          },
+          {
+            tab: "Nikolaj 8 Jahre",
+            title: "Bachelor Absolvent mithilfe des 360° Booster System!",
+            desc: "Auf die letzten acht Jahre zurück geblickt erzählt Nikolaj über seine Erfahrungen mit WAMOCON und wie die WAMOCON ihm dabei geholfen hat, sein Studium zu absolvieren als Dualer Student!",
+            id: "1Sa1i3lVxNQ",
+          },
+        ],
+      },
+      {
+        name: "Erwin Moretz",
+        img: "/images/team-erwin.png",
+        bio: [
+          "Mentor für alle Neuankömmlinge bei der WAMOCON!",
+          "Über 9 Jahre Erfahrung als IT-Berater und Testautomatisierer!",
+          "Technik und IT-Spezialist in der WAMOCON!",
+        ],
+        videos: [
+          {
+            tab: "Erwin 3 Jahre",
+            title: "Vom verlorenem Studium zum Softwaretester mit der WAMOCON!",
+            desc: "Erwin erzählt von seiner Zeit bei der WAMOCON und der familiären Atmosphäre, welche ihn umgehauen hat. Außerdem gibt er einen Einblick in einen normalen Arbeitstag!",
+            id: "Ce2tkeztG4Q",
+          },
+          {
+            tab: "Erwin 6 Jahre",
+            title: "Unterstützung bei dem Studium wie nirgends anders!",
+            desc: "In diesem Video erzählt Erwin darüber, wie das gesamte Team der WAMOCON ihn dabei unterstützt hat, das Studium zu bewältigen, wie er sich persönlich weiter entwickelt hat und das 3-Säulen-Modell!",
+            id: "VEhIB9MjTzk",
+          },
+          {
+            tab: "Erwin 9 Jahre",
+            title: "Mentor aller Neuankömmlinge in der WAMOCON!",
+            desc: "Im Hinblick auf die letzten neun Jahre erzählt Erwin über seine einzigartige Rolle, der IT-Spezialist der WAMOCON zu sein und verrät, was für Zielgruppen und Leute für die WAMOCON geeignet sind!",
+            id: "EirXroGNThw",
+          },
+        ],
+      },
+    ]
+  : [
+      {
+        name: "Daniel Moretz",
+        img: "/images/team-daniel.png",
+        bio: [
+          "User of the most modern test methods such as SAFe and SCRUM!",
+          "Longest-standing member of WAMOCON!",
+          "First point of contact for the optimization of test processes, accuracy and reliability!",
+        ],
+        videos: [
+          {
+            tab: "Daniel 3 years",
+            title: "From de-registration to certified software tester!",
+            desc: "Daniel talks about his way to and with WAMOCON. How he experienced his last three years and how WAMOCON helped him. Watch the video to learn more!",
+            id: "1gUabbUHecg",
+          },
+          {
+            tab: "Daniel 6 years",
+            title: "Completed bachelor's degree and ISTQB certified trainer!",
+            desc: "In this video Daniel talks about the last six years. From his completed bachelor's degree and how WAMOCON supported him, to his new role as a trainer!",
+            id: "3MYZKQE3xvc",
+          },
+          {
+            tab: "Daniel 9 years",
+            title: "On board for almost a decade with more experience than ever before!",
+            desc: "In this video Daniel talks about his entire time. All his experiences, his next goals and his greatest successes. He also shares which target groups are suitable for WAMOCON!",
+            id: "kaQGuJOHjwg",
+          },
+        ],
+      },
+      {
+        name: "Nikolaj Schefner",
+        img: "/images/team-nikolaj.png",
+        bio: [
+          "Completed the bachelor's degree smoothly with the 360° Booster System!",
+          "Master of all kinds of manual and automated tests in all stages!",
+          "ISTQB certified trainer for all courses of the WAMOCON Academy!",
+        ],
+        videos: [
+          {
+            tab: "Nikolaj 3 years",
+            title: "Started as a dual student and became a certified software tester!",
+            desc: "Nikolaj gained more experience than most during his first three years. As a manual tester he talks about his experience as a software tester and at WAMOCON!",
+            id: "xmJv9iLqQAo",
+          },
+          {
+            tab: "Nikolaj 5 years",
+            title: "As an ISTQB certified trainer shortly before the bachelor's degree!",
+            desc: "In this video Nikolaj talks about his team, his achievements, experiences and how the 3-pillar model helps him to work full-time and master a degree on the side!",
+            id: "EiIe5ndbKXc",
+          },
+          {
+            tab: "Nikolaj 8 years",
+            title: "Bachelor graduate with the help of the 360° Booster System!",
+            desc: "Looking back on the last eight years, Nikolaj talks about his experiences with WAMOCON and how WAMOCON helped him to complete his studies as a dual student!",
+            id: "1Sa1i3lVxNQ",
+          },
+        ],
+      },
+      {
+        name: "Erwin Moretz",
+        img: "/images/team-erwin.png",
+        bio: [
+          "Mentor for all newcomers at WAMOCON!",
+          "Over 9 years of experience as an IT consultant and test automation engineer!",
+          "Technology and IT specialist at WAMOCON!",
+        ],
+        videos: [
+          {
+            tab: "Erwin 3 years",
+            title: "From a lost degree to software tester with WAMOCON!",
+            desc: "Erwin talks about his time at WAMOCON and the family-like atmosphere that blew him away. He also gives an insight into a normal working day!",
+            id: "Ce2tkeztG4Q",
+          },
+          {
+            tab: "Erwin 6 years",
+            title: "Support with your studies like nowhere else!",
+            desc: "In this video Erwin talks about how the entire WAMOCON team supported him in mastering his studies, how he developed personally and about the 3-pillar model!",
+            id: "VEhIB9MjTzk",
+          },
+          {
+            tab: "Erwin 9 years",
+            title: "Mentor of all newcomers at WAMOCON!",
+            desc: "Looking back on the last nine years, Erwin talks about his unique role of being the IT specialist of WAMOCON and reveals which target groups and people are suitable for WAMOCON!",
+            id: "EirXroGNThw",
+          },
+        ],
+      },
+    ];
+---
+
+<section class="voices">
+  <div class="wrap hero">
+    <h1><span class="t-red">{heroTitle}</span></h1>
+    <p class="lead">{heroLead}</p>
+  </div>
+
+  {members.map((m, mi) => (
+    <div class="wrap member">
+      <div class="member-head">
+        <img src={m.img} alt={m.name} class="avatar" loading="lazy" />
+        <div>
+          <h2 class="t-white">{m.name}</h2>
+          <ul class="bio">{m.bio.map((b) => <li>{b}</li>)}</ul>
+        </div>
+      </div>
+
+      <div class="tabs" role="tablist">
+        {m.videos.map((v, vi) => (
+          <button class={`tab${vi === 0 ? " active" : ""}`} data-member={mi} data-video={vi}>{v.tab}</button>
+        ))}
+      </div>
+
+      <div class="panels">
+        {m.videos.map((v, vi) => (
+          <div class={`panel${vi === 0 ? " active" : ""}`} data-member={mi} data-video={vi}>
+            <div class="video">
+              <iframe
+                loading="lazy"
+                src={`https://www.youtube-nocookie.com/embed/${v.id}`}
+                title={v.title}
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <div class="video-text">
+              <h3 class="t-red">{v.title}</h3>
+              <p>{v.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
+
+  <ContactBlock lang={lang} />
+</section>
+
+<style>
+  .voices {
+    color: var(--color-text);
+  }
+  .wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 4rem) 1.25rem;
+  }
+  .t-red {
+    color: var(--color-accent);
+  }
+  .t-white {
+    color: #fff;
+  }
+  .hero {
+    text-align: center;
+  }
+  h1 {
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    margin: 0 0 1rem;
+    font-weight: var(--fw-bold);
+  }
+  .lead {
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin: 0 auto;
+    max-width: 60ch;
+  }
+  .member {
+    border-top: 1px solid var(--border-subtle);
+  }
+  .member-head {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.75rem;
+  }
+  .avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-accent);
+    flex-shrink: 0;
+  }
+  .member-head h2 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    margin: 0 0 0.75rem;
+  }
+  .bio {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+  .bio li {
+    margin-bottom: 0.3rem;
+  }
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .tab {
+    padding: 0.6rem 1.2rem;
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all var(--dur-fast) var(--ease-out);
+  }
+  .tab.active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
+  }
+  .panel {
+    display: none;
+    grid-template-columns: 1.3fr 1fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
+  }
+  .panel.active {
+    display: grid;
+  }
+  .video {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+  }
+  .video iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .video-text h3 {
+    font-size: 1.3rem;
+    margin: 0 0 1rem;
+    line-height: 1.3;
+  }
+  .video-text p {
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin: 0;
+  }
+  @media (max-width: 800px) {
+    .panel.active {
+      grid-template-columns: 1fr;
+    }
+    .member-head {
+      flex-direction: column;
+      text-align: center;
+      align-items: center;
+    }
+    .bio {
+      text-align: left;
+    }
+  }
+</style>
+
+<script>
+  function setupVoices() {
+    document.querySelectorAll<HTMLButtonElement>(".voices .tab").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const m = tab.dataset.member;
+        const v = tab.dataset.video;
+        document
+          .querySelectorAll<HTMLElement>(`.voices .tab[data-member="${m}"]`)
+          .forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+        document
+          .querySelectorAll<HTMLElement>(`.voices .panel[data-member="${m}"]`)
+          .forEach((p) => p.classList.remove("active"));
+        const panel = document.querySelector<HTMLElement>(
+          `.voices .panel[data-member="${m}"][data-video="${v}"]`
+        );
+        if (panel) panel.classList.add("active");
+      });
+    });
+  }
+
+  setupVoices();
+  document.addEventListener("astro:after-swap", setupVoices);
+</script>

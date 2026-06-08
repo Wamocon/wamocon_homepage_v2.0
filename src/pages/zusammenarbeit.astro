@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CooperationPage from '../components/sections/CooperationPage.astro';
+
+const lang = 'de' as const;
+---
+
+<BaseLayout
+  title="Zusammenarbeit — WAMOCON GmbH"
+  description="WAMOCON & Provadis: praxisnahe IT-Ausbildung mit IHK-Zertifizierung und einem starken Partnernetzwerk."
+  lang={lang}
+>
+  <CooperationPage lang={lang} />
+</BaseLayout>

@@ -1,0 +1,51 @@
+---
+/** Simple legal / text page wrapper with a heading and slotted prose. */
+interface Props {
+  title: string;
+  updated?: string;
+}
+const { title, updated } = Astro.props;
+---
+
+<section class="section legal">
+  <div class="container legal__inner">
+    <h1 data-reveal="up">{title}</h1>
+    {updated && <p class="legal__updated text-muted" data-reveal="up">{updated}</p>}
+    <div class="legal__body" data-reveal="up" data-reveal-delay="80">
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .legal {
+    padding-top: clamp(3rem, 7vw, 5.5rem);
+  }
+  .legal__inner {
+    max-width: 820px;
+  }
+  .legal h1 {
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    margin-bottom: 1rem;
+  }
+  .legal__updated {
+    margin-bottom: 2.5rem;
+  }
+  .legal__body :global(h2) {
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.4rem;
+  }
+  .legal__body :global(p),
+  .legal__body :global(ul) {
+    margin-bottom: 1rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+  .legal__body :global(ul) {
+    padding-left: 1.25rem;
+  }
+  .legal__body :global(a) {
+    color: var(--color-accent);
+  }
+</style>

@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HomePage from '../components/sections/home/HomePage.astro';
+import { home } from '../data/home';
+
+const lang = 'de' as const;
+---
+
+<BaseLayout title={home.seo.title[lang]} description={home.seo.description[lang]} lang={lang}>
+  <HomePage lang={lang} />
+</BaseLayout>

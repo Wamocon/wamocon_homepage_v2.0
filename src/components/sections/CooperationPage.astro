@@ -1,0 +1,501 @@
+---
+import ContactBlock from "./ContactBlock.astro";
+import type { Lang } from "../../i18n/config";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const de = lang === "de";
+
+const c = de
+  ? {
+      heroTitle: "Willkommen in der Zukunft der IT-Bildung",
+      heroLead:
+        "Gemeinsam mit Universitäten weltweit gestalten wir Innovation und Exzellenz. Werden Sie Teil unserer dynamischen Community und bringen Sie Ihre Vision voran.",
+      heroBtn: "Jetzt informieren!",
+      heroSub:
+        "Werde Teil der IT-Elite und erlebe praxisnahe Ausbildung gepaart mit erstklassigem Testmanagement.",
+      heroBtn2: "Jetzt durchstarten!",
+      ihkHead: "Ausbildung mit IHK-Zertifizierung",
+      ihkBadge: "2 IHK-Azubis",
+      ihkText:
+        "Bei WAMOCON bilden wir aktuell 2 Auszubildende zum Fachinformatiker Anwendungsentwicklung (IHK) aus. Die Ausbildung erfolgt im dualen System – praxisnah in unserem Unternehmen und theoretisch in der Berufsschule. Von Tag 1 sind unsere Azubis vollwertige Teammitglieder und arbeiten an echten Projekten mit.",
+      ihkFacts: [
+        { k: "Ausbildungsberuf", v: "Fachinformatiker Anwendungsentwicklung" },
+        { k: "Abschluss", v: "IHK-Prüfung (bundesweit anerkannt)" },
+        { k: "Dauer", v: "3 Jahre (Verkürzung möglich)" },
+        { k: "Zuständige IHK", v: "IHK Frankfurt am Main" },
+      ],
+      provadisHead: "Mit WAMOCON & Provadis zum IT-Erfolg: Praxis. Karriere. Zukunft.",
+      provadisCards: [
+        {
+          t: "Praxis trifft Theorie, Ihre Ausbildung für die IT-Welt von morgen",
+          d: "Die Provadis Hochschule bietet Ihnen eine praxisnahe Ausbildung, die Theorie und Praxis nahtlos verbindet. Lernen Sie von Top-Experten der Branche und sammeln Sie wertvolle Erfahrung in realen Projekten. So starten Sie perfekt vorbereitet in Ihre IT-Karriere.",
+        },
+        {
+          t: "Karrierechancen, die zählen, über 100 starke Partner",
+          d: "Nutzen Sie unser starkes Partnernetzwerk und starten Sie durch: WAMOCON öffnet Ihnen die Tür zu einer erfolgreichen IT-Karriere.",
+        },
+        {
+          t: "Innovativ, digital, nachhaltig, Ihr Weg zum Erfolg",
+          d: "Unsere innovativen Programme bereiten Sie perfekt auf die digitale Zukunft vor. Mit einem klaren Fokus auf Digitalisierung und Nachhaltigkeit geben wir Ihnen die Werkzeuge für eine erfolgreiche IT-Karriere in der Industrie 4.0.",
+        },
+      ],
+      qualityHead: "WAMOCON: Qualität erleben",
+      qualityCards: [
+        {
+          t: "Perfektes Testmanagement",
+          d: "Qualität ist unsere Mission. Unsere Lösungen erfüllen höchste Standards und stärken dein Können, praxisnah und individuell.",
+        },
+        {
+          t: "Betreuung, die zählt",
+          d: "Wir fördern dein Potenzial mit maßgeschneiderten Schulungen und persönlicher Betreuung, für deinen Erfolg.",
+        },
+      ],
+      futureHead: "Gestalte deine Zukunft mit uns",
+      futureText:
+        "Mit WAMOCON und der Provadis Hochschule stehen dir alle Türen offen, um dein volles Potenzial auszuschöpfen. Ob du Student, junger Berater oder Quereinsteiger bist, bring deine Karriere aufs nächste Level und beeindrucke Führungskräfte mit deinen Fähigkeiten. Stell dir vor, du wirst Teil eines dynamischen Netzwerks, das die IT-Welt von morgen gestaltet.",
+      contactHead: "Einfach und direkt: Nimm Kontakt mit uns auf",
+      contactSub: "Gestalte deine Zukunft mit uns!",
+      partners: [
+        {
+          name: "Provadis School of International Management and Technology AG",
+          addr: "Industriepark Höchst, Geb. B845, 65926 Frankfurt am Main",
+          contactLabel: "Ihre Ansprechpartnerin ist Frau Kirsten Löw, Leiterin Hochschulvertrieb",
+          phone: "+49 69 305-7349",
+          phoneHref: "tel:+49693057349",
+          email: "kirsten.loew@provadis-hochschule.de",
+        },
+        {
+          name: "WAMOCON GmbH",
+          addr: "Mergenthalerallee 79 - 81, 65760 Eschborn",
+          contactLabel: "Ihr Ansprechpartner ist Herr Waleri Moretz",
+          phone: "+49-6196-58-38-311",
+          phoneHref: "tel:+4961965838311",
+          email: "waleri.moretz@wamocon.com",
+        },
+      ],
+      formHead: "Kontaktiere uns",
+      formSub: "Wir melden uns schnellstmöglich bei dir, um alle deine Fragen zu klären.",
+      fName: "Name/Organisation",
+      fPhone: "Telefon",
+      fEmail: "E-Mail",
+      fConsent:
+        "Hiermit bestätige ich, dass ich die Datenschutzerklärung gelesen habe und damit einverstanden bin, dass die WAMOCON GmbH meine Daten, einschließlich personenbezogener Daten, speichern und verarbeiten darf.",
+      fBtn: "Anfrage senden",
+    }
+  : {
+      heroTitle: "Welcome to the future of IT education",
+      heroLead:
+        "Together with universities worldwide, we shape innovation and excellence. Become part of our dynamic community and advance your vision.",
+      heroBtn: "Find out more now!",
+      heroSub:
+        "Become part of the IT elite and experience practical training combined with first-class test management.",
+      heroBtn2: "Get started now!",
+      ihkHead: "Training with IHK certification",
+      ihkBadge: "2 IHK apprentices",
+      ihkText:
+        "At WAMOCON we are currently training 2 apprentices to become IT specialists for application development (IHK). The training takes place in the dual system – practical in our company and theoretical at the vocational school. From day 1 our apprentices are full team members and work on real projects.",
+      ihkFacts: [
+        { k: "Training occupation", v: "IT specialist for application development" },
+        { k: "Qualification", v: "IHK examination (nationally recognized)" },
+        { k: "Duration", v: "3 years (shortening possible)" },
+        { k: "Responsible IHK", v: "IHK Frankfurt am Main" },
+      ],
+      provadisHead: "With WAMOCON & Provadis to IT success: Practice. Career. Future.",
+      provadisCards: [
+        {
+          t: "Practice meets theory, your training for the IT world of tomorrow",
+          d: "The Provadis University offers you practical training that seamlessly combines theory and practice. Learn from top industry experts and gain valuable experience in real projects. This way you start perfectly prepared into your IT career.",
+        },
+        {
+          t: "Career opportunities that count, over 100 strong partners",
+          d: "Use our strong partner network and take off: WAMOCON opens the door to a successful IT career for you.",
+        },
+        {
+          t: "Innovative, digital, sustainable, your path to success",
+          d: "Our innovative programs prepare you perfectly for the digital future. With a clear focus on digitization and sustainability, we give you the tools for a successful IT career in Industry 4.0.",
+        },
+      ],
+      qualityHead: "WAMOCON: experience quality",
+      qualityCards: [
+        {
+          t: "Perfect test management",
+          d: "Quality is our mission. Our solutions meet the highest standards and strengthen your skills, practical and individual.",
+        },
+        {
+          t: "Support that counts",
+          d: "We promote your potential with tailor-made training and personal support, for your success.",
+        },
+      ],
+      futureHead: "Shape your future with us",
+      futureText:
+        "With WAMOCON and the Provadis University all doors are open to you to fully exploit your potential. Whether you are a student, young consultant or career changer, take your career to the next level and impress executives with your skills. Imagine becoming part of a dynamic network that shapes the IT world of tomorrow.",
+      contactHead: "Simple and direct: get in touch with us",
+      contactSub: "Shape your future with us!",
+      partners: [
+        {
+          name: "Provadis School of International Management and Technology AG",
+          addr: "Industriepark Höchst, Geb. B845, 65926 Frankfurt am Main",
+          contactLabel: "Your contact is Ms. Kirsten Löw, Head of University Sales",
+          phone: "+49 69 305-7349",
+          phoneHref: "tel:+49693057349",
+          email: "kirsten.loew@provadis-hochschule.de",
+        },
+        {
+          name: "WAMOCON GmbH",
+          addr: "Mergenthalerallee 79 - 81, 65760 Eschborn",
+          contactLabel: "Your contact is Mr. Waleri Moretz",
+          phone: "+49-6196-58-38-311",
+          phoneHref: "tel:+4961965838311",
+          email: "waleri.moretz@wamocon.com",
+        },
+      ],
+      formHead: "Leave us your callback request!",
+      formSub: "We will get back to you as soon as possible to clarify all your questions.",
+      fName: "Name/Organization",
+      fPhone: "Telephone",
+      fEmail: "E-Mail",
+      fConsent:
+        "I hereby confirm that I have read the privacy policy and agree that WAMOCON GmbH may store and process my data, including personal data.",
+      fBtn: "Send request",
+    };
+
+const mailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(
+  de ? "Anfrage Zusammenarbeit" : "Cooperation request"
+)}`;
+---
+
+<section class="coop">
+  <!-- HERO -->
+  <div class="wrap hero">
+    <div class="hero-text">
+      <h1><span class="t-red">{c.heroTitle}</span></h1>
+      <p class="lead">{c.heroLead}</p>
+      <p class="lead">{c.heroSub}</p>
+      <div class="hero-btns">
+        <a href="#kontakt" class="btn">{c.heroBtn}</a>
+        <a href="#kontakt" class="btn ghost">{c.heroBtn2}</a>
+      </div>
+    </div>
+    <div class="hero-img">
+      <img src="/images/coop-provadis.jpg" alt="WAMOCON & Provadis" loading="lazy" />
+    </div>
+  </div>
+
+  <!-- IHK -->
+  <div class="wrap ihk">
+    <div class="ihk-img">
+      <img src="/images/coop-student.jpg" alt="IHK Ausbildung" loading="lazy" />
+    </div>
+    <div class="ihk-body">
+      <h2 class="head"><span class="t-white">{c.ihkHead}</span></h2>
+      <div class="badge">{c.ihkBadge}</div>
+      <p class="lead">{c.ihkText}</p>
+      <dl class="facts">
+        {c.ihkFacts.map((f) => (
+          <div class="fact">
+            <dt>{f.k}</dt>
+            <dd>{f.v}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </div>
+
+  <!-- PROVADIS -->
+  <div class="wrap">
+    <h2 class="head center-h"><span class="t-red">{c.provadisHead}</span></h2>
+    <div class="grid3">
+      {c.provadisCards.map((card) => (
+        <article class="card">
+          <h3>{card.t}</h3>
+          <p>{card.d}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <!-- QUALITY -->
+  <div class="wrap">
+    <h2 class="head center-h"><span class="t-white">{c.qualityHead}</span></h2>
+    <div class="grid2">
+      {c.qualityCards.map((card) => (
+        <article class="card">
+          <h3>{card.t}</h3>
+          <p>{card.d}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <!-- FUTURE -->
+  <div class="wrap future">
+    <h2 class="head"><span class="t-red">{c.futureHead}</span></h2>
+    <p class="lead">{c.futureText}</p>
+  </div>
+
+  <!-- CONTACT PARTNERS + FORM -->
+  <div class="wrap contact-grid" id="kontakt">
+    <div class="partners">
+      <h2 class="head"><span class="t-red">{c.contactHead}</span></h2>
+      <p class="lead">{c.contactSub}</p>
+      {c.partners.map((p) => (
+        <div class="partner">
+          <h3>{p.name}</h3>
+          <p class="addr">{p.addr}</p>
+          <p class="contact-label">{p.contactLabel}</p>
+          <p><a href={p.phoneHref}>{p.phone}</a></p>
+          <p><a href={`mailto:${p.email}`}>{p.email}</a></p>
+        </div>
+      ))}
+    </div>
+    <div class="form-box">
+      <h3 class="form-head">{c.formHead}</h3>
+      <p class="lead">{c.formSub}</p>
+      <form class="coop-form" action={mailto} method="post" enctype="text/plain">
+        <input type="text" name="Name" placeholder={c.fName} required />
+        <input type="tel" name="Telefon" placeholder={c.fPhone} required />
+        <input type="email" name="Email" placeholder={c.fEmail} required />
+        <label class="consent">
+          <input type="checkbox" required />
+          <span>{c.fConsent}</span>
+        </label>
+        <button type="submit" class="btn">{c.fBtn}</button>
+      </form>
+    </div>
+  </div>
+
+  <ContactBlock lang={lang} />
+</section>
+
+<style>
+  .coop {
+    color: var(--color-text);
+  }
+  .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 5rem) 1.25rem;
+  }
+  .t-red {
+    color: var(--color-accent);
+  }
+  .t-white {
+    color: #fff;
+  }
+  h1 {
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    line-height: 1.12;
+    margin: 0 0 1.25rem;
+    font-weight: var(--fw-bold);
+  }
+  .head {
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    line-height: 1.18;
+    margin: 0 0 1.5rem;
+    font-weight: var(--fw-bold);
+  }
+  .center-h {
+    text-align: center;
+    max-width: 24ch;
+    margin-inline: auto;
+  }
+  .lead {
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin: 0 0 1.25rem;
+    max-width: 70ch;
+  }
+  .btn {
+    display: inline-block;
+    padding: 0.85rem 1.75rem;
+    background: var(--color-accent);
+    color: #fff;
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    font-weight: var(--fw-semibold);
+    border: none;
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+  .btn:hover {
+    background: var(--color-accent-hover);
+  }
+  .btn.ghost {
+    background: transparent;
+    border: 1px solid var(--border-strong);
+  }
+  .btn.ghost:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+  .hero {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .hero-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+  .hero-img img,
+  .ihk-img img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+  }
+  .ihk {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--color-accent);
+    color: #fff;
+    padding: 0.4rem 1rem;
+    border-radius: var(--radius-sm);
+    font-weight: var(--fw-semibold);
+    margin-bottom: 1.25rem;
+  }
+  .facts {
+    margin: 1.5rem 0 0;
+    display: grid;
+    gap: 0.85rem;
+  }
+  .fact {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 1rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .fact dt {
+    color: var(--color-accent);
+    font-weight: var(--fw-semibold);
+  }
+  .fact dd {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+  .grid3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .grid2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .card {
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+  }
+  .card h3 {
+    color: var(--color-accent);
+    font-size: 1.15rem;
+    margin: 0 0 0.75rem;
+  }
+  .card p {
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    margin: 0;
+  }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .partner {
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .partner h3 {
+    color: #fff;
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem;
+  }
+  .partner .addr {
+    color: var(--color-text-muted);
+    margin: 0 0 0.75rem;
+  }
+  .partner .contact-label {
+    color: var(--color-text);
+    margin: 0 0 0.5rem;
+  }
+  .partner p {
+    margin: 0.25rem 0;
+    line-height: 1.5;
+  }
+  .partner a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .form-box {
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+  }
+  .form-head {
+    color: #fff;
+    font-size: 1.3rem;
+    margin: 0 0 0.75rem;
+  }
+  .coop-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .coop-form input[type="text"],
+  .coop-form input[type="tel"],
+  .coop-form input[type="email"] {
+    padding: 0.9rem 1rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    color: #fff;
+    font-size: 1rem;
+  }
+  .coop-form input::placeholder {
+    color: var(--color-text-muted);
+  }
+  .consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  @media (max-width: 900px) {
+    .hero,
+    .ihk,
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+    .grid3,
+    .grid2 {
+      grid-template-columns: 1fr;
+    }
+    .fact {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+  }
+</style>

@@ -1,0 +1,17 @@
+{
+  "name": "wamocon-homepage",
+  "type": "module",
+  "version": "2.0.0",
+  "private": true,
+  "description": "WAMOCON company homepage - clean, component-based rebuild (Astro).",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^4.16.18"
+  }
+}

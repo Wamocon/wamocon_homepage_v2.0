@@ -1,0 +1,81 @@
+/* ==========================================================================
+   WAMOCON Design Tokens
+   Single source of truth for colors, typography, spacing and motion.
+   Edit values here to re-theme the entire site.
+   ========================================================================== */
+
+:root {
+  /* ---- Brand colors ---- */
+  --color-bg: #101010;
+  --color-bg-elevated: #181818;
+  --color-text: #ffffff;
+  --color-text-muted: rgba(255, 255, 255, 0.66);
+  --color-text-subtle: rgba(255, 255, 255, 0.45);
+  --color-accent: #f40e0e;
+  --color-accent-2: #f40e0e;
+  --color-accent-hover: #ff3b30;
+
+  /* ---- Surfaces & borders ---- */
+  --surface-card: linear-gradient(165deg, #1e1e1e 0%, #141414 45%, #181818 100%);
+  --surface-card-hover: linear-gradient(165deg, #242424 0%, #181818 45%, #1e1e1e 100%);
+  --border-subtle: rgba(255, 255, 255, 0.2);
+  --border-strong: rgba(255, 255, 255, 0.32);
+  --divider: #545454;
+
+  /* ---- Decorative glows ---- */
+  --glow-top: rgba(244, 14, 14, 0.16);
+  --glow-side: rgba(244, 14, 14, 0.07);
+
+  /* ---- Typography ---- */
+  --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Helvetica, Arial, sans-serif;
+
+  --fs-h1: clamp(2.8rem, 7vw, 4.375rem); /* 45px -> 70px */
+  --fs-h2: clamp(2.25rem, 6vw, 5rem); /* 36px -> 80px */
+  --fs-h3: clamp(1.5rem, 3vw, 2.25rem);
+  --fs-h4: clamp(1.25rem, 2vw, 1.5rem);
+  --fs-body: clamp(0.95rem, 1.4vw, 1.125rem); /* 14px -> 18px */
+  --fs-small: 0.875rem;
+
+  --lh-tight: 1.06;
+  --lh-snug: 1.2;
+  --lh-body: 1.6;
+
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* ---- Layout ---- */
+  --container-max: 1680px;
+  --container-pad: clamp(1rem, 3vw, 3rem);
+  --header-max: 2100px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 100px;
+
+  /* ---- Spacing scale ---- */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 6rem;
+  --space-2xl: 8rem;
+  --section-gap: clamp(4rem, 9vw, 8rem);
+
+  /* ---- Motion ---- */
+  --ease-out: cubic-bezier(0.25, 0.8, 0.25, 1);
+  --dur-fast: 0.2s;
+  --dur-med: 0.4s;
+  --dur-slow: 0.6s;
+
+  /* ---- Elevation ---- */
+  --shadow-card: 0 18px 40px -20px rgba(0, 0, 0, 0.8);
+  --shadow-accent: 0 12px 40px -12px rgba(244, 14, 14, 0.35);
+
+  /* ---- Z-index scale ---- */
+  --z-header: 100;
+  --z-overlay: 200;
+  --z-modal: 300;
+}
