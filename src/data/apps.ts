@@ -65,7 +65,7 @@ export const appCategories: AppCategory[] = [
       },
       {
         name: 'belegbox',
-        url: 'https://wamocon.  github.io/belegbox_lp/' ,
+        url: 'https://wamocon.github.io/belegbox_lp/' ,
         description: {
           de: 'Digitale Belegverwaltung und Buchhaltungsvorbereitung für effiziente Finanzprozesse.',
           en: 'Digital receipt management and accounting preparation for efficient financial processes.',
