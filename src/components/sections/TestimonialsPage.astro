@@ -49,7 +49,8 @@ const academyVideos = [
 
 const c = de
   ? {
-      heroTitle: 'Kundenstimmen: Erfahrungen mit WAMOCON GmbH',
+      heroheading:'Kundenstimmen:', 
+      heroTitle: 'Erfahrungen mit WAMOCON GmbH',
       heroLead: 'Authentische Stimmen unserer Kunden.',
       heroSub: 'Lesen Sie, was unsere Kunden über die Qualität unserer Arbeit und den erstklassigen Kundenservice bei der WAMOCON GmbH sagen.',
       more: 'Mehr lesen',
@@ -62,10 +63,13 @@ const c = de
       formSub: 'Hinterlassen Sie Ihre Kontakte, unter denen wir Sie kontaktieren können',
       fName: 'Ihr Name',
       fPhone: 'Telefon',
-      fSend: 'Senden',
+      fComment: 'Kommentare/Link zur Datei',
+      fConsent: 'Hiermit bestätige ich, dass ich die Datenschutzerklärung gelesen habe und damit einverstanden bin, dass die WAMOCON GmbH meine Daten, einschließlich personenbezogener Daten, speichern und verarbeiten darf.',
+      fSend: 'Anfrage senden',
       close: 'Zurück',
     }
   : {
+        heroheading:'Customer voices:',
       heroTitle: 'Customer voices: experiences with WAMOCON GmbH',
       heroLead: 'Authentic voices of our customers.',
       heroSub: 'Read what our customers say about the quality of our work and the first-class customer service at WAMOCON GmbH.',
@@ -79,7 +83,9 @@ const c = de
       formSub: 'Leave your contact details so we can get in touch with you',
       fName: 'Your name',
       fPhone: 'Phone',
-      fSend: 'Send',
+      fComment: 'Comments / link to file',
+      fConsent: 'I hereby confirm that I have read the Privacy Policy and agree that WAMOCON GmbH may store and process my data, including personal data.',
+      fSend: 'Send inquiry',
       close: 'Back',
     };
 ---
@@ -87,6 +93,7 @@ const c = de
 <!-- HERO -->
 <section class="tm-hero">
   <div class="container">
+    <h1 class="t-red">{c.heroheading}</h1>
     <h1 class="tm-hero__title">{c.heroTitle}</h1>
     <p class="tm-hero__sub"><strong>{c.heroLead}</strong> {c.heroSub}</p>
   </div>
@@ -164,6 +171,17 @@ const c = de
     <form id="review-form" class="tm-form">
       <input type="text" name="name" placeholder={c.fName} required />
       <input type="tel" name="phone" placeholder={c.fPhone} required />
+      <textarea name="comment" placeholder={c.fComment} rows="4"></textarea>
+      <label class="tm-form__consent">
+        <input type="checkbox" name="consent" required />
+        <span>
+          {de ? 'Hiermit bestätige ich, dass ich die ' : 'I hereby confirm that I have read the '}
+          <a href={de ? '/datenschutz/' : '/en/privacy/'}>{de ? 'Datenschutzerklärung' : 'Privacy Policy'}</a>
+          {de
+            ? ' gelesen habe und damit einverstanden bin, dass die WAMOCON GmbH meine Daten, einschließlich personenbezogener Daten, speichern und verarbeiten darf.'
+            : ' and agree that WAMOCON GmbH may store and process my data, including personal data.'}
+        </span>
+      </label>
       <button type="submit" class="tm-form__send">{c.fSend}</button>
     </form>
     <p class="tm-form__thanks" id="review-thanks" hidden>{de ? 'Vielen Dank! Wir melden uns bei Ihnen.' : 'Thank you! We will get in touch with you.'}</p>
@@ -254,15 +272,31 @@ const c = de
   .tm-modal__title { font-size: 1.5rem; margin-bottom: 0.6rem; }
   .tm-modal__sub { color: var(--color-text-muted); margin-bottom: 1.4rem; }
   .tm-form { display: flex; flex-direction: column; gap: 1rem; }
-  .tm-form input {
+  .tm-form input[type="text"],
+  .tm-form input[type="tel"],
+  .tm-form textarea {
     padding: 0.9rem 1rem;
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-sm);
     color: #fff;
     font-size: 1rem;
+    font-family: inherit;
+    width: 100%;
   }
-  .tm-form input::placeholder { color: rgba(255, 255, 255, 0.5); }
+  .tm-form textarea { resize: vertical; min-height: 110px; }
+  .tm-form input::placeholder,
+  .tm-form textarea::placeholder { color: rgba(255, 255, 255, 0.5); }
+  .tm-form__consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+  .tm-form__consent input { margin-top: 0.2rem; flex-shrink: 0; accent-color: var(--color-accent); }
+  .tm-form__consent a { color: var(--color-accent); }
   .tm-form__send {
     padding: 0.9rem 2rem;
     background: var(--color-accent);

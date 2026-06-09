@@ -334,15 +334,17 @@ const voices = de
 
 const apply = de
   ? {
-      heading1: 'Was wir',
-      heading2: 'von dir brauchen',
+      headPre: 'Was wir von ',
+      headAccent: 'dir',
+      headPost: ' brauchen',
       docs: ['Anschreiben', 'Lebenslauf', 'Praktika', 'Schulzeugnisse'],
       line1: 'Schicke an folgende E-Mail Adresse deine Bewerbung samt Unterlagen:',
       line2: 'Wir antworten dir innerhalb von 48 Stunden.',
     }
   : {
-      heading1: 'What we',
-      heading2: 'need from you',
+      headPre: 'What we need from ',
+      headAccent: 'you',
+      headPost: '',
       docs: ['Cover letter', 'CV', 'Internships', 'School certificates'],
       line1: 'Send your application including documents to the following e-mail address:',
       line2: 'We will reply to you within 48 hours.',
@@ -521,10 +523,18 @@ const apply = de
 <section class="section" id="bewerbung">
   <div class="container">
     <h2 class="az-h2 az-h2--center">
-      <span class="t-red">{apply.heading1}</span> <span class="t-white">{apply.heading2}</span>
+      <span class="t-white">{apply.headPre}</span><span class="t-red">{apply.headAccent}</span><span class="t-white">{apply.headPost}</span>
     </h2>
     <ul class="docs">
-      {apply.docs.map((d2) => <li>{d2}</li>)}
+      {apply.docs.map((d2) => (
+        <li>
+          <svg class="docs__check" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
+            <rect x="2.5" y="2.5" width="19" height="19" rx="3" fill="none" stroke="currentColor" stroke-width="2" />
+            <path d="M7 12.5l3.2 3.2L17 8.8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="docs__label">{d2}</span>
+        </li>
+      ))}
     </ul>
     <div class="apply">
       <img
@@ -847,21 +857,27 @@ const apply = de
 
   /* ---- APPLY ---- */
   .docs {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem 3rem;
     list-style: none;
     padding: 0;
-    margin: 0 0 3rem;
+    margin: 0 auto 3rem;
+    max-width: 760px;
   }
   .docs li {
-    padding: 0.6rem 1.5rem;
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-pill);
-    background: var(--surface-card);
-    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .docs__check {
+    flex-shrink: 0;
+    color: var(--color-accent);
+  }
+  .docs__label {
+    font-size: clamp(1.15rem, 2vw, 1.6rem);
     font-weight: var(--fw-semibold);
+    color: var(--color-text);
   }
   .apply {
     display: grid;
@@ -898,6 +914,11 @@ const apply = de
   }
 
   /* ---- RESPONSIVE ---- */
+  @media (max-width: 600px) {
+    .docs {
+      grid-template-columns: 1fr;
+    }
+  }
   @media (max-width: 900px) {
     .azhero__inner,
     .persp,

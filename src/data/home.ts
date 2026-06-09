@@ -361,7 +361,7 @@ export const home: HomeContent = {
     paragraphs: {
       de: [
         'Softwaretester sind gefragter denn je, Tendenz steigend. Als offizieller Partner des International Software Testing Qualifications Board (ISTQB®) bietet die WAMOCON Akademie hochwertige Aus- und Weiterbildung im Softwaretesten.',
-        'Die Teilnehmenden erhalten alle Ressourcen und Kenntnisse, die sie für eine erfolgreiche Zertifizierung und IT-Karriere benötigen.',
+        'Softwaretester sind gefragter denn je, Tendenz steigend. Als offizieller Partner des International Software Testing Qualifications Board (ISTQB®) bietet die WAMOCON Akademie hochwertige Aus- und Weiterbildung im Softwaretesten.',
       ],
       en: [
         'Software testers are more in demand than ever, and the trend is rising. As an official partner of the International Software Testing Qualifications Board (ISTQB®), the WAMOCON Academy offers high-quality training and further education in software testing.',

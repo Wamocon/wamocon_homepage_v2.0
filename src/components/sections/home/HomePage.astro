@@ -15,9 +15,9 @@ const t = (k: keyof (typeof ui)['de']) => ui[lang][k];
 const aboutHref = nav.find((n) => n.key === 'about')![lang].href;
 const privacyHref = legalNav.privacy[lang].href;
 
-// Split a heading so the first word can be highlighted in CI red.
-const splitFirst = (s: string) => {
-  const first = s.split(' ')[0];
+// Split a heading so the first N words can be highlighted in CI red.
+const splitFirst = (s: string, n = 1) => {
+  const first = s.split(' ').slice(0, n).join(' ');
   return { first, rest: s.slice(first.length) };
 };
 // Split a heading so the last word can be highlighted in CI red.
@@ -29,7 +29,7 @@ const splitLast = (s: string) => {
 const aboutHeading = splitFirst(home.about.heading[lang]);
 const benefitsHeading = splitFirst(home.benefits.heading[lang]);
 const projectsHeading = splitLast(home.projects.heading[lang]);
-const academyHeading = splitFirst(home.academy.heading[lang]);
+const academyHeading = splitFirst(home.academy.heading[lang], 2);
 const projectCompanyLabel = lang === 'de' ? 'Über das Unternehmen' : 'About the company';
 const projectProjectLabel = lang === 'de' ? 'Über das Projekt' : 'About the project';
 
@@ -338,7 +338,13 @@ const modalMailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(modal.
     </div>
     <div class="education__video" data-reveal="right">
       <div class="video-frame">
-        <img src="/images/office-developers.jpg" alt={home.education.heading[lang]} loading="lazy" />
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${home.education.youtubeId}`}
+          title={home.education.heading[lang]}
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
       </div>
     </div>
   </div>
@@ -347,11 +353,17 @@ const modalMailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(modal.
 <!-- ============ ACADEMY CTA ============ -->
 <section class="section academy">
   <div class="container academy__card" data-reveal="zoom">
-    <h2>{home.academy.heading[lang]}</h2>
-    <p class="academy__subtitle">{home.academy.subtitle[lang]}</p>
-    <ul class="academy__points">
-      {home.academy.points[lang].map((p) => <li>{p}</li>)}
-    </ul>
+    <h2><span class="accent">{academyHeading.first}</span>{academyHeading.rest}</h2>
+    <div class="academy__rows">
+      {
+        home.academy.pairs.map((p) => (
+          <div class="academy__row">
+            <h3 class="academy__row-title">{p.title[lang]}</h3>
+            <p class="academy__row-text">{p.text[lang]}</p>
+          </div>
+        ))
+      }
+    </div>
     <Button href={home.academy.ctaUrl} target="_blank" variant="primary" size="lg">
       {home.academy.cta[lang]}
     </Button>
@@ -391,6 +403,9 @@ const modalMailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(modal.
   }
   .section-head h2 {
     margin-bottom: 1rem;
+  }
+  .accent {
+    color: var(--color-accent);
   }
   .video-frame {
     position: relative;
@@ -725,6 +740,8 @@ const modalMailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(modal.
     gap: 1.5rem;
   }
   .project-card {
+    display: flex;
+    flex-direction: column;
     padding: 2.5rem 2rem;
     background: var(--surface-card);
     border: 1px solid var(--border-subtle);
@@ -748,8 +765,23 @@ const modalMailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(modal.
     color: var(--color-accent);
     font-weight: var(--fw-semibold);
   }
-
-  /* ---------- clients ---------- */
+  .project-card__btn {
+    margin-top: auto;
+    width: 100%;
+    padding: 0.85rem 1rem;
+    font: inherit;
+    font-weight: var(--fw-semibold);
+    color: #fff;
+    background: var(--color-accent);
+    border: none;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast);
+  }
+  .project-card__btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(244, 14, 14, 0.35);
+  }
   .clients__list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -797,12 +829,38 @@ const modalMailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(modal.
     font-weight: var(--fw-semibold);
     margin: 1rem 0 1.5rem;
   }
-  .academy__points {
+  .academy__rows {
     display: grid;
-    gap: 0.75rem;
-    max-width: 620px;
-    margin: 0 auto 2rem;
+    gap: 0;
+    max-width: 760px;
+    margin: 1.75rem auto 2.25rem;
+    text-align: left;
+    position: relative;
+    z-index: 1;
+  }
+  .academy__row {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    align-items: start;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--border-subtle);
+  }
+  .academy__row:last-child {
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .academy__row-title {
+    font-size: 1.05rem;
+    font-weight: var(--fw-semibold);
+    color: var(--color-accent);
+    margin: 0;
+  }
+  .academy__row-text {
     color: var(--color-text-muted);
+    margin: 0;
+  }
+  @media (max-width: 640px) {
+    .academy__row { grid-template-columns: 1fr; gap: 0.5rem; }
   }
 
   /* ---------- tour ---------- */
@@ -894,7 +952,9 @@ const modalMailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(modal.
     inset: 0;
     z-index: 1000;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
     opacity: 0;
     visibility: hidden;
     transition: opacity var(--dur-med) var(--ease-out), visibility var(--dur-med);
@@ -911,19 +971,19 @@ const modalMailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(modal.
   }
   .lead-modal__panel {
     position: relative;
-    width: min(440px, 92vw);
-    max-height: 100vh;
+    width: min(460px, 100%);
+    max-height: 90vh;
     overflow-y: auto;
-    margin-left: auto;
     padding: clamp(1.75rem, 4vw, 2.75rem);
     background: var(--surface-card, #161616);
-    border-left: 1px solid var(--border-subtle);
-    box-shadow: -20px 0 60px rgba(0, 0, 0, 0.5);
-    transform: translateX(40px);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
+    transform: translateY(24px) scale(0.98);
     transition: transform var(--dur-med) var(--ease-out);
   }
   .lead-modal.is-open .lead-modal__panel {
-    transform: translateX(0);
+    transform: translateY(0) scale(1);
   }
   .lead-modal__close {
     position: absolute;
@@ -997,6 +1057,53 @@ const modalMailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(modal.
   .lead-modal__submit {
     width: 100%;
     margin-top: 0.5rem;
+    padding: 0.95rem 1.5rem;
+    font: inherit;
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.02em;
+    color: #fff;
+    background: var(--color-accent);
+    border: none;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast);
+  }
+  .lead-modal__submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(244, 14, 14, 0.4);
+  }
+
+  /* ---------- project detail modal (centered) ---------- */
+  .project-modal {
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+  }
+  .project-modal__panel {
+    width: min(760px, 100%);
+    max-height: 88vh;
+    margin: 0;
+    border-left: none;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    transform: translateY(24px) scale(0.98);
+  }
+  .project-modal.is-open .project-modal__panel {
+    transform: translateY(0) scale(1);
+  }
+  .project-modal__title {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    line-height: 1.15;
+    margin: 0 2.5rem 1.5rem 0;
+  }
+  .project-modal__label {
+    font-size: 1.1rem;
+    margin: 1.25rem 0 0.5rem;
+  }
+  .project-modal__text {
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin: 0;
   }
 </style>
 

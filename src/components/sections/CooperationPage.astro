@@ -61,6 +61,7 @@ const c = de
       partners: [
         {
           name: "Provadis School of International Management and Technology AG",
+          img: "/images/partner-provadis.jpg",
           addr: "Industriepark Höchst, Geb. B845, 65926 Frankfurt am Main",
           contactLabel: "Ihre Ansprechpartnerin ist Frau Kirsten Löw, Leiterin Hochschulvertrieb",
           phone: "+49 69 305-7349",
@@ -69,6 +70,7 @@ const c = de
         },
         {
           name: "WAMOCON GmbH",
+          img: "/images/partner-wamocon.png",
           addr: "Mergenthalerallee 79 - 81, 65760 Eschborn",
           contactLabel: "Ihr Ansprechpartner ist Herr Waleri Moretz",
           phone: "+49-6196-58-38-311",
@@ -137,6 +139,7 @@ const c = de
       partners: [
         {
           name: "Provadis School of International Management and Technology AG",
+          img: "/images/partner-provadis.jpg",
           addr: "Industriepark Höchst, Geb. B845, 65926 Frankfurt am Main",
           contactLabel: "Your contact is Ms. Kirsten Löw, Head of University Sales",
           phone: "+49 69 305-7349",
@@ -145,6 +148,7 @@ const c = de
         },
         {
           name: "WAMOCON GmbH",
+          img: "/images/partner-wamocon.png",
           addr: "Mergenthalerallee 79 - 81, 65760 Eschborn",
           contactLabel: "Your contact is Mr. Waleri Moretz",
           phone: "+49-6196-58-38-311",
@@ -176,11 +180,10 @@ const mailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(
       <p class="lead">{c.heroSub}</p>
       <div class="hero-btns">
         <a href="#kontakt" class="btn">{c.heroBtn}</a>
-        <a href="#kontakt" class="btn ghost">{c.heroBtn2}</a>
       </div>
     </div>
     <div class="hero-img">
-      <img src="/images/coop-provadis.jpg" alt="WAMOCON & Provadis" loading="lazy" />
+      <img class="float-shape" src="/images/coop-sphere.png" alt="" aria-hidden="true" loading="lazy" />
     </div>
   </div>
 
@@ -232,8 +235,13 @@ const mailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(
 
   <!-- FUTURE -->
   <div class="wrap future">
-    <h2 class="head"><span class="t-red">{c.futureHead}</span></h2>
-    <p class="lead">{c.futureText}</p>
+    <div class="future-text">
+      <h2 class="head"><span class="t-red">{c.futureHead}</span></h2>
+      <p class="lead">{c.futureText}</p>
+    </div>
+    <div class="future-img">
+      <img class="float-shape float-shape--slow" src="/images/coop-future-shape.png" alt="" aria-hidden="true" loading="lazy" />
+    </div>
   </div>
 
   <!-- CONTACT PARTNERS + FORM -->
@@ -243,6 +251,7 @@ const mailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(
       <p class="lead">{c.contactSub}</p>
       {c.partners.map((p) => (
         <div class="partner">
+          <img class="partner-img" src={p.img} alt={p.name} loading="lazy" />
           <h3>{p.name}</h3>
           <p class="addr">{p.addr}</p>
           <p class="contact-label">{p.contactLabel}</p>
@@ -350,6 +359,62 @@ const mailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-subtle);
   }
+  .hero-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .float-shape {
+    width: 100%;
+    max-width: 460px;
+    height: auto;
+    border: none !important;
+    border-radius: 0 !important;
+    will-change: transform;
+    animation: float-breathe 5s ease-in-out infinite;
+  }
+  .float-shape--slow {
+    animation-duration: 7s;
+    animation-name: float-breathe-rev;
+  }
+  @keyframes float-breathe {
+    0% {
+      transform: translateY(0) scale(1) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-14px) scale(1.03) rotate(-3deg);
+    }
+    100% {
+      transform: translateY(0) scale(1) rotate(0deg);
+    }
+  }
+  @keyframes float-breathe-rev {
+    0% {
+      transform: translateY(0) scale(1) rotate(0deg);
+    }
+    50% {
+      transform: translateY(14px) scale(0.97) rotate(3deg);
+    }
+    100% {
+      transform: translateY(0) scale(1) rotate(0deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .float-shape {
+      animation: none;
+    }
+  }
+  .future {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .future-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .ihk {
     display: grid;
     grid-template-columns: 0.9fr 1.1fr;
@@ -424,6 +489,16 @@ const mailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--border-subtle);
   }
+  .partner-img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 560 / 350;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    margin-bottom: 1.25rem;
+    display: block;
+  }
   .partner h3 {
     color: #fff;
     font-size: 1.1rem;
@@ -486,8 +561,12 @@ const mailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(
   @media (max-width: 900px) {
     .hero,
     .ihk,
+    .future,
     .contact-grid {
       grid-template-columns: 1fr;
+    }
+    .future-img {
+      order: -1;
     }
     .grid3,
     .grid2 {
