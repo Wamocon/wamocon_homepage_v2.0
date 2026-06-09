@@ -33,7 +33,7 @@ export const appCategories: AppCategory[] = [
       },
       {
         name: 'WMC Anforderungsportal',
-        soon: true,
+        url: 'https://wmc-anforderungsportal.vercel.app/de',
         description: {
           de: 'Internes Portal zur strukturierten Erfassung, Priorisierung und Verwaltung von Projekt- und Produktanforderungen.',
           en: 'Internal portal for structured capture, prioritisation and management of project and product requirements.',
@@ -64,12 +64,12 @@ export const appCategories: AppCategory[] = [
         },
       },
       {
-        name: 'belegnest',
-        soon: true,
+        name: 'belegbox',
+        url: 'https://wamocon.  github.io/belegbox_lp/' ,
         description: {
           de: 'Digitale Belegverwaltung und Buchhaltungsvorbereitung für effiziente Finanzprozesse.',
           en: 'Digital receipt management and accounting preparation for efficient financial processes.',
-        },
+        },            
       },
     ],
   },
@@ -100,14 +100,14 @@ export const appCategories: AppCategory[] = [
           en: 'Review and optimisation of your Schufa score with concrete recommendations and step-by-step guidance.',
         },
       },
-      {
-        name: 'GrundsteuerPrüfer',
-        soon: true,
-        description: {
-          de: 'Einfache Berechnung und Prüfung der Grundsteuer für Immobilienbesitzer.',
-          en: 'Easy calculation and verification of property tax for real estate owners.',
-        },
-      },
+      // {
+      //   name: 'GrundsteuerPrüfer',
+      //   soon: true,
+      //   description: {
+      //     de: 'Einfache Berechnung und Prüfung der Grundsteuer für Immobilienbesitzer.',
+      //     en: 'Easy calculation and verification of property tax for real estate owners.',
+      //   },
+      // },
       {
         name: 'GhostAccounts',
         url: 'https://wamocon.github.io/ghostaccounts_lp/',
@@ -118,7 +118,7 @@ export const appCategories: AppCategory[] = [
       },
       {
         name: 'BuyRight-AI',
-        soon: true,
+        url: 'https://wamocon.github.io/BuyRight-AI_lp/',
         description: {
           de: 'KI-gestützter Shopping-Assistent für smarte Kaufentscheidungen, Preisvergleiche und personalisierte Produktempfehlungen.',
           en: 'AI-powered shopping assistant for smart purchase decisions, price comparisons and personalised recommendations.',
@@ -137,22 +137,22 @@ export const appCategories: AppCategory[] = [
           en: 'AI-powered learning management system for modern knowledge sharing, course planning and progress tracking.',
         },
       },
-      {
-        name: 'AI SafeGuard',
-        soon: true,
-        description: {
-          de: 'Middleware zwischen Mitarbeitenden und KI-Modellen mit DLP, Prompt-Filterung, PII-Anonymisierung und Audit-Logs.',
-          en: 'Middleware between employees and AI models with DLP, prompt filtering, PII anonymisation and audit logs.',
-        },
-      },
-      {
-        name: 'MAX AI Stack',
-        soon: true,
-        description: {
-          de: 'Lokale KI-Plattform für den internen Einsatz im LAN ohne Cloud-Abhängigkeit. Datensouveräne Verarbeitung sensibler Unternehmensdaten.',
-          en: 'Local AI platform for internal LAN use without cloud dependency. Data-sovereign processing of sensitive company data.',
-        },
-      },
+      // {
+      //   name: 'AI SafeGuard',
+      //   url: 'https://wamocon.github.io/AI-SafeGuard_lp/',
+      //   description: {
+      //     de: 'Middleware zwischen Mitarbeitenden und KI-Modellen mit DLP, Prompt-Filterung, PII-Anonymisierung und Audit-Logs.',
+      //     en: 'Middleware between employees and AI models with DLP, prompt filtering, PII anonymisation and audit logs.',
+      //   },
+      // },
+      // {
+      //   name: 'MAX AI Stack',
+      //   soon: true,
+      //   description: {
+      //     de: 'Lokale KI-Plattform für den internen Einsatz im LAN ohne Cloud-Abhängigkeit. Datensouveräne Verarbeitung sensibler Unternehmensdaten.',
+      //     en: 'Local AI platform for internal LAN use without cloud dependency. Data-sovereign processing of sensitive company data.',
+      //   },
+      // },
       {
         name: 'KI-Prüfungstrainer',
         url: 'https://wamocon.github.io/KI-Prufungstrainer_lp/',
@@ -184,7 +184,7 @@ export const appCategories: AppCategory[] = [
     apps: [
       {
         name: 'Plan-it',
-        url: 'https://wamocon.github.io/plan-it_landing',
+        url: 'https://wamocon.github.io/plan-it_lp/',
         description: {
           de: 'Projektmanagement-Tool für die Bau- und Handwerksbranche zur effizienten Ressourcenplanung.',
           en: 'Project management tool for the construction and crafts industry for efficient resource planning.',
@@ -198,14 +198,14 @@ export const appCategories: AppCategory[] = [
           en: 'Craftsman matching and order management for fast, reliable repairs and installations.',
         },
       },
-      {
-        name: 'Meine Wohnung',
-        url: 'https://wamocon.github.io/meine_wohnung',
-        description: {
-          de: 'Zentrale Plattform zur Verwaltung von Mietobjekten und Mieterkommunikation.',
-          en: 'Central platform for managing rental properties and tenant communication.',
-        },
-      },
+      // {
+      //   name: 'Meine Wohnung',
+      //   url: 'https://wamocon.github.io/meine_wohnung',
+      //   description: {
+      //     de: 'Zentrale Plattform zur Verwaltung von Mietobjekten und Mieterkommunikation.',
+      //     en: 'Central platform for managing rental properties and tenant communication.',
+      //   },
+      // },
       {
         name: 'WG-Planer',
         url: 'https://wamocon.github.io/wg-planer_lp/',
@@ -253,7 +253,7 @@ export const appCategories: AppCategory[] = [
     apps: [
       {
         name: 'AWAY',
-        url: 'https://fantastic-adventure-g4qyq8k.pages.github.io/',
+        url: 'https://landingpage.aiaway.de/',
         description: {
           de: 'Moderne Urlaubsplanung mit digitalen Anträgen, Kalenderintegration und Teamübersicht.',
           en: 'Modern holiday planning with digital requests, calendar integration and team overview.',
@@ -261,7 +261,7 @@ export const appCategories: AppCategory[] = [
       },
       {
         name: 'TRACE',
-        url: 'https://redesigned-guide-v3ypon5.pages.github.io/',
+        url: 'https://trace-livid-kappa.vercel.app/auth/login',
         description: {
           de: 'Sicheres Tracking und Dokumentation von Fahrtrouten und Mobilitätsdaten.',
           en: 'Secure tracking and documentation of travel routes and mobility data.',
@@ -276,7 +276,7 @@ export const appCategories: AppCategory[] = [
         },
       },
       {
-        name: 'LadeKompass',
+        name: 'Wartezeit-Wächter',
         url: 'https://wamocon.github.io/ladeKompass_lp/',
         description: {
           de: 'Kartenbasierte Übersicht für Ladesäulen und E-Mobility-Standorte mit Verfügbarkeit und Routenplanung.',
@@ -301,7 +301,7 @@ export const appCategories: AppCategory[] = [
       },
       {
         name: 'Rideproof',
-        soon: true,
+        url: 'https://wamocon.github.io/rideproof_lp/',
         description: {
           de: 'Digitale Absicherung und Dokumentation für Fahrgemeinschaften und Mobilitätsdienstleister.',
           en: 'Digital protection and documentation for carpools and mobility service providers.',
@@ -406,8 +406,8 @@ export const appCategories: AppCategory[] = [
         },
       },
       {
-        name: 'Stammfeuer',
-        soon: true,
+        name: 'Ahnenecho',
+        url: 'https://wamocon.github.io/ahnenecho_lp/',
         description: {
           de: 'Digitale Ahnenforschung und kulturelles Erbe interaktiv erleben.',
           en: 'Digital genealogy and interactive experience of cultural heritage.',
@@ -415,7 +415,7 @@ export const appCategories: AppCategory[] = [
       },
       {
         name: 'makeartalanya',
-        soon: true,
+        url: 'https://www.makeartalanya.com/',
         description: {
           de: 'Plattform für Kunst und Kulturprojekte im Raum Alanya.',
           en: 'Platform for art and cultural projects in the Alanya region.',
@@ -445,14 +445,14 @@ export const appCategories: AppCategory[] = [
           en: 'Network and management tool for football clubs, players and fans.',
         },
       },
-      {
-        name: 'Applens',
-        url: 'https://wamocon.github.io/applens_lp/',
-        description: {
-          de: 'Kulturelle Einblicke und Lifestyle-Empfehlungen auf einen Blick.',
-          en: 'Cultural insights and lifestyle recommendations at a glance.',
-        },
-      },
+      // {
+      //   name: 'Applens',
+      //   url: 'https://wamocon.github.io/AppLens_lp/',
+      //   description: {
+      //     de: 'Kulturelle Einblicke und Lifestyle-Empfehlungen auf einen Blick.',
+      //     en: 'Cultural insights and lifestyle recommendations at a glance.',
+      //   },
+      // },
       {
         name: 'AllergieScan',
         url: 'https://www.allergiescan.net/de',

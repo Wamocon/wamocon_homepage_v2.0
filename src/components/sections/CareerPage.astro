@@ -150,6 +150,7 @@ const c = de
       formConsent: "Ich stimme der Verarbeitung meiner Daten gemäß der",
       formConsentLink: "Datenschutzerklärung",
       formConsentHref: "/datenschutz",
+      formConsentPost: " zu.",
       formBtn: "Hinterlassen Sie eine Anfrage",
       formClose: "Lerne von Experten, um selbst einer zu werden.",
     }
@@ -189,7 +190,7 @@ const c = de
           d: "Exciting, cross-industry projects for students, graduates and career changers.",
         },
         {
-          t: "Supervision",
+          t: "Individual support",
           d: "Personal mentors and a family team of experts at your side.",
         },
         {
@@ -202,7 +203,7 @@ const c = de
         },
         {
           t: "Modern equipment",
-          d: "Latest IT hardware (e.g. i9 notebook, BOSE headset, power bank).",
+          d: "Latest IT hardware (e.g. i9 notebook, BOSE headset, power bank) for productive work.",
         },
         {
           t: "Flexibility",
@@ -291,6 +292,7 @@ const c = de
       formConsent: "I agree to the processing of my data in accordance with the",
       formConsentLink: "privacy policy",
       formConsentHref: "/en/privacy",
+      formConsentPost: ".",
       formBtn: "Leave a request",
       formClose: "Learn from experts to become one yourself.",
     };
@@ -459,18 +461,31 @@ const jobs = de
       },
     ];
 
-const kununu = [
-  { r: "4,8", t: "Zentralgelegener Arbeitsplatz – professionelle und angenehme Arbeitsatmosphäre", d: "Mai 2025", role: "Angestellte/r · Administration" },
-  { r: "5,0", t: "Great place to grow and learn", d: "Mai 2025", role: "Werkstudent/in · IT" },
-  { r: "5,0", t: "Familiäre Atmosphäre, super um sich extremst schnell weiterzuentwickeln.", d: "Mai 2025", role: "Praktikant/in · IT" },
-  { r: "5,0", t: "Seit über 8 Jahren stolzer WMCler!!!", d: "Mai 2025", role: "Angestellte/r · Eschborn" },
-  { r: "4,9", t: "I experience a highly positive and engaging work environment", d: "April 2025", role: "Angestellte/r · IT" },
-  { r: "4,5", t: "Bewertung ehemaliger Arbeitgeber im Bereich Softwaretesting", d: "Januar 2024", role: "Ex-Angestellte/r · IT" },
-  { r: "5,0", t: "Ein Top-Arbeitgeber mit innovativen Projekten und echten Entwicklungschancen", d: "Mai 2025", role: "Angestellte/r · IT" },
-  { r: "4,8", t: "Super Arbeitgeber mit klasse Aufstiegschancen", d: "November 2020", role: "Angestellte/r · IT" },
-  { r: "5,0", t: "Familien Atmosphäre", d: "April 2020", role: "Ex-Angestellte/r · IT" },
-  { r: "5,0", t: "Der Beste Arbeitgeber der Region!", d: "April 2020", role: "Ex-Angestellte/r · IT" },
-];
+const kununu = de
+  ? [
+      { r: "4,8", t: "Zentralgelegener Arbeitsplatz – professionelle und angenehme Arbeitsatmosphäre", d: "Mai 2025", role: "Angestellte/r · Administration" },
+      { r: "5,0", t: "Great place to grow and learn", d: "Mai 2025", role: "Werkstudent/in · IT" },
+      { r: "5,0", t: "Familiäre Atmosphäre, super um sich extremst schnell weiterzuentwickeln.", d: "Mai 2025", role: "Praktikant/in · IT" },
+      { r: "5,0", t: "Seit über 8 Jahren stolzer WMCler!!!", d: "Mai 2025", role: "Angestellte/r · Eschborn" },
+      { r: "4,9", t: "I experience a highly positive and engaging work environment", d: "April 2025", role: "Angestellte/r · IT" },
+      { r: "4,5", t: "Bewertung ehemaliger Arbeitgeber im Bereich Softwaretesting", d: "Januar 2024", role: "Ex-Angestellte/r · IT" },
+      { r: "5,0", t: "Ein Top-Arbeitgeber mit innovativen Projekten und echten Entwicklungschancen", d: "Mai 2025", role: "Angestellte/r · IT" },
+      { r: "4,8", t: "Super Arbeitgeber mit klasse Aufstiegschancen", d: "November 2020", role: "Angestellte/r · IT" },
+      { r: "5,0", t: "Familien Atmosphäre", d: "April 2020", role: "Ex-Angestellte/r · IT" },
+      { r: "5,0", t: "Der Beste Arbeitgeber der Region!", d: "April 2020", role: "Ex-Angestellte/r · IT" },
+    ]
+  : [
+      { r: "4.8", t: "Centrally located workplace – professional and pleasant working atmosphere", d: "May 2025", role: "Employee · Administration" },
+      { r: "5.0", t: "Great place to grow and learn", d: "May 2025", role: "Working student · IT" },
+      { r: "5.0", t: "Family-like atmosphere, great for developing extremely quickly.", d: "May 2025", role: "Intern · IT" },
+      { r: "5.0", t: "Proud WMC member for over 8 years!!!", d: "May 2025", role: "Employee · Eschborn" },
+      { r: "4.9", t: "I experience a highly positive and engaging work environment", d: "April 2025", role: "Employee · IT" },
+      { r: "4.5", t: "Review by a former employer in the field of software testing", d: "January 2024", role: "Former employee · IT" },
+      { r: "5.0", t: "A top employer with innovative projects and real development opportunities", d: "May 2025", role: "Employee · IT" },
+      { r: "4.8", t: "Great employer with excellent advancement opportunities", d: "November 2020", role: "Employee · IT" },
+      { r: "5.0", t: "Family atmosphere", d: "April 2020", role: "Former employee · IT" },
+      { r: "5.0", t: "The best employer in the region!", d: "April 2020", role: "Former employee · IT" },
+    ];
 
 const videos = [
   { name: "Daniel Moretz", src: `${VIDEO_BASE}/Mitarbeiter-Referenzvideo-Daniel-Moretz.mp4`, poster: "/images/team-daniel.png" },
@@ -626,7 +641,7 @@ const mailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(
         <input type="email" name="Email" placeholder={c.formEmail} required />
         <label class="consent">
           <input type="checkbox" required />
-          <span>{c.formConsent} <a href={c.formConsentHref}>{c.formConsentLink}</a> zu.</span>
+          <span>{c.formConsent} <a href={c.formConsentHref}>{c.formConsentLink}</a>{c.formConsentPost}</span>
         </label>
         <button type="submit" class="btn">{c.formBtn}</button>
       </form>

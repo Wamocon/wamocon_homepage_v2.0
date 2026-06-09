@@ -32,6 +32,10 @@ const projectsHeading = splitLast(home.projects.heading[lang]);
 const academyHeading = splitFirst(home.academy.heading[lang], 2);
 const projectCompanyLabel = lang === 'de' ? 'Über das Unternehmen' : 'About the company';
 const projectProjectLabel = lang === 'de' ? 'Über das Projekt' : 'About the project';
+const ceoCaption =
+  lang === 'de'
+    ? 'Waleri Moretz, Visionär und CEO der WAMOCON'
+    : 'Waleri Moretz, Visionary and CEO of WAMOCON';
 
 // Lead-capture popup copy (opened from the "Erfahren Sie mehr" CTA).
 const modal = {
@@ -112,8 +116,8 @@ const modalMailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(modal.
 <section class="section goal">
   <div class="container goal__inner">
     <figure class="goal__media" data-reveal="left">
-      <img src="/images/goal-ceo.png" alt="Waleri Moretz, Visionär und CEO der WAMOCON" width="560" height="640" loading="lazy" />
-      <figcaption>Waleri Moretz, Visionär und CEO der WAMOCON</figcaption>
+      <img src="/images/goal-ceo.png" alt={ceoCaption} width="560" height="640" loading="lazy" />
+      <figcaption>{ceoCaption}</figcaption>
     </figure>
     <div class="goal__text" data-reveal="right">
       <span class="eyebrow">{home.goal.signoff[lang].split(',')[0]}</span>
