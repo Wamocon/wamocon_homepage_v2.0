@@ -124,7 +124,7 @@ const modalMailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(modal.
       <p class="goal__signoff">{home.goal.signoff[lang]}</p>
       <div class="goal__badges">
         <img src="/images/badge-ki-siegel.png" alt="KI-Siegel WAMOCON" width="120" height="120" loading="lazy" />
-        <img src="/images/badge-zukunft.webp" alt="Unternehmen der Zukunft – nominiert" width="135" height="120" loading="lazy" />
+        <img class="goal__badge--zukunft" src="/images/badge-zukunft.webp" alt="Unternehmen der Zukunft – nominiert" width="135" height="120" loading="lazy" />
       </div>
     </div>
   </div>
@@ -577,6 +577,9 @@ const modalMailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(modal.
     height: 110px;
     width: auto;
     object-fit: contain;
+  }
+  .goal__badges img.goal__badge--zukunft {
+    height: 117px;
   }
 
   /* ---------- services / why / benefits grids ---------- */
