@@ -66,8 +66,6 @@ const modal = {
     close: 'Close',
   },
 }[lang];
-
-const modalMailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(modal.title)}`;
 ---
 
 <!-- ============ HERO ============ -->
@@ -196,12 +194,14 @@ const modalMailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(modal.
     </button>
     <h2 class="lead-modal__title" id="it-tester-title">{modal.title}</h2>
     <p class="lead-modal__subtitle">{modal.subtitle}</p>
-    <form class="lead-modal__form" action={modalMailto} method="post" enctype="text/plain">
-      <input type="text" name="Name" placeholder={modal.name} required />
-      <input type="tel" name="Telefon" placeholder={modal.phone} required />
-      <textarea name="Kommentar" rows="3" placeholder={modal.comment}></textarea>
+    <form class="lead-modal__form js-lead-form" data-redirect={lang === "de" ? "/danke/" : "/en/thank-you/"}>
+      <input type="hidden" name="type" value="it-tester" />
+      <input type="hidden" name="lang" value={lang} />
+      <input type="text" name="name" placeholder={modal.name} required />
+      <input type="tel" name="phone" placeholder={modal.phone} required />
+      <textarea name="comment" rows="3" placeholder={modal.comment}></textarea>
       <label class="lead-modal__consent">
-        <input type="checkbox" required />
+        <input type="checkbox" name="consent" required />
         <span>
           {modal.consentPre}<a href={privacyHref}>{modal.consentLink}</a>{modal.consentPost}
         </span>

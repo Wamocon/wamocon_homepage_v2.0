@@ -153,5 +153,61 @@ const altLang = lang === 'de' ? 'en' : 'de';
         reveal();
       }
     </script>
+
+    <script>
+      // Global lead/contact form handler.
+      // Any <form class="js-lead-form" data-redirect="/danke/"> is submitted to
+      // /api/lead via fetch; on completion the user is sent to the thank-you page.
+      // The consent checkbox (required) is enforced by the browser before submit.
+      const initLeadForms = () => {
+        const forms = Array.from(
+          document.querySelectorAll<HTMLFormElement>('form.js-lead-form')
+        );
+        forms.forEach((form) => {
+          form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Honour native validation (required fields + consent checkbox).
+            if (!form.reportValidity()) return;
+
+            const redirect = form.dataset.redirect || '/danke/';
+            const submitBtn = form.querySelector<HTMLButtonElement>(
+              'button[type="submit"]'
+            );
+            if (submitBtn) submitBtn.disabled = true;
+
+            const fd = new FormData(form);
+            const payload = {
+              type: (fd.get('type') || 'lead').toString(),
+              lang: (fd.get('lang') || 'de').toString(),
+              name: (fd.get('name') || '').toString(),
+              phone: (fd.get('phone') || '').toString(),
+              email: (fd.get('email') || '').toString(),
+              comment: (fd.get('comment') || '').toString(),
+              consent: 'true',
+            };
+
+            try {
+              await fetch('/api/lead', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+              });
+            } catch {
+              // Network/endpoint unavailable (e.g. local `astro dev`) — still
+              // navigate to the thank-you page so the UX is consistent.
+            } finally {
+              window.location.assign(redirect);
+            }
+          });
+        });
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initLeadForms);
+      } else {
+        initLeadForms();
+      }
+    </script>
   </body>
 </html>

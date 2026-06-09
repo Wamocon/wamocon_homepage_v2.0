@@ -165,10 +165,6 @@ const c = de
         "I hereby confirm that I have read the privacy policy and agree that WAMOCON GmbH may store and process my data, including personal data.",
       fBtn: "Send request",
     };
-
-const mailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(
-  de ? "Anfrage Zusammenarbeit" : "Cooperation request"
-)}`;
 ---
 
 <section class="coop">
@@ -263,12 +259,14 @@ const mailto = `mailto:info@wamocon.com?subject=${encodeURIComponent(
     <div class="form-box">
       <h3 class="form-head">{c.formHead}</h3>
       <p class="lead">{c.formSub}</p>
-      <form class="coop-form" action={mailto} method="post" enctype="text/plain">
-        <input type="text" name="Name" placeholder={c.fName} required />
-        <input type="tel" name="Telefon" placeholder={c.fPhone} required />
-        <input type="email" name="Email" placeholder={c.fEmail} required />
+      <form class="coop-form js-lead-form" data-redirect={lang === "de" ? "/danke/" : "/en/thank-you/"}>
+        <input type="hidden" name="type" value="cooperation" />
+        <input type="hidden" name="lang" value={lang} />
+        <input type="text" name="name" placeholder={c.fName} required />
+        <input type="tel" name="phone" placeholder={c.fPhone} required />
+        <input type="email" name="email" placeholder={c.fEmail} required />
         <label class="consent">
-          <input type="checkbox" required />
+          <input type="checkbox" name="consent" required />
           <span>{c.fConsent}</span>
         </label>
         <button type="submit" class="btn">{c.fBtn}</button>
