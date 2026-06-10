@@ -1,9 +1,10 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://wamocon.com',
+  site: 'https://www.wamocon.com',
   // German is the default language and is served from the site root (/).
   // English is served from the /en/ sub-path.
   i18n: {
@@ -21,4 +22,6 @@ export default defineConfig({
   image: {
     domains: [],
   },
+  // Generates /sitemap-index.xml + /sitemap-0.xml at build time for SEO.
+  integrations: [sitemap()],
 });

@@ -30,12 +30,21 @@ export default async function handler(req, res) {
   }
 
   const body = readBody(req);
-  const name = (body.name || '').toString().trim();
-  const phone = (body.phone || '').toString().trim();
-  const email = (body.email || '').toString().trim();
-  const comment = (body.comment || '').toString().trim();
-  const type = (body.type || 'lead').toString().trim();
-  const lang = (body.lang || 'de').toString().trim();
+
+  // Honeypot: bots tend to fill hidden fields. Silently accept (200) so the bot
+  // believes it succeeded, but never process or log the submission.
+  if ((body.company || body.website || body.url || '').toString().trim() !== '') {
+    return res.status(200).json({ ok: true });
+  }
+
+  // Cap every field so a malicious client can't flood logs or memory.
+  const cap = (value, max) => value.toString().trim().slice(0, max);
+  const name = cap(body.name || '', 200);
+  const phone = cap(body.phone || '', 60);
+  const email = cap(body.email || '', 320);
+  const comment = cap(body.comment || '', 5000);
+  const type = cap(body.type || 'lead', 40);
+  const lang = cap(body.lang || 'de', 5);
   const consent = body.consent === true || body.consent === 'true' || body.consent === 'on';
 
   // The consent checkbox is mandatory.
@@ -45,6 +54,10 @@ export default async function handler(req, res) {
   // Require a name plus at least one way to reach the person.
   if (!name || (!phone && !email)) {
     return res.status(400).json({ ok: false, error: 'Missing required fields.' });
+  }
+  // If an email was provided, it must look like a valid address.
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ ok: false, error: 'Invalid email address.' });
   }
 
   const submission = {

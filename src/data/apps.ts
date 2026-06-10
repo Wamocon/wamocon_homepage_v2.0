@@ -25,7 +25,7 @@ export const appCategories: AppCategory[] = [
     apps: [
       {
         name: 'BackupPilot',
-        url: 'http://info.backuppilot.app/',
+        url: 'https://backuppilot.app/',
         description: {
           de: 'Planung und Verwaltung von Datensicherungen mit automatisierten Backup-Strategien und Statusübersicht.',
           en: 'Planning and management of data backups with automated backup strategies and a status overview.',
@@ -276,7 +276,7 @@ export const appCategories: AppCategory[] = [
         },
       },
       {
-        name: 'Wartezeit-Wächter',
+        name: 'LadeKompass',
         url: 'https://wamocon.github.io/ladeKompass_lp/',
         description: {
           de: 'Kartenbasierte Übersicht für Ladesäulen und E-Mobility-Standorte mit Verfügbarkeit und Routenplanung.',
