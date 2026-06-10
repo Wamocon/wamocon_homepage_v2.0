@@ -105,6 +105,13 @@ const c = de
     <div class="reviews">
       {reviews.map((t, i) => (
         <figure class="review-card" data-reveal="up" data-reveal-delay={(i % 3) * 70}>
+          <div class="review-stars" role="img" aria-label={de ? '5 von 5 Sternen' : '5 out of 5 stars'}>
+            {Array.from({ length: 5 }).map(() => (
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2.5l2.9 5.88 6.49.94-4.7 4.58 1.11 6.46L12 17.77l-5.8 3.07 1.11-6.46-4.7-4.58 6.49-.94L12 2.5z" />
+              </svg>
+            ))}
+          </div>
           <blockquote class={t.more ? 'review-card__quote review-card__quote--clamp' : 'review-card__quote'}>{t.full}</blockquote>
           <figcaption>
             <strong>{t.name}</strong>{t.role && <span class="text-muted"> · {t.role}</span>}

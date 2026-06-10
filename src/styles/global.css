@@ -230,3 +230,135 @@ p {
     transform: none;
   }
 }
+
+/* ==========================================================================
+   Premium UI layer (2026 refresh)
+   Adds depth, motion and micro-interactions on top of the existing theme.
+   Colors, backgrounds and content are unchanged — this only polishes.
+   ========================================================================== */
+
+/* ---- Smoother, springier reveals with a subtle blur-in ---- */
+[data-reveal] {
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  filter: blur(6px);
+}
+[data-reveal].is-visible {
+  filter: blur(0);
+}
+
+/* ---- Scroll progress indicator (injected at runtime) ---- */
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 3px;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-hover));
+  box-shadow: 0 0 12px rgba(244, 14, 14, 0.6);
+  z-index: var(--z-header);
+  pointer-events: none;
+}
+
+/* ---- Cursor-following spotlight glow on cards (injected at runtime) ---- */
+.has-spotlight {
+  position: relative;
+}
+.spotlight {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-med) var(--ease-out);
+  background: radial-gradient(
+    240px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(244, 14, 14, 0.16),
+    transparent 62%
+  );
+}
+.has-spotlight:hover .spotlight {
+  opacity: 1;
+}
+
+/* ---- 3D tilt smoothing for interactive cards ---- */
+[data-tilt] {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ---- Refined elevation + accent halo on common card hovers ---- */
+.app-card,
+.service-card,
+.why-card,
+.feature-card {
+  transition:
+    transform var(--dur-med) var(--ease-out),
+    border-color var(--dur-med) var(--ease-out),
+    background var(--dur-med) var(--ease-out),
+    box-shadow var(--dur-med) var(--ease-out);
+}
+.app-card:hover,
+.service-card:hover,
+.why-card:hover,
+.feature-card:hover {
+  box-shadow:
+    0 26px 60px -30px rgba(0, 0, 0, 0.9),
+    0 18px 50px -32px rgba(244, 14, 14, 0.5);
+}
+
+/* ---- Button shine sweep + label safety ---- */
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: left 0.6s var(--ease-out);
+  pointer-events: none;
+}
+.btn:hover::after {
+  left: 150%;
+}
+.btn__label {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- Star rating row (testimonials) ---- */
+.review-stars {
+  display: inline-flex;
+  gap: 3px;
+  margin-bottom: 0.85rem;
+  color: #ffb400;
+  filter: drop-shadow(0 2px 6px rgba(255, 180, 0, 0.25));
+}
+.review-stars svg {
+  width: 18px;
+  height: 18px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    filter: none;
+  }
+  .scroll-progress,
+  .spotlight,
+  .btn::after {
+    display: none;
+  }
+}

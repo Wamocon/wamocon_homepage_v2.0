@@ -155,6 +155,118 @@ const altLang = lang === 'de' ? 'en' : 'de';
     </script>
 
     <script>
+      // Premium interactions: scroll-progress bar, cursor spotlight + subtle 3D
+      // tilt on cards, and animated stat counters. All effects degrade
+      // gracefully and respect prefers-reduced-motion / touch devices.
+      const initPremium = () => {
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+        // 1) Scroll progress bar
+        const bar = document.createElement('div');
+        bar.className = 'scroll-progress';
+        bar.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(bar);
+        let ticking = false;
+        const onScroll = () => {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(() => {
+            const h = document.documentElement;
+            const max = h.scrollHeight - h.clientHeight;
+            const p = max > 0 ? h.scrollTop / max : 0;
+            bar.style.transform = `scaleX(${p})`;
+            ticking = false;
+          });
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+
+        // 2) Cards: spotlight glow (+ tilt on precise pointers)
+        const cards = Array.from(
+          document.querySelectorAll<HTMLElement>(
+            '.app-card, .service-card, .why-card, .feature-card'
+          )
+        );
+        cards.forEach((card) => {
+          card.classList.add('has-spotlight');
+          const glow = document.createElement('span');
+          glow.className = 'spotlight';
+          glow.setAttribute('aria-hidden', 'true');
+          card.appendChild(glow);
+
+          if (!fine || reduce) return;
+          card.setAttribute('data-tilt', '');
+          const lift = card.classList.contains('app-card') ? -6 : -4;
+          let raf = 0;
+          const onMove = (e: PointerEvent) => {
+            const r = card.getBoundingClientRect();
+            const px = (e.clientX - r.left) / r.width;
+            const py = (e.clientY - r.top) / r.height;
+            glow.style.setProperty('--spot-x', `${px * 100}%`);
+            glow.style.setProperty('--spot-y', `${py * 100}%`);
+            const rx = (0.5 - py) * 6;
+            const ry = (px - 0.5) * 6;
+            if (raf) cancelAnimationFrame(raf);
+            raf = requestAnimationFrame(() => {
+              card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(${lift}px)`;
+            });
+          };
+          const onLeave = () => {
+            if (raf) cancelAnimationFrame(raf);
+            card.style.transform = '';
+          };
+          card.addEventListener('pointermove', onMove);
+          card.addEventListener('pointerleave', onLeave);
+        });
+
+        // 3) Animated stat counters (reads existing text — no markup change)
+        const counters = Array.from(
+          document.querySelectorAll<HTMLElement>('.hero__stat-value, [data-count]')
+        );
+        const animate = (el: HTMLElement) => {
+          const txt = (el.textContent || '').trim();
+          const m = txt.match(/^(\D*)(\d[\d.,]*)(.*)$/);
+          if (!m) return;
+          const target = parseFloat(m[2].replace(/[.,]/g, ''));
+          if (!isFinite(target)) return;
+          const prefix = m[1];
+          const suffix = m[3];
+          const dur = 1400;
+          const start = performance.now();
+          const step = (now: number) => {
+            const t = Math.min((now - start) / dur, 1);
+            const eased = 1 - Math.pow(1 - t, 3);
+            el.textContent = prefix + String(Math.round(target * eased)) + suffix;
+            if (t < 1) requestAnimationFrame(step);
+            else el.textContent = txt;
+          };
+          requestAnimationFrame(step);
+        };
+        if (!reduce && counters.length && 'IntersectionObserver' in window) {
+          const io = new IntersectionObserver(
+            (entries, obs) => {
+              entries.forEach((en) => {
+                if (en.isIntersecting) {
+                  animate(en.target as HTMLElement);
+                  obs.unobserve(en.target);
+                }
+              });
+            },
+            { threshold: 0.4 }
+          );
+          counters.forEach((c) => io.observe(c));
+        }
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPremium);
+      } else {
+        initPremium();
+      }
+    </script>
+
+    <script>
       // Global lead/contact form handler.
       // Any <form class="js-lead-form" data-redirect="/danke/"> is submitted to
       // /api/lead via fetch; on completion the user is sent to the thank-you page.

@@ -100,14 +100,14 @@ export const appCategories: AppCategory[] = [
           en: 'Review and optimisation of your Schufa score with concrete recommendations and step-by-step guidance.',
         },
       },
-      // {
-      //   name: 'GrundsteuerPrüfer',
-      //   soon: true,
-      //   description: {
-      //     de: 'Einfache Berechnung und Prüfung der Grundsteuer für Immobilienbesitzer.',
-      //     en: 'Easy calculation and verification of property tax for real estate owners.',
-      //   },
-      // },
+      {
+        name: 'GrundsteuerPrüfer',
+        soon: true,
+        description: {
+          de: 'Einfache Berechnung und Prüfung der Grundsteuer für Immobilienbesitzer.',
+          en: 'Easy calculation and verification of property tax for real estate owners.',
+        },
+      },
       {
         name: 'GhostAccounts',
         url: 'https://wamocon.github.io/ghostaccounts_lp/',
@@ -145,14 +145,14 @@ export const appCategories: AppCategory[] = [
       //     en: 'Middleware between employees and AI models with DLP, prompt filtering, PII anonymisation and audit logs.',
       //   },
       // },
-      // {
-      //   name: 'MAX AI Stack',
-      //   soon: true,
-      //   description: {
-      //     de: 'Lokale KI-Plattform für den internen Einsatz im LAN ohne Cloud-Abhängigkeit. Datensouveräne Verarbeitung sensibler Unternehmensdaten.',
-      //     en: 'Local AI platform for internal LAN use without cloud dependency. Data-sovereign processing of sensitive company data.',
-      //   },
-      // },
+      {
+        name: 'MAX AI Stack',
+        soon: true,
+        description: {
+          de: 'Lokale KI-Plattform für den internen Einsatz im LAN ohne Cloud-Abhängigkeit. Datensouveräne Verarbeitung sensibler Unternehmensdaten.',
+          en: 'Local AI platform for internal LAN use without cloud dependency. Data-sovereign processing of sensitive company data.',
+        },
+      },
       {
         name: 'KI-Prüfungstrainer',
         url: 'https://wamocon.github.io/KI-Prufungstrainer_lp/',
@@ -445,14 +445,14 @@ export const appCategories: AppCategory[] = [
           en: 'Network and management tool for football clubs, players and fans.',
         },
       },
-      // {
-      //   name: 'Applens',
-      //   url: 'https://wamocon.github.io/AppLens_lp/',
-      //   description: {
-      //     de: 'Kulturelle Einblicke und Lifestyle-Empfehlungen auf einen Blick.',
-      //     en: 'Cultural insights and lifestyle recommendations at a glance.',
-      //   },
-      // },
+      {
+        name: 'AppLens',
+        url: 'https://wamocon.github.io/AppLens_lp/',
+        description: {
+          de: 'Kulturelle Einblicke und Lifestyle-Empfehlungen auf einen Blick.',
+          en: 'Cultural insights and lifestyle recommendations at a glance.',
+        },
+      },
       {
         name: 'AllergieScan',
         url: 'https://www.allergiescan.net/de',

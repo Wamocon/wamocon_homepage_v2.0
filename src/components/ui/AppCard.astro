@@ -94,12 +94,14 @@ const Tag = isLink ? 'a' : 'div';
     transition:
       color var(--dur-fast) var(--ease-out),
       border-color var(--dur-fast) var(--ease-out),
+      transform var(--dur-fast) var(--ease-out),
       background var(--dur-fast) var(--ease-out);
   }
   a.app-card:hover .app-card__arrow {
     color: #fff;
     border-color: var(--color-accent);
     background: var(--color-accent);
+    transform: translate(2px, -2px);
   }
   .app-card__cat {
     align-self: flex-start;
