@@ -351,7 +351,7 @@ export const appCategories: AppCategory[] = [
     apps: [
       {
         name: 'TeamRadar',
-        url: 'https://curly-couscous-zg4j298.pages.github.io/',
+        url: 'https://wamocon.github.io/TeamRadar_lp/',
         description: {
           de: 'Kultur- und Stimmungsbarometer für Teams zur Förderung des Zusammenhalts.',
           en: 'Culture and mood barometer for teams to strengthen cohesion.',
