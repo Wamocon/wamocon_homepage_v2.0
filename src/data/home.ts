@@ -96,7 +96,7 @@ export const home: HomeContent = {
     highlightTitle: { de: 'Ihr Erfolg ist unser Antrieb.', en: 'Your success is what drives us.' },
     highlightText: {
       de: 'Als zuverlässiger Partner begleiten wir Sie auf dem Weg zur optimalen Projektrealisierung, mit maßgeschneiderten und standardisierten Lösungen, die Ihre Ziele Wirklichkeit werden lassen.',
-      en: 'As a reliable partner, we accompany you on the way to optimal project delivery — with tailored and standardised solutions that turn your goals into reality.',
+      en: 'As a reliable partner, we accompany you on the way to optimal project delivery, with tailored and standardised solutions that turn your goals into reality.',
     },
     signoff: { de: 'Waleri Moretz, Visionär und CEO der WAMOCON', en: 'Waleri Moretz, Visionary and CEO of WAMOCON' },
   },
@@ -149,7 +149,7 @@ export const home: HomeContent = {
         title: { de: 'KI (LLM-as-a-Judge)', en: 'AI (LLM-as-a-Judge)' },
         text: {
           de: 'WAMOCON setzt auf LaaJ – ein skalierbares Produkt und eine Dienstleistung zur automatisierten Bewertung von KI-Systemen. LaaJ bewertet Ausgaben generativer KI konsistent, schnell und nach Ihren Kriterien. So ersetzen Sie teure manuelle Prüfungen, reduzieren KI-Halluzinationen und schaffen vertrauenswürdige, qualitätsgesicherte KI-Anwendungen.',
-          en: 'WAMOCON relies on LaaJ — a scalable product and service for the automated evaluation of AI systems. LaaJ assesses generative AI outputs consistently, quickly and according to your criteria. This replaces expensive manual reviews, reduces AI hallucinations and creates trustworthy, quality-assured AI applications.',
+          en: 'WAMOCON relies on LaaJ, a scalable product and service for the automated evaluation of AI systems. LaaJ assesses generative AI outputs consistently, quickly and according to your criteria. This replaces expensive manual reviews, reduces AI hallucinations and creates trustworthy, quality-assured AI applications.',
         },
       },
     ],
@@ -161,14 +161,14 @@ export const home: HomeContent = {
     },
     intro: {
       de: 'In aufeinander aufbauenden Entwicklungswellen verwandeln wir konkrete Problemstellungen in digitale Produkte – von Büro-Automatisierung, Marketing und KI-gestützter Analyse über Immobilien, Mobilität und Recht bis hin zu E-Commerce und Lifestyle.',
-      en: 'In successive waves of development we turn concrete challenges into digital products — from office automation, marketing and AI-powered analysis, through real estate, mobility and law, to e-commerce and lifestyle.',
+      en: 'In successive waves of development we turn concrete challenges into digital products, from office automation, marketing and AI-powered analysis, through real estate, mobility and law, to e-commerce and lifestyle.',
     },
   },
   qa: {
     heading: { de: 'Qualitätssicherung durch erfahrene IT-Tester', en: 'Quality assurance by experienced IT testers' },
     text: {
       de: 'Mit WAMOCON müssen Sie sich keine Sorgen um die Qualität Ihrer IT-Tester machen. Unsere sorgfältig ausgewählten Spezialisten verstehen Ihre Anforderungen und liefern maßgeschneiderte Lösungen, die Ihre Projekte sicher und erfolgreich machen – ob für langfristige Festanstellungen oder flexible Projektaufgaben. Vertrauen Sie auf unsere Erfahrung und lassen Sie uns gemeinsam die perfekte Lösung für Ihr Team finden.',
-      en: 'With WAMOCON you never have to worry about the quality of your IT testers. Our carefully selected specialists understand your requirements and deliver tailored solutions that make your projects safe and successful — whether for long-term permanent positions or flexible project assignments.',
+      en: 'With WAMOCON you never have to worry about the quality of your IT testers. Our carefully selected specialists understand your requirements and deliver tailored solutions that make your projects safe and successful, whether for long-term permanent positions or flexible project assignments.',
     },
     listTitle: { de: 'Warum IT-Tester von WAMOCON?', en: 'Why IT testers from WAMOCON?' },
     list: {
@@ -381,7 +381,7 @@ export const home: HomeContent = {
         },
       },
       {
-        title: { de: 'Praxis, Mentoring, Erfolg, dein Karriere-Turbo!', en: 'Practice, mentoring, success — your career turbo!' },
+        title: { de: 'Praxis, Mentoring, Erfolg, dein Karriere-Turbo!', en: 'Practice, mentoring, success, your career turbo!' },
         text: {
           de: 'Mit unseren Programmen nach internationalen Standards wirst du zur gefragten IT-Fachkraft. Gemeinsam gestalten wir deine Zukunft und die der IT-Branche.',
           en: 'With our programs based on international standards you become a sought-after IT professional. Together we shape your future and that of the IT industry.',
@@ -402,7 +402,7 @@ export const home: HomeContent = {
     heading: { de: '360° Büro Tour', en: '360° Office tour' },
     text: {
       de: 'Erkunden Sie unser Büro virtuell – öffnen Sie die interaktive 360°-Ansicht in Google Maps.',
-      en: 'Explore our office virtually — open the interactive 360° view in Google Maps.',
+      en: 'Explore our office virtually. Open the interactive 360° view in Google Maps.',
     },
     cta: { de: 'In Google Maps öffnen', en: 'Open in Google Maps' },
     embedUrl:
