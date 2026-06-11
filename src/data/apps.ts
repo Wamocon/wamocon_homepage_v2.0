@@ -78,7 +78,7 @@ export const appCategories: AppCategory[] = [
     apps: [
       {
         name: 'Marketing Planer',
-        url: 'https://wamocon.github.io/momentum_marketing_landingpage/',
+        url: 'https://www.momentum-marketing.app/',
         description: {
           de: 'Zentrale Kampagnenverwaltung mit strukturierter Erstellung, Creative-Workflow und kanalbezogenen KPIs.',
           en: 'Central campaign management with structured creation, creative workflow and channel-based KPIs.',
@@ -192,7 +192,7 @@ export const appCategories: AppCategory[] = [
       },
       {
         name: 'Ustafix',
-        url: 'https://ustafix-landing-page.vercel.app',
+        url: 'https://www.ustafix.app/',
         description: {
           de: 'Handwerker-Vermittlung und Auftragsverwaltung für schnelle, zuverlässige Reparaturen und Installationen.',
           en: 'Craftsman matching and order management for fast, reliable repairs and installations.',
@@ -383,7 +383,8 @@ export const appCategories: AppCategory[] = [
       },
       {
         name: 'Vereinsping',
-        url: 'https://wamocon.github.io/vereinsping_lp/',
+        // url: 'https://wamocon.github.io/vereinsping_lp/',
+        soon: true,
         description: {
           de: 'Zentrale Kommunikationsplattform und Mitgliederverwaltung für Vereine.',
           en: 'Central communication platform and member management for clubs and associations.',
