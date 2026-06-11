@@ -309,7 +309,7 @@ export const appCategories: AppCategory[] = [
       },
       {
         name: 'blitzersafe',
-        url: 'https://www.blitzersafe.eu/de',
+        url: 'https://wamocon.github.io/blitzersafe_lp/',
         description: {
           de: 'Warnsystem für Blitzer, Gefahrenstellen und Tempoüberwachung im Straßenverkehr.',
           en: 'Warning system for speed cameras, danger spots and speed monitoring in road traffic.',
@@ -317,7 +317,7 @@ export const appCategories: AppCategory[] = [
       },
       {
         name: 'Geburtstagspilot',
-        url: 'https://www.geburtstagspilot.de/de',
+        url: 'https://wamocon.github.io/geburtstagspilot_lp/',
         description: {
           de: 'Smarte Geburtstagsverwaltung mit Erinnerungen, Geschenkideen und personalisierter Planung für die ganze Familie.',
           en: 'Smart birthday management with reminders, gift ideas and personalised planning for the whole family.',
@@ -338,7 +338,7 @@ export const appCategories: AppCategory[] = [
       },
       {
         name: 'regiosync',
-        url: 'https://regiosync.eu',
+        url: 'https://wamocon.github.io/regiosync_lp/',
         description: {
           de: 'Regionale Datensynchronisation und Zusammenarbeit für lokale Unternehmen.',
           en: 'Regional data synchronisation and collaboration for local businesses.',
@@ -439,7 +439,7 @@ export const appCategories: AppCategory[] = [
       },
       {
         name: 'football-connect',
-        url: 'https://footballconnect.eu',
+        url: 'https://wamocon.github.io/footballconnect_lp/',
         description: {
           de: 'Netzwerk und Management-Tool für Fußballvereine, Spieler und Fans.',
           en: 'Network and management tool for football clubs, players and fans.',
@@ -455,7 +455,7 @@ export const appCategories: AppCategory[] = [
       },
       {
         name: 'AllergieScan',
-        url: 'https://www.allergiescan.net/de',
+        url: 'https://wamocon.github.io/allergieScan_lp/',
         description: {
           de: 'Smarter Scanner für Lebensmittel zur Erkennung von Allergenen und Unverträglichkeiten.',
           en: 'Smart food scanner to detect allergens and intolerances.',
