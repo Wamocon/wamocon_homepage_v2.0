@@ -24,7 +24,7 @@ export const appCategories: AppCategory[] = [
     label: { de: 'Office & Produktivität', en: 'Office & Productivity' },
     apps: [
       {
-        name: 'BackupPilot',
+        name: 'urbackup',
         url: 'https://backuppilot.app/',
         description: {
           de: 'Planung und Verwaltung von Datensicherungen mit automatisierten Backup-Strategien und Statusübersicht.',
@@ -64,7 +64,7 @@ export const appCategories: AppCategory[] = [
         },
       },
       {
-        name: 'belegbox',
+        name: 'belegnest',
         url: 'https://wamocon.github.io/belegbox_lp/' ,
         description: {
           de: 'Digitale Belegverwaltung und Buchhaltungsvorbereitung für effiziente Finanzprozesse.',
@@ -77,7 +77,7 @@ export const appCategories: AppCategory[] = [
     label: { de: 'Marketing, Finanzen & Planung', en: 'Marketing, Finance & Planning' },
     apps: [
       {
-        name: 'Marketing Planer',
+        name: 'Momentum Marketing',
         url: 'https://www.momentum-marketing.app/',
         description: {
           de: 'Zentrale Kampagnenverwaltung mit strukturierter Erstellung, Creative-Workflow und kanalbezogenen KPIs.',
@@ -154,6 +154,14 @@ export const appCategories: AppCategory[] = [
         },
       },
       {
+        name: 'LFA',
+        url: 'https://fiae-learn.com/', 
+        description: {
+          de: 'Lern- und Ausbildungsplattform speziell für Fachinformatiker für Anwendungsentwicklung (FIAE).',
+          en: 'Learning and training platform specifically for IT Specialists in Application Development (FIAE).',
+        },
+      },
+      {
         name: 'KI-Prüfungstrainer',
         url: 'https://wamocon.github.io/KI-Prufungstrainer_lp/',
         description: {
@@ -223,7 +231,7 @@ export const appCategories: AppCategory[] = [
         },
       },
       {
-        name: 'auktivo',
+        name: 'Auktivo',
         url: 'https://wamocon.github.io/auktivo_lp/',
         description: {
           de: 'KI-Assistent für Zwangsversteigerungen zur Marktanalyse und Bewertung.',
