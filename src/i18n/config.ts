@@ -144,7 +144,7 @@ export const company = {
   },
   social: {
     youtube: 'https://www.youtube.com/@wamocon.testing',
-    facebook: 'https://tr-tr.facebook.com/WAMOCONACADEMY/',
+    facebook: 'https://www.facebook.com/WAMOCON/',
     linkedin: 'https://de.linkedin.com/company/wamocon-gmbh',
     instagram: 'https://www.instagram.com/wmc_testmanagement/profilecard/?igsh=dWQ1azhlcDZnNmxs',
   },

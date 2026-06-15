@@ -146,14 +146,6 @@ export const appCategories: AppCategory[] = [
       //   },
       // },
       {
-        name: 'MAX AI Stack',
-        soon: true,
-        description: {
-          de: 'Lokale KI-Plattform für den internen Einsatz im LAN ohne Cloud-Abhängigkeit. Datensouveräne Verarbeitung sensibler Unternehmensdaten.',
-          en: 'Local AI platform for internal LAN use without cloud dependency. Data-sovereign processing of sensitive company data.',
-        },
-      },
-      {
         name: 'LFA',
         url: 'https://fiae-learn.com/', 
         description: {
