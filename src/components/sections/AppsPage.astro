@@ -1,9 +1,10 @@
 ---
 /**
- * Apps overview page: full catalogue of WAMOCON products grouped by category.
+ * Apps overview page — landing-page edition.
+ * Immersive hero ➜ story strip ➜ app catalogue ➜ dual CTA ➜ contact.
  * Shared by the German (`/apps/`) and English (`/en/apps/`) routes.
  */
-import PageHero from '../ui/PageHero.astro';
+import Button from '../ui/Button.astro';
 import AppCard from '../ui/AppCard.astro';
 import ContactBlock from './ContactBlock.astro';
 import { appCategories } from '../../data/apps';
@@ -17,32 +18,183 @@ const de = lang === 'de';
 
 const totalApps = appCategories.reduce((sum, cat) => sum + cat.apps.length, 0);
 
-const c = de
+/* ---- Copy ---- */
+const hero = de
   ? {
-      eyebrow: 'Unsere Apps',
-      title: 'Lösungen für jede Problemstellung',
+      eyebrow: 'Unsere Apps im Überblick',
+      title: 'Software, die wirklich',
+      titleAccent: 'funktioniert.',
       subtitle:
-        'Von Office &amp; Produktivität über KI bis hin zu Mobilität und Lifestyle: Entdecken Sie unser wachsendes Portfolio an Anwendungen, die wir bei WAMOCON entwickeln.',
-      countLabel: `${totalApps} Apps in ${appCategories.length} Kategorien`,
+        'Wir entwickeln nützliche Anwendungen für Ihren Arbeitsalltag und Ihr Privatleben. Unsere Software ist einfach zu bedienen und löst konkrete Aufgaben ohne unnötige Funktionen.',
+      imgAlt: 'Die Softwareanwendungen von WAMOCON für Büro, künstliche Intelligenz, Mobilität und Freizeit, entwickelt in Eschborn nahe Frankfurt',
     }
   : {
       eyebrow: 'Our Apps',
-      title: 'Solutions for every challenge',
+      title: 'Software that actually',
+      titleAccent: 'works.',
       subtitle:
-        'From office &amp; productivity through AI to mobility and lifestyle: explore our growing portfolio of applications built at WAMOCON.',
-      countLabel: `${totalApps} apps across ${appCategories.length} categories`,
+        'We design clean applications for your work and daily life. Our software is straightforward and built to help you get things done without unnecessary complexity.',
+      imgAlt: 'Software applications by WAMOCON for business, artificial intelligence, mobility and lifestyle, developed in Eschborn near Frankfurt',
     };
+
+const story = de
+  ? 'Wir konzentrieren uns auf das Wesentliche. Jede unserer Anwendungen löst eine ganz bestimmte Aufgabe.'
+  : 'We focus on simplicity. Each of our applications is designed to solve a single, clear task.';
+
+const catalogLabel = de
+  ? `${totalApps} Apps in ${appCategories.length} Kategorien`
+  : `${totalApps} apps across ${appCategories.length} categories`;
+
+const cta = de
+  ? {
+      heading: 'Lassen Sie uns sprechen.',
+      subtext: 'Haben Sie Fragen zu unseren Anwendungen oder möchten Sie eine eigene Idee umsetzen? Schreiben Sie uns einfach.',
+      contactTitle: 'Rückfragen zu unseren Apps',
+      contactText:
+        'Sie testen bereits eine unserer Anwendungen oder möchten wissen, ob sie für Ihr Vorhaben geeignet ist? Melden Sie sich direkt bei uns.',
+      contactCta: 'Jetzt Kontakt aufnehmen',
+      contactHref: '/kontakt/',
+      ideaTitle: 'Ihre Idee umsetzen',
+      ideaText:
+        'Sie planen ein Softwareprojekt und suchen einen Partner für die Entwicklung? Beschreiben Sie uns Ihr Vorhaben in unserem Portal. Wir prüfen Ihre Wünsche und erstellen ein Angebot für Sie.',
+      ideaCta: 'Anforderung einreichen',
+      ideaHref: 'https://wmc-anforderungsportal.vercel.app/de',
+    }
+  : {
+      heading: "Let's talk.",
+      subtext: "Do you have questions about our software or want to develop your own application? We are happy to help.",
+      contactTitle: 'Questions about our apps',
+      contactText:
+        "Are you currently testing one of our apps or wondering if it fits your specific requirements? Send us a message and we will get in touch.",
+      contactCta: 'Get in touch',
+      contactHref: '/en/contact/',
+      ideaTitle: 'Realise your project',
+      ideaText:
+        "Do you have an idea for an app and want to know about development costs? Describe your project in our portal. We will review your request and send you a proposal.",
+      ideaCta: 'Submit requirements',
+      ideaHref: 'https://wmc-anforderungsportal.vercel.app/de',
+    };
+
+/* ---- Structured Data (JSON-LD) für SEO & GEO ---- */
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'SoftwareApplication',
+      'name': de ? 'WAMOCON Apps' : 'WAMOCON Apps',
+      'description': de
+        ? `Die WAMOCON GmbH aus Eschborn entwickelt nützliche Apps für Büro, künstliche Intelligenz und Mobilität. Hier finden Sie alle unsere Anwendungen im Überblick.`
+        : `WAMOCON GmbH from Eschborn develops useful software applications for office tasks, artificial intelligence and mobility. Explore all our apps in one place.`,
+      'applicationCategory': 'BusinessApplication',
+      'operatingSystem': 'Web',
+      'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'EUR' },
+      'creator': {
+        '@type': 'Organization',
+        'name': 'WAMOCON GmbH',
+        'url': 'https://wamocon.com',
+        'address': {
+          '@type': 'PostalAddress',
+          'streetAddress': 'Mergenthalerallee 79 - 81',
+          'postalCode': '65760',
+          'addressLocality': 'Eschborn',
+          'addressRegion': 'Hessen',
+          'addressCountry': 'DE',
+        },
+        'telephone': '+4961965838311',
+        'email': 'info@wamocon.com',
+      },
+    },
+    {
+      '@type': 'ItemList',
+      'name': de ? 'WAMOCON Apps' : 'WAMOCON Apps',
+      'numberOfItems': totalApps,
+      'itemListElement': appCategories.flatMap((cat, ci) =>
+        cat.apps.map((app, ai) => ({
+          '@type': 'ListItem',
+          'position': ci * 100 + ai + 1,
+          'name': app.name,
+          'description': app.description[lang],
+          ...(app.url ? { 'url': app.url } : {}),
+        }))
+      ),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        { '@type': 'ListItem', 'position': 1, 'name': 'WAMOCON', 'item': de ? 'https://wamocon.com/' : 'https://wamocon.com/en/' },
+        { '@type': 'ListItem', 'position': 2, 'name': de ? 'Apps' : 'Apps', 'item': de ? 'https://wamocon.com/apps/' : 'https://wamocon.com/en/apps/' },
+      ],
+    },
+  ],
+};
 ---
 
-<PageHero eyebrow={c.eyebrow} title={c.title} subtitle={c.subtitle} />
+<!-- ============ JSON-LD STRUCTURED DATA (SEO/GEO) ============ -->
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
-<section class="section apps">
+<!-- ============ IMMERSIVE HERO ============ -->
+<section class="apps-hero" id="apps-hero">
+  <div class="apps-hero__glow" aria-hidden="true"></div>
+  <div class="apps-hero__pulse" aria-hidden="true"></div>
+  <div class="apps-hero__inner">
+    <div class="apps-hero__content">
+      <span class="eyebrow" data-reveal="up">{hero.eyebrow}</span>
+      <h1 data-reveal="up" data-reveal-delay="60">
+        {hero.title} <span class="apps-hero__accent">{hero.titleAccent}</span>
+      </h1>
+      <p class="apps-hero__subtitle" data-reveal="up" data-reveal-delay="120" set:html={hero.subtitle} />
+      <div class="apps-hero__actions" data-reveal="up" data-reveal-delay="180">
+        <Button href="#apps-catalogue" variant="primary" size="lg">
+          {de ? 'Apps entdecken' : 'Explore apps'}
+        </Button>
+        <Button href={cta.ideaHref} target="_blank" variant="outline" size="lg">
+          {de ? 'Idee besprechen' : 'Discuss app idea'}
+        </Button>
+      </div>
+    </div>
+    <div class="apps-hero__media" data-reveal="right" data-reveal-delay="200">
+      <div class="apps-hero__img-wrap">
+        <img
+          src="/images/apps-hero.png"
+          alt={hero.imgAlt}
+          width="720"
+          height="450"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STORY STRIP ============ -->
+<section class="story-strip" aria-label={de ? 'Unsere Mission' : 'Our mission'}>
+  <div class="story-strip__line" aria-hidden="true"></div>
   <div class="container">
-    <p class="apps__count text-muted">{c.countLabel}</p>
+    <p class="story-strip__text" data-reveal="up">
+      <span class="story-strip__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z" />
+          <path d="M2 17l10 5 10-5" />
+          <path d="M2 12l10 5 10-5" />
+        </svg>
+      </span>
+      {story}
+    </p>
+  </div>
+</section>
+
+<!-- ============ APP CATALOGUE ============ -->
+<section class="section apps" id="apps-catalogue">
+  <div class="container">
+    <p class="apps__count text-muted">{catalogLabel}</p>
     {
       appCategories.map((cat) => (
         <div class="apps__cat">
-          <h2 class="apps__cat-title" data-reveal="left">{cat.label[lang]}</h2>
+          <h2 class="apps__cat-title" data-reveal="left">
+            {cat.label[lang]}
+            <span class="apps__cat-count">{cat.apps.length} {de ? 'Apps' : 'apps'}</span>
+          </h2>
           <div class="apps__grid">
             {cat.apps.map((app) => (
               <AppCard app={app} category={cat.label[lang]} lang={lang} />
@@ -54,9 +206,205 @@ const c = de
   </div>
 </section>
 
+<!-- ============ DUAL CTA BLOCK ============ -->
+<section class="section dual-cta" id="apps-cta">
+  <div class="container">
+    <div class="dual-cta__header" data-reveal="up">
+      <h2>{cta.heading}</h2>
+      <p class="text-muted">{cta.subtext}</p>
+    </div>
+    <div class="dual-cta__grid">
+      <!-- CTA 1: Contact -->
+      <div class="dual-cta__card" data-reveal="up" data-reveal-delay="60">
+        <div class="dual-cta__card-glow" aria-hidden="true"></div>
+        <div class="dual-cta__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
+          </svg>
+        </div>
+        <h3>{cta.contactTitle}</h3>
+        <p class="text-muted">{cta.contactText}</p>
+        <Button href={cta.contactHref} variant="outline" size="lg">
+          {cta.contactCta}
+        </Button>
+      </div>
+      <!-- CTA 2: App Idea -->
+      <div class="dual-cta__card dual-cta__card--primary" data-reveal="up" data-reveal-delay="140">
+        <div class="dual-cta__card-glow dual-cta__card-glow--accent" aria-hidden="true"></div>
+        <div class="dual-cta__icon dual-cta__icon--accent" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="16" />
+            <line x1="8" y1="12" x2="16" y2="12" />
+          </svg>
+        </div>
+        <h3>{cta.ideaTitle}</h3>
+        <p class="text-muted">{cta.ideaText}</p>
+        <Button href={cta.ideaHref} target="_blank" variant="primary" size="lg">
+          {cta.ideaCta}
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <ContactBlock lang={lang} />
 
 <style>
+  /* ==========================================================================
+     APPS LANDING PAGE STYLES
+     ========================================================================== */
+
+  /* ---------- hero ---------- */
+  .apps-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: min(88vh, 820px);
+    display: flex;
+    align-items: center;
+    padding-block: clamp(3rem, 8vw, 6rem);
+  }
+  .apps-hero__glow {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(55% 55% at 72% 35%, var(--glow-top), transparent 70%),
+      radial-gradient(35% 35% at 95% 55%, var(--glow-side), transparent 70%);
+    pointer-events: none;
+  }
+  .apps-hero__pulse {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    top: 10%;
+    right: 15%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(244, 14, 14, 0.08), transparent 70%);
+    pointer-events: none;
+    animation: hero-pulse 5s ease-in-out infinite;
+  }
+  @keyframes hero-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.25); opacity: 1; }
+  }
+  .apps-hero__inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-pad);
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .apps-hero__content {
+    max-width: 620px;
+  }
+  .apps-hero h1 {
+    font-size: clamp(2.6rem, 6.5vw, 5rem);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+  }
+  .apps-hero__accent {
+    color: var(--color-accent);
+    display: inline;
+  }
+  .apps-hero__subtitle {
+    margin-top: 1.5rem;
+    max-width: 54ch;
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
+    color: var(--color-text-muted);
+    line-height: 1.65;
+  }
+  .apps-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2.25rem;
+  }
+  .apps-hero__media {
+    position: relative;
+  }
+  .apps-hero__img-wrap {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+      0 30px 80px -20px rgba(0, 0, 0, 0.6),
+      0 15px 50px -25px rgba(244, 14, 14, 0.25);
+    animation: hero-float 7s ease-in-out infinite;
+  }
+  .apps-hero__img-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(244, 14, 14, 0.12) 0%,
+      transparent 50%,
+      rgba(244, 14, 14, 0.06) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+  }
+  .apps-hero__img-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  @keyframes hero-float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-14px) rotate(-0.5deg); }
+  }
+
+  /* ---------- story strip ---------- */
+  .story-strip {
+    position: relative;
+    padding-block: clamp(2.5rem, 5vw, 3.5rem);
+    overflow: hidden;
+  }
+  .story-strip__line {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(244, 14, 14, 0.06) 20%,
+      rgba(244, 14, 14, 0.1) 50%,
+      rgba(244, 14, 14, 0.06) 80%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+  .story-strip__text {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    font-size: clamp(1.15rem, 2.5vw, 1.6rem);
+    font-weight: var(--fw-semibold);
+    text-align: center;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+  }
+  .story-strip__icon {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(244, 14, 14, 0.1);
+    border: 1px solid rgba(244, 14, 14, 0.25);
+    color: var(--color-accent);
+  }
+
+  /* ---------- app catalogue ---------- */
   .apps__count {
     text-transform: uppercase;
     letter-spacing: 0.12em;
@@ -74,11 +422,137 @@ const c = de
     margin-bottom: 1.5rem;
     padding-bottom: 0.75rem;
     border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .apps__cat-count {
+    font-size: 0.72rem;
+    font-weight: var(--fw-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-pill);
+    background: rgba(244, 14, 14, 0.08);
+    border: 1px solid rgba(244, 14, 14, 0.2);
+    color: var(--color-accent);
+    white-space: nowrap;
   }
   .apps__grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
     gap: 1.25rem;
+  }
+
+  /* ---------- dual CTA ---------- */
+  .dual-cta__header {
+    text-align: center;
+    max-width: 680px;
+    margin-inline: auto;
+    margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  }
+  .dual-cta__header h2 {
+    margin-bottom: 1rem;
+  }
+  .dual-cta__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1.25rem, 3vw, 2rem);
+    max-width: 980px;
+    margin-inline: auto;
+  }
+  .dual-cta__card {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: clamp(2rem, 4vw, 2.75rem);
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    transition:
+      transform var(--dur-med) var(--ease-out),
+      border-color var(--dur-med) var(--ease-out),
+      box-shadow var(--dur-med) var(--ease-out);
+  }
+  .dual-cta__card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow:
+      0 26px 60px -30px rgba(0, 0, 0, 0.9),
+      0 18px 50px -32px rgba(244, 14, 14, 0.3);
+  }
+  .dual-cta__card--primary:hover {
+    border-color: rgba(244, 14, 14, 0.45);
+  }
+  .dual-cta__card-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(55% 70% at 50% 0%, rgba(255, 255, 255, 0.03), transparent 70%);
+    pointer-events: none;
+  }
+  .dual-cta__card-glow--accent {
+    background: radial-gradient(55% 70% at 50% 0%, var(--glow-top), transparent 70%);
+  }
+  .dual-cta__icon {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--color-text);
+    position: relative;
+  }
+  .dual-cta__icon--accent {
+    background: rgba(244, 14, 14, 0.1);
+    border-color: rgba(244, 14, 14, 0.3);
+    color: var(--color-accent);
+  }
+  .dual-cta__card h3 {
+    font-size: clamp(1.3rem, 2.5vw, 1.65rem);
+    position: relative;
+  }
+  .dual-cta__card p {
+    flex: 1;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    position: relative;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 960px) {
+    .apps-hero__inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .apps-hero__content {
+      max-width: 100%;
+    }
+    .apps-hero__actions {
+      justify-content: center;
+    }
+    .apps-hero__media {
+      max-width: 560px;
+      margin-inline: auto;
+    }
+    .apps-hero {
+      min-height: auto;
+    }
+    .apps-hero__subtitle {
+      margin-inline: auto;
+    }
+  }
+  @media (max-width: 700px) {
+    .dual-cta__grid {
+      grid-template-columns: 1fr;
+    }
+    .story-strip__text {
+      flex-direction: column;
+    }
   }
   @media (max-width: 540px) {
     .apps__grid {
@@ -86,6 +560,11 @@ const c = de
     }
     .apps__cat-title {
       font-size: 1.3rem;
+      flex-wrap: wrap;
+    }
+    .apps-hero__actions {
+      flex-direction: column;
+      align-items: stretch;
     }
   }
 </style>
