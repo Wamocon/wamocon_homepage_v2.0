@@ -35,8 +35,8 @@ export const appCategories: AppCategory[] = [
         name: 'WMC Anforderungsportal',
         url: 'https://wmc-anforderungsportal.vercel.app/de',
         description: {
-          de: 'Internes Portal zur strukturierten Erfassung, Priorisierung und Verwaltung von Projekt- und Produktanforderungen.',
-          en: 'Internal portal for structured capture, prioritisation and management of project and product requirements.',
+          de: 'KI-gestütztes Portal für IT-Beratungen und Teams: Anforderungen strukturiert erfassen, priorisieren und verwalten.',
+          en: 'AI-powered portal for IT consultancies and teams: capture, prioritise and manage requirements in a structured way.',
         },
       },
       {
@@ -51,16 +51,16 @@ export const appCategories: AppCategory[] = [
         name: 'backofficeassistent',
         url: 'https://wamocon.github.io/backofficeassistent_lp/',
         description: {
-          de: 'Digitaler Assistent für Büroprozesse: Dokumentenverwaltung, Aufgabenverteilung und Kommunikation im Team.',
-          en: 'Digital assistant for office processes: document management, task allocation and team communication.',
+          de: 'KI-Assistent für Behördenbriefe und medizinische Befunde: Dokumente hochladen, Fristen tracken und Antwort-PDFs generieren.',
+          en: 'AI assistant for official letters and medical findings: upload documents, track deadlines and generate response PDFs.',
         },
       },
       {
         name: 'Bedarfspilot',
         url: 'https://wamocon.github.io/bedarfspilot_lp/',
         description: {
-          de: 'Digitale Bedarfsplanung und Beschaffungsmanagement für Unternehmen mit Lieferantenverwaltung und Kostenoptimierung.',
-          en: 'Digital demand planning and procurement management for companies, with supplier management and cost optimisation.',
+          de: 'Internes Equipment-Management: Mitarbeitende stellen Bedarfe, Admins prüfen und genehmigen Anfragen im Dashboard.',
+          en: 'Internal equipment management: employees request work equipment, admins review and approve requests in the dashboard.',
         },
       },
       {
@@ -88,16 +88,16 @@ export const appCategories: AppCategory[] = [
         name: 'WedBudget',
         url: 'https://wamocon.github.io/hochzeitsrechner_lp/',
         description: {
-          de: 'Dynamische Hochzeits-Budgetkalkulation nach Region und Gästezahl plus CRM für Dienstleister und Checklisten.',
-          en: 'Dynamic wedding budget calculation by region and guest count, plus a CRM for vendors and checklists.',
+          de: 'Dynamischer Hochzeits-Budgetrechner: Gästezahl und Budget erfassen, Kosten schätzen und als PDF teilen.',
+          en: 'Dynamic wedding budget calculator: enter guest count and budget, estimate costs and share as PDF.',
         },
       },
       {
         name: 'SchufaCleaner',
         url: 'https://wamocon.github.io/schufacleaner_lp/',
         description: {
-          de: 'Überprüfung und Optimierung des Schufa-Scores mit konkreten Handlungsempfehlungen und Schritt-für-Schritt-Anleitung.',
-          en: 'Review and optimisation of your Schufa score with concrete recommendations and step-by-step guidance.',
+          de: 'Schufa-Datenkopie hochladen, fehlerhafte Einträge erkennen und Widerspruchs-Schreiben per KI generieren.',
+          en: 'Upload SCHUFA data copy, detect erroneous entries and generate objection letters with AI.',
         },
       },
       {
@@ -112,8 +112,8 @@ export const appCategories: AppCategory[] = [
         name: 'GhostAccounts',
         url: 'https://wamocon.github.io/ghostaccounts_lp/',
         description: {
-          de: 'Verwaltung und Bereinigung veralteter oder inaktiver digitaler Konten zur Reduktion von Angriffsflächen.',
-          en: 'Management and clean-up of outdated or inactive digital accounts to reduce attack surfaces.',
+          de: 'E-Mail-Postfach scannen, vergessene Konten finden und mit Lösch-Links oder Assistenten bereinigen.',
+          en: 'Scan email inbox, find forgotten accounts and clean them up with deletion links or an assistant.',
         },
       },
       {
@@ -133,8 +133,8 @@ export const appCategories: AppCategory[] = [
         name: 'KI Manager LMS',
         url: 'https://ki-manager-lms.vercel.app/lp',
         description: {
-          de: 'KI-gestütztes Lernmanagementsystem für moderne Wissensverteilung, Kursplanung und Fortschrittstracking.',
-          en: 'AI-powered learning management system for modern knowledge sharing, course planning and progress tracking.',
+          de: 'KI-Lernplattform für EU AI Act Compliance und KI-Readiness in Unternehmen.',
+          en: 'AI learning platform for EU AI Act compliance and AI readiness in companies.',
         },
       },
       // {
@@ -173,8 +173,8 @@ export const appCategories: AppCategory[] = [
         name: 'Kompetenzkompass',
         url: 'https://wamocon.github.io/kompetenzkompass_lp/',
         description: {
-          de: 'KI-gestütztes Skill-Mapping: Fähigkeiten aus Lebensläufen und Projektlogs extrahieren und intern matchen.',
-          en: 'AI-powered skill mapping: extract skills from CVs and project logs and match them internally.',
+          de: 'KI-basiertes Skill-Matching zwischen Projektanforderungen und Kandidaten inklusive Interview-Leitfäden.',
+          en: 'AI-based skill matching between project requirements and candidates including interview guides.',
         },
       },
     ],
@@ -186,16 +186,16 @@ export const appCategories: AppCategory[] = [
         name: 'Plan-it',
         url: 'https://wamocon.github.io/plan-it_lp/',
         description: {
-          de: 'Projektmanagement-Tool für die Bau- und Handwerksbranche zur effizienten Ressourcenplanung.',
-          en: 'Project management tool for the construction and crafts industry for efficient resource planning.',
+          de: 'Architekturplaner für Software-Landschaften: Ist-Zustand analysieren, Architektur-Score ermitteln und Umsetzungsplan exportieren.',
+          en: 'Architecture planner for software landscapes: analyse current state, determine architecture score and export implementation plan.',
         },
       },
       {
         name: 'Ustafix',
         url: 'https://www.ustafix.app/',
         description: {
-          de: 'Handwerker-Vermittlung und Auftragsverwaltung für schnelle, zuverlässige Reparaturen und Installationen.',
-          en: 'Craftsman matching and order management for fast, reliable repairs and installations.',
+          de: 'Mängelmanagement für Baustellen: Defekte erfassen, fotodokumentieren, verfolgen und als PDF-Bericht exportieren.',
+          en: 'Defect management for construction sites: capture, photo-document, track defects and export PDF reports.',
         },
       },
       // {
@@ -218,32 +218,32 @@ export const appCategories: AppCategory[] = [
         name: 'Parzella',
         url: 'https://wamocon.github.io/parzella_lp/',
         description: {
-          de: 'Digitale Garten- und Grundstücksverwaltung für Immobilienbesitzer.',
-          en: 'Digital garden and property management for real estate owners.',
+          de: 'Kleingarten-Platzfinder: Vereine auf der Karte finden, Bewerbungen mit KI generieren und Fortschritte tracken.',
+          en: 'Allotment-garden finder: locate clubs on a map, generate applications with AI and track progress.',
         },
       },
       {
         name: 'Auktivo',
         url: 'https://wamocon.github.io/auktivo_lp/',
         description: {
-          de: 'KI-Assistent für Zwangsversteigerungen zur Marktanalyse und Bewertung.',
-          en: 'AI assistant for foreclosure auctions for market analysis and valuation.',
+          de: 'KI-Assistent für Zwangsversteigerungen: Gutachten analysieren, Risiken erkennen und Chancen bewerten.',
+          en: 'AI assistant for foreclosure auctions: analyse reports, identify risks and evaluate opportunities.',
         },
       },
       {
         name: 'BalkonBonus',
         url: 'https://balkonbonus.eu',
         description: {
-          de: 'Plattform für Fördermittel und Zuschüsse rund um Balkonkraftwerke und energetische Sanierungen.',
-          en: 'Platform for subsidies and grants for balcony power plants and energy-efficient renovations.',
+          de: 'Fördermittel-Suche und Antragsunterlagen für Balkonkraftwerke in wenigen Minuten erstellen.',
+          en: 'Search for subsidies and create application documents for balcony power plants in minutes.',
         },
       },
       {
         name: 'HandwerkerBonus',
         url: 'https://hardwarebonus.eu/',
         description: {
-          de: 'Informationen und Beantragungshilfe für staatliche Handwerker-Boni.',
-          en: 'Information and application support for state craftsman bonuses.',
+          de: 'Handwerker-Rechnungen hochladen, Steuer-Abzugspotenzial prüfen und ELSTER-Daten exportieren.',
+          en: 'Upload craftsman invoices, check tax deduction potential and export ELSTER-ready data.',
         },
       },
     ],
@@ -263,16 +263,16 @@ export const appCategories: AppCategory[] = [
         name: 'TRACE',
         url: 'https://trace-livid-kappa.vercel.app/auth/login',
         description: {
-          de: 'Sicheres Tracking und Dokumentation von Fahrtrouten und Mobilitätsdaten.',
-          en: 'Secure tracking and documentation of travel routes and mobility data.',
+          de: 'Digitale Zeiterfassung für Teams: Arbeitszeiten, Projekte, Berichte und Freigabe-Workflows.',
+          en: 'Digital time tracking for teams: working hours, projects, reports and approval workflows.',
         },
       },
       {
         name: 'CarMan',
         url: 'https://wamocon.github.io/carman_lp/',
         description: {
-          de: 'Digitale Fuhrparkverwaltung und Fahrzeugmanagement für Unternehmen.',
-          en: 'Digital fleet and vehicle management for companies.',
+          de: 'Fahrzeugkosten-Tracker für Privatanwender: Kosten erfassen, Servicetermine planen und Fahrzeughistorie exportieren.',
+          en: 'Vehicle cost tracker for private users: log costs, plan service appointments and export vehicle history.',
         },
       },
       {
@@ -287,40 +287,40 @@ export const appCategories: AppCategory[] = [
         name: 'Wartezeit-Wächter',
         url: 'https://wamocon.github.io/wartezeit-waechter_lp/',
         description: {
-          de: 'Echtzeit-Tracking von Wartezeiten in Behörden und Kundenzentren.',
-          en: 'Real-time tracking of waiting times at public offices and customer centres.',
+          de: 'Community-basierte Wartezeit-Übersicht für Fachärzte mit Praxis-Kontakt und Bewerbungs-Tracking.',
+          en: 'Community-based wait-time overview for medical specialists with practice contact and application tracking.',
         },
       },
       {
         name: 'KitaRadar',
         url: 'https://wamocon.github.io/kitaradar_lp/',
         description: {
-          de: 'Standortbasierte Suche nach freien Kita-Plätzen und Betreuungsangeboten in der näheren Umgebung.',
-          en: 'Location-based search for available daycare places and childcare offers nearby.',
+          de: 'KI-gestützte Kita-Suche mit Match-Score, Bewerbungs-Schreiben und Bewerbungs-Tracking.',
+          en: 'AI-assisted daycare search with match score, application letters and application tracking.',
         },
       },
       {
         name: 'Rideproof',
         url: 'https://wamocon.github.io/rideproof_lp/',
         description: {
-          de: 'Digitale Absicherung und Dokumentation für Fahrgemeinschaften und Mobilitätsdienstleister.',
-          en: 'Digital protection and documentation for carpools and mobility service providers.',
+          de: 'Beweissichere Dokumentation für Carsharing: Fahrzeugdaten, Fotos und Schadensberichte digital erfassen.',
+          en: 'Evidence-based documentation for carsharing: capture vehicle data, photos and damage reports digitally.',
         },
       },
       {
         name: 'blitzersafe',
         url: 'https://wamocon.github.io/blitzersafe_lp/',
         description: {
-          de: 'Warnsystem für Blitzer, Gefahrenstellen und Tempoüberwachung im Straßenverkehr.',
-          en: 'Warning system for speed cameras, danger spots and speed monitoring in road traffic.',
+          de: 'KI-Assistent für Bußgeldbescheide: Daten extrahieren, Einspruchspotenzial prüfen und Widerspruchs-Schreiben generieren.',
+          en: 'AI assistant for traffic-fine notices: extract data, check objection potential and generate appeal letters.',
         },
       },
       {
         name: 'Geburtstagspilot',
         url: 'https://wamocon.github.io/geburtstagspilot_lp/',
         description: {
-          de: 'Smarte Geburtstagsverwaltung mit Erinnerungen, Geschenkideen und personalisierter Planung für die ganze Familie.',
-          en: 'Smart birthday management with reminders, gift ideas and personalised planning for the whole family.',
+          de: 'Planer für Kindergeburtstage: Ablauf, Spiele, Essen, Einkaufsliste, Einladung und Mitgebsel organisieren.',
+          en: 'Planner for children\'s birthdays: schedule, games, food, shopping list, invitations and goody bags.',
         },
       },
     ],
@@ -332,16 +332,16 @@ export const appCategories: AppCategory[] = [
         name: 'LocalForge',
         url: 'https://wamocon.github.io/LocalForge_lp/',
         description: {
-          de: 'Lokaler Marktplatz und Netzwerk für regionale Produzenten und Händler.',
-          en: 'Local marketplace and network for regional producers and traders.',
+          de: 'Browser-basierter Testdaten-Generator für Entwickler: strukturierte Datensätze als CSV, JSON und SQL exportieren.',
+          en: 'Browser-based test-data generator for developers: export structured datasets as CSV, JSON and SQL.',
         },
       },
       {
         name: 'regiosync',
         url: 'https://wamocon.github.io/regiosync_lp/',
         description: {
-          de: 'Regionale Datensynchronisation und Zusammenarbeit für lokale Unternehmen.',
-          en: 'Regional data synchronisation and collaboration for local businesses.',
+          de: 'Regionaler Marktplatz für lokale Erzeuger, Handwerker und Händler mit interaktiver Karte und direktem Kontakt.',
+          en: 'Regional marketplace for local producers, craftsmen and traders with an interactive map and direct contact.',
         },
       },
     ],
@@ -353,8 +353,8 @@ export const appCategories: AppCategory[] = [
         name: 'TeamRadar',
         url: 'https://wamocon.github.io/TeamRadar_lp/',
         description: {
-          de: 'Kultur- und Stimmungsbarometer für Teams zur Förderung des Zusammenhalts.',
-          en: 'Culture and mood barometer for teams to strengthen cohesion.',
+          de: 'Team-Verfügbarkeits-Dashboard mit Kalender-Sync, Status-Übersicht und Hybrid-Work-Erkennung.',
+          en: 'Team availability dashboard with calendar sync, status overview and hybrid-work detection.',
         },
       },
       {
@@ -369,16 +369,16 @@ export const appCategories: AppCategory[] = [
         name: 'KLAR',
         url: 'https://klar-app.vercel.app/de',
         description: {
-          de: 'Content-Verifizierung mit fünf Analyse-Modi: Faktencheck, Bias-Erkennung, KI-Erkennung, Plagiatsprüfung und Qualitätsbewertung.',
-          en: 'Content verification with five analysis modes: fact check, bias detection, AI detection, plagiarism check and quality assessment.',
+          de: 'Content-Prüfung mit fünf Modi: Faktencheck, Bias, KI-Erkennung, Plagiat und EU AI Act Compliance.',
+          en: 'Content verification with five modes: fact check, bias, AI detection, plagiarism and EU AI Act compliance.',
         },
       },
       {
         name: 'ARIA',
         url: 'https://aria-ten-kohl.vercel.app/',
         description: {
-          de: 'Medizinischer KI-Assistent für Gesundheitsfragen und Lifestyle-Optimierung.',
-          en: 'Medical AI assistant for health questions and lifestyle optimisation.',
+          de: 'KI-Schreibassistent für Arztpraxen: Arztbriefe, Überweisungen und Befunde aus Stichpunkten oder Diktat generieren.',
+          en: 'AI writing assistant for medical practices: generate letters, referrals and findings from bullet points or dictation.',
         },
       },
       {
@@ -402,8 +402,8 @@ export const appCategories: AppCategory[] = [
         name: 'Sirin',
         url: 'https://wamocon.github.io/Sirin_lp/',
         description: {
-          de: 'KI-gestützte Planung und Organisation für den Alltag.',
-          en: 'AI-powered planning and organisation for everyday life.',
+          de: 'Terminbuchungs-Plattform für Dienstleister: Online-Termine, Erinnerungen, Warteliste und eigene Domain.',
+          en: 'Appointment-booking platform for service providers: online bookings, reminders, waitlist and custom domain.',
         },
       },
       {
@@ -418,8 +418,8 @@ export const appCategories: AppCategory[] = [
         name: 'makeartalanya',
         url: 'https://www.makeartalanya.com/',
         description: {
-          de: 'Plattform für Kunst und Kulturprojekte im Raum Alanya.',
-          en: 'Platform for art and cultural projects in the Alanya region.',
+          de: 'Lokales Kunst- und Kreativstudio in Alanya mit Kursen in Malen, Zeichnen, Schach und Handwerk.',
+          en: 'Local art and creative studio in Alanya offering courses in painting, drawing, chess and crafts.',
         },
       },
       {
@@ -434,24 +434,24 @@ export const appCategories: AppCategory[] = [
         name: 'Treffpunkt',
         url: 'https://wamocon.github.io/treffpunkt_lp/',
         description: {
-          de: 'Lokale Community-Plattform zur Organisation von Nachbarschafts-Events.',
-          en: 'Local community platform for organising neighbourhood events.',
+          de: 'Planungs-Tool für private Gruppentreffen: Terminabstimmung, Aufgaben, Budget und Abstimmungen.',
+          en: 'Planning tool for private group meetups: date polling, tasks, budget and voting.',
         },
       },
       {
         name: 'football-connect',
         url: 'https://wamocon.github.io/footballconnect_lp/',
         description: {
-          de: 'Netzwerk und Management-Tool für Fußballvereine, Spieler und Fans.',
-          en: 'Network and management tool for football clubs, players and fans.',
+          de: 'Plattform für Amateurfußball: Vereinssuche, Spieler-Bewerbungen, Probetraining und Team-Verwaltung.',
+          en: 'Platform for amateur football: club search, player applications, trial training and team management.',
         },
       },
       {
         name: 'AppLens',
         url: 'https://wamocon.github.io/AppLens_lp/',
         description: {
-          de: 'Kulturelle Einblicke und Lifestyle-Empfehlungen auf einen Blick.',
-          en: 'Cultural insights and lifestyle recommendations at a glance.',
+          de: 'Internes Monitoring-Dashboard für WAMOCON-Apps: Deployments, Performance, Health-Checks und System-Status.',
+          en: 'Internal monitoring dashboard for WAMOCON apps: deployments, performance, health checks and system status.',
         },
       },
       {
