@@ -406,7 +406,8 @@ export const home: HomeContent = {
     },
     cta: { de: 'In Google Maps öffnen', en: 'Open in Google Maps' },
     embedUrl:
-      'https://www.google.com/maps/embed?pb=!4v1750000000000!6m8!1m7!1sCIABIhCUsuS36guijk8hNPuNid7Y!2m2!1d8.5722177!2d50.1350963!3f0!4f-20!5f0.7820865974627469',
-    mapsUrl: 'https://www.google.com/maps/place/WAMOCON+GmbH/@50.1350963,8.5722177,3a,75y,110t/data=!3m8!1e1!3m6!1sCIABIhCUsuS36guijk8hNPuNid7Y!2e10!3e11!6shttps:%2F%2Flh3.googleusercontent.com%2Fgpms-cs-s%2FABJJf53kp1MsH8AMRfn8_EqozFwBwVnCOZZCeh_2v8RNXd1zPcm7svMcWVQZGFvcDKXvndQDYogSiRJ_YL274LmnuO5F8_vsTdhjXAb4pv_AMmW3ed5mCmB6B3-zhi0LzO7cuUx6DzBga5l-LsoJ%3Dw900-h600-k-no-pi-20-ya348.8465452194214-ro0-fo100!7i11904!8i5952!4m9!3m8!1s0x47bd097e61415ffb:0xa71adb1d3c8614d6!8m2!3d50.1353593!4d8.5721691!10e5!14m1!1BCgIgAQ!16s%2Fg%2F11c4v4n5nw',
+      'https://www.google.com/maps/embed?pb=!4v1782479371000!6m8!1m7!1sCAoSHENJQUJJaENVc3VTMzZndWlqazhoTlB1TmlkN1k.!2m2!1d50.1350963!2d8.5722177!3f0!4f-20!5f0.7820865974627469',
+    mapsUrl:
+      'https://www.google.com/maps/@?api=1&map_action=pano&pano=CAoSHENJQUJJaENVc3VTMzZndWlqazhoTlB1TmlkN1k.&heading=0&pitch=-20&fov=80',
   },
 };
