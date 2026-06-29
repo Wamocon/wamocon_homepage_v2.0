@@ -305,12 +305,15 @@ header.scrolled{box-shadow:var(--shadow-sm)}
 .opp{background:var(--white)}
 .opp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 .opp-card{background:var(--surface);border-radius:var(--radius-lg);padding:30px;text-align:center;border:1px solid var(--line)}
-.donut{width:150px;height:150px;margin:0 auto 8px;position:relative}
-.donut svg{transform:rotate(-90deg);width:100%;height:100%}
-.donut .track{fill:none;stroke:var(--surface-2);stroke-width:14}
-.donut .fill{fill:none;stroke:var(--red);stroke-width:14;stroke-linecap:round;
+.donut{width:170px;height:170px;margin:0 auto 16px;position:relative}
+.donut::before{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 50% 45%,#fff 0%,var(--surface) 70%);box-shadow:0 8px 28px rgba(14,17,22,.08);z-index:0}
+.donut svg{transform:rotate(-90deg);width:100%;height:100%;position:relative;z-index:1}
+.donut .track{fill:none;stroke:#e0e3e8;stroke-width:8}
+.donut .fill{fill:none;stroke:var(--red);stroke-width:8;stroke-linecap:round;
   stroke-dasharray:377;stroke-dashoffset:377;transition:stroke-dashoffset 1.6s var(--ease)}
-.donut .pct{position:absolute;inset:0;display:grid;place-items:center;font-size:1.9rem;font-weight:800;color:var(--ink)}
+.donut .pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.2rem;font-weight:800;color:var(--ink);z-index:2;gap:2px}
+.donut .pct .count{line-height:1}
+.donut .pct .sym{font-size:1.15rem;color:var(--red);font-weight:800;position:relative;top:-0.32em;margin-left:0}
 .opp-card h3{margin:6px 0 8px}
 .opp-card p{font-size:.9rem;color:var(--muted)}
 .bars{display:flex;align-items:flex-end;justify-content:center;gap:14px;height:150px;margin-bottom:10px}
@@ -389,9 +392,86 @@ footer .f-wa{display:inline-flex;align-items:center;gap:9px;color:#fff;font-weig
 .fab .fab-ring{position:absolute;inset:0;border-radius:50%;border:2px solid #25D366;animation:pulse 2.4s var(--ease) infinite}
 
 /* ---------- Reveal animation ---------- */
-.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
-.reveal.in{opacity:1;transform:none}
-.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}
+.reveal{opacity:0;transform:translateY(28px) scale(.98);filter:blur(2px);transition:opacity .8s var(--ease),transform .8s var(--ease),filter .8s var(--ease)}
+.reveal.in{opacity:1;transform:none;filter:blur(0)}
+.reveal.d1{transition-delay:.1s}.reveal.d2{transition-delay:.2s}.reveal.d3{transition-delay:.3s}.reveal.d4{transition-delay:.4s}
+
+/* ---------- Premium motion ---------- */
+/* stagger children automatically when parent has .stagger-reveal */
+.stagger-reveal > *{opacity:0;transform:translateY(22px) scale(.98);filter:blur(2px);transition:opacity .7s var(--ease),transform .7s var(--ease),filter .7s var(--ease)}
+.stagger-reveal.in > *{opacity:1;transform:none;filter:blur(0)}
+.stagger-reveal.in > *:nth-child(1){transition-delay:.05s}
+.stagger-reveal.in > *:nth-child(2){transition-delay:.1s}
+.stagger-reveal.in > *:nth-child(3){transition-delay:.15s}
+.stagger-reveal.in > *:nth-child(4){transition-delay:.2s}
+.stagger-reveal.in > *:nth-child(5){transition-delay:.25s}
+.stagger-reveal.in > *:nth-child(6){transition-delay:.3s}
+.stagger-reveal.in > *:nth-child(7){transition-delay:.35s}
+.stagger-reveal.in > *:nth-child(8){transition-delay:.4s}
+
+/* card lift + glow on hover */
+.opp-card,.pain,.step,.tl,.demo{transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .35s var(--ease)}
+.opp-card:hover,.pain:hover,.step:hover,.tl:hover,.demo:hover{transform:translateY(-8px);box-shadow:0 24px 50px rgba(14,17,22,.12)}
+.opp-card:hover{border-color:var(--red)}
+
+/* shine sweep on hover for cards */
+.opp-card,.pain,.step,.tl,.demo,.cred-card{position:relative;overflow:hidden}
+.opp-card::after,.pain::after,.step::after,.tl::after,.demo::after,.cred-card::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);transform:translateX(-120%);transition:none;pointer-events:none;z-index:2}
+.opp-card:hover::after,.pain:hover::after,.step:hover::after,.tl:hover::after,.demo:hover::after,.cred-card:hover::after{transform:translateX(120%);transition:transform .9s var(--ease)}
+/* package card shine handled separately so the "most popular" badge is not clipped */
+.pkg{position:relative}
+.pkg::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);transform:translateX(-120%);transition:none;pointer-events:none;z-index:2;overflow:hidden}
+.pkg:hover::before{transform:translateX(120%);transition:transform .9s var(--ease)}
+
+/* premium primary button shimmer */
+.btn-primary{position:relative;overflow:hidden;z-index:1}
+.btn-primary::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.25) 50%,transparent 70%);transform:translateX(-130%);transition:none;z-index:-1}
+.btn-primary:hover::before{transform:translateX(130%);transition:transform .85s var(--ease)}
+
+/* featured package premium glow */
+.pkg.feat{animation:featGlow 3s ease-in-out infinite}
+@keyframes featGlow{0%,100%{box-shadow:0 24px 60px rgba(244,14,14,.16)}50%{box-shadow:0 28px 70px rgba(244,14,14,.28)}}
+
+/* hero device subtle float */
+.hero-visual{animation:heroFloat 6s ease-in-out infinite}
+@keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.hero-visual:hover{animation-play-state:paused}
+
+/* chips enhanced float */
+.chip-1{animation:chipFloat1 5s ease-in-out infinite}
+.chip-2{animation:chipFloat2 5.5s ease-in-out infinite}
+@keyframes chipFloat1{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-14px) rotate(2deg)}}
+@keyframes chipFloat2{0%,100%{transform:translateY(0) rotate(2deg)}50%{transform:translateY(-12px) rotate(-2deg)}}
+
+/* red wave slow parallax */
+.wave svg{animation:waveShift 12s ease-in-out infinite alternate}
+@keyframes waveShift{0%{transform:translateX(-2%)}100%{transform:translateX(2%)}}
+
+/* stats number pop */
+.stat .num{opacity:0;transform:scale(.8)}
+.stats.in-view .stat .num{animation:numPop .9s var(--ease) both}
+.stats.in-view .stat:nth-child(1) .num{animation-delay:.05s}
+.stats.in-view .stat:nth-child(2) .num{animation-delay:.12s}
+.stats.in-view .stat:nth-child(3) .num{animation-delay:.19s}
+.stats.in-view .stat:nth-child(4) .num{animation-delay:.26s}
+@keyframes numPop{0%{transform:scale(.8);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+
+/* method steps connector draw */
+.step .arrow{animation:arrowPulse 2s ease-in-out infinite}
+@keyframes arrowPulse{0%,100%{opacity:.35;transform:translateY(-50%) translateX(0)}50%{opacity:.9;transform:translateY(-50%) translateX(6px)}}
+
+/* final CTA radiate */
+.final .btn-primary{animation:ctaRadiate 2.8s ease-in-out infinite}
+@keyframes ctaRadiate{0%,100%{box-shadow:0 10px 26px rgba(244,14,14,.32)}50%{box-shadow:0 14px 36px rgba(244,14,14,.5),0 0 0 8px rgba(244,14,14,.08)}}
+
+/* trust icons pop in */
+.tl{transition:transform .3s var(--ease),box-shadow .3s var(--ease),border-color .3s var(--ease)}
+.tl:hover{border-color:var(--red);transform:translateY(-6px) scale(1.02)}
+
+/* reduced motion respect */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+}
 
 /* ---------- Mobile menu panel ---------- */
 .mobile-menu{position:fixed;inset:0 0 0 auto;width:min(82vw,330px);background:#fff;z-index:80;transform:translateX(100%);
@@ -726,7 +806,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--red);outline-offset
     </div>
     <div class="opp-grid">
       <div class="opp-card reveal" id="oppDonut">
-        <div class="donut"><svg viewBox="0 0 140 140"><circle class="track" cx="70" cy="70" r="60"/><circle class="fill" id="donutFill" cx="70" cy="70" r="60"/></svg><div class="pct">%<span class="count" data-to="90">0</span></div></div>
+        <div class="donut"><svg viewBox="0 0 140 140"><circle class="track" cx="70" cy="70" r="60"/><circle class="fill" id="donutFill" cx="70" cy="70" r="60"/></svg><div class="pct"><span class="count" data-to="90">0</span><span class="sym">%</span></div></div>
         <h3 data-i18n="opp_c1_t">Web sitesi yok</h3>
         <p data-i18n="opp_c1_p">Alanya'daki berberlerin tahminen %90'ının web sitesi yok. Boşta duran bu alan tam size göre bir fırsat.</p>
       </div>
@@ -902,9 +982,9 @@ const I18N = {
     pkg_from:"başlangıç",pkg_pop:"En Popüler",pkg_cta:"Bu paketi WhatsApp'tan sor",
     pkg_note:"Tüm paketler aylık bakım & destek opsiyonu içerir. Fiyatlar 2026 Türkiye web tasarım piyasasına göre konumlandırılmıştır.",
     packages:[
-      {name:"Başlangıç",fr:"Küçük berberler için",tl:"5.000 TL",eur:"≈ 95 €",feats:["5 sayfa, mobil uyumlu web sitesi","Google İşletme Profili kurulumu","WhatsApp randevu butonu","Temel SEO"]},
-      {name:"Profesyonel",fr:"Orta ölçekli & turist bölgesi",tl:"15.000 TL",eur:"≈ 285 €",feats:["Çok dilli web sitesi (TR+EN+RU/DE)","Online randevu sistemi","AI chat asistan (7/24)","Foto galerisi","Gelişmiş SEO + GEO"]},
-      {name:"Premium",fr:"Büyük salonlar için",tl:"25.000 TL",eur:"≈ 470 €",feats:["Profesyonel'deki her şey","Instagram entegrasyonu","Yorum (review) yönetimi","Aylık SEO raporu","VIP öncelikli destek"]}
+      {name:"Başlangıç",fr:"Küçük berberler için",tl:"10.600 TL",eur:"≈ 199,99 €",feats:["5 sayfa, mobil uyumlu web sitesi","Google İşletme Profili kurulumu","WhatsApp randevu butonu","Temel SEO"]},
+      {name:"Profesyonel",fr:"Orta ölçekli & turist bölgesi",tl:"31.800 TL",eur:"≈ 599,99 €",feats:["Çok dilli web sitesi (TR+EN+RU/DE)","Online randevu sistemi","AI chat asistan (7/24)","Foto galerisi","Gelişmiş SEO + GEO"]},
+      {name:"Premium",fr:"Büyük salonlar için",tl:"53.000 TL",eur:"≈ 999,99 €",feats:["Profesyonel'deki her şey","Instagram entegrasyonu","Yorum (review) yönetimi","Aylık SEO raporu","VIP öncelikli destek"]}
     ],
     demo_kicker:"Nasıl çalışır",demo_title:"Müşterileriniz bunu görecek",demo_sub:"Gerçek müşteri deneyimini canlı önizleyin. Hepsi sitenize dahil.",
     demo_badge:"Demo",
@@ -985,9 +1065,9 @@ const I18N = {
     pkg_from:"from",pkg_pop:"Most Popular",pkg_cta:"Ask about this on WhatsApp",
     pkg_note:"Every package includes an optional monthly maintenance & support plan. Prices are positioned against the 2026 Turkish web-design market.",
     packages:[
-      {name:"Starter",fr:"For small barbershops",tl:"5,000 TL",eur:"≈ €95",feats:["5-page, mobile-ready website","Google Business Profile setup","WhatsApp booking button","Basic SEO"]},
-      {name:"Professional",fr:"Mid-size & tourist areas",tl:"15,000 TL",eur:"≈ €285",feats:["Multilingual website (TR+EN+RU/DE)","Online booking system","AI chat assistant (24/7)","Photo gallery","Advanced SEO + GEO"]},
-      {name:"Premium",fr:"For large salons",tl:"25,000 TL",eur:"≈ €470",feats:["Everything in Professional","Instagram integration","Review management","Monthly SEO report","VIP priority support"]}
+      {name:"Starter",fr:"For small barbershops",tl:"10,600 TL",eur:"≈ €199.99",feats:["5-page, mobile-ready website","Google Business Profile setup","WhatsApp booking button","Basic SEO"]},
+      {name:"Professional",fr:"Mid-size & tourist areas",tl:"31,800 TL",eur:"≈ €599.99",feats:["Multilingual website (TR+EN+RU/DE)","Online booking system","AI chat assistant (24/7)","Photo gallery","Advanced SEO + GEO"]},
+      {name:"Premium",fr:"For large salons",tl:"53,000 TL",eur:"≈ €999.99",feats:["Everything in Professional","Instagram integration","Review management","Monthly SEO report","VIP priority support"]}
     ],
     demo_kicker:"How it works",demo_title:"This is what your customers will see",demo_sub:"Preview the real customer experience live. Everything is included in your site.",
     demo_badge:"Demo",
@@ -1068,9 +1148,9 @@ const I18N = {
     pkg_from:"от",pkg_pop:"Самый популярный",pkg_cta:"Спросить в WhatsApp",
     pkg_note:"Все пакеты включают опциональный план ежемесячной поддержки. Цены соответствуют рынку веб-дизайна Турции 2026 года.",
     packages:[
-      {name:"Старт",fr:"Для небольших барбершопов",tl:"5 000 TL",eur:"≈ 95 €",feats:["Сайт из 5 страниц для смартфонов","Настройка профиля Google Бизнес","Кнопка записи в WhatsApp","Базовое SEO"]},
-      {name:"Профессиональный",fr:"Средние и туристические районы",tl:"15 000 TL",eur:"≈ 285 €",feats:["Многоязычный сайт (TR+EN+RU/DE)","Система онлайн-записи","ИИ-чат-ассистент (24/7)","Фотогалерея","Расширенное SEO + GEO"]},
-      {name:"Премиум",fr:"Для крупных салонов",tl:"25 000 TL",eur:"≈ 470 €",feats:["Всё из «Профессионального»","Интеграция с Instagram","Управление отзывами","Ежемесячный SEO-отчёт","VIP-поддержка с приоритетом"]}
+      {name:"Старт",fr:"Для небольших барбершопов",tl:"10 600 TL",eur:"≈ 199,99 €",feats:["Сайт из 5 страниц для смартфонов","Настройка профиля Google Бизнес","Кнопка записи в WhatsApp","Базовое SEO"]},
+      {name:"Профессиональный",fr:"Средние и туристические районы",tl:"31 800 TL",eur:"≈ 599,99 €",feats:["Многоязычный сайт (TR+EN+RU/DE)","Система онлайн-записи","ИИ-чат-ассистент (24/7)","Фотогалерея","Расширенное SEO + GEO"]},
+      {name:"Премиум",fr:"Для крупных салонов",tl:"53 000 TL",eur:"≈ 999,99 €",feats:["Всё из «Профессионального»","Интеграция с Instagram","Управление отзывами","Ежемесячный SEO-отчёт","VIP-поддержка с приоритетом"]}
     ],
     demo_kicker:"Как это работает",demo_title:"Вот что увидят ваши клиенты",demo_sub:"Посмотрите реальный клиентский опыт вживую. Всё входит в ваш сайт.",
     demo_badge:"Демо",
@@ -1151,9 +1231,9 @@ const I18N = {
     pkg_from:"ab",pkg_pop:"Am beliebtesten",pkg_cta:"Per WhatsApp anfragen",
     pkg_note:"Jedes Paket enthält einen optionalen monatlichen Wartungs- & Support-Plan. Die Preise orientieren sich am türkischen Webdesign-Markt 2026.",
     packages:[
-      {name:"Starter",fr:"Für kleine Barbershops",tl:"5.000 TL",eur:"≈ 95 €",feats:["5-seitige, mobiloptimierte Website","Einrichtung Google-Unternehmensprofil","WhatsApp-Buchungsbutton","Basis-SEO"]},
-      {name:"Professional",fr:"Mittelgroß & Touristengebiete",tl:"15.000 TL",eur:"≈ 285 €",feats:["Mehrsprachige Website (TR+EN+RU/DE)","Online-Buchungssystem","KI-Chat-Assistent (24/7)","Fotogalerie","Erweitertes SEO + GEO"]},
-      {name:"Premium",fr:"Für große Salons",tl:"25.000 TL",eur:"≈ 470 €",feats:["Alles aus Professional","Instagram-Integration","Bewertungs-Management","Monatlicher SEO-Bericht","VIP-Priority-Support"]}
+      {name:"Starter",fr:"Für kleine Barbershops",tl:"10.600 TL",eur:"≈ 199,99 €",feats:["5-seitige, mobiloptimierte Website","Einrichtung Google-Unternehmensprofil","WhatsApp-Buchungsbutton","Basis-SEO"]},
+      {name:"Professional",fr:"Mittelgroß & Touristengebiete",tl:"31.800 TL",eur:"≈ 599,99 €",feats:["Mehrsprachige Website (TR+EN+RU/DE)","Online-Buchungssystem","KI-Chat-Assistent (24/7)","Fotogalerie","Erweitertes SEO + GEO"]},
+      {name:"Premium",fr:"Für große Salons",tl:"53.000 TL",eur:"≈ 999,99 €",feats:["Alles aus Professional","Instagram-Integration","Bewertungs-Management","Monatlicher SEO-Bericht","VIP-Priority-Support"]}
     ],
     demo_kicker:"So funktioniert's",demo_title:"Das werden Ihre Kunden sehen",demo_sub:"Erleben Sie das echte Kundenerlebnis live. Alles ist in Ihrer Website enthalten.",
     demo_badge:"Demo",
@@ -1379,6 +1459,15 @@ function observeReveals(){
     },{threshold:.12});
   }
   document.querySelectorAll('.reveal:not(.in)').forEach(n=>io.observe(n));
+  document.querySelectorAll('.stagger-reveal:not(.in)').forEach(n=>io.observe(n));
+}
+function enableStaggerGrids(){
+  ['.pain-grid','.demo-grid','.opp-grid','.steps','.pkg-grid','.tl-grid','.stats-grid','.ba-panel','.cred-badges','.client-row'].forEach(sel=>{
+    document.querySelectorAll(sel).forEach(g=>{
+      if(!g.classList.contains('stagger-reveal')) g.classList.add('stagger-reveal');
+      g.querySelectorAll(':scope > *').forEach(c=>{if(!c.classList.contains('reveal')) c.classList.add('reveal-child');});
+    });
+  });
 }
 // one-shot observers for counters / charts
 function observeOnce(id,cb){
@@ -1404,12 +1493,12 @@ function initUI(){
   document.getElementById('mmClose').addEventListener('click',()=>openMenu(false));
   ov.addEventListener('click',()=>openMenu(false));
   mm.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>openMenu(false)));
-  // hero parallax (light)
+  // hero parallax on device only (keeps float animation on container)
   const reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
   if(!reduce){
-    const vis=document.querySelector('.hero-visual');
+    const dev=document.querySelector('.hero-visual .device');
     window.addEventListener('scroll',()=>{
-      const y=window.scrollY;if(y<700&&vis)vis.style.transform='translateY('+(y*0.06)+'px)';
+      const y=window.scrollY;if(y<700&&dev)dev.style.transform='translateY('+(y*0.04)+'px) rotateY(-14deg) rotateX(5deg)';
     },{passive:true});
   }
 }
@@ -1418,9 +1507,10 @@ function initUI(){
 document.addEventListener('DOMContentLoaded',()=>{
   initUI();
   applyI18n();
+  enableStaggerGrids();
   observeReveals();
   // counters (run when stats visible)
-  observeOnce('statsSec',()=>{document.querySelectorAll('#statsSec .count').forEach(countUp);});
+  observeOnce('statsSec',()=>{const s=document.getElementById('statsSec');if(s)s.classList.add('in-view');document.querySelectorAll('#statsSec .count').forEach(countUp);});
   // donut + bars + big numbers on opportunity
   observeOnce('opp',()=>{
     const fill=document.getElementById('donutFill');if(fill)fill.style.strokeDashoffset = (377*(1-0.90)).toFixed(0);

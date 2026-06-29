@@ -1,5 +1,6 @@
 ---
-/** Referenzen / References page — displays client list and company info images. */
+/** Referenzen / References page — displays client list and company contact block. */
+import ContactBlock from './ContactBlock.astro';
 import type { Lang } from '../../i18n/config';
 
 interface Props {
@@ -8,59 +9,88 @@ interface Props {
 const { lang } = Astro.props;
 const de = lang === 'de';
 
-const c = de
+const clients = [
+  '50 Hertz Transmission GmbH',
+  'Deutsche Bank AG',
+  'Intel Deutschland GmbH',
+  'BRUNATA-Metrona GmbH & Co. KG',
+  'Deutsche Telekom AG',
+  'KraussMaffei Technologies GmbH',
+  'Bundesagentur für Arbeit (BA)',
+  'DZ Bank AG',
+  'Lekkerland Deutschland GmbH & Co. KG',
+  'Capgemini Deutschland GmbH',
+  'EnBW Energie Baden-Württemberg AG',
+  'Mercedes-Benz Bank AG',
+  'Daimler AG',
+  'Hewlett-Packard GmbH',
+  'Phoenix Contact GmbH & Co. KG',
+  'Deutsche Bahn AG',
+  'iBS Innovative Banking Solutions AG',
+  'PricewaterhouseCoopers GmbH',
+  'Quelle GmbH',
+  'R+V Allgemeine Versicherung AG',
+  'Roche Diagnostics GmbH',
+  'Samsung Electronics GmbH',
+  'Telefónica Germany GmbH & Co. OHG',
+  'VGF GmbH',
+];
+
+const labels = de
   ? {
-      title: 'Referenzen',
       heading: 'Wer sind unsere Kunden?',
       lead: 'Unsere Kunden vertrauen auf die Expertise der WAMOCON GmbH.',
-      contactHeading: 'Kontakt',
-      imgCustomersAlt: 'Übersicht ausgewählter WAMOCON Kunden',
-      imgContactAlt: 'WAMOCON Büro und Kontaktdaten',
     }
   : {
-      title: 'References',
       heading: 'Who are our customers?',
       lead: 'Our customers trust the expertise of WAMOCON GmbH.',
-      contactHeading: 'Contact',
-      imgCustomersAlt: 'Overview of selected WAMOCON customers',
-      imgContactAlt: 'WAMOCON office and contact details',
     };
 ---
 
 <section class="ref-hero">
   <div class="container">
-    <h1 class="ref-hero__title">{c.heading}</h1>
-    <p class="ref-hero__lead">{c.lead}</p>
+    <h1 class="ref-hero__title">{labels.heading}</h1>
+    <p class="ref-hero__lead">{labels.lead}</p>
   </div>
 </section>
 
 <section class="section">
   <div class="container">
-    <div class="ref-image" data-reveal="up">
-      <img
-        src="/images/referenzen-kunden.svg"
-        alt={c.imgCustomersAlt}
-        loading="lazy"
-        width="1600"
-        height="900"
-      />
+    <div class="clients-cloud" id="clientsCloud">
+      {clients.map((name, i) => (
+        <div class="client-card" style={`--delay:${i * 40}ms`}>
+          <span class="client-dot" aria-hidden="true"></span>
+          <span class="client-name">{name}</span>
+        </div>
+      ))}
     </div>
   </div>
 </section>
 
-<section class="section section--alt">
-  <div class="container">
-    <div class="ref-image" data-reveal="up">
-      <img
-        src="/images/referenzen-kontakt.svg"
-        alt={c.imgContactAlt}
-        loading="lazy"
-        width="1600"
-        height="900"
-      />
-    </div>
-  </div>
-</section>
+<ContactBlock lang={lang} />
+
+<script>
+  (function () {
+    const cloud = document.getElementById('clientsCloud');
+    if (!cloud) return;
+    const cards = cloud.querySelectorAll('.client-card');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            cards.forEach((card, i) => {
+              setTimeout(() => card.classList.add('is-visible'), i * 40);
+            });
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(cloud);
+  })();
+</script>
 
 <style>
   .ref-hero {
@@ -80,15 +110,62 @@ const c = de
     line-height: 1.6;
   }
 
-  .ref-image {
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    border: 1px solid var(--border-subtle);
-    background: var(--surface-card);
+  .clients-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.9rem;
   }
-  .ref-image img {
-    display: block;
-    width: 100%;
-    height: auto;
+  .client-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.9rem 1.2rem;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    color: var(--color-text);
+    font-size: clamp(0.9rem, 1.05vw, 1.05rem);
+    line-height: 1.4;
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease,
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      background 0.25s ease;
+    will-change: transform, opacity;
+  }
+  .client-card.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  .client-card:hover {
+    border-color: var(--color-accent);
+    background: linear-gradient(145deg, rgba(244, 14, 14, 0.08), rgba(244, 14, 14, 0.03));
+    box-shadow: 0 10px 30px rgba(244, 14, 14, 0.12);
+    transform: translateY(-4px);
+  }
+  .client-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    flex-shrink: 0;
+    box-shadow: 0 0 0 4px rgba(244, 14, 14, 0.12);
+  }
+  .client-name {
+    white-space: nowrap;
+  }
+
+  @media (max-width: 680px) {
+    .client-card {
+      padding: 0.75rem 1rem;
+      font-size: 0.9rem;
+    }
+    .client-name {
+      white-space: normal;
+    }
   }
 </style>
