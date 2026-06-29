@@ -553,7 +553,7 @@ const videos = [
       <a href="#stellenangebote" class="btn">{c.heroBtn}</a>
     </div>
     <div class="hero-img">
-      <img src="/images/career-hero.png" alt="WAMOCON Team" loading="lazy" />
+      <img src="/images/career-hero.png" alt="WAMOCON Team" width="1680" height="945" loading="lazy" />
     </div>
   </div>
 
@@ -741,6 +741,10 @@ const videos = [
     margin: 0 auto;
     padding: clamp(2.5rem, 6vw, 5rem) 1.25rem;
   }
+  .wrap.hero {
+    padding-top: clamp(1.5rem, 3vw, 2.5rem);
+    padding-bottom: clamp(1rem, 2vw, 1.5rem);
+  }
   .t-red {
     color: var(--color-accent);
   }
@@ -770,18 +774,25 @@ const videos = [
     display: grid;
     grid-template-columns: 1.1fr 0.9fr;
     gap: clamp(2rem, 5vw, 4rem);
-    align-items: center;
+    align-items: start;
   }
   .hero-text p {
     color: var(--color-text-muted);
     line-height: 1.7;
     margin: 0 0 1.1rem;
   }
+  .hero-img {
+    align-self: stretch;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+  }
   .hero-img img {
     width: 100%;
-    height: auto;
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--border-subtle);
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+    display: block;
   }
   .btn {
     display: inline-block;
@@ -1152,6 +1163,15 @@ const videos = [
     .hero,
     .form-wrap {
       grid-template-columns: 1fr;
+    }
+    .hero-img {
+      align-self: start;
+      height: auto;
+    }
+    .hero-img img {
+      height: auto;
+      object-fit: initial;
+      object-position: center;
     }
     .grid3,
     .grid4 {
