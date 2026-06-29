@@ -23,18 +23,8 @@ export const nav: Array<{
 }> = [
   {
     key: 'home',
-    de: { label: 'Startseite', href: '/' },
+    de: { label: 'Start', href: '/' },
     en: { label: 'Home', href: '/en/' },
-  },
-  {
-    key: 'azubi',
-    de: { label: 'Azubi - FAE', href: '/azubi-fae/' },
-    en: { label: 'Apprenticeship', href: '/en/apprenticeship/' },
-  },
-  {
-    key: 'about',
-    de: { label: 'Über uns', href: '/ueber-uns/' },
-    en: { label: 'About us', href: '/en/about-us/' },
   },
   {
     key: 'system',
@@ -47,9 +37,19 @@ export const nav: Array<{
     en: { label: 'Apps', href: '/en/apps/' },
   },
   {
+    key: 'cooperation',
+    de: { label: 'Zusammenarbeit', href: '/zusammenarbeit/' },
+    en: { label: 'Cooperation', href: '/en/cooperation/' },
+  },
+  {
     key: 'testimonials',
     de: { label: 'Bewertungen', href: '/bewertungen/' },
     en: { label: 'Testimonials', href: '/en/testimonials/' },
+  },
+  {
+    key: 'references',
+    de: { label: 'Referenzen', href: '/referenzen/' },
+    en: { label: 'References', href: '/en/references/' },
   },
   {
     key: 'career',
@@ -57,19 +57,29 @@ export const nav: Array<{
     en: { label: 'Career', href: '/en/career/' },
   },
   {
-    key: 'cooperation',
-    de: { label: 'Zusammenarbeit', href: '/zusammenarbeit/' },
-    en: { label: 'Cooperation', href: '/en/cooperation/' },
-  },
-  {
-    key: 'contact',
-    de: { label: 'Kontakt', href: '/kontakt/' },
-    en: { label: 'Contact', href: '/en/contact/' },
+    key: 'about',
+    de: { label: 'Über uns', href: '/ueber-uns/' },
+    en: { label: 'About us', href: '/en/about-us/' },
   },
   {
     key: 'employees',
     de: { label: 'Mitarbeiter Stimmen', href: '/mitarbeiter-stimmen/' },
     en: { label: 'Employee Voices', href: '/en/employee-voices/' },
+  },
+  {
+    key: 'azubi',
+    de: { label: 'Azubi - FIAE', href: '/azubi-fae/' },
+    en: { label: 'Apprenticeship', href: '/en/apprenticeship/' },
+  },
+  {
+    key: 'webdesign',
+    de: { label: 'Webdesign', href: '/webdesign/' },
+    en: { label: 'Webdesign', href: '/webdesign/' },
+  },
+  {
+    key: 'contact',
+    de: { label: 'Kontakt', href: '/kontakt/' },
+    en: { label: 'Contact', href: '/en/contact/' },
   },
 ];
 

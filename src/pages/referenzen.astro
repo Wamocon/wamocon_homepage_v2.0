@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ReferenzenPage from '../components/sections/ReferenzenPage.astro';
+
+const lang = 'de' as const;
+---
+
+<BaseLayout
+  title="Referenzen | WAMOCON GmbH"
+  description="Erfahren Sie, welche Unternehmen auf die Expertise der WAMOCON GmbH vertrauen."
+  lang={lang}
+>
+  <ReferenzenPage lang={lang} />
+</BaseLayout>

@@ -16,8 +16,8 @@ const year = new Date().getFullYear();
 const linkFor = (key: string) => nav.find((n) => n.key === key)![lang];
 
 // Two link columns + a legal column, exactly like the official footer.
-const col1 = ['home', 'about', 'testimonials'].map(linkFor);
-const col2 = ['career', 'cooperation', 'contact'].map(linkFor);
+const col1 = ['home', 'system', 'apps', 'cooperation', 'testimonials', 'references'].map(linkFor);
+const col2 = ['career', 'about', 'employees', 'azubi', 'webdesign', 'contact'].map(linkFor);
 const legal = [legalNav.privacy[lang], legalNav.imprint[lang]];
 ---
 
