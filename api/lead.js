@@ -225,8 +225,6 @@ function detailTable(submission, lang) {
     <p style="margin:0 0 8px;"><strong style="color:#ffffff;">${isDe ? 'Name' : 'Name'}:</strong> ${escapeHtml(submission.name)}</p>
     <p style="margin:0 0 8px;"><strong style="color:#ffffff;">${isDe ? 'Telefon' : 'Phone'}:</strong> ${escapeHtml(submission.phone)}</p>
     <p style="margin:0 0 8px;"><strong style="color:#ffffff;">E-Mail:</strong> <a href="mailto:${escapeHtml(submission.email)}" style="color:#f40e0e;text-decoration:none;">${escapeHtml(submission.email)}</a></p>
-    <p style="margin:0;"><strong style="color:#ffffff;">${isDe ? 'Nachricht' : 'Message'}:</strong></p>
-    <p style="margin:8px 0 0;white-space:pre-wrap;color:rgba(255,255,255,0.88);">${escapeHtml(submission.comment)}</p>
   </td></tr>
 </table>`;
 }
@@ -248,8 +246,6 @@ function internalEmail(submission) {
     <p style="margin:0 0 10px;"><strong style="color:#ffffff;">${isDe ? 'Name' : 'Name'}:</strong> ${escapeHtml(submission.name)}</p>
     <p style="margin:0 0 10px;"><strong style="color:#ffffff;">${isDe ? 'Telefon' : 'Phone'}:</strong> ${escapeHtml(submission.phone)}</p>
     <p style="margin:0 0 10px;"><strong style="color:#ffffff;">E-Mail:</strong> <a href="mailto:${escapeHtml(submission.email)}" style="color:#f40e0e;text-decoration:none;">${escapeHtml(submission.email)}</a></p>
-    <p style="margin:0;"><strong style="color:#ffffff;">${isDe ? 'Nachricht' : 'Message'}:</strong></p>
-    <p style="margin:8px 0 0;white-space:pre-wrap;color:rgba(255,255,255,0.88);">${escapeHtml(submission.comment)}</p>
   </td></tr>
 </table>
 <p style="margin:18px 0 0;color:rgba(255,255,255,0.55);font-size:13px;">${isDe ? 'Eingegangen am' : 'Received at'}: ${formatReceived(submission.receivedAt, submission.lang)}</p>
@@ -335,9 +331,9 @@ export default async function handler(req, res) {
   if (!consent) {
     return res.status(400).json({ ok: false, error: 'Consent is required.' });
   }
-  // All visible fields are mandatory.
-  if (!name || !phone || !email || !comment) {
-    return res.status(400).json({ ok: false, error: 'All fields are required.' });
+  // Name, phone and email are mandatory.
+  if (!name || !phone || !email) {
+    return res.status(400).json({ ok: false, error: 'Missing required fields.' });
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ ok: false, error: 'Invalid email address.' });
