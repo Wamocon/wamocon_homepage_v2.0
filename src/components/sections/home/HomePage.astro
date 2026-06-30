@@ -44,6 +44,7 @@ const modal = {
     subtitle: 'Hinterlassen Sie Ihre Kontakte, unter denen wir Sie kontaktieren können',
     name: 'Ihr Name',
     phone: 'Telefon',
+    email: 'E-Mail',
     comment: 'Kommentare/Link zur Datei',
     consentPre: 'Hiermit bestätige ich, dass ich die ',
     consentLink: 'Datenschutzerklärung',
@@ -57,6 +58,7 @@ const modal = {
     subtitle: 'Leave your contact details and we will get in touch with you',
     name: 'Your name',
     phone: 'Phone',
+    email: 'Email',
     comment: 'Comments/link to file',
     consentPre: 'I hereby confirm that I have read the ',
     consentLink: 'privacy policy',
@@ -199,7 +201,8 @@ const modal = {
       <input type="hidden" name="lang" value={lang} />
       <input type="text" name="name" placeholder={modal.name} required />
       <input type="tel" name="phone" placeholder={modal.phone} required />
-      <textarea name="comment" rows="3" placeholder={modal.comment}></textarea>
+      <input type="email" name="email" placeholder={modal.email} required />
+      <textarea name="comment" rows="3" placeholder={modal.comment} required></textarea>
       <label class="lead-modal__consent">
         <input type="checkbox" name="consent" required />
         <span>

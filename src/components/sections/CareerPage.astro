@@ -172,6 +172,7 @@ const c = de
       formName: "Vor- und Nachname",
       formPhone: "Telefon",
       formEmail: "E-Mail",
+      formComment: "Ihre Nachricht",
       formConsent: "Ich stimme der Verarbeitung meiner Daten gemäß der",
       formConsentLink: "Datenschutzerklärung",
       formConsentHref: "/datenschutz",
@@ -339,6 +340,7 @@ const c = de
       formName: "First and last name",
       formPhone: "Phone",
       formEmail: "Email",
+      formComment: "Your message",
       formConsent: "I agree to the processing of my data in accordance with the",
       formConsentLink: "privacy policy",
       formConsentHref: "/en/privacy",
@@ -719,6 +721,7 @@ const videos = [
         <input type="text" name="name" placeholder={c.formName} required />
         <input type="tel" name="phone" placeholder={c.formPhone} required />
         <input type="email" name="email" placeholder={c.formEmail} required />
+        <textarea name="comment" placeholder={c.formComment} rows="4" required></textarea>
         <label class="consent">
           <input type="checkbox" name="consent" required />
           <span>{c.formConsent} <a href={c.formConsentHref}>{c.formConsentLink}</a>{c.formConsentPost}</span>

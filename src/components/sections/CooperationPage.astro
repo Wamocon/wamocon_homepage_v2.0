@@ -83,6 +83,7 @@ const c = de
       fName: "Name/Organisation",
       fPhone: "Telefon",
       fEmail: "E-Mail",
+      fComment: "Ihre Nachricht",
       fConsent:
         "Hiermit bestätige ich, dass ich die Datenschutzerklärung gelesen habe und damit einverstanden bin, dass die WAMOCON GmbH meine Daten, einschließlich personenbezogener Daten, speichern und verarbeiten darf.",
       fBtn: "Anfrage senden",
@@ -161,6 +162,7 @@ const c = de
       fName: "Name/Organization",
       fPhone: "Telephone",
       fEmail: "E-Mail",
+      fComment: "Your message",
       fConsent:
         "I hereby confirm that I have read the privacy policy and agree that WAMOCON GmbH may store and process my data, including personal data.",
       fBtn: "Send request",
@@ -265,6 +267,7 @@ const c = de
         <input type="text" name="name" placeholder={c.fName} required />
         <input type="tel" name="phone" placeholder={c.fPhone} required />
         <input type="email" name="email" placeholder={c.fEmail} required />
+        <textarea name="comment" placeholder={c.fComment} rows="4" required></textarea>
         <label class="consent">
           <input type="checkbox" name="consent" required />
           <span>{c.fConsent}</span>

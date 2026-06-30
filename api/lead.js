@@ -126,30 +126,141 @@ async function graphSendMail(accessToken, message) {
   }
 }
 
-function internalEmail(submission) {
-  const subject =
-    submission.lang === 'de'
-      ? `Neue ${submission.type}-Anfrage von ${submission.name}`
-      : `New ${submission.type} inquiry from ${submission.name}`;
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 
-  const body = [
-    `Type / Typ: ${submission.type}`,
-    `Language / Sprache: ${submission.lang}`,
-    `Name: ${submission.name}`,
-    `Phone / Telefon: ${submission.phone || '-'}`,
-    `Email / E-Mail: ${submission.email || '-'}`,
-    `Message / Nachricht: ${submission.comment || '-'}`,
-    `Received / Eingegangen: ${submission.receivedAt}`,
-  ].join('\n');
+function formatReceived(iso, lang) {
+  const date = new Date(iso);
+  return date.toLocaleString(lang === 'de' ? 'de-DE' : 'en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+function typeLabel(type, lang) {
+  const labels = {
+    de: {
+      career: 'Karriere',
+      cooperation: 'Zusammenarbeit',
+      lead: 'Kontakt',
+      testimonial: 'Bewertung',
+      'it-tester': 'IT-Tester',
+    },
+    en: {
+      career: 'Career',
+      cooperation: 'Cooperation',
+      lead: 'Contact',
+      testimonial: 'Testimonial',
+      'it-tester': 'IT tester',
+    },
+  };
+  return (labels[lang] || labels.de)[type] || type;
+}
+
+function emailLayout({ title, lang, body }) {
+  const footerLine =
+    lang === 'de'
+      ? 'Diese E-Mail wurde automatisch versendet. Bei Fragen antworten Sie einfach auf diese Nachricht.'
+      : 'This email was sent automatically. If you have any questions, simply reply to this message.';
+
+  return `<!DOCTYPE html>
+<html lang="${lang}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${escapeHtml(title)}</title>
+</head>
+<body style="margin:0;padding:0;background-color:#101010;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#101010;">
+    <tr>
+      <td align="center" style="padding:40px 16px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;width:100%;background-color:#181818;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);">
+          <tr><td style="height:5px;background-color:#f40e0e;font-size:0;line-height:0;">&nbsp;</td></tr>
+          <tr>
+            <td style="padding:36px 32px 24px;">
+              <p style="margin:0 0 8px;font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#f40e0e;">WAMOCON GmbH</p>
+              <h1 style="margin:0;font-size:23px;font-weight:700;color:#ffffff;line-height:1.25;font-family:'Poppins',Arial,sans-serif;">${escapeHtml(title)}</h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 32px 36px;color:rgba(255,255,255,0.78);font-family:'Poppins',Arial,sans-serif;font-size:15px;line-height:1.65;">
+              ${body}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 32px 32px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-top:1px solid rgba(255,255,255,0.08);">
+                <tr>
+                  <td style="padding-top:18px;color:rgba(255,255,255,0.45);font-size:12px;line-height:1.55;">
+                    ${footerLine}<br>
+                    <a href="https://www.wamocon.com" style="color:#f40e0e;text-decoration:none;">www.wamocon.com</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
+function detailTable(submission, lang) {
+  const isDe = lang === 'de';
+  return `
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.06);">
+  <tr><td style="padding:22px;">
+    <h2 style="margin:0 0 16px;font-size:15px;font-weight:700;color:#f40e0e;text-transform:uppercase;letter-spacing:0.05em;">${isDe ? 'Ihre angegebenen Daten' : 'Your details'}</h2>
+    <p style="margin:0 0 8px;"><strong style="color:#ffffff;">${isDe ? 'Name' : 'Name'}:</strong> ${escapeHtml(submission.name)}</p>
+    <p style="margin:0 0 8px;"><strong style="color:#ffffff;">${isDe ? 'Telefon' : 'Phone'}:</strong> ${escapeHtml(submission.phone)}</p>
+    <p style="margin:0 0 8px;"><strong style="color:#ffffff;">E-Mail:</strong> <a href="mailto:${escapeHtml(submission.email)}" style="color:#f40e0e;text-decoration:none;">${escapeHtml(submission.email)}</a></p>
+    <p style="margin:0;"><strong style="color:#ffffff;">${isDe ? 'Nachricht' : 'Message'}:</strong></p>
+    <p style="margin:8px 0 0;white-space:pre-wrap;color:rgba(255,255,255,0.88);">${escapeHtml(submission.comment)}</p>
+  </td></tr>
+</table>`;
+}
+
+function internalEmail(submission) {
+  const isDe = submission.lang === 'de';
+  const label = typeLabel(submission.type, submission.lang);
+  const subject = isDe
+    ? `Neue ${label}-Anfrage von ${submission.name}`
+    : `New ${label} inquiry from ${submission.name}`;
+  const title = isDe ? `Neue Anfrage: ${label}` : `New inquiry: ${label}`;
+
+  const body = `
+<p style="margin:0 0 18px;">${isDe ? 'Eine neue Anfrage wurde über die Website übermittelt.' : 'A new inquiry has been submitted via the website.'}</p>
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.06);">
+  <tr><td style="padding:22px;">
+    <p style="margin:0 0 10px;"><strong style="color:#ffffff;">${isDe ? 'Typ' : 'Type'}:</strong> ${escapeHtml(label)}</p>
+    <p style="margin:0 0 10px;"><strong style="color:#ffffff;">${isDe ? 'Sprache' : 'Language'}:</strong> ${submission.lang === 'de' ? 'Deutsch' : 'English'}</p>
+    <p style="margin:0 0 10px;"><strong style="color:#ffffff;">${isDe ? 'Name' : 'Name'}:</strong> ${escapeHtml(submission.name)}</p>
+    <p style="margin:0 0 10px;"><strong style="color:#ffffff;">${isDe ? 'Telefon' : 'Phone'}:</strong> ${escapeHtml(submission.phone)}</p>
+    <p style="margin:0 0 10px;"><strong style="color:#ffffff;">E-Mail:</strong> <a href="mailto:${escapeHtml(submission.email)}" style="color:#f40e0e;text-decoration:none;">${escapeHtml(submission.email)}</a></p>
+    <p style="margin:0;"><strong style="color:#ffffff;">${isDe ? 'Nachricht' : 'Message'}:</strong></p>
+    <p style="margin:8px 0 0;white-space:pre-wrap;color:rgba(255,255,255,0.88);">${escapeHtml(submission.comment)}</p>
+  </td></tr>
+</table>
+<p style="margin:18px 0 0;color:rgba(255,255,255,0.55);font-size:13px;">${isDe ? 'Eingegangen am' : 'Received at'}: ${formatReceived(submission.receivedAt, submission.lang)}</p>
+`;
 
   return {
     subject,
-    body: { contentType: 'Text', content: body },
+    body: { contentType: 'HTML', content: emailLayout({ title, lang: submission.lang, body }) },
     from: { emailAddress: { address: GRAPH_SENDER } },
     toRecipients: [{ emailAddress: { address: RECIPIENT } }],
-    ...(submission.email
-      ? { replyTo: [{ emailAddress: { address: submission.email } }] }
-      : {}),
+    replyTo: [{ emailAddress: { address: submission.email } }],
   };
 }
 
@@ -158,40 +269,20 @@ function confirmationEmail(submission) {
   const subject = isDe
     ? 'Vielen Dank für Ihre Anfrage bei WAMOCON'
     : 'Thank you for your inquiry to WAMOCON';
+  const title = isDe ? 'Vielen Dank für Ihre Anfrage' : 'Thank you for your inquiry';
 
-  const lines = isDe
-    ? [
-        `Sehr geehrte(r) ${submission.name},`,
-        '',
-        'vielen Dank für Ihre Anfrage. Wir haben Ihre Nachricht erhalten und melden uns schnellstmöglich bei Ihnen.',
-        '',
-        'Ihre angegebenen Daten:',
-        `Name: ${submission.name}`,
-        `Telefon: ${submission.phone || '-'}`,
-        `E-Mail: ${submission.email || '-'}`,
-        `Nachricht: ${submission.comment || '-'}`,
-        '',
-        'Mit freundlichen Grüßen',
-        'WAMOCON GmbH',
-      ]
-    : [
-        `Dear ${submission.name},`,
-        '',
-        'Thank you for your inquiry. We have received your message and will get back to you as soon as possible.',
-        '',
-        'Your details:',
-        `Name: ${submission.name}`,
-        `Phone: ${submission.phone || '-'}`,
-        `Email: ${submission.email || '-'}`,
-        `Message: ${submission.comment || '-'}`,
-        '',
-        'Best regards,',
-        'WAMOCON GmbH',
-      ];
+  const body = `
+<p style="font-size:17px;color:#ffffff;margin:0 0 16px;font-weight:600;">${isDe ? 'Hallo' : 'Hi'} ${escapeHtml(submission.name)} 👋</p>
+<p style="margin:0 0 16px;">${isDe ? 'Vielen Dank für Ihre Anfrage bei <strong style="color:#ffffff;">WAMOCON</strong>. Wir haben Ihre Nachricht erhalten und freuen uns, von Ihnen zu hören!' : 'Thank you for reaching out to <strong style="color:#ffffff;">WAMOCON</strong>. We have received your message and are happy to hear from you!'}</p>
+<p style="margin:0 0 24px;">${isDe ? 'Ein Mitglied unseres Teams wird sich innerhalb von <strong style="color:#ffffff;">48 Stunden</strong> bei Ihnen melden.' : 'A member of our team will get back to you within <strong style="color:#ffffff;">48 hours</strong>.'}</p>
+${detailTable(submission, submission.lang)}
+<p style="margin:24px 0 0;">${isDe ? 'Bei dringenden Anliegen antworten Sie einfach auf diese E-Mail oder schreiben Sie uns an <a href="mailto:info@wamocon.com" style="color:#f40e0e;text-decoration:none;">info@wamocon.com</a>.' : 'If your matter is urgent, simply reply to this email or write to us at <a href="mailto:info@wamocon.com" style="color:#f40e0e;text-decoration:none;">info@wamocon.com</a>.'}</p>
+<p style="margin:24px 0 0;">${isDe ? 'Mit freundlichen Grüßen' : 'Best regards'},<br><strong style="color:#ffffff;">${isDe ? 'Ihr WAMOCON-Team' : 'Your WAMOCON Team'}</strong></p>
+`;
 
   return {
     subject,
-    body: { contentType: 'Text', content: lines.join('\n') },
+    body: { contentType: 'HTML', content: emailLayout({ title, lang: submission.lang, body }) },
     from: { emailAddress: { address: GRAPH_SENDER } },
     toRecipients: [{ emailAddress: { address: submission.email } }],
   };
@@ -244,13 +335,15 @@ export default async function handler(req, res) {
   if (!consent) {
     return res.status(400).json({ ok: false, error: 'Consent is required.' });
   }
-  // Require a name plus at least one way to reach the person.
-  if (!name || (!phone && !email)) {
-    return res.status(400).json({ ok: false, error: 'Missing required fields.' });
+  // All visible fields are mandatory.
+  if (!name || !phone || !email || !comment) {
+    return res.status(400).json({ ok: false, error: 'All fields are required.' });
   }
-  // If an email was provided, it must look like a valid address.
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ ok: false, error: 'Invalid email address.' });
+  }
+  if (!/[\d]/.test(phone) || !/[\d\s\+\-\(\)\/]{6,}$/.test(phone)) {
+    return res.status(400).json({ ok: false, error: 'Invalid phone number.' });
   }
 
   const submission = {
