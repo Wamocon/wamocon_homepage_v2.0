@@ -65,6 +65,7 @@ const isActive = (href: string) => {
 
 <style>
   .header {
+    --header-height: 112px;
     position: sticky;
     top: 0;
     z-index: var(--z-header);
@@ -171,27 +172,41 @@ const isActive = (href: string) => {
 
   /* ---- Mobile ---- */
   @media (max-width: 1080px) {
+    .header {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
     .header__burger {
       display: flex;
     }
     .header__nav {
       position: fixed;
-      inset: 96px 0 auto 0;
+      top: var(--header-height);
+      left: 0;
+      right: 0;
+      bottom: 0;
       background: rgba(16, 16, 16, 0.98);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border-subtle);
-      max-height: 0;
+      border-bottom: none;
       overflow: hidden;
-      transition: max-height var(--dur-med) var(--ease-out);
+      visibility: hidden;
+      transform: translateY(-100%);
+      transition:
+        transform var(--dur-med) var(--ease-out),
+        visibility var(--dur-med);
     }
     .header__nav.is-open {
-      max-height: calc(100vh - 96px);
+      visibility: visible;
+      transform: translateY(0);
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .header__list {
       flex-direction: column;
+      flex-wrap: nowrap;
       align-items: flex-start;
+      justify-content: flex-start;
       gap: 0;
       padding: var(--space-sm) var(--container-pad) var(--space-md);
     }
@@ -224,6 +239,14 @@ const isActive = (href: string) => {
   const header = document.getElementById('site-header');
   const toggle = document.getElementById('nav-toggle');
   const navEl = document.getElementById('primary-nav');
+
+  function updateHeaderHeight() {
+    if (header) {
+      document.documentElement.style.setProperty('--header-height', `${header.offsetHeight}px`);
+    }
+  }
+  updateHeaderHeight();
+  window.addEventListener('resize', updateHeaderHeight);
 
   toggle?.addEventListener('click', () => {
     const open = navEl?.classList.toggle('is-open');
