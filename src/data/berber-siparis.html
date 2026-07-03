@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sipariş Formu · WAMOCON Berber Web Sitesi</title>
+<meta name="description" content="Berber web sitenizi sipariş edin — WAMOCON ile 7 günde yayında.">
+<style>
+:root{
+  --red:#F40E0E;--red-600:#D10A0A;--red-soft:rgba(244,14,14,.08);--ink:#0E1116;--charcoal:#14171C;
+  --muted:#5A6472;--line:#E6E8EC;--surface:#F5F6F8;--white:#FFFFFF;--gold:#D4A843;
+  --radius:16px;--radius-lg:22px;--shadow:0 12px 40px rgba(14,17,22,.10);
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);color:var(--ink);background:var(--surface);line-height:1.55;font-size:16px}
+.bar{background:var(--charcoal);color:#fff;padding:16px 0}
+.bar .wrap{max-width:640px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between}
+.bar .brand{font-weight:800}
+.bar .brand span{color:var(--red)}
+.langtoggle{display:inline-flex;background:rgba(255,255,255,.1);border-radius:20px;padding:3px}
+.langtoggle button{background:none;border:none;color:#cdd2db;font-weight:700;font-size:.76rem;padding:6px 12px;border-radius:16px;cursor:pointer}
+.langtoggle button.active{background:var(--red);color:#fff}
+.wrap{max-width:640px;margin:0 auto;padding:0 24px}
+main{padding:40px 0 80px}
+.eyebrow{color:var(--red);font-weight:800;font-size:.76rem;letter-spacing:.09em;text-transform:uppercase}
+h1{font-size:clamp(1.5rem,4vw,2rem);margin:10px 0 8px;letter-spacing:-.01em}
+.sub{color:var(--muted);margin-bottom:30px;font-size:.96rem}
+form{background:var(--white);border:1px solid var(--line);border-radius:var(--radius-lg);padding:30px 26px;box-shadow:var(--shadow)}
+.field{margin-bottom:18px}
+.field label{display:block;font-weight:700;font-size:.86rem;margin-bottom:7px}
+.field .opt{color:var(--muted);font-weight:400}
+.field input,.field select,.field textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;
+  padding:12px 14px;font-family:inherit;font-size:.96rem;color:var(--ink);background:#fff}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--red)}
+.field textarea{min-height:90px;resize:vertical}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:520px){.row2{grid-template-columns:1fr}}
+.consent{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);
+  border-radius:12px;padding:14px 16px;margin-bottom:14px}
+.consent input[type=checkbox]{width:19px;height:19px;flex:none;margin-top:2px;accent-color:var(--red)}
+.consent.optional{background:#FBF8F0;border-color:#EFE3C4}
+.consent p{font-size:.86rem;color:#2b3038;margin:0}
+.consent a{color:var(--red);font-weight:700}
+.badge-req{display:inline-block;background:var(--red-soft);color:var(--red);font-size:.66rem;font-weight:800;
+  letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:10px;margin-bottom:6px}
+.badge-opt{display:inline-block;background:rgba(212,168,67,.14);color:#8C6B22;font-size:.66rem;font-weight:800;
+  letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:10px;margin-bottom:6px}
+.submit{width:100%;background:var(--red);color:#fff;border:none;border-radius:40px;padding:16px;
+  font-weight:800;font-size:1rem;cursor:pointer;transition:.2s}
+.submit:hover{background:var(--red-600)}
+.submit:disabled{opacity:.6;cursor:not-allowed}
+.err{color:var(--red);font-size:.85rem;margin-top:10px;display:none}
+.success{display:none;text-align:center;padding:60px 20px}
+.success .ic{font-size:3rem;margin-bottom:14px}
+.success h2{margin-bottom:10px}
+.success p{color:var(--muted)}
+footer{text-align:center;color:var(--muted);font-size:.82rem;padding:30px 0 60px}
+footer a{color:var(--muted)}
+[data-lang-block]{display:none!important}
+[data-lang-block].active{display:block!important}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="wrap">
+    <span class="brand">WAM<span>O</span>CON</span>
+    <div class="langtoggle">
+      <button type="button" data-lang="tr" class="active">TR</button>
+      <button type="button" data-lang="de">DE</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div data-lang-block="tr" class="active">
+    <span class="eyebrow">Sipariş Formu</span>
+    <h1>Web sitenizi sipariş edin</h1>
+    <p class="sub">WhatsApp'ta konuştuğumuz detayları aşağıya girin. Onayınızın ardından 7 gün içinde yayındasınız.</p>
+  </div>
+  <div data-lang-block="de">
+    <span class="eyebrow">Bestellformular</span>
+    <h1>Bestellen Sie Ihre Website</h1>
+    <p class="sub">Tragen Sie die per WhatsApp besprochenen Details ein. Nach Ihrer Bestätigung sind Sie in 7 Tagen live.</p>
+  </div>
+
+  <form id="orderForm" novalidate>
+    <div class="field">
+      <label data-lang-block="tr" class="active">Ad Soyad *</label>
+      <label data-lang-block="de">Vor- und Nachname *</label>
+      <input type="text" name="name" required maxlength="200">
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label data-lang-block="tr" class="active">Telefon / WhatsApp *</label>
+        <label data-lang-block="de">Telefon / WhatsApp *</label>
+        <input type="tel" name="phone" required maxlength="60" placeholder="+90 5xx xxx xx xx">
+      </div>
+      <div class="field">
+        <label>E-posta / E-Mail *</label>
+        <input type="email" name="email" required maxlength="320">
+      </div>
+    </div>
+    <div class="field">
+      <label data-lang-block="tr" class="active">Berber Dükkanı Adı <span class="opt">(opsiyonel)</span></label>
+      <label data-lang-block="de">Name des Barbershops <span class="opt">(optional)</span></label>
+      <input type="text" name="shopName" maxlength="200">
+    </div>
+    <div class="field">
+      <label data-lang-block="tr" class="active">Paket Seçimi</label>
+      <label data-lang-block="de">Paketauswahl</label>
+      <select name="packageChoice">
+        <option value="" data-lang="tr">Henüz karar vermedim</option>
+        <option value="" data-lang="de" style="display:none">Noch nicht entschieden</option>
+        <option value="Starter">Starter</option>
+        <option value="Professional">Professional</option>
+        <option value="Premium">Premium</option>
+      </select>
+    </div>
+    <div class="field">
+      <label data-lang-block="tr" class="active">Not <span class="opt">(Instagram hesabı, mevcut fotoğraflar, özel istekler)</span></label>
+      <label data-lang-block="de">Anmerkung <span class="opt">(Instagram-Konto, vorhandene Fotos, Sonderwünsche)</span></label>
+      <textarea name="comment" maxlength="5000"></textarea>
+    </div>
+
+    <div class="consent">
+      <input type="checkbox" name="consent" id="consentBox" required>
+      <p>
+        <span class="badge-req" data-lang="tr">Zorunlu</span><span class="badge-req" data-lang="de" style="display:none">Pflicht</span><br>
+        <span data-lang-block="tr" class="active">
+          <a href="/berber-veri-koruma/" target="_blank">Kişisel Verilerin Korunması Aydınlatma Metni</a>'ni okudum ve anladım.
+        </span>
+        <span data-lang-block="de">
+          Ich habe den <a href="/berber-veri-koruma/" target="_blank">Datenschutzhinweis (KVKK &amp; DSGVO)</a> gelesen und zur Kenntnis genommen.
+        </span>
+      </p>
+    </div>
+
+    <div class="consent optional">
+      <input type="checkbox" name="testimonialConsent" id="testiBox">
+      <p>
+        <span class="badge-opt" data-lang="tr">İsteğe bağlı</span><span class="badge-opt" data-lang="de" style="display:none">Freiwillig</span><br>
+        <span data-lang-block="tr" class="active">
+          Evet, adımın, geri bildirimimin ve/veya fotoğrafımın/videomun WAMOCON'un web sitesinde bir müşteri referansı olarak yayınlanmasına açık rızam vardır. Bu rızamı istediğim zaman <a href="mailto:info@wamocon.com">info@wamocon.com</a> üzerinden geri çekebileceğimi biliyorum.
+        </span>
+        <span data-lang-block="de">
+          Ja, ich bin damit einverstanden, dass mein Name, mein Feedback und/oder mein Foto/Video als Kundenstimme auf der WAMOCON-Website veröffentlicht wird. Ich kann diese Einwilligung jederzeit unter <a href="mailto:info@wamocon.com">info@wamocon.com</a> widerrufen.
+        </span>
+      </p>
+    </div>
+
+    <button type="submit" class="submit">
+      <span data-lang-block="tr" class="active">Siparişi Gönder</span>
+      <span data-lang-block="de">Bestellung absenden</span>
+    </button>
+    <p class="err" id="formErr"></p>
+  </form>
+
+  <div class="success" id="successBox">
+    <div class="ic">✅</div>
+    <div data-lang-block="tr" class="active">
+      <h2>Teşekkürler!</h2>
+      <p>Siparişiniz alındı. WAMOCON ekibi en kısa sürede WhatsApp üzerinden sizinle iletişime geçecek.</p>
+    </div>
+    <div data-lang-block="de">
+      <h2>Vielen Dank!</h2>
+      <p>Ihre Bestellung ist eingegangen. Das WAMOCON-Team meldet sich in Kürze per WhatsApp bei Ihnen.</p>
+    </div>
+  </div>
+
+  <footer>© 2026 WAMOCON GmbH · <a href="/impressum/">Impressum</a> · <a href="/berber-veri-koruma/">Veri Koruma / Datenschutz</a></footer>
+</main>
+
+<script>
+(function(){
+  var LANG = 'tr';
+  function applyLang(l){
+    LANG = l;
+    document.querySelectorAll('[data-lang-block]').forEach(function(el){el.classList.toggle('active', el.getAttribute('data-lang-block')===l);});
+    document.querySelectorAll('.langtoggle button').forEach(function(b){b.classList.toggle('active', b.dataset.lang===l);});
+    document.querySelectorAll('option[data-lang]').forEach(function(o){o.style.display = (o.getAttribute('data-lang')===l)?'':'none';});
+    document.querySelectorAll('.badge-req[data-lang], .badge-opt[data-lang]').forEach(function(b){b.style.display = (b.getAttribute('data-lang')===l)?'':'none';});
+  }
+  document.querySelectorAll('.langtoggle button').forEach(function(b){
+    b.addEventListener('click', function(){ applyLang(b.dataset.lang); });
+  });
+
+  var form = document.getElementById('orderForm');
+  var errEl = document.getElementById('formErr');
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    errEl.style.display = 'none';
+    if (!form.reportValidity()) return;
+
+    var submitBtn = form.querySelector('button[type=submit]');
+    submitBtn.disabled = true;
+
+    var fd = new FormData(form);
+    var payload = {
+      type: 'barber-order',
+      lang: LANG,
+      name: (fd.get('name')||'').toString(),
+      phone: (fd.get('phone')||'').toString(),
+      email: (fd.get('email')||'').toString(),
+      shopName: (fd.get('shopName')||'').toString(),
+      packageChoice: (fd.get('packageChoice')||'').toString(),
+      comment: (fd.get('comment')||'').toString(),
+      consent: 'true',
+      testimonialConsent: fd.has('testimonialConsent') ? 'true' : 'false'
+    };
+
+    try {
+      var res = await fetch('/api/lead', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error('submit failed');
+      form.style.display = 'none';
+      document.getElementById('successBox').style.display = 'block';
+    } catch (err) {
+      errEl.textContent = LANG==='tr'
+        ? 'Bir hata oluştu. Lütfen WhatsApp üzerinden bize ulaşın: +49 176 32838729'
+        : 'Ein Fehler ist aufgetreten. Bitte kontaktieren Sie uns per WhatsApp: +49 176 32838729';
+      errEl.style.display = 'block';
+      submitBtn.disabled = false;
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
