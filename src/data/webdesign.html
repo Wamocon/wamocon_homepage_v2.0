@@ -84,10 +84,42 @@ h3{font-size:clamp(1.15rem,2.2vw,1.5rem)}
 @keyframes pulse{0%{opacity:.6;transform:scale(1)}80%,100%{opacity:0;transform:scale(1.18)}}
 
 /* ---------- Header ---------- */
-header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.86);
+.sticky-stack{position:sticky;top:0;z-index:60}
+section[id]{scroll-margin-top:132px}
+@media(max-width:640px){section[id]{scroll-margin-top:112px}}
+header{background:rgba(255,255,255,.86);
   backdrop-filter:saturate(160%) blur(14px);border-bottom:1px solid var(--line);
   transition:box-shadow .3s}
 header.scrolled{box-shadow:var(--shadow-sm)}
+/* ---------- Countdown promo bar ---------- */
+.promo-bar{position:relative;overflow:hidden;color:#fff;
+  background:linear-gradient(92deg,#3a0a0a,#6e1010 32%,#8a1210 55%,#5c0d0d 78%,#3a0a0a),
+    radial-gradient(140% 260% at 50% -40%,rgba(212,168,67,.32),transparent 60%);
+  border-bottom:1px solid rgba(212,168,67,.4)}
+.promo-bar::before{content:"";position:absolute;top:0;left:-45%;width:32%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent);
+  animation:promoShine 5.5s ease-in-out infinite;pointer-events:none}
+@keyframes promoShine{0%{left:-45%}55%,100%{left:135%}}
+.promo-inner{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;
+  padding:9px 16px;position:relative;z-index:1}
+.promo-msg{display:inline-flex;align-items:center;gap:8px;font-size:.84rem;font-weight:800;letter-spacing:.01em}
+.promo-msg .pm-ic{font-size:1rem;line-height:1;animation:promoFlicker 2.2s ease-in-out infinite}
+@keyframes promoFlicker{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.14) rotate(-4deg)}}
+.promo-cd{display:flex;align-items:center;gap:6px}
+.pc-unit{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.32);border:1px solid rgba(212,168,67,.5);border-radius:8px;
+  padding:3px 8px 4px;min-width:38px;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.pc-num{font-size:.98rem;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1.15}
+.pc-lbl{font-size:.5rem;font-weight:800;letter-spacing:.06em;color:#e8c98c;text-transform:uppercase;line-height:1.4}
+.pc-sep{color:var(--gold);font-weight:900;opacity:.55;font-size:.9rem;margin:0 -2px}
+@media(max-width:640px){
+  .promo-inner{gap:8px;padding:7px 10px}
+  .promo-msg{font-size:.72rem;gap:6px}
+  .promo-cd{gap:4px}
+  .pc-unit{min-width:30px;padding:2px 5px 3px}
+  .pc-num{font-size:.84rem}
+  .pc-lbl{font-size:.44rem}
+}
 .nav{display:flex;align-items:center;justify-content:space-between;height:68px;gap:18px}
 /* WAMOCON vector wordmark (faithful identity, exact red, crisp & offline) */
 .brand{display:flex;align-items:center;line-height:1;flex:none}
@@ -326,10 +358,36 @@ header.scrolled{box-shadow:var(--shadow-sm)}
   font-size:.72rem;font-weight:800;letter-spacing:.08em;padding:7px 16px;border-radius:30px;text-transform:uppercase;box-shadow:0 8px 18px rgba(244,14,14,.35)}
 .pkg .pk-name{font-size:1.1rem;font-weight:800;color:var(--ink)}
 .pkg .pk-for{font-size:.82rem;color:var(--muted);margin-top:3px;min-height:20px}
-.pkg .pk-price{margin:18px 0 6px;display:flex;align-items:baseline;gap:7px;flex-wrap:wrap}
+.pkg .pk-summer{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;margin-top:16px;
+  font-size:.7rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#9a6b0e;
+  background:linear-gradient(90deg,rgba(212,168,67,.22),rgba(212,168,67,.06));border:1px solid rgba(212,168,67,.5);
+  padding:5px 11px;border-radius:20px}
+.pkg .pk-compare{display:flex;align-items:center;gap:8px;margin-top:12px}
+.pkg .pkc-flg{width:21px;height:14px;flex:none;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.22)}
+.pkg .pkc-de{font-size:1.05rem;font-weight:800;color:#7a828f;
+  text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:2.5px}
+.pkg .pkc-lbl{font-size:.72rem;color:var(--muted);font-weight:600}
+.pkg .pk-price{margin:7px 0 6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pkg .pk-price .pkc-flg{align-self:center}
 .pkg .pk-from{font-size:.78rem;color:var(--muted);font-weight:700}
 .pkg .pk-tl{font-size:2.1rem;font-weight:800;color:var(--ink);letter-spacing:-.02em}
 .pkg .pk-eur{font-size:.88rem;color:var(--muted);font-weight:700}
+.pkg .pk-save{font-size:.78rem;font-weight:800;color:var(--red);margin-top:2px}
+/* ---------- Summer campaign badge ---------- */
+.camp-badge{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:9px;margin-bottom:14px;
+  background:linear-gradient(100deg,#3a0a0a,#7a1210 45%,#3a0a0a);color:#ffe6b0;
+  border:1.5px solid rgba(212,168,67,.65);border-radius:40px;padding:10px 22px 10px 17px;
+  font-weight:900;font-size:.86rem;letter-spacing:.02em;text-transform:uppercase;
+  box-shadow:0 12px 30px rgba(212,168,67,.24),0 0 0 4px rgba(212,168,67,.08);
+  animation:campGlow 2.6s ease-in-out infinite}
+.camp-badge::before{content:"";position:absolute;top:0;left:-50%;width:35%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.3),transparent);
+  animation:promoShine 4s ease-in-out infinite;pointer-events:none}
+@keyframes campGlow{0%,100%{box-shadow:0 12px 30px rgba(212,168,67,.24),0 0 0 4px rgba(212,168,67,.08)}
+  50%{box-shadow:0 12px 34px rgba(212,168,67,.4),0 0 0 7px rgba(212,168,67,.14)}}
+.camp-badge .cb-sun{font-size:1.08rem;line-height:1;filter:drop-shadow(0 0 6px rgba(255,200,90,.6));position:relative;z-index:1}
+.camp-badge span[data-i18n]{position:relative;z-index:1}
+.camp-badge b{color:var(--gold);font-weight:900}
 .pkg .pk-feats{margin:20px 0 26px;display:flex;flex-direction:column;gap:11px;flex:1}
 .pkg .pk-feats li{display:flex;gap:11px;align-items:flex-start;font-size:.92rem;color:var(--ink);line-height:1.4}
 .pkg .pk-feats li .ck{width:21px;height:21px;border-radius:50%;background:var(--red-soft);color:var(--red);display:grid;place-items:center;
@@ -500,7 +558,7 @@ footer .f-wa{display:inline-flex;align-items:center;gap:9px;color:#fff;font-weig
 .mobile-menu .mm-close{position:absolute;top:20px;right:20px;font-size:1.8rem;line-height:1;color:var(--ink)}
 .overlay{position:fixed;inset:0;background:rgba(14,17,22,.5);z-index:75;opacity:0;visibility:hidden;transition:.3s}
 /* when the mobile drawer is open, hide the sticky header + FAB so they don't bleed through the overlay */
-body.mm-open header,body.mm-open .fab{visibility:hidden}
+body.mm-open .sticky-stack,body.mm-open .fab{visibility:hidden}
 .overlay.show{opacity:1;visibility:visible}
 
 /* ============ RESPONSIVE ============ */
@@ -572,6 +630,21 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--red);outline-offset
 <body>
 
 <!-- ============ HEADER ============ -->
+<div class="sticky-stack">
+<div class="promo-bar" id="promoBar">
+  <div class="wrap promo-inner">
+    <span class="promo-msg"><span class="pm-ic">🔥</span><span data-i18n="promo_msg">2026 Yaz Kampanyası sona eriyor</span></span>
+    <div class="promo-cd" aria-label="Kampanya bitişine kalan süre">
+      <div class="pc-unit"><span class="pc-num" id="cdD">00</span><span class="pc-lbl" data-i18n="cd_days">gün</span></div>
+      <span class="pc-sep">:</span>
+      <div class="pc-unit"><span class="pc-num" id="cdH">00</span><span class="pc-lbl" data-i18n="cd_hours">saat</span></div>
+      <span class="pc-sep">:</span>
+      <div class="pc-unit"><span class="pc-num" id="cdM">00</span><span class="pc-lbl" data-i18n="cd_min">dk</span></div>
+      <span class="pc-sep">:</span>
+      <div class="pc-unit"><span class="pc-num" id="cdS">00</span><span class="pc-lbl" data-i18n="cd_sec">sn</span></div>
+    </div>
+  </div>
+</div>
 <header id="hdr">
   <div class="wrap nav">
     <a href="#top" class="brand" aria-label="WAMOCON IT-Testmanagement">
@@ -606,6 +679,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--red);outline-offset
     </div>
   </div>
 </header>
+</div>
 
 <!-- mobile menu -->
 <div class="overlay" id="overlay"></div>
@@ -625,7 +699,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--red);outline-offset
 <section class="hero">
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <div class="hero-founder reveal"><span class="hf-ic">🚀</span><span data-i18n="hero_founder">Kuruluş aşaması: Alanya'daki ilk berberlere kurucu fiyatı</span></div>
+      <div class="hero-founder reveal"><span class="hf-ic">🚀</span><span data-i18n="hero_founder">2026 Yaz Kampanyası: Alanya'nın ilk berberlerine özel — 31 Temmuz'a kadar</span></div>
       <h1 class="reveal d1"><span data-i18n="hero_h1a">Daha Fazla Müşteri,</span> <span class="accent" data-i18n="hero_h1b">Daha Az Bekleme</span></h1>
       <p class="sub reveal d2" data-i18n="hero_sub">Alanya'daki berber ve kuaförler için web sitesi, online randevu ve yapay zekâ asistan. 7 günde yayında.</p>
       <div class="hero-cta reveal d3">
@@ -787,36 +861,38 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--red);outline-offset
 <section class="sec" id="packages">
   <div class="wrap">
     <div class="sec-head center reveal">
-      <span class="pkg-anchor"><span data-i18n="pkg_anchor_a">Avrupa kalitesi,</span> <span class="g" data-i18n="pkg_anchor_b">Türkiye fiyatı</span></span>
+      <span class="camp-badge"><span class="cb-sun">☀️</span> <span data-i18n="camp_badge">2026 Yaz Kampanyası</span></span>
       <h2 data-i18n="pkg_title">Size uygun paketi seçin</h2>
-      <p class="lead" data-i18n="pkg_sub">Şeffaf fiyatlar. Gizli ücret yok. %50 başlangıç, %50 teslimatta. 30 gün para iade garantisi.</p>
+      <p class="lead" data-i18n="pkg_sub">Şeffaf fiyatlar. Gizli ücret yok. Ödeme teslimattan sonra — %100 teslimde. 30 gün para iade garantisi.</p>
     </div>
     <div class="price-hook reveal">
-      <span class="ph-kicker">💶 <span data-i18n="hook_kicker">Gerçek ajans fiyatlarıyla kıyaslayın</span></span>
+      <span class="ph-kicker">☀️ <span data-i18n="hook_kicker">2026 Yaz Kampanyası · Premium</span></span>
       <h3 data-i18n="hook_title">Aynı rakam. Farklı para birimi.</h3>
-      <p class="ph-sub" data-i18n="hook_sub">Almanya'da bir ajans bu siteyi 14.650-35.000 €'ya yapıyor. Aynı Alman mühendisliği, Alanya kurucu fiyatıyla — ayda sadece 5 berber için.</p>
+      <p class="ph-sub" data-i18n="hook_sub">Almanya'da bir ajans Premium paketini 25.000 €'ya yapıyor. Bu yaz aynı Alman mühendisliğini Alanya'da 25.000 TL'ye alıyorsunuz — aynı rakam, ama Euro değil Lira.</p>
       <div class="ph-duel">
         <div class="ph-tag de">
           <span class="pht-label"><svg class="flg" viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><clipPath id="phFlagDe"><rect width="30" height="20" rx="3"/></clipPath></defs><g clip-path="url(#phFlagDe)"><rect width="30" height="20" fill="#141414"/><rect y="6.7" width="30" height="6.6" fill="#DD0000"/><rect y="13.3" width="30" height="6.7" fill="#FFCE00"/></g></svg><span data-i18n="hook_de_label">Almanya'da ajans fiyatı</span></span>
-          <span class="pht-big" data-i18n="hook_de_price">15.000 €</span>
+          <span class="pht-big" data-i18n="hook_de_price">25.000 €</span>
           <span class="pht-note" data-i18n="hook_de_note">Gerçek piyasa: 14.650-35.000 €</span>
         </div>
-        <div class="ph-vs"><span data-i18n="hook_vs">Aynı kalite</span></div>
+        <div class="ph-vs"><span data-i18n="hook_vs">Alman kalitesi</span></div>
         <div class="ph-tag tr">
-          <span class="pht-label"><svg class="flg" viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="30" height="20" rx="3" fill="#E30A17"/><circle cx="10.5" cy="10" r="5" fill="#fff"/><circle cx="11.8" cy="10" r="4" fill="#E30A17"/><polygon fill="#fff" points="17,7.1 17.68,9.07 19.76,9.1 18.09,10.36 18.71,12.35 17,11.15 15.29,12.35 15.91,10.36 14.24,9.1 16.32,9.07"/></svg><span data-i18n="hook_tr_label">Alanya kurucu fiyatı</span></span>
-          <span class="pht-big" data-i18n="hook_tr_price">15.000 TL</span>
-          <span class="pht-note" data-i18n="hook_tr_note">≈ 285 € · Professional paketi</span>
+          <span class="pht-label"><svg class="flg" viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="30" height="20" rx="3" fill="#E30A17"/><circle cx="10.5" cy="10" r="5" fill="#fff"/><circle cx="11.8" cy="10" r="4" fill="#E30A17"/><polygon fill="#fff" points="17,7.1 17.68,9.07 19.76,9.1 18.09,10.36 18.71,12.35 17,11.15 15.29,12.35 15.91,10.36 14.24,9.1 16.32,9.07"/></svg><span data-i18n="hook_tr_label">Alanya yaz fiyatı</span></span>
+          <span class="pht-big" data-i18n="hook_tr_price">25.000 TL</span>
+          <span class="pht-note" data-i18n="hook_tr_note">≈ 470 € · Premium paketi</span>
         </div>
       </div>
       <div class="ph-receipt">
-        <span class="phr-head" data-i18n="hook_rhead">Bir Alman ajansının teklifi böyle görünür</span>
+        <span class="phr-head" data-i18n="hook_rhead">Bir Alman ajansı benzer bir Premium paketini böyle hesaplar</span>
         <div class="phr-row"><span data-i18n="hook_r1">Çok dilli premium site (4 dil)</span><i></i><b data-i18n="hook_r1p">6.500 €</b></div>
         <div class="phr-row"><span data-i18n="hook_r2">Online randevu sistemi</span><i></i><b data-i18n="hook_r2p">3.000 €</b></div>
         <div class="phr-row"><span data-i18n="hook_r3">7/24 AI sohbet asistanı</span><i></i><b data-i18n="hook_r3p">2.650 €</b></div>
         <div class="phr-row"><span data-i18n="hook_r4">SEO + GEO + Google profili</span><i></i><b data-i18n="hook_r4p">2.500 €</b></div>
-        <div class="phr-row sum"><span data-i18n="hook_rsum">Almanya'da toplam</span><i></i><b data-i18n="hook_rsump">14.650 €+</b></div>
+        <div class="phr-row"><span data-i18n="hook_r5">Instagram + yorum yönetimi</span><i></i><b data-i18n="hook_r5p">4.350 €</b></div>
+        <div class="phr-row"><span data-i18n="hook_r6">Aylık SEO raporu + VIP destek</span><i></i><b data-i18n="hook_r6p">6.000 €</b></div>
+        <div class="phr-row sum"><span data-i18n="hook_rsum">Almanya'da toplam</span><i></i><b data-i18n="hook_rsump">25.000 €</b></div>
       </div>
-      <span class="ph-offer"><b data-i18n="hook_offer_a">Kurucu fiyatı</b><span data-i18n="hook_offer_b">: %50 başlangıçta, %50 teslimatta — 30 gün para iade garantili, kilit para veya gizli aidat yok.</span></span>
+      <span class="ph-offer"><b data-i18n="hook_offer_a">Sıfır risk</b><span data-i18n="hook_offer_b">: Ödemeyi teslimattan sonra yaparsınız — teslimde %100, peşinat yok. 30 gün para iade garantili, gizli ücret yok.</span></span>
     </div>
     <div class="pkg-grid" id="pkgGrid"></div>
     <p class="pkg-note" data-i18n="pkg_note">Tüm paketler aylık bakım & destek opsiyonu içerir. Fiyatlar 2026 Türkiye web tasarım piyasasına göre konumlandırılmıştır.</p>
@@ -972,7 +1048,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--red);outline-offset
 <!-- ============ FINAL CTA ============ -->
 <section class="sec final">
   <div class="wrap final-in reveal">
-    <span class="urgency"><span class="dot"></span><span data-i18n="cta_urgency">Bu ay sadece 5 berber alıyoruz</span></span>
+    <span class="urgency"><span class="dot"></span><span data-i18n="cta_urgency">2026 Yaz Kampanyası 31 Temmuz'da sona eriyor</span></span>
     <h2 data-i18n="cta_title">Berberinizi dijitale taşıyalım</h2>
     <p data-i18n="cta_sub">15 dakikalık ücretsiz WhatsApp danışmanlığı. Hemen yerinizi ayırtın, hiçbir yükümlülük yok.</p>
     <a class="btn btn-primary btn-lg btn-pulse" id="finalWa" href="#" target="_blank" rel="noopener" style="font-size:1.15rem;padding:20px 40px">
@@ -1067,7 +1143,7 @@ const I18N = {
     hero_h1a:"Daha Fazla Müşteri,",hero_h1b:"Daha Az Bekleme",
     hero_sub:"Alanya'daki berber ve kuaförler için web sitesi, online randevu ve yapay zekâ asistan. 7 günde yayında.",
     hero_cta1:"Ücretsiz Danışmanlık Al",hero_cta2:"Paketleri Gör",
-    hero_founder:"Kuruluş aşaması: Alanya'daki ilk berberlere kurucu fiyatı",hero_assure1:"30 gün para iade garantisi",hero_assure2:"Ücretsiz, yükümlülüksüz danışmanlık",hero_assure3:"Önce canlı demo",
+    hero_founder:"2026 Yaz Kampanyası: Alanya'nın ilk berberlerine özel — 31 Temmuz'a kadar",hero_assure1:"30 gün para iade garantisi",hero_assure2:"Ücretsiz, yükümlülüksüz danışmanlık",hero_assure3:"Önce canlı demo",
     hero_trust_a:"40 yıl tecrübe",hero_trust_b:"Müşterilerimiz arasında Bäuerle Steuerkanzlei & Make Art Studio",
     hero_chip1:"7/24 online randevu",hero_chip2:"7 günde yayında",
     hero_dvc_title:"Berber Demo",hero_dvc_sub:"Modern · Çok dilli · Mobil uyumlu",hero_dvc_btn:"Randevu Al →",
@@ -1095,23 +1171,26 @@ const I18N = {
     ba_before:["Web sitesi yok","Sadece telefonla randevu","Turist müşteri kaybı","Mesai dışı kapalı","Kâğıt defter karmaşası","Google'da görünmüyor"],
     ba_after:["Google'da 1. sayfa","7/24 online randevu","Çok dilli site (TR·EN·RU·DE)","AI asistan hep açık","Otomatik hatırlatma","Daha çok dolu koltuk"],
     pkg_anchor_a:"Avrupa kalitesi,",pkg_anchor_b:"Türkiye fiyatı",
-    hook_kicker:"Gerçek ajans fiyatlarıyla kıyaslayın",hook_title:"Aynı rakam. Farklı para birimi.",
-    hook_sub:"Almanya'da bir ajans bu siteyi 14.650-35.000 €'ya yapıyor. Aynı Alman mühendisliği, Alanya kurucu fiyatıyla — ayda sadece 5 berber için.",
-    hook_de_label:"Almanya'da ajans fiyatı",hook_de_price:"15.000 €",hook_de_note:"Gerçek piyasa: 14.650-35.000 €",
-    hook_vs:"Aynı kalite",hook_tr_label:"Alanya kurucu fiyatı",hook_tr_price:"15.000 TL",hook_tr_note:"≈ 285 € · Professional paketi",
-    hook_rhead:"Bir Alman ajansının teklifi böyle görünür",
+    hook_kicker:"2026 Yaz Kampanyası · Premium",hook_title:"Aynı rakam. Farklı para birimi.",
+    hook_sub:"Almanya'da bir ajans Premium paketini 25.000 €'ya yapıyor. Bu yaz aynı Alman mühendisliğini Alanya'da 25.000 TL'ye alıyorsunuz — aynı rakam, ama Euro değil Lira.",
+    hook_de_label:"Almanya'da ajans fiyatı",hook_de_price:"25.000 €",hook_de_note:"Gerçek piyasa: 14.650-35.000 €",
+    hook_vs:"Alman kalitesi",hook_tr_label:"Alanya yaz fiyatı",hook_tr_price:"25.000 TL",hook_tr_note:"≈ 470 € · Premium paketi",
+    hook_rhead:"Bir Alman ajansı benzer bir Premium paketini böyle hesaplar",
     hook_r1:"Çok dilli premium site (4 dil)",hook_r1p:"6.500 €",hook_r2:"Online randevu sistemi",hook_r2p:"3.000 €",
     hook_r3:"7/24 AI sohbet asistanı",hook_r3p:"2.650 €",hook_r4:"SEO + GEO + Google profili",hook_r4p:"2.500 €",
-    hook_rsum:"Almanya'da toplam",hook_rsump:"14.650 €+",
-    hook_offer_a:"Kurucu fiyatı",hook_offer_b:": %50 başlangıçta, %50 teslimatta — 30 gün para iade garantili, kilit para veya gizli aidat yok.",
+    hook_r5:"Instagram + yorum yönetimi",hook_r5p:"4.350 €",hook_r6:"Aylık SEO raporu + VIP destek",hook_r6p:"6.000 €",
+    hook_rsum:"Almanya'da toplam",hook_rsump:"25.000 €",
+    camp_badge:"2026 Yaz Kampanyası",pkg_summer:"2026 Yaz fiyatı",pkg_de_label:"Almanya · ajans",
+    promo_msg:"2026 Yaz Kampanyası sona eriyor",cd_days:"gün",cd_hours:"saat",cd_min:"dk",cd_sec:"sn",
+    hook_offer_a:"Sıfır risk",hook_offer_b:": Ödemeyi teslimattan sonra yaparsınız — teslimde %100, peşinat yok. 30 gün para iade garantili, gizli ücret yok.",
     pkg_title:"Size uygun paketi seçin",
-    pkg_sub:"Şeffaf fiyatlar. Gizli ücret yok. %50 başlangıç, %50 teslimatta. 30 gün para iade garantisi.",
+    pkg_sub:"Şeffaf fiyatlar. Gizli ücret yok. Ödeme teslimattan sonra — %100 teslimde, peşinat yok. 30 gün para iade garantisi.",
     pkg_from:"başlangıç",pkg_pop:"En Popüler",pkg_cta:"Bu paketi WhatsApp'tan sor",
-    pkg_note:"Tüm paketler aylık bakım & destek opsiyonu içerir. Fiyatlar 2026 Türkiye web tasarım piyasasına göre konumlandırılmıştır.",
+    pkg_note:"Tüm paketler aylık bakım & destek opsiyonu içerir. Üzeri çizili fiyatlar, benzer Alman ajanslarının referans değerleridir (gerçek piyasa: 14.650–35.000 €); sizin fiyatlarınız 2026 Türkiye web tasarım piyasasına göre belirlenmiştir.",
     packages:[
-      {name:"Başlangıç",fr:"Küçük berberler için",tl:"9.900 TL",eur:"≈ 186 €",feats:["5 sayfa, mobil uyumlu web sitesi","Google İşletme Profili kurulumu","WhatsApp randevu butonu","Temel SEO"]},
-      {name:"Profesyonel",fr:"Orta ölçekli & turist bölgesi",tl:"15.000 TL",eur:"≈ 285 €",feats:["Çok dilli web sitesi (TR · EN · RU · DE)","Online randevu sistemi","AI chat asistan (7/24)","Foto galerisi","Gelişmiş SEO + GEO"]},
-      {name:"Premium",fr:"Büyük salonlar için",tl:"25.000 TL",eur:"≈ 470 €",feats:["Profesyonel'deki her şey","Instagram entegrasyonu","Yorum (review) yönetimi","Aylık SEO raporu","VIP öncelikli destek"]}
+      {name:"Başlangıç",fr:"Küçük berberler için",tl:"9.900 TL",eur:"≈ 186 €",de:"9.900 €",feats:["5 sayfa, mobil uyumlu web sitesi","Google İşletme Profili kurulumu","WhatsApp randevu butonu","Temel SEO"]},
+      {name:"Profesyonel",fr:"Orta ölçekli & turist bölgesi",tl:"15.000 TL",eur:"≈ 285 €",de:"15.000 €",feats:["Başlangıç'taki her şey","Çok dilli web sitesi (TR · EN · RU · DE)","Online randevu sistemi","AI chat asistan (7/24)","Foto galerisi","Gelişmiş SEO + GEO"]},
+      {name:"Premium",fr:"Büyük salonlar için",tl:"25.000 TL",eur:"≈ 470 €",de:"25.000 €",feats:["Profesyonel'deki her şey","Instagram entegrasyonu","Yorum (review) yönetimi","Aylık SEO raporu","VIP öncelikli destek"]}
     ],
     demo_kicker:"Nasıl çalışır",demo_title:"Müşterileriniz bunu görecek",demo_sub:"Gerçek müşteri deneyimini canlı önizleyin. Hepsi sitenize dahil.",
     demo_badge:"Demo",
@@ -1145,10 +1224,10 @@ const I18N = {
       ["Web sitem ne zaman hazır olur?","Çoğu proje 7 iş günü içinde yayında olur."],
       ["Teknik bilgim yok, kullanabilir miyim?","Evet. Yönetim paneli çok basittir ve her adımda biz yanınızdayız."],
       ["Turist müşterilere nasıl ulaşacağım?","Çok dilli siteniz sayesinde (TR, EN, RU, DE), her ziyaretçi kendi dilinde görür."],
-      ["Ödeme nasıl yapılır?","%50 başlangıçta, %50 teslimatta. Şeffaf, gizli ücret yok."],
+      ["Ödeme nasıl yapılır?","Ödemeyi web siteniz teslim edildikten sonra yaparsınız — teslimde %100. Peşinat yok. 30 gün para iade garantisi."],
       ["Vazgeçersem ne olur?","30 gün para iade garantisi. Risk size ait değil."]
     ],
-    cta_urgency:"Kuruluş aşaması: ayda sadece 5 berber, kurucu fiyatıyla",
+    cta_urgency:"2026 Yaz Kampanyası 31 Temmuz'da sona eriyor",
     cta_title:"Berberinizi dijitale taşıyalım",
     cta_sub:"15 dakikalık ücretsiz WhatsApp danışmanlığı. Hemen yerinizi ayırtın, hiçbir yükümlülük yok.",
     cta_btn:"WhatsApp'tan Ücretsiz Danışmanlık Al",cta_micro:"⚡ Yanıt süresi: genellikle 1 saat içinde",
@@ -1168,7 +1247,7 @@ const I18N = {
     hero_h1a:"More Customers,",hero_h1b:"Less Waiting",
     hero_sub:"Website, online booking and an AI assistant for barbers and salons in Alanya. Live in 7 days.",
     hero_cta1:"Get a Free Consultation",hero_cta2:"See Packages",
-    hero_founder:"Founding phase: founder pricing for the first barbershops in Alanya",hero_assure1:"30-day money-back guarantee",hero_assure2:"Free consultation, no obligation",hero_assure3:"See a live demo first",
+    hero_founder:"Summer Campaign 2026: exclusive for Alanya's first barbershops — until July 31",hero_assure1:"30-day money-back guarantee",hero_assure2:"Free consultation, no obligation",hero_assure3:"See a live demo first",
     hero_trust_a:"40 years of experience",hero_trust_b:"Clients include Bäuerle Steuerkanzlei & Make Art Studio",
     hero_chip1:"24/7 online booking",hero_chip2:"Live in 7 days",
     hero_dvc_title:"Barber Demo",hero_dvc_sub:"Modern · Multilingual · Mobile-ready",hero_dvc_btn:"Book Now →",
@@ -1196,23 +1275,26 @@ const I18N = {
     ba_before:["No website","Phone-only booking","Losing tourist customers","Closed after hours","Paper-notebook chaos","Invisible on Google"],
     ba_after:["Page 1 on Google","24/7 online booking","Multilingual site (TR·EN·RU·DE)","AI assistant always on","Automatic reminders","More chairs filled"],
     pkg_anchor_a:"European quality,",pkg_anchor_b:"Turkish price",
-    hook_kicker:"Priced against real agency rates",hook_title:"Same number. Different currency.",
-    hook_sub:"A German agency charges €14,650-35,000 for this exact website. Same German engineering at the Alanya founder price — for only 5 barbershops a month.",
-    hook_de_label:"Agency price in Germany",hook_de_price:"€15,000",hook_de_note:"Real market: €14,650-35,000",
-    hook_vs:"Same quality",hook_tr_label:"Alanya founder price",hook_tr_price:"15,000 TL",hook_tr_note:"≈ €285 · Professional package",
-    hook_rhead:"What a German agency quote looks like",
+    hook_kicker:"Summer Campaign 2026 · Premium",hook_title:"Same number. Different currency.",
+    hook_sub:"A German agency builds the Premium package for €25,000. This summer you get the same German engineering in Alanya for 25,000 TL — same number, just Lira instead of Euros.",
+    hook_de_label:"Agency price in Germany",hook_de_price:"€25,000",hook_de_note:"Real market: €14,650-35,000",
+    hook_vs:"German quality",hook_tr_label:"Alanya summer price",hook_tr_price:"25,000 TL",hook_tr_note:"≈ €470 · Premium package",
+    hook_rhead:"How a German agency prices a comparable Premium package",
     hook_r1:"Multilingual premium site (4 languages)",hook_r1p:"€6,500",hook_r2:"Online booking system",hook_r2p:"€3,000",
     hook_r3:"24/7 AI chat assistant",hook_r3p:"€2,650",hook_r4:"SEO + GEO + Google profile",hook_r4p:"€2,500",
-    hook_rsum:"Total in Germany",hook_rsump:"€14,650+",
-    hook_offer_a:"Founder price",hook_offer_b:": 50% upfront, 50% on delivery — 30-day money-back guarantee, no deposit, no hidden fees.",
+    hook_r5:"Instagram + review management",hook_r5p:"€4,350",hook_r6:"Monthly SEO report + VIP support",hook_r6p:"€6,000",
+    hook_rsum:"Total in Germany",hook_rsump:"€25,000",
+    camp_badge:"Summer Campaign 2026",pkg_summer:"Summer price 2026",pkg_de_label:"Germany · agency",
+    promo_msg:"Summer Campaign 2026 is ending",cd_days:"days",cd_hours:"hrs",cd_min:"min",cd_sec:"sec",
+    hook_offer_a:"Zero risk",hook_offer_b:": You pay only after delivery — 100% on completion, no deposit. 30-day money-back guarantee, no hidden fees.",
     pkg_title:"Choose the package that fits you",
-    pkg_sub:"Transparent prices. No hidden fees. 50% to start, 50% on delivery. 30-day money-back guarantee.",
+    pkg_sub:"Transparent prices. No hidden fees. Pay only after delivery — 100% on completion. 30-day money-back guarantee.",
     pkg_from:"from",pkg_pop:"Most Popular",pkg_cta:"Ask about this on WhatsApp",
-    pkg_note:"Every package includes an optional monthly maintenance & support plan. Prices are positioned against the 2026 Turkish web-design market.",
+    pkg_note:"Every package includes an optional monthly maintenance & support plan. Struck-through prices are reference values from comparable German agencies (real market: €14,650–35,000); your prices are positioned against the 2026 Turkish web-design market.",
     packages:[
-      {name:"Starter",fr:"For small barbershops",tl:"9,900 TL",eur:"≈ €186",feats:["5-page, mobile-ready website","Google Business Profile setup","WhatsApp booking button","Basic SEO"]},
-      {name:"Professional",fr:"Mid-size & tourist areas",tl:"15,000 TL",eur:"≈ €285",feats:["Multilingual website (TR · EN · RU · DE)","Online booking system","AI chat assistant (24/7)","Photo gallery","Advanced SEO + GEO"]},
-      {name:"Premium",fr:"For large salons",tl:"25,000 TL",eur:"≈ €470",feats:["Everything in Professional","Instagram integration","Review management","Monthly SEO report","VIP priority support"]}
+      {name:"Starter",fr:"For small barbershops",tl:"9,900 TL",eur:"≈ €186",de:"€9,900",feats:["5-page, mobile-ready website","Google Business Profile setup","WhatsApp booking button","Basic SEO"]},
+      {name:"Professional",fr:"Mid-size & tourist areas",tl:"15,000 TL",eur:"≈ €285",de:"€15,000",feats:["Everything in Starter","Multilingual website (TR · EN · RU · DE)","Online booking system","AI chat assistant (24/7)","Photo gallery","Advanced SEO + GEO"]},
+      {name:"Premium",fr:"For large salons",tl:"25,000 TL",eur:"≈ €470",de:"€25,000",feats:["Everything in Professional","Instagram integration","Review management","Monthly SEO report","VIP priority support"]}
     ],
     demo_kicker:"How it works",demo_title:"This is what your customers will see",demo_sub:"Preview the real customer experience live. Everything is included in your site.",
     demo_badge:"Demo",
@@ -1246,10 +1328,10 @@ const I18N = {
       ["When will my website be ready?","Most projects go live within 7 business days."],
       ["I'm not technical. Can I use it?","Yes. The admin panel is very simple, and we're with you every step."],
       ["How do I reach tourist customers?","Through your multilingual site (TR, EN, RU, DE), so each visitor sees their own language."],
-      ["How does payment work?","50% to start, 50% on delivery. Transparent, no hidden fees."],
+      ["How does payment work?","You pay only after your website is delivered — 100% on completion. No deposit. 30-day money-back guarantee."],
       ["What if I change my mind?","30-day money-back guarantee. The risk isn't on you."]
     ],
-    cta_urgency:"Founding phase: only 5 barbershops per month at founder pricing",
+    cta_urgency:"Summer Campaign 2026 ends July 31, 2026",
     cta_title:"Let's take your barbershop digital",
     cta_sub:"A free 15-minute WhatsApp consultation. Reserve your spot now, no commitment.",
     cta_btn:"Get a Free Consultation on WhatsApp",cta_micro:"⚡ Response time: usually within 1 hour",
@@ -1269,7 +1351,7 @@ const I18N = {
     hero_h1a:"Больше клиентов,",hero_h1b:"меньше ожидания",
     hero_sub:"Сайт, онлайн-запись и ИИ-ассистент для барбершопов и салонов Аланьи. Запуск за 7 дней.",
     hero_cta1:"Бесплатная консультация",hero_cta2:"Смотреть пакеты",
-    hero_founder:"Этап запуска: специальные условия для первых барбершопов в Алании",hero_assure1:"Возврат денег в течение 30 дней",hero_assure2:"Бесплатная консультация, без обязательств",hero_assure3:"Сначала живое демо",
+    hero_founder:"Летняя кампания 2026: только для первых барбершопов Аланьи — до 31 июля",hero_assure1:"Возврат денег в течение 30 дней",hero_assure2:"Бесплатная консультация, без обязательств",hero_assure3:"Сначала живое демо",
     hero_trust_a:"40 лет опыта",hero_trust_b:"Среди клиентов: Bäuerle Steuerkanzlei и Make Art Studio",
     hero_chip1:"Запись 24/7 онлайн",hero_chip2:"Запуск за 7 дней",
     hero_dvc_title:"Демо барбершопа",hero_dvc_sub:"Современно · Многоязычно · Для смартфона",hero_dvc_btn:"Записаться →",
@@ -1297,23 +1379,26 @@ const I18N = {
     ba_before:["Нет сайта","Запись только по телефону","Потеря туристов","Закрыто вне часов","Хаос в бумажном журнале","Не видно в Google"],
     ba_after:["1-я страница в Google","Онлайн-запись 24/7","Многоязычный сайт (TR·EN·RU·DE)","ИИ-ассистент всегда на связи","Автонапоминания","Больше занятых кресел"],
     pkg_anchor_a:"Европейское качество,",pkg_anchor_b:"турецкая цена",
-    hook_kicker:"Сравните с реальными ценами агентств",hook_title:"Та же цифра. Другая валюта.",
-    hook_sub:"Немецкое агентство берёт за такой сайт 14 650-35 000 €. То же немецкое качество по цене основателя в Аланье — только для 5 барбершопов в месяц.",
-    hook_de_label:"Цена агентства в Германии",hook_de_price:"15 000 €",hook_de_note:"Реальный рынок: 14 650-35 000 €",
-    hook_vs:"То же качество",hook_tr_label:"Цена основателя в Аланье",hook_tr_price:"15 000 TL",hook_tr_note:"≈ 285 € · пакет Professional",
-    hook_rhead:"Так выглядит смета немецкого агентства",
+    hook_kicker:"Летняя кампания 2026 · Premium",hook_title:"Та же цифра. Другая валюта.",
+    hook_sub:"Немецкое агентство делает пакет Premium за 25 000 €. Этим летом вы получаете то же немецкое качество в Аланье за 25 000 TL — та же цифра, только в лирах, а не в евро.",
+    hook_de_label:"Цена агентства в Германии",hook_de_price:"25 000 €",hook_de_note:"Реальный рынок: 14 650-35 000 €",
+    hook_vs:"Немецкое качество",hook_tr_label:"Летняя цена в Аланье",hook_tr_price:"25 000 TL",hook_tr_note:"≈ 470 € · пакет Premium",
+    hook_rhead:"Так немецкое агентство считает сопоставимый пакет Premium",
     hook_r1:"Премиум-сайт на 4 языках",hook_r1p:"6 500 €",hook_r2:"Система онлайн-записи",hook_r2p:"3 000 €",
     hook_r3:"ИИ-ассистент 24/7",hook_r3p:"2 650 €",hook_r4:"SEO + GEO + профиль Google",hook_r4p:"2 500 €",
-    hook_rsum:"Итого в Германии",hook_rsump:"14 650 €+",
-    hook_offer_a:"Цена основателя",hook_offer_b:": 50% предоплата, 50% при сдаче — гарантия возврата денег 30 дней, без залога и скрытых платежей.",
+    hook_r5:"Instagram + управление отзывами",hook_r5p:"4 350 €",hook_r6:"Ежемесячный SEO-отчёт + VIP-поддержка",hook_r6p:"6 000 €",
+    hook_rsum:"Итого в Германии",hook_rsump:"25 000 €",
+    camp_badge:"Летняя кампания 2026",pkg_summer:"Летняя цена 2026",pkg_de_label:"Германия · агентство",
+    promo_msg:"Летняя кампания 2026 заканчивается",cd_days:"дн",cd_hours:"ч",cd_min:"мин",cd_sec:"сек",
+    hook_offer_a:"Ноль риска",hook_offer_b:": Вы платите только после сдачи — 100% по готовности, без предоплаты. Гарантия возврата денег 30 дней, без скрытых платежей.",
     pkg_title:"Выберите подходящий пакет",
-    pkg_sub:"Прозрачные цены. Без скрытых платежей. 50% при старте, 50% при сдаче. Гарантия возврата 30 дней.",
+    pkg_sub:"Прозрачные цены. Без скрытых платежей. Оплата только после сдачи — 100% по готовности. Гарантия возврата 30 дней.",
     pkg_from:"от",pkg_pop:"Самый популярный",pkg_cta:"Спросить в WhatsApp",
-    pkg_note:"Все пакеты включают опциональный план ежемесячной поддержки. Цены соответствуют рынку веб-дизайна Турции 2026 года.",
+    pkg_note:"Все пакеты включают опциональный план ежемесячной поддержки. Зачёркнутые цены — ориентировочные значения сопоставимых немецких агентств (реальный рынок: 14 650–35 000 €); ваши цены соответствуют рынку веб-дизайна Турции 2026 года.",
     packages:[
-      {name:"Старт",fr:"Для небольших барбершопов",tl:"9 900 TL",eur:"≈ 186 €",feats:["Сайт из 5 страниц для смартфонов","Настройка профиля Google Бизнес","Кнопка записи в WhatsApp","Базовое SEO"]},
-      {name:"Профессиональный",fr:"Средние и туристические районы",tl:"15 000 TL",eur:"≈ 285 €",feats:["Многоязычный сайт (TR · EN · RU · DE)","Система онлайн-записи","ИИ-чат-ассистент (24/7)","Фотогалерея","Расширенное SEO + GEO"]},
-      {name:"Премиум",fr:"Для крупных салонов",tl:"25 000 TL",eur:"≈ 470 €",feats:["Всё из «Профессионального»","Интеграция с Instagram","Управление отзывами","Ежемесячный SEO-отчёт","VIP-поддержка с приоритетом"]}
+      {name:"Старт",fr:"Для небольших барбершопов",tl:"9 900 TL",eur:"≈ 186 €",de:"9 900 €",feats:["Сайт из 5 страниц для смартфонов","Настройка профиля Google Бизнес","Кнопка записи в WhatsApp","Базовое SEO"]},
+      {name:"Профессиональный",fr:"Средние и туристические районы",tl:"15 000 TL",eur:"≈ 285 €",de:"15 000 €",feats:["Всё из «Старта»","Многоязычный сайт (TR · EN · RU · DE)","Система онлайн-записи","ИИ-чат-ассистент (24/7)","Фотогалерея","Расширенное SEO + GEO"]},
+      {name:"Премиум",fr:"Для крупных салонов",tl:"25 000 TL",eur:"≈ 470 €",de:"25 000 €",feats:["Всё из «Профессионального»","Интеграция с Instagram","Управление отзывами","Ежемесячный SEO-отчёт","VIP-поддержка с приоритетом"]}
     ],
     demo_kicker:"Как это работает",demo_title:"Вот что увидят ваши клиенты",demo_sub:"Посмотрите реальный клиентский опыт вживую. Всё входит в ваш сайт.",
     demo_badge:"Демо",
@@ -1347,10 +1432,10 @@ const I18N = {
       ["Когда мой сайт будет готов?","Большинство проектов запускается в течение 7 рабочих дней."],
       ["Я не технарь. Справлюсь?","Да. Панель управления очень простая, и мы рядом на каждом шаге."],
       ["Как привлечь туристов?","Через ваш многоязычный сайт (TR, EN, RU, DE), и каждый видит свой язык."],
-      ["Как происходит оплата?","50% при старте, 50% при сдаче. Прозрачно, без скрытых платежей."],
+      ["Как происходит оплата?","Вы платите только после сдачи готового сайта — 100% по готовности. Без предоплаты. Гарантия возврата денег 30 дней."],
       ["А если я передумаю?","Гарантия возврата денег 30 дней. Вы ничем не рискуете."]
     ],
-    cta_urgency:"Этап запуска: только 5 барбершопов в месяц по специальным условиям",
+    cta_urgency:"Летняя кампания 2026 заканчивается 31 июля 2026",
     cta_title:"Переведём ваш барбершоп в цифру",
     cta_sub:"Бесплатная 15-минутная консультация в WhatsApp. Забронируйте место, без обязательств.",
     cta_btn:"Бесплатная консультация в WhatsApp",cta_micro:"⚡ Время ответа: обычно в течение 1 часа",
@@ -1370,7 +1455,7 @@ const I18N = {
     hero_h1a:"Mehr Kunden,",hero_h1b:"weniger Warten",
     hero_sub:"Website, Online-Terminbuchung und KI-Assistent für Barbiere und Salons in Alanya. In 7 Tagen live.",
     hero_cta1:"Kostenlose Beratung",hero_cta2:"Pakete ansehen",
-    hero_founder:"Gründungsphase: Gründerkonditionen für die ersten Barbershops in Alanya",hero_assure1:"30 Tage Geld-zurück-Garantie",hero_assure2:"Unverbindliche Beratung",hero_assure3:"Live-Demo vorab",
+    hero_founder:"Sommerkampagne 2026: exklusiv für Alanyas erste Barbershops — nur bis 31. Juli",hero_assure1:"30 Tage Geld-zurück-Garantie",hero_assure2:"Unverbindliche Beratung",hero_assure3:"Live-Demo vorab",
     hero_trust_a:"40 Jahre Erfahrung",hero_trust_b:"Kunden u. a. Bäuerle Steuerkanzlei & Make Art Studio",
     hero_chip1:"Online-Buchung rund um die Uhr",hero_chip2:"In 7 Tagen live",
     hero_dvc_title:"Barbier-Demo",hero_dvc_sub:"Modern · Mehrsprachig · Mobiloptimiert",hero_dvc_btn:"Termin buchen →",
@@ -1398,23 +1483,26 @@ const I18N = {
     ba_before:["Keine Website","Termine nur per Telefon","Touristen gehen verloren","Nach Feierabend geschlossen","Chaos im Papierheft","Bei Google unsichtbar"],
     ba_after:["Seite 1 bei Google","Online-Buchung rund um die Uhr","Mehrsprachige Website (TR·EN·RU·DE)","KI-Assistent immer aktiv","Automatische Erinnerungen","Mehr besetzte Stühle"],
     pkg_anchor_a:"Europäische Qualität,",pkg_anchor_b:"türkischer Preis",
-    hook_kicker:"Zum Vergleich: echte Agenturpreise",hook_title:"Gleiche Zahl. Andere Währung.",
-    hook_sub:"Eine deutsche Agentur berechnet für genau diese Website 14.650-35.000 €. Dieselbe deutsche Ingenieursarbeit zum Alanya-Gründerpreis — für nur 5 Barbershops im Monat.",
-    hook_de_label:"Agenturpreis in Deutschland",hook_de_price:"15.000 €",hook_de_note:"Realer Markt: 14.650-35.000 €",
-    hook_vs:"Gleiche Qualität",hook_tr_label:"Alanya-Gründerpreis",hook_tr_price:"15.000 TL",hook_tr_note:"≈ 285 € · Professional-Paket",
-    hook_rhead:"So kalkuliert eine deutsche Agentur",
+    hook_kicker:"Sommerkampagne 2026 · Premium",hook_title:"Gleiche Zahl. Andere Währung.",
+    hook_sub:"Eine deutsche Agentur baut das Premium-Paket für 25.000 €. Diesen Sommer bekommen Sie dieselbe deutsche Ingenieursarbeit in Alanya für 25.000 TL — gleiche Zahl, nur in Lira statt Euro.",
+    hook_de_label:"Agenturpreis in Deutschland",hook_de_price:"25.000 €",hook_de_note:"Realer Markt: 14.650-35.000 €",
+    hook_vs:"Deutsche Qualität",hook_tr_label:"Alanya-Sommerpreis",hook_tr_price:"25.000 TL",hook_tr_note:"≈ 470 € · Premium-Paket",
+    hook_rhead:"So kalkuliert eine deutsche Agentur ein vergleichbares Premium-Paket",
     hook_r1:"Mehrsprachige Premium-Website (4 Sprachen)",hook_r1p:"6.500 €",hook_r2:"Online-Buchungssystem",hook_r2p:"3.000 €",
     hook_r3:"KI-Chat-Assistent (24/7)",hook_r3p:"2.650 €",hook_r4:"SEO + GEO + Google-Profil",hook_r4p:"2.500 €",
-    hook_rsum:"Summe in Deutschland",hook_rsump:"14.650 €+",
-    hook_offer_a:"Gründerpreis",hook_offer_b:": 50% Anzahlung, 50% bei Lieferung — 30 Tage Geld-zurück-Garantie, keine Kaution, keine versteckten Kosten.",
+    hook_r5:"Instagram + Bewertungsmanagement",hook_r5p:"4.350 €",hook_r6:"Monatlicher SEO-Report + VIP-Support",hook_r6p:"6.000 €",
+    hook_rsum:"Summe in Deutschland",hook_rsump:"25.000 €",
+    camp_badge:"Sommerkampagne 2026",pkg_summer:"Sommerpreis 2026",pkg_de_label:"Deutschland · Agentur",
+    promo_msg:"Sommerkampagne 2026 endet in",cd_days:"Tage",cd_hours:"Std",cd_min:"Min",cd_sec:"Sek",
+    hook_offer_a:"Null Risiko",hook_offer_b:": Sie zahlen erst nach Auslieferung — 100% nach Abnahme, keine Anzahlung. 30 Tage Geld-zurück-Garantie, keine versteckten Kosten.",
     pkg_title:"Wählen Sie Ihr passendes Paket",
-    pkg_sub:"Transparente Preise. Keine versteckten Kosten. 50% bei Start, 50% bei Lieferung. 30 Tage Geld-zurück-Garantie.",
+    pkg_sub:"Transparente Preise. Keine versteckten Kosten. Zahlung erst nach Auslieferung — 100% nach Abnahme. 30 Tage Geld-zurück-Garantie.",
     pkg_from:"ab",pkg_pop:"Am beliebtesten",pkg_cta:"Per WhatsApp anfragen",
-    pkg_note:"Jedes Paket enthält einen optionalen monatlichen Wartungs- & Support-Plan. Die Preise orientieren sich am türkischen Webdesign-Markt 2026.",
+    pkg_note:"Jedes Paket enthält einen optionalen monatlichen Wartungs- & Support-Plan. Durchgestrichene Preise sind Referenzwerte vergleichbarer deutscher Agenturen (realer Markt: 14.650–35.000 €); Ihre Preise orientieren sich am türkischen Webdesign-Markt 2026.",
     packages:[
-      {name:"Starter",fr:"Für kleine Barbershops",tl:"9.900 TL",eur:"≈ 186 €",feats:["5-seitige, mobiloptimierte Website","Einrichtung Google-Unternehmensprofil","WhatsApp-Buchungsbutton","Basis-SEO"]},
-      {name:"Professional",fr:"Mittelgroß & Touristengebiete",tl:"15.000 TL",eur:"≈ 285 €",feats:["Mehrsprachige Website (TR · EN · RU · DE)","Online-Buchungssystem","KI-Chat-Assistent (24/7)","Fotogalerie","Erweitertes SEO + GEO"]},
-      {name:"Premium",fr:"Für große Salons",tl:"25.000 TL",eur:"≈ 470 €",feats:["Alles aus Professional","Instagram-Integration","Bewertungs-Management","Monatlicher SEO-Bericht","VIP-Priority-Support"]}
+      {name:"Starter",fr:"Für kleine Barbershops",tl:"9.900 TL",eur:"≈ 186 €",de:"9.900 €",feats:["5-seitige, mobiloptimierte Website","Einrichtung Google-Unternehmensprofil","WhatsApp-Buchungsbutton","Basis-SEO"]},
+      {name:"Professional",fr:"Mittelgroß & Touristengebiete",tl:"15.000 TL",eur:"≈ 285 €",de:"15.000 €",feats:["Alles aus Starter","Mehrsprachige Website (TR · EN · RU · DE)","Online-Buchungssystem","KI-Chat-Assistent (24/7)","Fotogalerie","Erweitertes SEO + GEO"]},
+      {name:"Premium",fr:"Für große Salons",tl:"25.000 TL",eur:"≈ 470 €",de:"25.000 €",feats:["Alles aus Professional","Instagram-Integration","Bewertungs-Management","Monatlicher SEO-Bericht","VIP-Priority-Support"]}
     ],
     demo_kicker:"So funktioniert's",demo_title:"Das werden Ihre Kunden sehen",demo_sub:"Erleben Sie das echte Kundenerlebnis live. Alles ist in Ihrer Website enthalten.",
     demo_badge:"Demo",
@@ -1448,10 +1536,10 @@ const I18N = {
       ["Wann ist meine Website fertig?","Die meisten Projekte gehen innerhalb von 7 Werktagen live."],
       ["Ich bin kein Technik-Profi. Geht das?","Ja. Das Verwaltungspanel ist sehr einfach, und wir begleiten Sie bei jedem Schritt."],
       ["Wie erreiche ich Touristen?","Über Ihre mehrsprachige Website (TR, EN, RU, DE), und jeder Besucher sieht seine Sprache."],
-      ["Wie läuft die Bezahlung?","50% bei Start, 50% bei Lieferung. Transparent, keine versteckten Kosten."],
+      ["Wie läuft die Bezahlung?","Sie zahlen erst nach Auslieferung — 100% nach Abnahme Ihrer fertigen Website. Keine Anzahlung. 30 Tage Geld-zurück-Garantie."],
       ["Was, wenn ich es mir anders überlege?","30 Tage Geld-zurück-Garantie. Das Risiko liegt nicht bei Ihnen."]
     ],
-    cta_urgency:"Gründungsphase: nur 5 Barbershops pro Monat zu Gründerkonditionen",
+    cta_urgency:"Sommerkampagne 2026 endet am 31. Juli 2026",
     cta_title:"Bringen wir Ihren Barbershop ins Digitale",
     cta_sub:"Kostenlose 15-minütige WhatsApp-Beratung. Sichern Sie sich jetzt Ihren Platz, unverbindlich.",
     cta_btn:"Kostenlose Beratung per WhatsApp",cta_micro:"⚡ Antwortzeit: meist innerhalb von 1 Stunde",
@@ -1498,12 +1586,16 @@ function renderDynamic(){
   renderBA();
   // packages
   const kg=document.getElementById('pkgGrid');kg.innerHTML='';
+  const FLAG_DE='<svg class="pkc-flg" viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="30" height="20" fill="#141414"/><rect y="6.7" width="30" height="6.6" fill="#DD0000"/><rect y="13.3" width="30" height="6.7" fill="#FFCE00"/></svg>';
+  const FLAG_TR='<svg class="pkc-flg" viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="30" height="20" rx="3" fill="#E30A17"/><circle cx="10.5" cy="10" r="5" fill="#fff"/><circle cx="11.8" cy="10" r="4" fill="#E30A17"/><polygon fill="#fff" points="17,7.1 17.68,9.07 19.76,9.1 18.09,10.36 18.71,12.35 17,11.15 15.29,12.35 15.91,10.36 14.24,9.1 16.32,9.07"/></svg>';
   t.packages.forEach((p,i)=>{
     const feat=i===1;
     const c=el('div','pkg reveal'+(i?' d'+i:'')+(feat?' feat':''));
     let h = feat?'<span class="tag-pop">'+t.pkg_pop+'</span>':'';
     h+='<div class="pk-name">'+p.name+'</div><div class="pk-for">'+p.fr+'</div>';
-    h+='<div class="pk-price"><span class="pk-from">'+t.pkg_from+'</span><span class="pk-tl">'+p.tl+'</span><span class="pk-eur">'+p.eur+'</span></div>';
+    h+='<span class="pk-summer">☀️ '+t.pkg_summer+'</span>';
+    h+='<div class="pk-compare">'+FLAG_DE+'<s class="pkc-de">'+p.de+'</s><span class="pkc-lbl">'+t.pkg_de_label+'</span></div>';
+    h+='<div class="pk-price">'+FLAG_TR+'<span class="pk-from">'+t.pkg_from+'</span><span class="pk-tl">'+p.tl+'</span><span class="pk-eur">'+p.eur+'</span></div>';
     h+='<ul class="pk-feats">'+p.feats.map(f=>'<li><span class="ck">✓</span>'+f+'</li>').join('')+'</ul>';
     h+='<a class="btn '+(feat?'btn-primary':'btn-dark')+' btn-block pkgCta" href="'+waLink()+'" target="_blank" rel="noopener">'+t.pkg_cta+'</a>';
     c.innerHTML=h;
@@ -1684,6 +1776,27 @@ function observeOnce(id,cb){
   o.observe(node);
 }
 
+/* ---------- Campaign countdown (ends 31 Jul 2026, 23:59 Turkey time / UTC+3) ---------- */
+function initCountdown(){
+  const bar=document.getElementById('promoBar');
+  const target=Date.UTC(2026,6,31,20,59,59);
+  const elD=document.getElementById('cdD'),elH=document.getElementById('cdH'),elM=document.getElementById('cdM'),elS=document.getElementById('cdS');
+  if(!bar||!elD||!elH||!elM||!elS)return;
+  const pad=n=>String(n).padStart(2,'0');
+  let timer;
+  function tick(){
+    const diff=target-Date.now();
+    if(diff<=0){bar.style.display='none';if(timer)clearInterval(timer);return;}
+    let s=Math.floor(diff/1000);
+    const d=Math.floor(s/86400);s-=d*86400;
+    const h=Math.floor(s/3600);s-=h*3600;
+    const m=Math.floor(s/60);s-=m*60;
+    elD.textContent=pad(d);elH.textContent=pad(h);elM.textContent=pad(m);elS.textContent=pad(s);
+  }
+  tick();
+  timer=setInterval(tick,1000);
+}
+
 /* ---------- Interactions ---------- */
 function initUI(){
   // header shadow
@@ -1719,6 +1832,7 @@ function initUI(){
 /* ---------- Boot ---------- */
 document.addEventListener('DOMContentLoaded',()=>{
   initUI();
+  initCountdown();
   applyI18n();
   observeReveals();
   // counters (run when stats visible)
