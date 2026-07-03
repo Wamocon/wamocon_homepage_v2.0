@@ -137,7 +137,8 @@ function escapeHtml(value) {
 
 function formatReceived(iso, lang) {
   const date = new Date(iso);
-  return date.toLocaleString(lang === 'de' ? 'de-DE' : 'en-GB', {
+  const locale = lang === 'de' ? 'de-DE' : lang === 'tr' ? 'tr-TR' : 'en-GB';
+  return date.toLocaleString(locale, {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
@@ -154,6 +155,7 @@ function typeLabel(type, lang) {
       lead: 'Kontakt',
       testimonial: 'Bewertung',
       'it-tester': 'IT-Tester',
+      'barber-order': 'Berber-Bestellung',
     },
     en: {
       career: 'Career',
@@ -161,6 +163,15 @@ function typeLabel(type, lang) {
       lead: 'Contact',
       testimonial: 'Testimonial',
       'it-tester': 'IT tester',
+      'barber-order': 'Barber order',
+    },
+    tr: {
+      career: 'Kariyer',
+      cooperation: 'İşbirliği',
+      lead: 'İletişim',
+      testimonial: 'Referans',
+      'it-tester': 'IT Test Uzmanı',
+      'barber-order': 'Berber Siparişi',
     },
   };
   return (labels[lang] || labels.de)[type] || type;
@@ -170,7 +181,9 @@ function emailLayout({ title, lang, body }) {
   const footerLine =
     lang === 'de'
       ? 'Diese E-Mail wurde automatisch versendet. Bei Fragen antworten Sie einfach auf diese Nachricht.'
-      : 'This email was sent automatically. If you have any questions, simply reply to this message.';
+      : lang === 'tr'
+        ? 'Bu e-posta otomatik olarak gönderilmiştir. Sorularınız için bu mesajı yanıtlamanız yeterlidir.'
+        : 'This email was sent automatically. If you have any questions, simply reply to this message.';
 
   return `<!DOCTYPE html>
 <html lang="${lang}">
@@ -218,34 +231,69 @@ function emailLayout({ title, lang, body }) {
 
 function detailTable(submission, lang) {
   const isDe = lang === 'de';
+  const isTr = lang === 'tr';
+  const t = {
+    heading: isDe ? 'Ihre angegebenen Daten' : isTr ? 'Verdiğiniz bilgiler' : 'Your details',
+    name: isDe ? 'Name' : isTr ? 'Ad Soyad' : 'Name',
+    phone: isDe ? 'Telefon' : isTr ? 'Telefon' : 'Phone',
+    company: isDe ? 'Unternehmen' : isTr ? 'İşletme' : 'Company',
+    packageChoice: isDe ? 'Paket' : isTr ? 'Paket' : 'Package',
+  };
+  const extraRows = [
+    submission.shopName
+      ? `<p style="margin:0 0 8px;"><strong style="color:#ffffff;">${t.company}:</strong> ${escapeHtml(submission.shopName)}</p>`
+      : '',
+    submission.packageChoice
+      ? `<p style="margin:0 0 8px;"><strong style="color:#ffffff;">${t.packageChoice}:</strong> ${escapeHtml(submission.packageChoice)}</p>`
+      : '',
+  ].join('');
   return `
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.06);">
   <tr><td style="padding:22px;">
-    <h2 style="margin:0 0 16px;font-size:15px;font-weight:700;color:#f40e0e;text-transform:uppercase;letter-spacing:0.05em;">${isDe ? 'Ihre angegebenen Daten' : 'Your details'}</h2>
-    <p style="margin:0 0 8px;"><strong style="color:#ffffff;">${isDe ? 'Name' : 'Name'}:</strong> ${escapeHtml(submission.name)}</p>
-    <p style="margin:0 0 8px;"><strong style="color:#ffffff;">${isDe ? 'Telefon' : 'Phone'}:</strong> ${escapeHtml(submission.phone)}</p>
+    <h2 style="margin:0 0 16px;font-size:15px;font-weight:700;color:#f40e0e;text-transform:uppercase;letter-spacing:0.05em;">${t.heading}</h2>
+    <p style="margin:0 0 8px;"><strong style="color:#ffffff;">${t.name}:</strong> ${escapeHtml(submission.name)}</p>
+    <p style="margin:0 0 8px;"><strong style="color:#ffffff;">${t.phone}:</strong> ${escapeHtml(submission.phone)}</p>
     <p style="margin:0 0 8px;"><strong style="color:#ffffff;">E-Mail:</strong> <a href="mailto:${escapeHtml(submission.email)}" style="color:#f40e0e;text-decoration:none;">${escapeHtml(submission.email)}</a></p>
+    ${extraRows}
   </td></tr>
 </table>`;
 }
 
 function internalEmail(submission) {
-  const isDe = submission.lang === 'de';
+  // The internal notification always renders in German or English (WAMOCON's
+  // own working languages), regardless of the submitter's language — a 'tr'
+  // submission still needs to be quickly readable by the team.
+  const isDe = submission.lang !== 'en';
   const label = typeLabel(submission.type, submission.lang);
   const subject = isDe
     ? `Neue ${label}-Anfrage von ${submission.name}`
     : `New ${label} inquiry from ${submission.name}`;
   const title = isDe ? `Neue Anfrage: ${label}` : `New inquiry: ${label}`;
+  const langNames = { de: 'Deutsch', en: 'English', tr: 'Türkçe' };
+  const langName = langNames[submission.lang] || submission.lang;
+
+  const extraRows = [
+    submission.shopName
+      ? `<p style="margin:0 0 10px;"><strong style="color:#ffffff;">${isDe ? 'Unternehmen' : 'Company'}:</strong> ${escapeHtml(submission.shopName)}</p>`
+      : '',
+    submission.packageChoice
+      ? `<p style="margin:0 0 10px;"><strong style="color:#ffffff;">${isDe ? 'Paket' : 'Package'}:</strong> ${escapeHtml(submission.packageChoice)}</p>`
+      : '',
+    submission.testimonialConsent
+      ? `<p style="margin:0 0 10px;"><strong style="color:#ffffff;">${isDe ? 'Referenz-Einwilligung' : 'Testimonial consent'}:</strong> ${isDe ? 'Ja — darf als Kundenstimme veröffentlicht werden' : 'Yes — may be published as a testimonial'}</p>`
+      : '',
+  ].join('');
 
   const body = `
 <p style="margin:0 0 18px;">${isDe ? 'Eine neue Anfrage wurde über die Website übermittelt.' : 'A new inquiry has been submitted via the website.'}</p>
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.06);">
   <tr><td style="padding:22px;">
     <p style="margin:0 0 10px;"><strong style="color:#ffffff;">${isDe ? 'Typ' : 'Type'}:</strong> ${escapeHtml(label)}</p>
-    <p style="margin:0 0 10px;"><strong style="color:#ffffff;">${isDe ? 'Sprache' : 'Language'}:</strong> ${submission.lang === 'de' ? 'Deutsch' : 'English'}</p>
+    <p style="margin:0 0 10px;"><strong style="color:#ffffff;">${isDe ? 'Sprache' : 'Language'}:</strong> ${escapeHtml(langName)}</p>
     <p style="margin:0 0 10px;"><strong style="color:#ffffff;">${isDe ? 'Name' : 'Name'}:</strong> ${escapeHtml(submission.name)}</p>
     <p style="margin:0 0 10px;"><strong style="color:#ffffff;">${isDe ? 'Telefon' : 'Phone'}:</strong> ${escapeHtml(submission.phone)}</p>
     <p style="margin:0 0 10px;"><strong style="color:#ffffff;">E-Mail:</strong> <a href="mailto:${escapeHtml(submission.email)}" style="color:#f40e0e;text-decoration:none;">${escapeHtml(submission.email)}</a></p>
+    ${extraRows}
   </td></tr>
 </table>
 <p style="margin:18px 0 0;color:rgba(255,255,255,0.55);font-size:13px;">${isDe ? 'Eingegangen am' : 'Received at'}: ${formatReceived(submission.receivedAt, submission.lang)}</p>
@@ -253,7 +301,7 @@ function internalEmail(submission) {
 
   return {
     subject,
-    body: { contentType: 'HTML', content: emailLayout({ title, lang: submission.lang, body }) },
+    body: { contentType: 'HTML', content: emailLayout({ title, lang: isDe ? 'de' : 'en', body }) },
     from: { emailAddress: { address: GRAPH_SENDER } },
     toRecipients: [{ emailAddress: { address: RECIPIENT } }],
     replyTo: [{ emailAddress: { address: submission.email } }],
@@ -262,18 +310,54 @@ function internalEmail(submission) {
 
 function confirmationEmail(submission) {
   const isDe = submission.lang === 'de';
+  const isTr = submission.lang === 'tr';
   const subject = isDe
     ? 'Vielen Dank für Ihre Anfrage bei WAMOCON'
-    : 'Thank you for your inquiry to WAMOCON';
-  const title = isDe ? 'Vielen Dank für Ihre Anfrage' : 'Thank you for your inquiry';
+    : isTr
+      ? 'WAMOCON\'a başvurunuz için teşekkürler'
+      : 'Thank you for your inquiry to WAMOCON';
+  const title = isDe ? 'Vielen Dank für Ihre Anfrage' : isTr ? 'Başvurunuz için teşekkürler' : 'Thank you for your inquiry';
+  const greeting = isDe ? 'Hallo' : isTr ? 'Merhaba' : 'Hi';
+
+  const intro = isDe
+    ? 'Vielen Dank für Ihre Anfrage bei <strong style="color:#ffffff;">WAMOCON</strong>. Wir haben Ihre Nachricht erhalten und freuen uns, von Ihnen zu hören!'
+    : isTr
+      ? '<strong style="color:#ffffff;">WAMOCON</strong>\'a başvurunuz için teşekkür ederiz. Mesajınızı aldık ve sizden haber almaktan mutluluk duyduk!'
+      : 'Thank you for reaching out to <strong style="color:#ffffff;">WAMOCON</strong>. We have received your message and are happy to hear from you!';
+
+  const followUp = isDe
+    ? 'Ein Mitglied unseres Teams wird sich innerhalb von <strong style="color:#ffffff;">48 Stunden</strong> bei Ihnen melden.'
+    : isTr
+      ? 'Ekibimizden biri <strong style="color:#ffffff;">48 saat içinde</strong> WhatsApp üzerinden sizinle iletişime geçecek.'
+      : 'A member of our team will get back to you within <strong style="color:#ffffff;">48 hours</strong>.';
+
+  const testimonialNote = submission.testimonialConsent
+    ? `<p style="margin:0 0 16px;">${
+        isDe
+          ? 'Vielen Dank auch für Ihre Zustimmung, Ihr Feedback als Kundenstimme zu verwenden — wir melden uns dazu gesondert bei Ihnen.'
+          : isTr
+            ? 'Geri bildiriminizin referans olarak kullanılmasına verdiğiniz onay için de teşekkür ederiz — bu konuda ayrıca sizinle iletişime geçeceğiz.'
+            : 'Thank you also for agreeing to let us use your feedback as a testimonial — we will follow up with you separately about this.'
+      }</p>`
+    : '';
+
+  const urgent = isDe
+    ? 'Bei dringenden Anliegen antworten Sie einfach auf diese E-Mail oder schreiben Sie uns an <a href="mailto:info@wamocon.com" style="color:#f40e0e;text-decoration:none;">info@wamocon.com</a>.'
+    : isTr
+      ? 'Acil durumlar için bu e-postayı yanıtlayabilir veya <a href="mailto:info@wamocon.com" style="color:#f40e0e;text-decoration:none;">info@wamocon.com</a> adresine yazabilirsiniz.'
+      : 'If your matter is urgent, simply reply to this email or write to us at <a href="mailto:info@wamocon.com" style="color:#f40e0e;text-decoration:none;">info@wamocon.com</a>.';
+
+  const signoff = isDe ? 'Mit freundlichen Grüßen' : isTr ? 'Saygılarımızla' : 'Best regards';
+  const teamName = isDe ? 'Ihr WAMOCON-Team' : isTr ? 'WAMOCON Ekibiniz' : 'Your WAMOCON Team';
 
   const body = `
-<p style="font-size:17px;color:#ffffff;margin:0 0 16px;font-weight:600;">${isDe ? 'Hallo' : 'Hi'} ${escapeHtml(submission.name)} 👋</p>
-<p style="margin:0 0 16px;">${isDe ? 'Vielen Dank für Ihre Anfrage bei <strong style="color:#ffffff;">WAMOCON</strong>. Wir haben Ihre Nachricht erhalten und freuen uns, von Ihnen zu hören!' : 'Thank you for reaching out to <strong style="color:#ffffff;">WAMOCON</strong>. We have received your message and are happy to hear from you!'}</p>
-<p style="margin:0 0 24px;">${isDe ? 'Ein Mitglied unseres Teams wird sich innerhalb von <strong style="color:#ffffff;">48 Stunden</strong> bei Ihnen melden.' : 'A member of our team will get back to you within <strong style="color:#ffffff;">48 hours</strong>.'}</p>
+<p style="font-size:17px;color:#ffffff;margin:0 0 16px;font-weight:600;">${greeting} ${escapeHtml(submission.name)} 👋</p>
+<p style="margin:0 0 16px;">${intro}</p>
+<p style="margin:0 0 24px;">${followUp}</p>
 ${detailTable(submission, submission.lang)}
-<p style="margin:24px 0 0;">${isDe ? 'Bei dringenden Anliegen antworten Sie einfach auf diese E-Mail oder schreiben Sie uns an <a href="mailto:info@wamocon.com" style="color:#f40e0e;text-decoration:none;">info@wamocon.com</a>.' : 'If your matter is urgent, simply reply to this email or write to us at <a href="mailto:info@wamocon.com" style="color:#f40e0e;text-decoration:none;">info@wamocon.com</a>.'}</p>
-<p style="margin:24px 0 0;">${isDe ? 'Mit freundlichen Grüßen' : 'Best regards'},<br><strong style="color:#ffffff;">${isDe ? 'Ihr WAMOCON-Team' : 'Your WAMOCON Team'}</strong></p>
+${testimonialNote}
+<p style="margin:24px 0 0;">${urgent}</p>
+<p style="margin:24px 0 0;">${signoff},<br><strong style="color:#ffffff;">${teamName}</strong></p>
 `;
 
   return {
@@ -313,6 +397,10 @@ export default async function handler(req, res) {
 
   // Honeypot: bots tend to fill hidden fields. Silently accept (200) so the bot
   // believes it succeeded, but never process or log the submission.
+  // NOTE: "company" is a honeypot trap name, not a real field — any legitimate
+  // form needing a business/shop name must use a different field name (e.g.
+  // "shopName", as the barber order form does) or every real submission with
+  // that field filled in would be silently dropped here.
   if ((body.company || body.website || body.url || '').toString().trim() !== '') {
     return res.status(200).json({ ok: true });
   }
@@ -325,7 +413,13 @@ export default async function handler(req, res) {
   const comment = cap(body.comment || '', 5000);
   const type = cap(body.type || 'lead', 40);
   const lang = cap(body.lang || 'de', 5);
+  const shopName = cap(body.shopName || '', 200);
+  const packageChoice = cap(body.packageChoice || '', 60);
   const consent = body.consent === true || body.consent === 'true' || body.consent === 'on';
+  // Optional and never gates submission — see the two-checkbox requirement
+  // (order-necessary acknowledgment vs. separate, revocable marketing consent).
+  const testimonialConsent =
+    body.testimonialConsent === true || body.testimonialConsent === 'true' || body.testimonialConsent === 'on';
 
   // The consent checkbox is mandatory.
   if (!consent) {
@@ -349,6 +443,9 @@ export default async function handler(req, res) {
     phone,
     email,
     comment,
+    shopName,
+    packageChoice,
+    testimonialConsent,
     receivedAt: new Date().toISOString(),
   };
 
