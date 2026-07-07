@@ -26,6 +26,7 @@ const { title, description, lang, image = '/images/logo-wamocon.png' } = Astro.p
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const altPath = getAlternateLangUrl(Astro.url.pathname, lang);
 const altLang = lang === 'de' ? 'en' : 'de';
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 ---
 
 <!doctype html>
@@ -72,6 +73,9 @@ const altLang = lang === 'de' ? 'en' : 'de';
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
     />
+    {turnstileSiteKey && (
+      <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    )}
   </head>
 
   <body>
@@ -266,16 +270,82 @@ const altLang = lang === 'de' ? 'en' : 'de';
       }
     </script>
 
-    <script>
+    <script define:vars={{ turnstileSiteKey }}>
+      // @ts-nocheck
       // Global lead/contact form handler.
       // Any <form class="js-lead-form" data-redirect="/danke/"> is submitted to
       // /api/lead via fetch; on completion the user is sent to the thank-you page.
       // The consent checkbox (required) is enforced by the browser before submit.
-      const initLeadForms = () => {
-        const forms = Array.from(
-          document.querySelectorAll<HTMLFormElement>('form.js-lead-form')
-        );
+      const TURNSTILE_SITE_KEY = turnstileSiteKey;
+
+      function renderTurnstileWidgets() {
+        if (!TURNSTILE_SITE_KEY || !window.turnstile) return;
+
+        const forms = Array.from(document.querySelectorAll('form.js-lead-form'));
         forms.forEach((form) => {
+          // Don't render in hidden containers (e.g. modals that are not open yet).
+          if (form.offsetParent === null) return;
+          if (form.querySelector('.cf-turnstile')) return;
+
+          const container = document.createElement('div');
+          container.className = 'cf-turnstile';
+
+          const hidden = document.createElement('input');
+          hidden.type = 'hidden';
+          hidden.name = 'cf-turnstile-response';
+
+          const submitBtn = form.querySelector('button[type="submit"]');
+          if (submitBtn) {
+            submitBtn.before(container, hidden);
+          } else {
+            form.append(container, hidden);
+          }
+
+          window.turnstile.render(container, {
+            sitekey: TURNSTILE_SITE_KEY,
+            theme: 'dark',
+            callback: (token) => {
+              hidden.value = token;
+            },
+            'error-callback': () => {
+              hidden.value = '';
+            },
+            'expired-callback': () => {
+              hidden.value = '';
+            },
+          });
+        });
+      }
+
+      function waitForTurnstile() {
+        if (!TURNSTILE_SITE_KEY) return;
+        if (window.turnstile) {
+          renderTurnstileWidgets();
+          return;
+        }
+        let checks = 0;
+        const timer = setInterval(() => {
+          if (window.turnstile) {
+            clearInterval(timer);
+            renderTurnstileWidgets();
+            return;
+          }
+          checks++;
+          if (checks > 50) clearInterval(timer); // give up after ~5s
+        }, 100);
+      }
+
+      const initLeadForms = () => {
+        waitForTurnstile();
+
+        const forms = Array.from(document.querySelectorAll('form.js-lead-form'));
+        forms.forEach((form) => {
+          // Only visible forms on page load get the Turnstile widget.
+          // Hidden containers (e.g. modals) keep working without CAPTCHA.
+          if (TURNSTILE_SITE_KEY && form.offsetParent !== null) {
+            form.dataset.turnstileRequired = 'true';
+          }
+
           form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -283,9 +353,7 @@ const altLang = lang === 'de' ? 'en' : 'de';
             if (!form.reportValidity()) return;
 
             const redirect = form.dataset.redirect || '/danke/';
-            const submitBtn = form.querySelector<HTMLButtonElement>(
-              'button[type="submit"]'
-            );
+            const submitBtn = form.querySelector('button[type="submit"]');
             if (submitBtn) submitBtn.disabled = true;
 
             const fd = new FormData(form);
@@ -299,18 +367,38 @@ const altLang = lang === 'de' ? 'en' : 'de';
               consent: 'true',
             };
 
+            const turnstileToken = (fd.get('cf-turnstile-response') || '').toString();
+            if (form.dataset.turnstileRequired === 'true' && !turnstileToken) {
+              alert('Bitte bestätigen Sie das CAPTCHA.');
+              if (submitBtn) submitBtn.disabled = false;
+              return;
+            }
+            if (turnstileToken) {
+              payload['cf-turnstile-response'] = turnstileToken;
+            }
+
             try {
-              await fetch('/api/lead', {
+              const resp = await fetch('/api/lead', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
               });
+
+              if (!resp.ok) {
+                const data = await resp.json().catch(() => ({}));
+                alert(data.error || 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.');
+                if (submitBtn) submitBtn.disabled = false;
+                if (window.turnstile) window.turnstile.reset();
+                const hiddenInput = form.querySelector('input[name="cf-turnstile-response"]');
+                if (hiddenInput) hiddenInput.value = '';
+                return;
+              }
             } catch {
               // Network/endpoint unavailable (e.g. local `astro dev`) — still
               // navigate to the thank-you page so the UX is consistent.
-            } finally {
-              window.location.assign(redirect);
             }
+
+            window.location.assign(redirect);
           });
         });
       };

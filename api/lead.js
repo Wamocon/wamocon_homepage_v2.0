@@ -24,6 +24,7 @@ const REFRESH_TOKEN = process.env.GRAPH_REFRESH_TOKEN;
 const PUBLIC_CLIENT = process.env.GRAPH_PUBLIC_CLIENT === 'true';
 const GRAPH_SENDER = process.env.GRAPH_SENDER || 'info@wamocon.com';
 const RECIPIENT = process.env.LEAD_RECIPIENT || 'info@wamocon.com';
+const TURNSTILE_SECRET = process.env.TURNSTILE_SECRET_KEY;
 
 function readBody(req) {
   // Vercel parses application/json and x-www-form-urlencoded into req.body.
@@ -36,6 +37,22 @@ function readBody(req) {
     }
   }
   return {};
+}
+
+async function verifyTurnstile(token) {
+  if (!TURNSTILE_SECRET) return true;
+  try {
+    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ secret: TURNSTILE_SECRET, response: token }),
+    });
+    const data = await res.json();
+    return data.success === true;
+  } catch (err) {
+    console.error('[lead] Turnstile verification error', err.message || err);
+    return false;
+  }
 }
 
 async function fetchToken(params) {
@@ -434,6 +451,18 @@ export default async function handler(req, res) {
   }
   if (!/[\d]/.test(phone) || !/[\d\s\+\-\(\)\/]{6,}$/.test(phone)) {
     return res.status(400).json({ ok: false, error: 'Invalid phone number.' });
+  }
+
+  // Cloudflare Turnstile bot protection (optional, enabled when the secret is set).
+  if (TURNSTILE_SECRET) {
+    const turnstileToken = cap(body['cf-turnstile-response'] || body.turnstileToken || '', 2048);
+    if (!turnstileToken) {
+      return res.status(400).json({ ok: false, error: 'CAPTCHA token missing.' });
+    }
+    const turnstileOk = await verifyTurnstile(turnstileToken);
+    if (!turnstileOk) {
+      return res.status(403).json({ ok: false, error: 'CAPTCHA verification failed.' });
+    }
   }
 
   const submission = {

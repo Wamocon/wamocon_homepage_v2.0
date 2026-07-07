@@ -352,6 +352,11 @@ p {
   height: 18px;
 }
 
+/* ---- Cloudflare Turnstile widget ---- */
+.cf-turnstile {
+  margin: 0.75rem 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   [data-reveal] {
     filter: none;
