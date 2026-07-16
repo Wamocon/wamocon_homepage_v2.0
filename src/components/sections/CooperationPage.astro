@@ -79,12 +79,11 @@ const c = de
         },
       ],
       formHead: "Kontaktiere uns",
-      formSub: "Wir melden uns schnellstmöglich bei dir, um alle deine Fragen zu klären.",
+      formSub: "Sende uns eine unverbindliche Anfrage. Wir melden uns schnellstmöglich bei dir.",
       fName: "Name/Organisation",
       fPhone: "Telefon",
       fEmail: "E-Mail",
-      fConsent:
-        "Hiermit bestätige ich, dass ich die Datenschutzerklärung gelesen habe und damit einverstanden bin, dass die WAMOCON GmbH meine Daten, einschließlich personenbezogener Daten, speichern und verarbeiten darf.",
+      fConsent: "Mit dem Absenden bestätigst du, dass du die Datenschutzerklärung gelesen hast. Bitte gib E-Mail oder Telefon an.",
       fBtn: "Anfrage senden",
     }
   : {
@@ -157,12 +156,11 @@ const c = de
         },
       ],
       formHead: "Leave us your callback request!",
-      formSub: "We will get back to you as soon as possible to clarify all your questions.",
+      formSub: "Send us a non-binding inquiry. We will get back to you as soon as possible.",
       fName: "Name/Organization",
       fPhone: "Telephone",
       fEmail: "E-Mail",
-      fConsent:
-        "I hereby confirm that I have read the privacy policy and agree that WAMOCON GmbH may store and process my data, including personal data.",
+      fConsent: "By submitting, you confirm that you have read the privacy policy. Please provide an email address or phone number.",
       fBtn: "Send request",
     };
 ---
@@ -262,13 +260,10 @@ const c = de
       <form class="coop-form js-lead-form" data-redirect={lang === "de" ? "/danke/" : "/en/thank-you/"}>
         <input type="hidden" name="type" value="cooperation" />
         <input type="hidden" name="lang" value={lang} />
-        <input type="text" name="name" placeholder={c.fName} required />
-        <input type="tel" name="phone" placeholder={c.fPhone} required />
-        <input type="email" name="email" placeholder={c.fEmail} required />
-        <label class="consent">
-          <input type="checkbox" name="consent" required />
-          <span>{c.fConsent}</span>
-        </label>
+        <label><span>{c.fName}</span><input type="text" name="name" autocomplete="name" required /></label>
+        <label><span>{c.fPhone}</span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" /></label>
+        <label><span>{c.fEmail}</span><input type="email" name="email" autocomplete="email" /></label>
+        <p class="consent">{c.fConsent} <a href={lang === 'de' ? '/datenschutz/' : '/en/privacy/'}>{lang === 'de' ? 'Datenschutz' : 'Privacy policy'}</a></p>
         <button type="submit" class="btn">{c.fBtn}</button>
       </form>
     </div>
@@ -535,6 +530,13 @@ const c = de
     gap: 1rem;
     margin-top: 1rem;
   }
+  .coop-form > label {
+    display: grid;
+    gap: 0.4rem;
+    color: var(--color-text);
+    font-size: 0.88rem;
+    font-weight: var(--fw-semibold);
+  }
   .coop-form input[type="text"],
   .coop-form input[type="tel"],
   .coop-form input[type="email"] {
@@ -549,12 +551,12 @@ const c = de
     color: var(--color-text-muted);
   }
   .consent {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.6rem;
     color: var(--color-text-muted);
     font-size: 0.85rem;
     line-height: 1.5;
+  }
+  .consent a {
+    color: var(--color-accent);
   }
   @media (max-width: 900px) {
     .hero,

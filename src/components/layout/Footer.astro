@@ -19,6 +19,7 @@ const linkFor = (key: string) => nav.find((n) => n.key === key)![lang];
 const col1 = ['home', 'system', 'apps', 'cooperation', 'testimonials', 'references'].map(linkFor);
 const col2 = ['career', 'about', 'employees', 'azubi', 'webdesign', 'contact'].map(linkFor);
 const legal = [legalNav.privacy[lang], legalNav.imprint[lang]];
+const privacySettings = lang === 'de' ? 'Externe Inhalte zurücksetzen' : 'Reset external-content choices';
 ---
 
 <footer class="footer">
@@ -34,6 +35,9 @@ const legal = [legalNav.privacy[lang], legalNav.imprint[lang]];
       <p class="footer__copy">
         Copyright © {year} {company.name}.<br />{t('footer.rights')}
       </p>
+      <button class="footer__privacy" type="button" data-reset-external-consent>
+        {privacySettings}
+      </button>
     </div>
 
     <nav class="footer__links" aria-label={t('footer.navigation')}>
@@ -73,6 +77,16 @@ const legal = [legalNav.privacy[lang], legalNav.imprint[lang]];
     line-height: 1.7;
     color: var(--color-text);
   }
+  .footer__privacy {
+    margin-top: 1rem;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+  .footer__privacy:hover {
+    color: var(--color-accent);
+  }
   .footer__links {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -104,3 +118,17 @@ const legal = [legalNav.privacy[lang], legalNav.imprint[lang]];
     }
   }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-reset-external-consent]').forEach((button) => {
+    button.addEventListener('click', () => {
+      try {
+        localStorage.removeItem('wamocon-consent-youtube');
+        localStorage.removeItem('wamocon-consent-google-maps');
+      } catch {
+        // Reload still removes already loaded third-party frames from this page.
+      }
+      window.location.reload();
+    });
+  });
+</script>

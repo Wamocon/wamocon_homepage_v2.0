@@ -168,14 +168,14 @@ const c = de
       formHeadRed: "Werde zu einem",
       formHeadWhite: "unverzichtbaren Teammitglied",
       formText:
-        "Hinterlasse uns deine Kontaktdaten und wir melden uns bei dir. Starte jetzt deine Erfolgsgeschichte bei WAMOCON.",
+        "Sende uns eine unverbindliche Bewerbungsanfrage und wähle deinen bevorzugten Kontaktweg. Wir melden uns bei dir.",
       formName: "Vor- und Nachname",
       formPhone: "Telefon",
       formEmail: "E-Mail",
-      formConsent: "Ich stimme der Verarbeitung meiner Daten gemäß der",
+      formConsent: "Mit dem Absenden bestätigst du, dass du die",
       formConsentLink: "Datenschutzerklärung",
       formConsentHref: "/datenschutz",
-      formConsentPost: " zu.",
+      formConsentPost: " gelesen hast. Bitte gib E-Mail oder Telefon an.",
       formBtn: "Hinterlassen Sie eine Anfrage",
       formClose: "Lerne von Experten, um selbst einer zu werden.",
     }
@@ -335,14 +335,14 @@ const c = de
       formHeadRed: "Become an",
       formHeadWhite: "indispensable team member",
       formText:
-        "Leave us your contact details and we will get back to you. Start your success story at WAMOCON now.",
+        "Send us a non-binding application inquiry and choose your preferred contact channel. We will get back to you.",
       formName: "First and last name",
       formPhone: "Phone",
       formEmail: "Email",
-      formConsent: "I agree to the processing of my data in accordance with the",
+      formConsent: "By submitting, you confirm that you have read the",
       formConsentLink: "privacy policy",
       formConsentHref: "/en/privacy",
-      formConsentPost: ".",
+      formConsentPost: ". Please provide an email address or phone number.",
       formBtn: "Leave a request",
       formClose: "Learn from experts to become one yourself.",
     };
@@ -542,6 +542,9 @@ const videos = [
   { name: "Erwin", src: `${VIDEO_BASE}/Mitarbeiter-Referenzvideo-Erwin.mp4`, poster: "/images/team-erwin.png" },
   { name: "Niko", src: `${VIDEO_BASE}/Mitarbeiter-Referenzvideo-Niko.mp4`, poster: "/images/team-nikolaj.png" },
 ];
+const videoConsent = de
+  ? { button: "Video von GitHub laden", note: "Dabei wird eine Verbindung zu GitHub hergestellt.", privacy: "Datenschutz", href: "/datenschutz/" }
+  : { button: "Load video from GitHub", note: "This establishes a connection to GitHub.", privacy: "Privacy policy", href: "/en/privacy/" };
 ---
 
 <section class="career">
@@ -696,9 +699,13 @@ const videos = [
     <div class="grid3">
       {videos.map((v) => (
         <article class="vidcard">
-          <video controls preload="metadata" playsinline poster={v.poster}>
-            <source src={v.src} type="video/mp4" />
-          </video>
+          <div class="vidcard__media">
+            <video controls preload="none" playsinline poster={v.poster} aria-label={v.name}></video>
+            <div class="vidcard__privacy">
+              <button type="button" data-external-video data-src={v.src}>{videoConsent.button}</button>
+              <small>{videoConsent.note} <a href={videoConsent.href}>{videoConsent.privacy}</a></small>
+            </div>
+          </div>
           <h3>{v.name}</h3>
         </article>
       ))}
@@ -716,13 +723,10 @@ const videos = [
       <form class="apply-form js-lead-form" data-redirect={de ? "/danke/" : "/en/thank-you/"}>
         <input type="hidden" name="type" value="career" />
         <input type="hidden" name="lang" value={lang} />
-        <input type="text" name="name" placeholder={c.formName} required />
-        <input type="tel" name="phone" placeholder={c.formPhone} required />
-        <input type="email" name="email" placeholder={c.formEmail} required />
-        <label class="consent">
-          <input type="checkbox" name="consent" required />
-          <span>{c.formConsent} <a href={c.formConsentHref}>{c.formConsentLink}</a>{c.formConsentPost}</span>
-        </label>
+        <label><span>{c.formName}</span><input type="text" name="name" autocomplete="name" required /></label>
+        <label><span>{c.formPhone}</span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" /></label>
+        <label><span>{c.formEmail}</span><input type="email" name="email" autocomplete="email" /></label>
+        <p class="consent">{c.formConsent} <a href={c.formConsentHref}>{c.formConsentLink}</a>{c.formConsentPost}</p>
         <button type="submit" class="btn">{c.formBtn}</button>
       </form>
       <p class="form-close">{c.formClose}</p>
@@ -1098,12 +1102,42 @@ const videos = [
     border-radius: var(--radius-lg);
     overflow: hidden;
   }
+  .vidcard__media {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000;
+  }
   .vidcard video {
     width: 100%;
+    height: 100%;
     display: block;
     background: #000;
-    aspect-ratio: 16 / 9;
     object-fit: contain;
+  }
+  .vidcard__privacy {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    gap: 0.65rem;
+    padding: 1rem;
+    text-align: center;
+    background: rgba(10, 10, 10, 0.78);
+  }
+  .vidcard__privacy button {
+    justify-self: center;
+    padding: 0.75rem 1rem;
+    color: #fff;
+    font-weight: var(--fw-semibold);
+    background: var(--color-accent);
+    border-radius: var(--radius-sm);
+  }
+  .vidcard__privacy small {
+    color: var(--color-text-muted);
+  }
+  .vidcard__privacy a {
+    color: inherit;
+    text-decoration: underline;
   }
   .vidcard h3 {
     color: #fff;
@@ -1130,6 +1164,13 @@ const videos = [
     gap: 1rem;
     margin-top: 1rem;
   }
+  .apply-form > label {
+    display: grid;
+    gap: 0.4rem;
+    color: var(--color-text);
+    font-size: 0.88rem;
+    font-weight: var(--fw-semibold);
+  }
   .apply-form input[type="text"],
   .apply-form input[type="tel"],
   .apply-form input[type="email"] {
@@ -1144,9 +1185,6 @@ const videos = [
     color: var(--color-text-muted);
   }
   .consent {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.6rem;
     color: var(--color-text-muted);
     font-size: 0.9rem;
     line-height: 1.5;
@@ -1188,6 +1226,22 @@ const videos = [
 
 <script>
   function setupCareer() {
+    document.querySelectorAll<HTMLButtonElement>("[data-external-video]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const media = button.closest<HTMLElement>(".vidcard__media");
+        const video = media?.querySelector<HTMLVideoElement>("video");
+        const src = button.dataset.src;
+        if (!media || !video || !src || video.querySelector("source")) return;
+        const source = document.createElement("source");
+        source.src = src;
+        source.type = "video/mp4";
+        video.append(source);
+        media.querySelector<HTMLElement>(".vidcard__privacy")?.remove();
+        video.load();
+        await video.play().catch(() => {});
+      }, { once: true });
+    });
+
     document.querySelectorAll<HTMLButtonElement>(".job-head").forEach((head) => {
       head.addEventListener("click", () => {
         const body = head.nextElementSibling as HTMLElement | null;

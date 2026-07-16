@@ -5,9 +5,9 @@ import LegalPage from '../../components/sections/LegalPage.astro';
 const lang = 'en' as const;
 ---
 
-<BaseLayout title="Imprint | WAMOCON GmbH" description="Imprint of WAMOCON GmbH." lang={lang}>
+<BaseLayout title="Imprint | WAMOCON GmbH" description="Provider identification and legal information for WAMOCON GmbH." lang={lang}>
   <LegalPage title="Imprint">
-    <h2>Information pursuant to § 5 TMG</h2>
+    <h2>Information pursuant to section 5 DDG</h2>
     <p>
       WAMOCON GmbH<br />
       Mergenthalerallee 79 - 81<br />
@@ -15,30 +15,35 @@ const lang = 'en' as const;
       Germany
     </p>
 
-    <h2>Represented by</h2>
-    <p>Waleri Moretz (Managing Director)</p>
+    <h2>Representation</h2>
+    <p>Managing Director: Dipl.-Ing. Waleri Moretz</p>
 
     <h2>Contact</h2>
     <p>
       Phone: <a href="tel:+4961965838311">+49 6196 5838311</a><br />
-      E-mail: <a href="mailto:info@wamocon.com">info@wamocon.com</a>
+      Email: <a href="mailto:info@wamocon.com">info@wamocon.com</a>
     </p>
 
-    <h2>Register entry</h2>
+    <h2>Register and VAT information</h2>
     <p>
-      Entry in the commercial register.<br />
-      Register court: Amtsgericht Frankfurt am Main<br />
-      VAT identification number pursuant to § 27 a of the German VAT Act: on request.
+      Register court: Local Court Frankfurt am Main<br />
+      Commercial register number: HRB 103893<br />
+      VAT identification number pursuant to section 27a UStG: DE344930486
     </p>
 
-    <h2>Responsible for the content according to § 55 (2) RStV</h2>
-    <p>Waleri Moretz, address as above.</p>
-
-    <h2>Liability for content</h2>
+    <h2>Consumer dispute resolution</h2>
     <p>
-      As a service provider, we are responsible for our own content on these pages in accordance with §
-      7 (1) TMG. According to §§ 8 to 10 TMG, however, we as a service provider are not obligated to
-      monitor transmitted or stored third-party information.
+      WAMOCON GmbH is neither willing nor obliged to participate in dispute resolution proceedings before a
+      consumer arbitration board.
+    </p>
+
+    <h2>Privacy</h2>
+    <p>Information about personal-data processing is available in our <a href="/en/privacy/">privacy policy</a>.</p>
+
+    <h2>External links</h2>
+    <p>
+      The respective operators are responsible for external website content. If we become aware of unlawful
+      content, we will remove the relevant link without delay.
     </p>
   </LegalPage>
 </BaseLayout>

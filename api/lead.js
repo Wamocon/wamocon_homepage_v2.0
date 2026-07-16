@@ -172,7 +172,7 @@ function typeLabel(type, lang) {
       lead: 'Kontakt',
       testimonial: 'Bewertung',
       'it-tester': 'IT-Tester',
-      'barber-order': 'Berber-Bestellung',
+      'barber-inquiry': 'Berber-Anfrage',
     },
     en: {
       career: 'Career',
@@ -180,7 +180,7 @@ function typeLabel(type, lang) {
       lead: 'Contact',
       testimonial: 'Testimonial',
       'it-tester': 'IT tester',
-      'barber-order': 'Barber order',
+      'barber-inquiry': 'Barber inquiry',
     },
     tr: {
       career: 'Kariyer',
@@ -188,7 +188,7 @@ function typeLabel(type, lang) {
       lead: 'İletişim',
       testimonial: 'Referans',
       'it-tester': 'IT Test Uzmanı',
-      'barber-order': 'Berber Siparişi',
+      'barber-inquiry': 'Berber Talebi',
     },
   };
   return (labels[lang] || labels.de)[type] || type;
@@ -316,13 +316,16 @@ function internalEmail(submission) {
 <p style="margin:18px 0 0;color:rgba(255,255,255,0.55);font-size:13px;">${isDe ? 'Eingegangen am' : 'Received at'}: ${formatReceived(submission.receivedAt, submission.lang)}</p>
 `;
 
-  return {
+  const message = {
     subject,
     body: { contentType: 'HTML', content: emailLayout({ title, lang: isDe ? 'de' : 'en', body }) },
     from: { emailAddress: { address: GRAPH_SENDER } },
     toRecipients: [{ emailAddress: { address: RECIPIENT } }],
-    replyTo: [{ emailAddress: { address: submission.email } }],
   };
+  if (submission.email) {
+    message.replyTo = [{ emailAddress: { address: submission.email } }];
+  }
+  return message;
 }
 
 function confirmationEmail(submission) {
@@ -395,12 +398,12 @@ async function sendEmails(submission) {
 
   // 1. Internal notification
   await graphSendMail(accessToken, internalEmail(submission));
-  console.log('[lead] internal email sent to', RECIPIENT);
+  console.log('[lead] internal notification sent');
 
   // 2. Visitor confirmation
   if (submission.email) {
     await graphSendMail(accessToken, confirmationEmail(submission));
-    console.log('[lead] confirmation email sent to', submission.email);
+    console.log('[lead] visitor confirmation sent');
   }
 }
 
@@ -416,7 +419,7 @@ export default async function handler(req, res) {
   // believes it succeeded, but never process or log the submission.
   // NOTE: "company" is a honeypot trap name, not a real field — any legitimate
   // form needing a business/shop name must use a different field name (e.g.
-  // "shopName", as the barber order form does) or every real submission with
+  // "shopName", as the barber inquiry form does) or every real submission with
   // that field filled in would be silently dropped here.
   if ((body.company || body.website || body.url || '').toString().trim() !== '') {
     return res.status(200).json({ ok: true });
@@ -432,24 +435,18 @@ export default async function handler(req, res) {
   const lang = cap(body.lang || 'de', 5);
   const shopName = cap(body.shopName || '', 200);
   const packageChoice = cap(body.packageChoice || '', 60);
-  const consent = body.consent === true || body.consent === 'true' || body.consent === 'on';
-  // Optional and never gates submission — see the two-checkbox requirement
-  // (order-necessary acknowledgment vs. separate, revocable marketing consent).
+  // Optional publication permission; it never gates submission.
   const testimonialConsent =
     body.testimonialConsent === true || body.testimonialConsent === 'true' || body.testimonialConsent === 'on';
 
-  // The consent checkbox is mandatory.
-  if (!consent) {
-    return res.status(400).json({ ok: false, error: 'Consent is required.' });
-  }
-  // Name, phone and email are mandatory.
-  if (!name || !phone || !email) {
+  // Data minimisation: name plus one reachable contact channel is sufficient.
+  if (!name || (!phone && !email)) {
     return res.status(400).json({ ok: false, error: 'Missing required fields.' });
   }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ ok: false, error: 'Invalid email address.' });
   }
-  if (!/[\d]/.test(phone) || !/[\d\s\+\-\(\)\/]{6,}$/.test(phone)) {
+  if (phone && (!/[\d]/.test(phone) || !/[\d\s\+\-\(\)\/]{6,}$/.test(phone))) {
     return res.status(400).json({ ok: false, error: 'Invalid phone number.' });
   }
 
@@ -478,16 +475,15 @@ export default async function handler(req, res) {
     receivedAt: new Date().toISOString(),
   };
 
-  // Always log so submissions are never silently lost (Vercel → Functions logs).
-  console.log('[lead] new submission', JSON.stringify(submission));
+  // Operational log without names, contact details or free-text content.
+  console.log('[lead] submission received', { type, lang, hasEmail: Boolean(email), hasPhone: Boolean(phone) });
 
   // Send notification + optional visitor confirmation.
   try {
     await sendEmails(submission);
   } catch (err) {
-    console.error('[lead] email error', err.message || err);
-    // We still return 200 so the visitor is redirected to the thank-you page.
-    // The error is visible in the Vercel Functions log for debugging.
+    console.error('[lead] email delivery failed');
+    return res.status(502).json({ ok: false, error: 'Message delivery failed.' });
   }
 
   return res.status(200).json({ ok: true });

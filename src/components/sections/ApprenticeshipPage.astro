@@ -4,6 +4,7 @@
  * Faithful 1:1 rebuild of the live Tilda page (DE: page69503661, EN: page70444849).
  */
 import ContactBlock from './ContactBlock.astro';
+import ExternalEmbed from '../ui/ExternalEmbed.astro';
 import type { Lang } from '../../i18n/config';
 
 interface Props {
@@ -508,12 +509,13 @@ const apply = de
     </div>
     <figure class="video-single" data-reveal="up">
       <div class="video-single__frame">
-        <iframe
+        <ExternalEmbed
+          service="youtube"
           src="https://www.youtube-nocookie.com/embed/zhKZIDVHLgY"
           title={voices.heading}
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen></iframe>
+          lang={lang}
+          externalUrl="https://www.youtube.com/watch?v=zhKZIDVHLgY"
+        />
       </div>
     </figure>
   </div>

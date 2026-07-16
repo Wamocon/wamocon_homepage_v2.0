@@ -1,0 +1,201 @@
+---
+import type { Lang } from '../../i18n/config';
+
+interface Props {
+  service: 'youtube' | 'google-maps';
+  src: string;
+  title: string;
+  lang: Lang;
+  externalUrl?: string;
+}
+
+const { service, src, title, lang, externalUrl } = Astro.props;
+
+const copy = {
+  de: {
+    youtube: {
+      heading: 'YouTube-Video laden',
+      text: 'Mit dem Laden stimmen Sie zu, dass Daten an YouTube/Google übertragen werden. Die Auswahl wird in diesem Browser gespeichert.',
+      button: 'YouTube erlauben',
+    },
+    'google-maps': {
+      heading: 'Google Maps laden',
+      text: 'Mit dem Laden stimmen Sie zu, dass Daten an Google übertragen werden. Die Auswahl wird in diesem Browser gespeichert.',
+      button: 'Google Maps erlauben',
+    },
+    privacy: 'Mehr im Datenschutz',
+    external: 'Direkt beim Anbieter öffnen',
+  },
+  en: {
+    youtube: {
+      heading: 'Load YouTube video',
+      text: 'By loading this content, you agree that data is transferred to YouTube/Google. Your choice is stored in this browser.',
+      button: 'Allow YouTube',
+    },
+    'google-maps': {
+      heading: 'Load Google Maps',
+      text: 'By loading this content, you agree that data is transferred to Google. Your choice is stored in this browser.',
+      button: 'Allow Google Maps',
+    },
+    privacy: 'Read the privacy policy',
+    external: 'Open directly with provider',
+  },
+} as const;
+
+const text = copy[lang][service];
+const privacyHref = lang === 'de' ? '/datenschutz/' : '/en/privacy/';
+---
+
+<privacy-embed
+  data-service={service}
+  data-src={src}
+  data-title={title}
+  data-lang={lang}
+>
+  <div class="privacy-embed__notice">
+    <strong>{text.heading}</strong>
+    <p>{text.text}</p>
+    <div class="privacy-embed__actions">
+      <button type="button" data-load-external>{text.button}</button>
+      <a href={privacyHref}>{copy[lang].privacy}</a>
+      {externalUrl && (
+        <a href={externalUrl} target="_blank" rel="noopener noreferrer">{copy[lang].external}</a>
+      )}
+    </div>
+  </div>
+</privacy-embed>
+
+<style>
+  privacy-embed {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(244, 14, 14, 0.2), transparent 55%),
+      #111;
+  }
+
+  .privacy-embed__notice {
+    width: min(92%, 620px);
+    padding: clamp(1rem, 3vw, 1.75rem);
+    text-align: center;
+    background: rgba(16, 16, 16, 0.94);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+  }
+
+  .privacy-embed__notice strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+  }
+
+  .privacy-embed__notice p {
+    margin-bottom: 0.9rem;
+    color: var(--color-text-muted);
+    font-size: clamp(0.75rem, 1.7vw, 0.9rem);
+    line-height: 1.5;
+  }
+
+  .privacy-embed__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.7rem 1rem;
+  }
+
+  .privacy-embed__actions button {
+    padding: 0.7rem 1rem;
+    color: #fff;
+    font-weight: var(--fw-semibold);
+    background: var(--color-accent);
+    border-radius: var(--radius-sm);
+  }
+
+  .privacy-embed__actions button:hover {
+    background: var(--color-accent-hover);
+  }
+
+  .privacy-embed__actions a {
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  /* The iframe is created after consent, so it cannot receive Astro's scoped
+     attribute. Keep this selector global and also set critical dimensions in JS. */
+  :global(privacy-embed > iframe) {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+    min-height: 100%;
+    border: 0;
+  }
+</style>
+
+<script>
+  class PrivacyEmbed extends HTMLElement {
+    connectedCallback() {
+      if (this.dataset.ready === 'true') return;
+      this.dataset.ready = 'true';
+
+      const service = this.dataset.service || '';
+      const storageKey = `wamocon-consent-${service}`;
+      const button = this.querySelector<HTMLButtonElement>('[data-load-external]');
+
+      const load = () => {
+        const src = this.dataset.src;
+        if (!src || this.querySelector('iframe')) return;
+
+        const iframe = document.createElement('iframe');
+        iframe.src = src;
+        iframe.title = this.dataset.title || '';
+        iframe.loading = 'lazy';
+        iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+        iframe.allowFullscreen = true;
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.style.position = 'absolute';
+        iframe.style.inset = '0';
+        iframe.style.display = 'block';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.border = '0';
+        this.replaceChildren(iframe);
+      };
+
+      button?.addEventListener('click', () => {
+        try {
+          localStorage.setItem(storageKey, 'granted');
+        } catch {
+          // Content can still be loaded when storage is unavailable.
+        }
+        document
+          .querySelectorAll<PrivacyEmbed>(`privacy-embed[data-service="${service}"]`)
+          .forEach((embed) => embed.loadFromConsent());
+      });
+
+      try {
+        if (localStorage.getItem(storageKey) === 'granted') load();
+      } catch {
+        // Keep the consent notice visible when storage is unavailable.
+      }
+
+      this.loadFromConsent = load;
+    }
+
+    loadFromConsent: () => void = () => {};
+  }
+
+  if (!customElements.get('privacy-embed')) {
+    customElements.define('privacy-embed', PrivacyEmbed);
+  }
+</script>

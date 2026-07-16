@@ -3,8 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sipariş Formu · WAMOCON Berber Web Sitesi</title>
-<meta name="description" content="Berber web sitenizi sipariş edin — WAMOCON ile 7 günde yayında.">
+<title>Ücretsiz Web Sitesi Talebi · WAMOCON</title>
+<meta name="description" content="Berber web siteniz için ücretsiz ve bağlayıcı olmayan bir teklif talep edin.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://www.wamocon.com/berber-siparis/">
+<meta name="turnstile-site-key" content="__TURNSTILE_SITE_KEY__">
 <style>
 :root{
   --red:#F40E0E;--red-600:#D10A0A;--red-soft:rgba(244,14,14,.08);--ink:#0E1116;--charcoal:#14171C;
@@ -38,6 +41,7 @@ form{background:var(--white);border:1px solid var(--line);border-radius:var(--ra
 @media(max-width:520px){.row2{grid-template-columns:1fr}}
 .consent{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);
   border-radius:12px;padding:14px 16px;margin-bottom:14px}
+.consent.privacy-note{display:block}
 .consent input[type=checkbox]{width:19px;height:19px;flex:none;margin-top:2px;accent-color:var(--red)}
 .consent.optional{background:#FBF8F0;border-color:#EFE3C4}
 .consent p{font-size:.86rem;color:#2b3038;margin:0}
@@ -75,14 +79,20 @@ footer a{color:var(--muted)}
 
 <main class="wrap">
   <div data-lang-block="tr" class="active">
-    <span class="eyebrow">Sipariş Formu</span>
-    <h1>Web sitenizi sipariş edin</h1>
-    <p class="sub">WhatsApp'ta konuştuğumuz detayları aşağıya girin. Onayınızın ardından 7 gün içinde yayındasınız.</p>
+    <span class="eyebrow">Ücretsiz Talep Formu</span>
   </div>
   <div data-lang-block="de">
-    <span class="eyebrow">Bestellformular</span>
-    <h1>Bestellen Sie Ihre Website</h1>
-    <p class="sub">Tragen Sie die per WhatsApp besprochenen Details ein. Nach Ihrer Bestätigung sind Sie in 7 Tagen live.</p>
+    <span class="eyebrow">Unverbindliche Anfrage</span>
+  </div>
+  <h1>
+    <span data-lang-block="tr" class="active">Web siteniz için teklif alın</span>
+    <span data-lang-block="de">Angebot für Ihre Website anfragen</span>
+  </h1>
+  <div data-lang-block="tr" class="active">
+    <p class="sub">WhatsApp'ta konuştuğumuz detayları bağlayıcı olmayan bir teklif talebi olarak girin. Bir sözleşme ancak daha sonra ayrıca onaylanır.</p>
+  </div>
+  <div data-lang-block="de">
+    <p class="sub">Tragen Sie die per WhatsApp besprochenen Details ein. Ein Vertrag entsteht erst durch eine spätere, gesonderte Beauftragung.</p>
   </div>
 
   <form id="orderForm" novalidate>
@@ -93,13 +103,13 @@ footer a{color:var(--muted)}
     </div>
     <div class="row2">
       <div class="field">
-        <label data-lang-block="tr" class="active">Telefon / WhatsApp *</label>
-        <label data-lang-block="de">Telefon / WhatsApp *</label>
-        <input type="tel" name="phone" required maxlength="60" placeholder="+90 5xx xxx xx xx">
+        <label data-lang-block="tr" class="active">Telefon / WhatsApp <span class="opt">(telefon veya e-posta)</span></label>
+        <label data-lang-block="de">Telefon / WhatsApp <span class="opt">(Telefon oder E-Mail)</span></label>
+        <input type="tel" name="phone" maxlength="60" placeholder="+90 5xx xxx xx xx">
       </div>
       <div class="field">
-        <label>E-posta / E-Mail *</label>
-        <input type="email" name="email" required maxlength="320">
+        <label>E-posta / E-Mail</label>
+        <input type="email" name="email" maxlength="320">
       </div>
     </div>
     <div class="field">
@@ -124,15 +134,13 @@ footer a{color:var(--muted)}
       <textarea name="comment" maxlength="5000"></textarea>
     </div>
 
-    <div class="consent">
-      <input type="checkbox" name="consent" id="consentBox" required>
+    <div class="consent privacy-note">
       <p>
-        <span class="badge-req" data-lang="tr">Zorunlu</span><span class="badge-req" data-lang="de" style="display:none">Pflicht</span><br>
         <span data-lang-block="tr" class="active">
-          <a href="/berber-veri-koruma/" target="_blank">Kişisel Verilerin Korunması Aydınlatma Metni</a>'ni okudum ve anladım.
+          Formu göndererek <a href="/berber-veri-koruma/" target="_blank">Kişisel Verilerin Korunması Aydınlatma Metni</a>'ni okuduğunuzu onaylarsınız.
         </span>
         <span data-lang-block="de">
-          Ich habe den <a href="/berber-veri-koruma/" target="_blank">Datenschutzhinweis (KVKK &amp; DSGVO)</a> gelesen und zur Kenntnis genommen.
+          Mit dem Absenden bestätigen Sie, dass Sie den <a href="/berber-veri-koruma/" target="_blank">Datenschutzhinweis (KVKK &amp; DSGVO)</a> gelesen haben.
         </span>
       </p>
     </div>
@@ -151,8 +159,8 @@ footer a{color:var(--muted)}
     </div>
 
     <button type="submit" class="submit">
-      <span data-lang-block="tr" class="active">Siparişi Gönder</span>
-      <span data-lang-block="de">Bestellung absenden</span>
+      <span data-lang-block="tr" class="active">Bağlayıcı olmayan talep gönder</span>
+      <span data-lang-block="de">Unverbindliche Anfrage senden</span>
     </button>
     <p class="err" id="formErr"></p>
   </form>
@@ -161,11 +169,11 @@ footer a{color:var(--muted)}
     <div class="ic">✅</div>
     <div data-lang-block="tr" class="active">
       <h2>Teşekkürler!</h2>
-      <p>Siparişiniz alındı. WAMOCON ekibi en kısa sürede WhatsApp üzerinden sizinle iletişime geçecek.</p>
+      <p>Talebiniz alındı. WAMOCON ekibi belirttiğiniz iletişim yolu üzerinden sizinle iletişime geçecek.</p>
     </div>
     <div data-lang-block="de">
       <h2>Vielen Dank!</h2>
-      <p>Ihre Bestellung ist eingegangen. Das WAMOCON-Team meldet sich in Kürze per WhatsApp bei Ihnen.</p>
+      <p>Ihre unverbindliche Anfrage ist eingegangen. Das WAMOCON-Team meldet sich über den angegebenen Kontaktweg.</p>
     </div>
   </div>
 
@@ -188,26 +196,89 @@ footer a{color:var(--muted)}
 
   var form = document.getElementById('orderForm');
   var errEl = document.getElementById('formErr');
+  var turnstileSiteKey = (document.querySelector('meta[name="turnstile-site-key"]') || {}).content || '';
+  var turnstileLoader;
+
+  function loadTurnstile(){
+    if (!turnstileSiteKey || window.turnstile) return Promise.resolve();
+    if (turnstileLoader) return turnstileLoader;
+    turnstileLoader = new Promise(function(resolve, reject){
+      var script = document.createElement('script');
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      script.async = true;
+      script.defer = true;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+    return turnstileLoader;
+  }
+
+  async function ensureTurnstile(){
+    if (!turnstileSiteKey || form.querySelector('.cf-turnstile')) return;
+    await loadTurnstile();
+    if (!window.turnstile || form.querySelector('.cf-turnstile')) return;
+    var container = document.createElement('div');
+    container.className = 'cf-turnstile';
+    container.style.marginBottom = '18px';
+    var hidden = document.createElement('input');
+    hidden.type = 'hidden';
+    hidden.name = 'cf-turnstile-response';
+    var submit = form.querySelector('button[type=submit]');
+    submit.before(container, hidden);
+    window.turnstile.render(container, {
+      sitekey: turnstileSiteKey,
+      theme: 'light',
+      callback: function(token){ hidden.value = token; },
+      'error-callback': function(){ hidden.value = ''; },
+      'expired-callback': function(){ hidden.value = ''; }
+    });
+  }
+
+  form.addEventListener('focusin', function(){ ensureTurnstile().catch(function(){}); }, {once:true});
+  form.addEventListener('pointerenter', function(){ ensureTurnstile().catch(function(){}); }, {once:true});
+
   form.addEventListener('submit', async function(e){
     e.preventDefault();
     errEl.style.display = 'none';
     if (!form.reportValidity()) return;
 
+    var fd = new FormData(form);
+    var phone = (fd.get('phone')||'').toString().trim();
+    var email = (fd.get('email')||'').toString().trim();
+    if (!phone && !email) {
+      errEl.textContent = LANG==='tr'
+        ? 'Lütfen telefon numarası veya e-posta adresi girin.'
+        : 'Bitte geben Sie eine Telefonnummer oder E-Mail-Adresse an.';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    if (turnstileSiteKey) {
+      await ensureTurnstile();
+      var turnstileToken = (form.querySelector('input[name="cf-turnstile-response"]') || {}).value || '';
+      if (!turnstileToken) {
+        errEl.textContent = LANG==='tr'
+          ? 'Lütfen güvenlik kontrolünü tamamlayın.'
+          : 'Bitte schließen Sie die Sicherheitsprüfung ab.';
+        errEl.style.display = 'block';
+        return;
+      }
+    }
+
     var submitBtn = form.querySelector('button[type=submit]');
     submitBtn.disabled = true;
-
-    var fd = new FormData(form);
     var payload = {
-      type: 'barber-order',
+      type: 'barber-inquiry',
       lang: LANG,
       name: (fd.get('name')||'').toString(),
-      phone: (fd.get('phone')||'').toString(),
-      email: (fd.get('email')||'').toString(),
+      phone: phone,
+      email: email,
       shopName: (fd.get('shopName')||'').toString(),
       packageChoice: (fd.get('packageChoice')||'').toString(),
       comment: (fd.get('comment')||'').toString(),
-      consent: 'true',
-      testimonialConsent: fd.has('testimonialConsent') ? 'true' : 'false'
+      testimonialConsent: fd.has('testimonialConsent') ? 'true' : 'false',
+      'cf-turnstile-response': (fd.get('cf-turnstile-response')||'').toString()
     };
 
     try {

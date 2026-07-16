@@ -4,6 +4,7 @@
  * src/data/apps.ts so it stays identical across languages — only `lang` differs.
  */
 import Button from '../../ui/Button.astro';
+import ExternalEmbed from '../../ui/ExternalEmbed.astro';
 import { home } from '../../../data/home';
 import { nav, ui, legalNav, type Lang } from '../../../i18n/config';
 
@@ -14,6 +15,62 @@ const { lang } = Astro.props;
 const t = (k: keyof (typeof ui)['de']) => ui[lang][k];
 const aboutHref = nav.find((n) => n.key === 'about')![lang].href;
 const privacyHref = legalNav.privacy[lang].href;
+
+const faqs = lang === 'de'
+  ? [
+      {
+        question: 'Was macht die WAMOCON GmbH?',
+        answer: 'WAMOCON ist ein IT-Dienstleister aus Eschborn mit Schwerpunkt auf Softwaretests, IT-Testmanagement, Qualitätssicherung, Testautomatisierung und KI-gestützten Softwarelösungen.',
+      },
+      {
+        question: 'Für wen arbeitet WAMOCON?',
+        answer: 'WAMOCON bietet Leistungen für Unternehmen und Verbraucher an. Der konkrete Leistungsumfang wird passend zur jeweiligen Anfrage vereinbart.',
+      },
+      {
+        question: 'Welche Testleistungen bietet WAMOCON?',
+        answer: 'Das Angebot umfasst unter anderem Teststrategie, Testplanung, Testdurchführung, Testautomatisierung, Qualitätsmanagement sowie Unterstützung bei SAP- und Enterprise-Softwareprojekten.',
+      },
+      {
+        question: 'Ist eine Anfrage über die Website verbindlich?',
+        answer: 'Nein. Website-Formulare dienen ausschließlich einer unverbindlichen ersten Anfrage. Für die Kontaktaufnahme genügt neben dem Namen eine E-Mail-Adresse oder Telefonnummer.',
+      },
+      {
+        question: 'Wo befindet sich WAMOCON?',
+        answer: 'Der Sitz der WAMOCON GmbH befindet sich in der Mergenthalerallee 79 - 81, 65760 Eschborn bei Frankfurt am Main.',
+      },
+    ]
+  : [
+      {
+        question: 'What does WAMOCON GmbH do?',
+        answer: 'WAMOCON is an IT services company in Eschborn specialising in software testing, IT test management, quality assurance, test automation and AI-supported software solutions.',
+      },
+      {
+        question: 'Who does WAMOCON work for?',
+        answer: 'WAMOCON provides services for businesses and consumers. The specific scope is agreed according to each inquiry.',
+      },
+      {
+        question: 'Which testing services does WAMOCON provide?',
+        answer: 'Services include test strategy, test planning, test execution, test automation, quality management and support for SAP and enterprise software projects.',
+      },
+      {
+        question: 'Is an inquiry submitted through the website binding?',
+        answer: 'No. Website forms are exclusively for a non-binding initial inquiry. In addition to a name, either an email address or phone number is sufficient.',
+      },
+      {
+        question: 'Where is WAMOCON located?',
+        answer: 'WAMOCON GmbH is located at Mergenthalerallee 79 - 81, 65760 Eschborn, near Frankfurt am Main, Germany.',
+      },
+    ];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+  })),
+};
 
 // Split a heading so the first N words can be highlighted in CI red.
 const splitFirst = (s: string, n = 1) => {
@@ -41,29 +98,27 @@ const ceoCaption =
 const modal = {
   de: {
     title: 'Erfahren Sie mehr über die Auswahl von IT-Testern',
-    subtitle: 'Hinterlassen Sie Ihre Kontakte, unter denen wir Sie kontaktieren können',
+    subtitle: 'Senden Sie uns eine unverbindliche Anfrage. Wir melden uns über den von Ihnen angegebenen Kontaktweg.',
     name: 'Ihr Name',
     phone: 'Telefon',
     email: 'E-Mail',
     comment: 'Kommentare/Link zur Datei',
     consentPre: 'Hiermit bestätige ich, dass ich die ',
     consentLink: 'Datenschutzerklärung',
-    consentPost:
-      ' gelesen habe und damit einverstanden bin, dass die WAMOCON GmbH meine Daten, einschließlich personenbezogener Daten, speichern und verarbeiten darf.',
+    consentPost: ' gelesen habe.',
     submit: 'Anfrage senden',
     close: 'Schließen',
   },
   en: {
     title: 'Learn more about selecting IT testers',
-    subtitle: 'Leave your contact details and we will get in touch with you',
+    subtitle: 'Send us a non-binding inquiry. We will reply using the contact channel you provide.',
     name: 'Your name',
     phone: 'Phone',
     email: 'Email',
     comment: 'Comments/link to file',
     consentPre: 'I hereby confirm that I have read the ',
     consentLink: 'privacy policy',
-    consentPost:
-      ' and agree that WAMOCON GmbH may store and process my data, including personal data.',
+    consentPost: '.',
     submit: 'Send request',
     close: 'Close',
   },
@@ -173,13 +228,13 @@ const modal = {
     </div>
     <div class="qa__video" data-reveal="right">
       <div class="video-frame">
-        <iframe
+        <ExternalEmbed
+          service="youtube"
           src={`https://www.youtube-nocookie.com/embed/${home.qa.youtubeId}`}
           title="WAMOCON"
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-        ></iframe>
+          lang={lang}
+          externalUrl={`https://www.youtube.com/watch?v=${home.qa.youtubeId}`}
+        />
       </div>
     </div>
   </div>
@@ -199,16 +254,26 @@ const modal = {
     <form class="lead-modal__form js-lead-form" data-redirect={lang === "de" ? "/danke/" : "/en/thank-you/"}>
       <input type="hidden" name="type" value="it-tester" />
       <input type="hidden" name="lang" value={lang} />
-      <input type="text" name="name" placeholder={modal.name} required />
-      <input type="tel" name="phone" placeholder={modal.phone} required />
-      <input type="email" name="email" placeholder={modal.email} required />
-      <textarea name="comment" rows="3" placeholder={modal.comment}></textarea>
-      <label class="lead-modal__consent">
-        <input type="checkbox" name="consent" required />
-        <span>
-          {modal.consentPre}<a href={privacyHref}>{modal.consentLink}</a>{modal.consentPost}
-        </span>
+      <label class="lead-modal__field">
+        <span>{modal.name}</span>
+        <input type="text" name="name" autocomplete="name" required />
       </label>
+      <label class="lead-modal__field">
+        <span>{modal.phone}</span>
+        <input type="tel" name="phone" autocomplete="tel" inputmode="tel" />
+      </label>
+      <label class="lead-modal__field">
+        <span>{modal.email}</span>
+        <input type="email" name="email" autocomplete="email" />
+      </label>
+      <label class="lead-modal__field">
+        <span>{modal.comment}</span>
+        <textarea name="comment" rows="3"></textarea>
+      </label>
+      <p class="lead-modal__privacy-note">
+        {modal.consentPre}<a href={privacyHref}>{modal.consentLink}</a>{modal.consentPost}
+        {lang === 'de' ? ' Bitte geben Sie E-Mail oder Telefon an.' : ' Please provide an email address or phone number.'}
+      </p>
       <button type="submit" class="btn btn--primary lead-modal__submit">{modal.submit}</button>
     </form>
   </div>
@@ -345,13 +410,13 @@ const modal = {
     </div>
     <div class="education__video" data-reveal="right">
       <div class="video-frame">
-        <iframe
+        <ExternalEmbed
+          service="youtube"
           src={`https://www.youtube-nocookie.com/embed/${home.education.youtubeId}`}
           title={home.education.heading[lang]}
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-        ></iframe>
+          lang={lang}
+          externalUrl={`https://www.youtube.com/watch?v=${home.education.youtubeId}`}
+        />
       </div>
     </div>
   </div>
@@ -386,13 +451,13 @@ const modal = {
       <p class="text-muted">{home.tour.text[lang]}</p>
     </div>
     <div class="tour__view" data-reveal="zoom">
-      <iframe
+      <ExternalEmbed
+        service="google-maps"
         src={home.tour.embedUrl}
         title={home.tour.heading[lang]}
-        loading="lazy"
-        allowfullscreen
-        referrerpolicy="no-referrer-when-downgrade"
-      ></iframe>
+        lang={lang}
+        externalUrl={home.tour.mapsUrl}
+      />
     </div>
     <div class="tour__cta" data-reveal="up">
       <Button href={home.tour.mapsUrl} target="_blank" variant="outline" size="lg">
@@ -401,6 +466,26 @@ const modal = {
     </div>
   </div>
 </section>
+
+<!-- ============ FREQUENTLY ASKED QUESTIONS ============ -->
+<section class="section faq" aria-labelledby="faq-title">
+  <div class="container faq__inner">
+    <div class="section-head" data-reveal="up">
+      <span class="eyebrow">WAMOCON</span>
+      <h2 id="faq-title">{lang === 'de' ? 'Häufige Fragen' : 'Frequently asked questions'}</h2>
+    </div>
+    <div class="faq__list">
+      {faqs.map((faq) => (
+        <details class="faq__item" data-reveal="up">
+          <summary>{faq.question}</summary>
+          <p>{faq.answer}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
 <style>
   /* ---------- shared ---------- */
@@ -912,6 +997,25 @@ const modal = {
     text-align: center;
   }
 
+  /* ---------- FAQ ---------- */
+  .faq__inner { max-width: 1080px; }
+  .faq__list { display: grid; gap: 0.85rem; }
+  .faq__item {
+    padding: 1.15rem 1.35rem;
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+  }
+  .faq__item summary {
+    cursor: pointer;
+    color: var(--color-text);
+    font-weight: var(--fw-semibold);
+  }
+  .faq__item p {
+    margin-top: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
   /* ---------- responsive ---------- */
   @media (max-width: 1100px) {
     .hero {
@@ -1026,8 +1130,16 @@ const modal = {
     display: grid;
     gap: 1rem;
   }
+  .lead-modal__field {
+    display: grid;
+    gap: 0.4rem;
+    color: var(--color-text);
+    font-size: 0.88rem;
+    font-weight: var(--fw-semibold);
+  }
   .lead-modal__form input[type='text'],
   .lead-modal__form input[type='tel'],
+  .lead-modal__form input[type='email'],
   .lead-modal__form textarea {
     width: 100%;
     padding: 0.9rem 1.1rem;
@@ -1047,20 +1159,12 @@ const modal = {
     outline: none;
     border-color: var(--color-accent);
   }
-  .lead-modal__consent {
-    display: flex;
-    gap: 0.65rem;
-    align-items: flex-start;
+  .lead-modal__privacy-note {
     font-size: 0.82rem;
     color: var(--color-text-muted);
     line-height: 1.45;
   }
-  .lead-modal__consent input {
-    margin-top: 0.2rem;
-    accent-color: var(--color-accent);
-    flex-shrink: 0;
-  }
-  .lead-modal__consent a {
+  .lead-modal__privacy-note a {
     color: var(--color-accent);
     text-decoration: underline;
   }

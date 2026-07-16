@@ -1,6 +1,7 @@
 ---
 /** Bewertungen / Testimonials — faithful reproduction of customer reviews. */
 import ContactBlock from './ContactBlock.astro';
+import ExternalEmbed from '../ui/ExternalEmbed.astro';
 import type { Lang } from '../../i18n/config';
 
 interface Props {
@@ -60,12 +61,14 @@ const c = de
       videoRole: 'Teilnehmerin WAMOCON Academy',
       submit: 'Senden Sie Ihre Bewertung',
       formTitle: 'Senden Sie Ihre Bewertung',
-      formSub: 'Hinterlassen Sie Ihre Kontakte, unter denen wir Sie kontaktieren können',
+      formSub: 'Senden Sie uns unverbindlich Ihre Bewertung. Wir kontaktieren Sie nur bei Rückfragen.',
       fName: 'Ihr Name',
       fPhone: 'Telefon',
+      fEmail: 'E-Mail',
       fComment: 'Kommentare/Link zur Datei',
-      fConsent: 'Hiermit bestätige ich, dass ich die Datenschutzerklärung gelesen habe und damit einverstanden bin, dass die WAMOCON GmbH meine Daten, einschließlich personenbezogener Daten, speichern und verarbeiten darf.',
-      fSend: 'Anfrage senden',
+      fConsent: 'Mit dem Absenden bestätigen Sie, dass Sie die Datenschutzerklärung gelesen haben. Bitte geben Sie E-Mail oder Telefon an.',
+      fPublication: 'Ich willige ein, dass meine Bewertung als Kundenstimme veröffentlicht werden darf. Diese Einwilligung ist freiwillig und jederzeit widerrufbar.',
+      fSend: 'Bewertung senden',
       close: 'Zurück',
     }
   : {
@@ -80,12 +83,14 @@ const c = de
       videoRole: 'WAMOCON Academy participant',
       submit: 'Send your review',
       formTitle: 'Send your review',
-      formSub: 'Leave your contact details so we can get in touch with you',
+      formSub: 'Send us your review as a non-binding submission. We will contact you only if we have questions.',
       fName: 'Your name',
       fPhone: 'Phone',
+      fEmail: 'Email',
       fComment: 'Comments / link to file',
-      fConsent: 'I hereby confirm that I have read the Privacy Policy and agree that WAMOCON GmbH may store and process my data, including personal data.',
-      fSend: 'Send inquiry',
+      fConsent: 'By submitting, you confirm that you have read the privacy policy. Please provide an email address or phone number.',
+      fPublication: 'I consent to my review being published as a customer testimonial. This consent is voluntary and can be withdrawn at any time.',
+      fSend: 'Send review',
       close: 'Back',
     };
 ---
@@ -93,7 +98,7 @@ const c = de
 <!-- HERO -->
 <section class="tm-hero">
   <div class="container">
-    <h1 class="t-red">{c.heroheading}</h1>
+    <p class="t-red tm-hero__eyebrow">{c.heroheading}</p>
     <h1 class="tm-hero__title">{c.heroTitle}</h1>
     <p class="tm-hero__sub"><strong>{c.heroLead}</strong> {c.heroSub}</p>
   </div>
@@ -135,12 +140,12 @@ const c = de
       {academyVideos.map((v, i) => (
         <figure class="video-card" data-reveal="up" data-reveal-delay={i * 80}>
           <div class="video-card__frame">
-            <iframe
+            <ExternalEmbed
+              service="youtube"
               src={`https://www.youtube-nocookie.com/embed/${v.id}`}
               title={`${v.name}, WAMOCON Academy`}
-              loading="lazy"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
+              lang={lang}
+              externalUrl={`https://www.youtube.com/watch?v=${v.id}`}
             />
           </div>
           <figcaption>
@@ -175,20 +180,18 @@ const c = de
     <button class="tm-modal__close" type="button" data-close aria-label={c.close}>×</button>
     <h3 class="tm-modal__title" id="form-modal-title">{c.formTitle}</h3>
     <p class="tm-modal__sub">{c.formSub}</p>
-    <form id="review-form" class="tm-form">
-      <input type="text" name="name" placeholder={c.fName} required />
-      <input type="tel" name="phone" placeholder={c.fPhone} required />
-      <textarea name="comment" placeholder={c.fComment} rows="4"></textarea>
+    <form id="review-form" class="tm-form js-lead-form" data-redirect={de ? '/danke/' : '/en/thank-you/'}>
+      <input type="hidden" name="type" value="testimonial" />
+      <input type="hidden" name="lang" value={lang} />
+      <label><span>{c.fName}</span><input type="text" name="name" autocomplete="name" required /></label>
+      <label><span>{c.fPhone}</span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" /></label>
+      <label><span>{c.fEmail}</span><input type="email" name="email" autocomplete="email" /></label>
+      <label><span>{c.fComment}</span><textarea name="comment" rows="4" required></textarea></label>
       <label class="tm-form__consent">
-        <input type="checkbox" name="consent" required />
-        <span>
-          {de ? 'Hiermit bestätige ich, dass ich die ' : 'I hereby confirm that I have read the '}
-          <a href={de ? '/datenschutz/' : '/en/privacy/'}>{de ? 'Datenschutzerklärung' : 'Privacy Policy'}</a>
-          {de
-            ? ' gelesen habe und damit einverstanden bin, dass die WAMOCON GmbH meine Daten, einschließlich personenbezogener Daten, speichern und verarbeiten darf.'
-            : ' and agree that WAMOCON GmbH may store and process my data, including personal data.'}
-        </span>
+        <input type="checkbox" name="testimonialConsent" />
+        <span>{c.fPublication}</span>
       </label>
+      <p class="tm-form__privacy">{c.fConsent} <a href={de ? '/datenschutz/' : '/en/privacy/'}>{de ? 'Datenschutz' : 'Privacy policy'}</a></p>
       <button type="submit" class="tm-form__send">{c.fSend}</button>
     </form>
     <p class="tm-form__thanks" id="review-thanks" hidden>{de ? 'Vielen Dank! Wir melden uns bei Ihnen.' : 'Thank you! We will get in touch with you.'}</p>
@@ -199,6 +202,7 @@ const c = de
   .t-red { color: var(--color-accent); }
 
   .tm-hero { padding: clamp(3rem, 8vw, 6rem) 0 clamp(1.5rem, 4vw, 3rem); text-align: center; }
+  .tm-hero__eyebrow { margin-bottom: 0.6rem; font-weight: var(--fw-semibold); letter-spacing: 0.08em; text-transform: uppercase; }
   .tm-hero__title { font-size: clamp(2rem, 5.5vw, 3.6rem); font-weight: var(--fw-bold); line-height: 1.08; margin-bottom: 1.2rem; }
   .tm-hero__sub { max-width: 820px; margin: 0 auto; color: var(--color-text-muted); line-height: 1.6; }
   .tm-hero__sub strong { color: var(--color-text); }
@@ -279,8 +283,16 @@ const c = de
   .tm-modal__title { font-size: 1.5rem; margin-bottom: 0.6rem; }
   .tm-modal__sub { color: var(--color-text-muted); margin-bottom: 1.4rem; }
   .tm-form { display: flex; flex-direction: column; gap: 1rem; }
+  .tm-form > label:not(.tm-form__consent) {
+    display: grid;
+    gap: 0.4rem;
+    color: var(--color-text);
+    font-size: 0.88rem;
+    font-weight: var(--fw-semibold);
+  }
   .tm-form input[type="text"],
   .tm-form input[type="tel"],
+  .tm-form input[type="email"],
   .tm-form textarea {
     padding: 0.9rem 1rem;
     background: rgba(255, 255, 255, 0.06);
@@ -304,6 +316,12 @@ const c = de
   }
   .tm-form__consent input { margin-top: 0.2rem; flex-shrink: 0; accent-color: var(--color-accent); }
   .tm-form__consent a { color: var(--color-accent); }
+  .tm-form__privacy {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  .tm-form__privacy a { color: var(--color-accent); }
   .tm-form__send {
     padding: 0.9rem 2rem;
     background: var(--color-accent);
@@ -332,8 +350,6 @@ const c = de
     const nameEl = document.getElementById('review-modal-name');
     const formModal = document.getElementById('form-modal');
     const openFormBtn = document.getElementById('open-review-form');
-    const reviewForm = document.getElementById('review-form') as HTMLFormElement | null;
-    const thanks = document.getElementById('review-thanks');
 
     function open(modal: HTMLElement | null) {
       if (!modal) return;
@@ -372,15 +388,6 @@ const c = de
       }
     });
 
-    reviewForm?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const data = new FormData(reviewForm);
-      const name = encodeURIComponent(String(data.get('name') || ''));
-      const phone = encodeURIComponent(String(data.get('phone') || ''));
-      reviewForm.hidden = true;
-      if (thanks) thanks.hidden = false;
-      window.location.href = `mailto:info@wamocon.com?subject=Bewertung%20-%20${name}&body=Telefon:%20${phone}`;
-    });
   }
   setupTestimonials();
   document.addEventListener('astro:after-swap', setupTestimonials);

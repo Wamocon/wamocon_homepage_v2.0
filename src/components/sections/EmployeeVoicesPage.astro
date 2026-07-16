@@ -1,5 +1,6 @@
 ---
 import ContactBlock from "./ContactBlock.astro";
+import ExternalEmbed from "../ui/ExternalEmbed.astro";
 import type { Lang } from "../../i18n/config";
 
 interface Props {
@@ -224,14 +225,13 @@ const members: Member[] = de
         {m.videos.map((v, vi) => (
           <div class={`panel${vi === 0 ? " active" : ""}`} data-member={mi} data-video={vi}>
             <div class="video">
-              <iframe
-                loading="lazy"
+              <ExternalEmbed
+                service="youtube"
                 src={`https://www.youtube-nocookie.com/embed/${v.id}`}
                 title={v.title}
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-              ></iframe>
+                lang={lang}
+                externalUrl={`https://www.youtube.com/watch?v=${v.id}`}
+              />
             </div>
             <div class="video-text">
               <h3 class="t-red">{v.title}</h3>

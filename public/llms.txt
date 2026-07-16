@@ -1,0 +1,33 @@
+# WAMOCON GmbH
+
+WAMOCON is an IT test-management and quality-assurance company based in Eschborn, Germany. The company supports business and consumer clients in German and English.
+
+## Core facts
+
+- Legal name: WAMOCON GmbH
+- Location: Mergenthalerallee 79 - 81, 65760 Eschborn, Germany
+- Register: Local Court Frankfurt am Main, HRB 103893
+- Contact: info@wamocon.com, +49 6196 5838311
+- Website: https://www.wamocon.com/
+
+## Services
+
+- IT test management and software quality assurance
+- Test automation and quality management
+- SAP and enterprise-software testing
+- Software and AI application development
+- IT consulting, cooperation and training-related services
+
+## Primary pages
+
+- German home: https://www.wamocon.com/
+- English home: https://www.wamocon.com/en/
+- Services and methodology: https://www.wamocon.com/unser-system/
+- Software portfolio: https://www.wamocon.com/apps/
+- References: https://www.wamocon.com/referenzen/
+- About WAMOCON: https://www.wamocon.com/ueber-uns/
+- Contact: https://www.wamocon.com/kontakt/
+- Privacy: https://www.wamocon.com/datenschutz/
+- Imprint: https://www.wamocon.com/impressum/
+
+Public website content may be quoted with attribution and a link to the relevant canonical page. Legal and privacy pages are authoritative only in their latest published version.

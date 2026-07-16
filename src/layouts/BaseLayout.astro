@@ -13,20 +13,96 @@ import '../styles/global.css';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import { getAlternateLangUrl } from '../i18n/utils';
-import type { Lang } from '../i18n/config';
+import { company, type Lang } from '../i18n/config';
 
 interface Props {
   title: string;
   description: string;
   lang: Lang;
   image?: string;
+  noindex?: boolean;
 }
 
-const { title, description, lang, image = '/images/logo-wamocon.png' } = Astro.props;
+const { title, description, lang, image = '/images/hero-render.png', noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const altPath = getAlternateLangUrl(Astro.url.pathname, lang);
 const altLang = lang === 'de' ? 'en' : 'de';
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+const alternateUrl = new URL(altPath, Astro.site).href;
+const xDefaultUrl = lang === 'de' ? canonical : alternateUrl;
+const locale = lang === 'de' ? 'de_DE' : 'en_GB';
+const alternateLocale = lang === 'de' ? 'en_GB' : 'de_DE';
+const robots = noindex
+  ? 'noindex, follow'
+  : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': ['Organization', 'ProfessionalService'],
+      '@id': 'https://www.wamocon.com/#organization',
+      name: company.name,
+      legalName: company.name,
+      url: 'https://www.wamocon.com/',
+      logo: 'https://www.wamocon.com/images/logo-wamocon.png',
+      image: 'https://www.wamocon.com/images/contact-office.jpg',
+      telephone: company.phone,
+      email: company.email,
+      vatID: 'DE344930486',
+      identifier: 'Amtsgericht Frankfurt am Main, HRB 103893',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: company.street,
+        postalCode: '65760',
+        addressLocality: 'Eschborn',
+        addressCountry: 'DE',
+      },
+      areaServed: ['Germany', 'European Union'],
+      audience: [
+        { '@type': 'BusinessAudience', audienceType: 'B2B' },
+        { '@type': 'Audience', audienceType: 'B2C' },
+      ],
+      knowsAbout: [
+        'Software testing',
+        'IT test management',
+        'Quality assurance',
+        'Test automation',
+        'SAP testing',
+        'Artificial intelligence in software quality',
+      ],
+      sameAs: Object.values(company.social),
+      contactPoint: {
+        '@type': 'ContactPoint',
+        telephone: company.phone,
+        email: company.email,
+        contactType: 'customer service',
+        availableLanguage: ['German', 'English'],
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://www.wamocon.com/#website',
+      url: 'https://www.wamocon.com/',
+      name: 'WAMOCON',
+      inLanguage: ['de-DE', 'en-GB'],
+      publisher: { '@id': 'https://www.wamocon.com/#organization' },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${canonical}#webpage`,
+      url: canonical,
+      name: title,
+      description,
+      inLanguage: lang === 'de' ? 'de-DE' : 'en-GB',
+      isPartOf: { '@id': 'https://www.wamocon.com/#website' },
+      about: { '@id': 'https://www.wamocon.com/#organization' },
+      primaryImageOfPage: {
+        '@type': 'ImageObject',
+        url: new URL(image, Astro.site).href,
+      },
+    },
+  ],
+};
 ---
 
 <!doctype html>
@@ -38,9 +114,17 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
+    <meta name="author" content="WAMOCON GmbH" />
+    <meta name="theme-color" content="#101010" />
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" hreflang={lang} href={canonical} />
-    <link rel="alternate" hreflang={altLang} href={new URL(altPath, Astro.site).href} />
+    {!noindex && (
+      <>
+        <link rel="alternate" hreflang={lang} href={canonical} />
+        <link rel="alternate" hreflang={altLang} href={alternateUrl} />
+        <link rel="alternate" hreflang="x-default" href={xDefaultUrl} />
+      </>
+    )}
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -48,7 +132,14 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={new URL(image, Astro.site).href} />
+    <meta property="og:image:alt" content={title} />
+    <meta property="og:site_name" content="WAMOCON" />
+    <meta property="og:locale" content={locale} />
+    <meta property="og:locale:alternate" content={alternateLocale} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(image, Astro.site).href} />
 
     <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
@@ -66,20 +157,11 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
     />
     <link rel="apple-touch-icon" href="/images/favicon-light.png" />
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
-    />
-    {turnstileSiteKey && (
-      <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    )}
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
 
   <body>
-    <a class="skip-link" href="#main">Skip to content</a>
+    <a class="skip-link" href="#main">{lang === 'de' ? 'Zum Inhalt springen' : 'Skip to content'}</a>
     <Header lang={lang} />
     <main id="main">
       <slot />
@@ -272,141 +354,122 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 
     <script define:vars={{ turnstileSiteKey }}>
       // @ts-nocheck
-      // Global lead/contact form handler.
-      // Any <form class="js-lead-form" data-redirect="/danke/"> is submitted to
-      // /api/lead via fetch; on completion the user is sent to the thank-you page.
-      // The consent checkbox (required) is enforced by the browser before submit.
-      const TURNSTILE_SITE_KEY = turnstileSiteKey;
+      const ACTIVE_TURNSTILE_SITE_KEY = turnstileSiteKey;
+      let activeTurnstileLoader;
 
-      function renderTurnstileWidgets() {
-        if (!TURNSTILE_SITE_KEY || !window.turnstile) return;
-
-        const forms = Array.from(document.querySelectorAll('form.js-lead-form'));
-        forms.forEach((form) => {
-          // Don't render in hidden containers (e.g. modals that are not open yet).
-          if (form.offsetParent === null) return;
-          if (form.querySelector('.cf-turnstile')) return;
-
-          const container = document.createElement('div');
-          container.className = 'cf-turnstile';
-
-          const hidden = document.createElement('input');
-          hidden.type = 'hidden';
-          hidden.name = 'cf-turnstile-response';
-
-          const submitBtn = form.querySelector('button[type="submit"]');
-          if (submitBtn) {
-            submitBtn.before(container, hidden);
-          } else {
-            form.append(container, hidden);
-          }
-
-          window.turnstile.render(container, {
-            sitekey: TURNSTILE_SITE_KEY,
-            theme: 'dark',
-            callback: (token) => {
-              hidden.value = token;
-            },
-            'error-callback': () => {
-              hidden.value = '';
-            },
-            'expired-callback': () => {
-              hidden.value = '';
-            },
-          });
+      const loadActiveTurnstile = () => {
+        if (!ACTIVE_TURNSTILE_SITE_KEY || window.turnstile) return Promise.resolve();
+        if (activeTurnstileLoader) return activeTurnstileLoader;
+        activeTurnstileLoader = new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+          script.async = true;
+          script.defer = true;
+          script.onload = resolve;
+          script.onerror = reject;
+          document.head.appendChild(script);
         });
-      }
+        return activeTurnstileLoader;
+      };
 
-      function waitForTurnstile() {
-        if (!TURNSTILE_SITE_KEY) return;
-        if (window.turnstile) {
-          renderTurnstileWidgets();
-          return;
-        }
-        let checks = 0;
-        const timer = setInterval(() => {
-          if (window.turnstile) {
-            clearInterval(timer);
-            renderTurnstileWidgets();
-            return;
-          }
-          checks++;
-          if (checks > 50) clearInterval(timer); // give up after ~5s
-        }, 100);
-      }
+      const ensureActiveTurnstile = async (form) => {
+        if (!ACTIVE_TURNSTILE_SITE_KEY || form.querySelector('.cf-turnstile')) return;
+        await loadActiveTurnstile();
+        if (!window.turnstile || form.querySelector('.cf-turnstile')) return;
 
-      const initLeadForms = () => {
-        waitForTurnstile();
+        const container = document.createElement('div');
+        container.className = 'cf-turnstile';
+        const hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = 'cf-turnstile-response';
+        const submit = form.querySelector('button[type="submit"]');
+        if (submit) submit.before(container, hidden);
+        else form.append(container, hidden);
 
-        const forms = Array.from(document.querySelectorAll('form.js-lead-form'));
-        forms.forEach((form) => {
-          // Only visible forms on page load get the Turnstile widget.
-          // Hidden containers (e.g. modals) keep working without CAPTCHA.
-          if (TURNSTILE_SITE_KEY && form.offsetParent !== null) {
-            form.dataset.turnstileRequired = 'true';
-          }
+        window.turnstile.render(container, {
+          sitekey: ACTIVE_TURNSTILE_SITE_KEY,
+          theme: 'dark',
+          callback: (token) => { hidden.value = token; },
+          'error-callback': () => { hidden.value = ''; },
+          'expired-callback': () => { hidden.value = ''; },
+        });
+      };
 
-          form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+      const setupActiveLeadForms = () => {
+        document.querySelectorAll('form.js-lead-form').forEach((form) => {
+          const startProtection = () => ensureActiveTurnstile(form).catch(() => {});
+          form.addEventListener('focusin', startProtection, { once: true });
+          form.addEventListener('pointerenter', startProtection, { once: true });
 
-            // Honour native validation (required fields + consent checkbox).
+          form.addEventListener('submit', async (event) => {
+            event.preventDefault();
             if (!form.reportValidity()) return;
 
-            const redirect = form.dataset.redirect || '/danke/';
-            const submitBtn = form.querySelector('button[type="submit"]');
-            if (submitBtn) submitBtn.disabled = true;
-
             const fd = new FormData(form);
-            const payload = {
-              type: (fd.get('type') || 'lead').toString(),
-              lang: (fd.get('lang') || 'de').toString(),
-              name: (fd.get('name') || '').toString(),
-              phone: (fd.get('phone') || '').toString(),
-              email: (fd.get('email') || '').toString(),
-              comment: (fd.get('comment') || '').toString(),
-              consent: 'true',
-            };
-
-            const turnstileToken = (fd.get('cf-turnstile-response') || '').toString();
-            if (form.dataset.turnstileRequired === 'true' && !turnstileToken) {
-              alert('Bitte bestätigen Sie das CAPTCHA.');
-              if (submitBtn) submitBtn.disabled = false;
+            const language = (fd.get('lang') || 'de').toString();
+            const phone = (fd.get('phone') || '').toString().trim();
+            const email = (fd.get('email') || '').toString().trim();
+            if (!phone && !email) {
+              const target = form.querySelector('input[name="email"]') || form.querySelector('input[name="phone"]');
+              if (target) {
+                target.setCustomValidity(language === 'en'
+                  ? 'Please provide an email address or phone number.'
+                  : 'Bitte geben Sie eine E-Mail-Adresse oder Telefonnummer an.');
+                target.reportValidity();
+                target.addEventListener('input', () => target.setCustomValidity(''), { once: true });
+              }
               return;
             }
-            if (turnstileToken) {
-              payload['cf-turnstile-response'] = turnstileToken;
+
+            if (ACTIVE_TURNSTILE_SITE_KEY) {
+              await ensureActiveTurnstile(form).catch(() => {});
+              const token = form.querySelector('input[name="cf-turnstile-response"]')?.value || '';
+              if (!token) {
+                alert(language === 'en'
+                  ? 'Please complete the security check.'
+                  : 'Bitte bestätigen Sie die Sicherheitsprüfung.');
+                return;
+              }
             }
 
+            const submit = form.querySelector('button[type="submit"]');
+            if (submit) submit.disabled = true;
+            const payload = {
+              type: (fd.get('type') || 'lead').toString(),
+              lang: language,
+              name: (fd.get('name') || '').toString(),
+              phone,
+              email,
+              comment: (fd.get('comment') || '').toString(),
+              testimonialConsent: fd.get('testimonialConsent') === 'on',
+              'cf-turnstile-response': (fd.get('cf-turnstile-response') || '').toString(),
+            };
+
             try {
-              const resp = await fetch('/api/lead', {
+              const response = await fetch('/api/lead', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
               });
-
-              if (!resp.ok) {
-                const data = await resp.json().catch(() => ({}));
-                alert(data.error || 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.');
-                if (submitBtn) submitBtn.disabled = false;
-                if (window.turnstile) window.turnstile.reset();
-                const hiddenInput = form.querySelector('input[name="cf-turnstile-response"]');
-                if (hiddenInput) hiddenInput.value = '';
-                return;
-              }
+              if (!response.ok) throw new Error('Request failed');
+              window.location.assign(form.dataset.redirect || (language === 'en' ? '/en/thank-you/' : '/danke/'));
             } catch {
-              // Network/endpoint unavailable (e.g. local `astro dev`) — still
-              // navigate to the thank-you page so the UX is consistent.
+              alert(language === 'en'
+                ? 'Your inquiry could not be sent. Please try again or contact us by email.'
+                : 'Ihre Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns per E-Mail.');
+              if (submit) submit.disabled = false;
+              if (window.turnstile) window.turnstile.reset();
+              const token = form.querySelector('input[name="cf-turnstile-response"]');
+              if (token) token.value = '';
             }
-
-            window.location.assign(redirect);
           });
         });
       };
 
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initLeadForms);
+        document.addEventListener('DOMContentLoaded', setupActiveLeadForms);
       } else {
-        initLeadForms();
+        setupActiveLeadForms();
       }
     </script>
   </body>

@@ -23,5 +23,18 @@ export default defineConfig({
     domains: [],
   },
   // Generates /sitemap-index.xml + /sitemap-0.xml at build time for SEO.
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      filter: (page) => {
+        const pathname = new URL(page).pathname;
+        return ![
+          '/404/',
+          '/danke/',
+          '/en/thank-you/',
+          '/berber-siparis/',
+          '/berber-veri-koruma/',
+        ].includes(pathname);
+      },
+    }),
+  ],
 });
