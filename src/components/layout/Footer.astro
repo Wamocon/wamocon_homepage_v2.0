@@ -52,6 +52,9 @@ const privacySettings = lang === 'de' ? 'Externe Inhalte zurücksetzen' : 'Reset
       </ul>
     </nav>
   </div>
+  <p class="footer__ai-notice container">
+    Texte, Bilder, Videos, Audios und Grafiken, die hier bereitgestellt werden, können teilweise mit Künstlicher Intelligenz (KI) erstellt worden sein. Jeder generierte Inhalt wurde sorgfältig überprüft, um Qualität und Genauigkeit sicherzustellen. Mit diesem Hinweis erfüllen wir unsere Transparenzpflicht.
+  </p>
 </footer>
 
 <style>
@@ -104,6 +107,15 @@ const privacySettings = lang === 'de' ? 'Externe Inhalte zurücksetzen' : 'Reset
   }
   .footer__links a:hover {
     color: var(--color-accent);
+  }
+  .footer__ai-notice {
+    margin: 0 auto;
+    padding-bottom: clamp(2rem, 4vw, 3rem);
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    line-height: 1.55;
+    text-align: center;
+    max-width: 940px;
   }
 
   @media (max-width: 860px) {
