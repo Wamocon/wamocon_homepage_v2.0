@@ -18,8 +18,14 @@ const linkFor = (key: string) => nav.find((n) => n.key === key)![lang];
 // Two link columns + a legal column, exactly like the official footer.
 const col1 = ['home', 'system', 'apps', 'cooperation', 'testimonials', 'references'].map(linkFor);
 const col2 = ['career', 'about', 'employees', 'azubi', 'webdesign', 'contact'].map(linkFor);
-const legal = [legalNav.privacy[lang], legalNav.imprint[lang]];
+const legal = [legalNav.privacy[lang], legalNav.imprint[lang], legalNav.accessibility[lang]];
 const privacySettings = lang === 'de' ? 'Externe Inhalte zurücksetzen' : 'Reset external-content choices';
+
+// Art. 50 EU AI Act transparency notice. Must be shown in the language of the
+// page — a German-only notice does not inform an English-speaking visitor.
+const aiNotice = lang === 'de'
+  ? 'Einzelne grafische Elemente dieser Website (abstrakte Illustrationen und 3D-Renderings) wurden mit Hilfe Künstlicher Intelligenz erstellt. Alle Fotografien von Personen, Räumen und Veranstaltungen sind echte Aufnahmen und nicht KI-generiert. Sämtliche Texte werden redaktionell von einem Menschen geprüft und verantwortet.'
+  : 'Some graphical elements on this website (abstract illustrations and 3D renderings) were created with the help of artificial intelligence. All photographs of people, places and events are genuine and not AI-generated. All texts are editorially reviewed and approved by a human.';
 ---
 
 <footer class="footer">
@@ -52,9 +58,7 @@ const privacySettings = lang === 'de' ? 'Externe Inhalte zurücksetzen' : 'Reset
       </ul>
     </nav>
   </div>
-  <p class="footer__ai-notice container">
-    Texte, Bilder, Videos, Audios und Grafiken, die hier bereitgestellt werden, können teilweise mit Künstlicher Intelligenz (KI) erstellt worden sein. Jeder generierte Inhalt wurde sorgfältig überprüft, um Qualität und Genauigkeit sicherzustellen. Mit diesem Hinweis erfüllen wir unsere Transparenzpflicht.
-  </p>
+  <p class="footer__ai-notice container">{aiNotice}</p>
 </footer>
 
 <style>

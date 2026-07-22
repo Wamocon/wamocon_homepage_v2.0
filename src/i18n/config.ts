@@ -93,6 +93,10 @@ export const legalNav = {
     de: { label: 'Datenschutz', href: '/datenschutz/' },
     en: { label: 'Privacy Policy', href: '/en/privacy/' },
   },
+  accessibility: {
+    de: { label: 'Barrierefreiheit', href: '/barrierefreiheit/' },
+    en: { label: 'Accessibility', href: '/en/accessibility/' },
+  },
 };
 
 /** Shared, non-page-specific UI strings. */

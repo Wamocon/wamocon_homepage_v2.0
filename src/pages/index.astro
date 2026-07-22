@@ -2,10 +2,71 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HomePage from '../components/sections/home/HomePage.astro';
 import { home } from '../data/home';
+import { wamoconFaq } from '../data/faq';
+import FaqSection from '../components/ui/FaqSection.astro';
 
 const lang = 'de' as const;
+
+const isDe = lang === 'de';
+const faq = wamoconFaq[lang];
+const serviceSchema = [
+  {
+    '@type': 'Service',
+    '@id': 'https://www.wamocon.com/#service-testmanagement',
+    name: isDe ? 'IT-Testmanagement' : 'IT test management',
+    serviceType: 'IT test management',
+    description: isDe
+      ? 'Planung, Steuerung und Berichterstattung des gesamten Testprozesses in Softwareprojekten, von der Anforderungsanalyse bis zum Releasebericht.'
+      : 'Planning, coordination and reporting of the entire test process in software projects, from requirement analysis through to release reporting.',
+    provider: { '@id': 'https://www.wamocon.com/#organization' },
+    areaServed: ['Germany', 'European Union'],
+    availableLanguage: ['German', 'English'],
+  },
+  {
+    '@type': 'Service',
+    '@id': 'https://www.wamocon.com/#service-qa',
+    name: isDe ? 'Softwarequalitätssicherung' : 'Software quality assurance',
+    serviceType: 'Software quality assurance',
+    description: isDe
+      ? 'Aufbau von Standards, Reviews und Kennzahlen, die Fehler vor dem Produktivbetrieb sichtbar machen.'
+      : 'Establishing the standards, reviews and metrics that surface defects before they reach production.',
+    provider: { '@id': 'https://www.wamocon.com/#organization' },
+    areaServed: ['Germany', 'European Union'],
+  },
+  {
+    '@type': 'Service',
+    '@id': 'https://www.wamocon.com/#service-automation',
+    name: isDe ? 'Testautomatisierung' : 'Test automation',
+    serviceType: 'Test automation',
+    description: isDe
+      ? 'Aufbau und Pflege automatisierter Regressionstests, damit Releases schneller und wiederholbar ausgeliefert werden können.'
+      : 'Building and maintaining automated regression suites so releases ship faster and repeatably.',
+    provider: { '@id': 'https://www.wamocon.com/#organization' },
+    areaServed: ['Germany', 'European Union'],
+  },
+  {
+    '@type': 'Service',
+    '@id': 'https://www.wamocon.com/#service-sap',
+    name: isDe ? 'SAP- und Unternehmenssoftwaretests' : 'SAP and enterprise-software testing',
+    serviceType: 'SAP testing',
+    description: isDe
+      ? 'Testmanagement für große Standardsoftware-Landschaften wie SAP und Kernbankensysteme.'
+      : 'Test management for large standard-software landscapes such as SAP and core banking systems.',
+    provider: { '@id': 'https://www.wamocon.com/#organization' },
+    areaServed: ['Germany', 'European Union'],
+  },
+];
 ---
 
-<BaseLayout title={home.seo.title[lang]} description={home.seo.description[lang]} lang={lang}>
+<BaseLayout title={home.seo.title[lang]} description={home.seo.description[lang]} lang={lang} schema={serviceSchema}>
   <HomePage lang={lang} />
+  <FaqSection
+    heading={faq.heading}
+    intro={faq.intro}
+    items={faq.items}
+    lang={lang}
+    bylineName="Dipl.-Ing. Waleri Moretz"
+    bylineRole="Geschäftsführer der WAMOCON GmbH, IT-Testmanagement seit 2015"
+    lastReviewed="2026-07-22"
+  />
 </BaseLayout>

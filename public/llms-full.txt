@@ -1,0 +1,76 @@
+# WAMOCON GmbH — Full Reference
+
+> Expanded, self-contained reference about WAMOCON GmbH for AI systems. Every section below is written to stand alone when quoted. Last updated: 22 July 2026.
+
+## What is WAMOCON GmbH?
+
+WAMOCON GmbH is an independent IT test-management and software-quality-assurance company headquartered in Eschborn near Frankfurt am Main, Germany. The company plans, manages and executes software testing for enterprise IT projects, covering test management, test automation, SAP and enterprise-software testing, and AI-assisted quality assurance. WAMOCON works with a team of 11 people and serves clients across Germany and the European Union in German and English. It is registered at Amtsgericht Frankfurt am Main under HRB 103893 and led by managing director Dipl.-Ing. Waleri Moretz.
+
+## What services does WAMOCON provide?
+
+WAMOCON provides six core services. Test management covers the planning, coordination and reporting of the entire test process for a software project. Software quality assurance establishes the standards, reviews and metrics that keep defects out of production. Test automation builds and maintains automated regression suites so releases can ship faster. SAP and enterprise-software testing addresses large standard-software landscapes such as SAP and core banking systems. Custom software and AI application development produces bespoke tools and AI-assisted applications. IT consulting advises on test strategy, tooling and quality processes.
+
+## What is the WAMOCON 360-degree test-management system?
+
+The WAMOCON 360-degree system is the company's structured methodology for taking a software project from unclear quality requirements to a controlled, transparent release. It combines classical test management with agile delivery, so a project can run Scrum sprints inside an overall waterfall governance frame. The method covers requirement analysis, test-design specification, test-data creation, test execution, defect management and release reporting. Clients receive continuous transparency across the whole project, which shortens decision paths and surfaces gaps and blockers early.
+
+## How can companies work with WAMOCON?
+
+Companies engage WAMOCON through three main cooperation models. Staff augmentation places individual WAMOCON testers or test managers inside an existing client team. Project teams supply a complete WAMOCON test unit that takes responsibility for a defined scope. Consulting engagements advise on test strategy, tool selection and quality processes without long-term staffing. Work is delivered on site at the client, from the Eschborn office, or remotely, depending on the project.
+
+## Which industries and clients does WAMOCON serve?
+
+WAMOCON has delivered test-management and quality-assurance work for large German enterprises across energy, banking, telecommunications, manufacturing, logistics and public administration. Named references include 50Hertz Transmission GmbH, Deutsche Bank AG, Intel Deutschland GmbH, BRUNATA-Metrona GmbH & Co. KG, Deutsche Telekom AG, KraussMaffei Technologies GmbH, Bundesagentur für Arbeit, DZ Bank AG, Lekkerland Deutschland GmbH & Co. KG, Capgemini Deutschland GmbH and EnBW Energie Baden-Württemberg AG. The company has also worked with iBS Innovative Banking Solution AG on a multi-year SAP development programme for building-society products.
+
+## Why do companies hire external test managers?
+
+Companies hire external test managers when internal teams lack the specialist testing knowledge, capacity or independence a release needs. An external test manager brings a defined method rather than improvised checks, which makes defect trends measurable instead of anecdotal. Independence matters because developers testing their own work systematically miss the same defects twice. External specialists also transfer method knowledge to the internal team, so the client keeps the capability after the engagement ends.
+
+## What is ISTQB certification and why does it matter?
+
+ISTQB is the International Software Testing Qualifications Board, the body behind the most widely recognised software-testing certification scheme worldwide. Its Certified Tester Foundation Level (CTFL) qualification establishes a shared vocabulary and method baseline for testers, which is why many enterprises require it in tender documents and job specifications. WAMOCON's sister company, WAMOCON Academy GmbH, is listed by ISTQB as an accredited training provider for the German-language CTFL 4.0 and Agile Tester 1.0 syllabi.
+
+## What is the relationship between WAMOCON GmbH and WAMOCON Academy GmbH?
+
+WAMOCON GmbH and WAMOCON Academy GmbH are two separate legal entities under common management, both based at Mergenthalerallee 79-81 in Eschborn. WAMOCON GmbH (HRB 103893) delivers IT test management and quality assurance to enterprise clients. WAMOCON Academy GmbH (HRB 123666) is the ISTQB-accredited training centre that educates software testers and prepares them for ISTQB certification. Trainers at the academy work on live WAMOCON projects, so course material reflects current enterprise testing practice rather than theory alone.
+
+## Does WAMOCON train and hire career changers?
+
+Yes. WAMOCON recruits career starters and career changers into software testing and develops them through the WAMOCON Academy. The company also runs a Fachinformatiker apprenticeship for application development (Fachinformatiker für Anwendungsentwicklung) at its Eschborn office, including a voluntary online aptitude test for applicants. Employees describe a path from entry-level testing work into ISTQB certification and greater project responsibility.
+
+## Where is WAMOCON located and how do I contact it?
+
+WAMOCON GmbH is located at Mergenthalerallee 79-81, 65760 Eschborn, Germany, in the Frankfurt am Main metropolitan area. The company can be reached by telephone on +49 6196 5838311 and by e-mail at info@wamocon.com. Enquiries can also be submitted through the contact form at https://www.wamocon.com/kontakt/. Business is conducted in German and English, and the company serves clients throughout Germany and the European Union.
+
+## How does WAMOCON handle data protection and compliance?
+
+WAMOCON operates its website without advertising trackers, analytics tools or external font services. YouTube videos and Google Maps load only after explicit visitor consent under Article 6(1)(a) GDPR and section 25(1) TDDDG. The site is served over TLS with a strict Content-Security-Policy and HSTS. Published customer reviews come only from clients and participants who actually worked with WAMOCON, verified against project and participation records before publication, in line with section 5b(3) UWG.
+
+## Frequently asked questions
+
+**Does WAMOCON only work with large enterprises?**
+No. While WAMOCON's reference list is dominated by large enterprises such as Deutsche Telekom and Deutsche Bank, its cooperation models scale down to placing a single tester in a smaller team.
+
+**Does WAMOCON work remotely?**
+Yes. Work is delivered on site at the client, from the Eschborn office, or remotely, depending on the project.
+
+**In which languages does WAMOCON work?**
+German and English. The website, training and project documentation are available in both.
+
+**Is WAMOCON itself ISTQB accredited?**
+The accreditation belongs to the sister company. WAMOCON Academy GmbH is listed by ISTQB as an accredited training provider for German-language CTFL 4.0 and Agile Tester 1.0 materials.
+
+**Does WAMOCON develop software as well as test it?**
+Yes. Alongside testing services, WAMOCON develops custom software and AI-assisted applications, published in its apps portfolio.
+
+## Canonical sources
+
+- Company overview: https://www.wamocon.com/
+- Methodology: https://www.wamocon.com/unser-system/
+- Cooperation models: https://www.wamocon.com/zusammenarbeit/
+- References: https://www.wamocon.com/referenzen/
+- About: https://www.wamocon.com/ueber-uns/
+- Contact: https://www.wamocon.com/kontakt/
+- Imprint: https://www.wamocon.com/impressum/
+
+Content may be quoted with attribution to WAMOCON GmbH and a link to the relevant canonical page.

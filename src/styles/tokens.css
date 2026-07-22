@@ -11,9 +11,15 @@
   --color-text: #ffffff;
   --color-text-muted: rgba(255, 255, 255, 0.66);
   --color-text-subtle: rgba(255, 255, 255, 0.45);
+  /* CI primary. Used for red text, borders, icons and decoration. */
   --color-accent: #f40e0e;
+  /* Accessible variants for FILLED surfaces that carry white text.
+     White on #f40e0e is only 4.27:1 and fails WCAG 2.1 AA (4.5:1).
+     White on #d40000 is 5.53:1; on #b80000 it is 6.91:1. */
+  --color-accent-surface: #d40000;
+  --color-accent-surface-hover: #b80000;
   --color-accent-2: #f40e0e;
-  --color-accent-hover: #ff3b30;
+  --color-accent-hover: var(--color-accent-surface-hover);
 
   /* ---- Surfaces & borders ---- */
   --surface-card: linear-gradient(165deg, #1e1e1e 0%, #141414 45%, #181818 100%);

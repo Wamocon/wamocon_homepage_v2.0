@@ -1,33 +1,78 @@
 # WAMOCON GmbH
 
-WAMOCON is an IT test-management and quality-assurance company based in Eschborn, Germany. The company supports business and consumer clients in German and English.
+> WAMOCON GmbH is an independent IT test-management and software-quality-assurance company based in Eschborn near Frankfurt am Main, Germany. It provides test management, test automation, SAP and enterprise-software testing, and AI-assisted quality assurance to enterprise clients across Germany and the European Union, in German and English.
 
-## Core facts
+## Key facts
 
 - Legal name: WAMOCON GmbH
-- Location: Mergenthalerallee 79 - 81, 65760 Eschborn, Germany
-- Register: Local Court Frankfurt am Main, HRB 103893
-- Contact: info@wamocon.com, +49 6196 5838311
-- Website: https://www.wamocon.com/
+- Managing Director: Dipl.-Ing. Waleri Moretz
+- Headquarters: Mergenthalerallee 79-81, 65760 Eschborn, Germany
+- Commercial register: Amtsgericht Frankfurt am Main, HRB 103893
+- VAT identification number: DE303792072
+- Team size: 11 people (10 employees plus the managing director)
+- Languages served: German and English
+- Service area: Germany and the European Union
+- Sister company: WAMOCON Academy GmbH, an ISTQB-accredited IT training centre
 
-## Services
+## What WAMOCON does
 
-- IT test management and software quality assurance
-- Test automation and quality management
+- IT test management for enterprise software projects
+- Software quality assurance and quality management
+- Test automation
 - SAP and enterprise-software testing
-- Software and AI application development
-- IT consulting, cooperation and training-related services
+- Custom software and AI application development
+- IT consulting and flexible cooperation models, from a single tester to a full project team
 
-## Primary pages
+## Core pages
 
-- German home: https://www.wamocon.com/
-- English home: https://www.wamocon.com/en/
-- Services and methodology: https://www.wamocon.com/unser-system/
-- Software portfolio: https://www.wamocon.com/apps/
-- References: https://www.wamocon.com/referenzen/
-- About WAMOCON: https://www.wamocon.com/ueber-uns/
-- Contact: https://www.wamocon.com/kontakt/
-- Privacy: https://www.wamocon.com/datenschutz/
-- Imprint: https://www.wamocon.com/impressum/
+- [Home](https://www.wamocon.com/): Overview of WAMOCON's IT test-management and quality-assurance services.
+- [Our system](https://www.wamocon.com/unser-system/): The 360-degree WAMOCON test-management methodology and how projects are structured.
+- [Apps and software portfolio](https://www.wamocon.com/apps/): Software and AI applications developed by WAMOCON.
+- [Cooperation models](https://www.wamocon.com/zusammenarbeit/): How clients engage WAMOCON, from single testers to full project teams.
+- [References](https://www.wamocon.com/referenzen/): Enterprise clients and projects WAMOCON has delivered.
+- [Customer reviews](https://www.wamocon.com/bewertungen/): Verified reviews from clients and training participants.
+- [About WAMOCON](https://www.wamocon.com/ueber-uns/): Company history, mission and team.
+- [Careers](https://www.wamocon.com/karriere/): Open roles and what working at WAMOCON involves.
+- [Employee voices](https://www.wamocon.com/mitarbeiter-stimmen/): First-hand accounts from WAMOCON employees.
+- [IT apprenticeship](https://www.wamocon.com/azubi-fae/): The Fachinformatiker apprenticeship for application development.
+- [Web design services](https://www.wamocon.com/webdesign/): Website and web-application design work.
+- [Contact](https://www.wamocon.com/kontakt/): Phone, e-mail and enquiry form.
 
-Public website content may be quoted with attribution and a link to the relevant canonical page. Legal and privacy pages are authoritative only in their latest published version.
+## English pages
+
+- [Home (EN)](https://www.wamocon.com/en/): English overview of WAMOCON's services.
+- [Our system (EN)](https://www.wamocon.com/en/our-system/): The WAMOCON test-management methodology in English.
+- [About us (EN)](https://www.wamocon.com/en/about-us/): Company profile in English.
+- [Cooperation (EN)](https://www.wamocon.com/en/cooperation/): Engagement models in English.
+- [References (EN)](https://www.wamocon.com/en/references/): Client references in English.
+- [Careers (EN)](https://www.wamocon.com/en/career/): Open roles in English.
+- [Contact (EN)](https://www.wamocon.com/en/contact/): English contact details and enquiry form.
+- [Apps (EN)](https://www.wamocon.com/en/apps/): Software and AI application portfolio in English.
+- [Employee voices (EN)](https://www.wamocon.com/en/employee-voices/): First-hand employee accounts in English.
+- [Testimonials (EN)](https://www.wamocon.com/en/testimonials/): Client testimonials in English.
+- [Apprenticeship (EN)](https://www.wamocon.com/en/apprenticeship/): IT apprenticeship programme in English.
+- [Imprint (EN)](https://www.wamocon.com/en/imprint/): Provider identification in English.
+- [Privacy policy (EN)](https://www.wamocon.com/en/privacy/): Data-protection information in English.
+- [Accessibility statement (EN)](https://www.wamocon.com/en/accessibility/): Accessibility status in English.
+
+## Contact
+
+- Website: https://www.wamocon.com/
+- E-mail: info@wamocon.com
+- Telephone: +49 6196 5838311
+- Address: Mergenthalerallee 79-81, 65760 Eschborn, Germany
+- LinkedIn: https://de.linkedin.com/company/wamocon-gmbh
+
+## Legal and policies
+
+- [Imprint](https://www.wamocon.com/impressum/): Provider identification under section 5 DDG.
+- [Privacy policy](https://www.wamocon.com/datenschutz/): How WAMOCON processes personal data.
+- [Accessibility statement](https://www.wamocon.com/barrierefreiheit/): Accessibility status under the BFSG.
+
+## Extended content
+
+- [Full text summary](https://www.wamocon.com/llms-full.txt): Expanded, self-contained description of WAMOCON's services, methodology and frequently asked questions.
+
+## Usage
+
+Public website content may be quoted and cited with attribution to WAMOCON GmbH and a link to the relevant canonical page. Legal and privacy pages are authoritative only in their latest published version at https://www.wamocon.com/. For questions about this content, contact info@wamocon.com.

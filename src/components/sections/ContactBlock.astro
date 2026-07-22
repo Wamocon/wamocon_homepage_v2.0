@@ -20,6 +20,8 @@ const social = [
 const labels = {
   de: {
     phone: 'Telefon',
+    contactPerson: 'Ansprechpartner',
+    contactPersonName: 'Dipl.-Ing. Waleri Moretz, Geschäftsführer der WAMOCON GmbH',
     hours: 'Öffnungszeiten',
     location: 'Standort',
     follow: 'Folgen Sie uns auf sozialen Medien',
@@ -28,6 +30,8 @@ const labels = {
   },
   en: {
     phone: 'Phone',
+    contactPerson: 'Contact person',
+    contactPersonName: 'Dipl.-Ing. Waleri Moretz, Managing Director, WAMOCON GmbH',
     hours: 'Opening hours',
     location: 'Location',
     follow: 'Follow us on social media',
@@ -41,6 +45,11 @@ const labels = {
   <div class="container contact__grid">
     <div class="contact__info" data-reveal="left">
       <h2 class="contact__name">{company.name}</h2>
+
+      <div class="contact__row">
+        <span class="contact__label">{labels.contactPerson}:</span>
+        <span>{labels.contactPersonName}</span>
+      </div>
 
       <div class="contact__row">
         <span class="contact__label">{labels.phone}:</span>

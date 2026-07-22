@@ -21,9 +21,21 @@ interface Props {
   lang: Lang;
   image?: string;
   noindex?: boolean;
+  /** Extra JSON-LD nodes (e.g. Service, FAQPage) merged into the page @graph. */
+  schema?: Record<string, unknown>[];
+  /** Breadcrumb trail, excluding Home which is prepended automatically. */
+  breadcrumbs?: { name: string; path: string }[];
 }
 
-const { title, description, lang, image = '/images/hero-render.png', noindex = false } = Astro.props;
+const {
+  title,
+  description,
+  lang,
+  image = '/images/hero-render.png',
+  noindex = false,
+  schema = [],
+  breadcrumbs = [],
+} = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const altPath = getAlternateLangUrl(Astro.url.pathname, lang);
 const altLang = lang === 'de' ? 'en' : 'de';
@@ -32,6 +44,8 @@ const alternateUrl = new URL(altPath, Astro.site).href;
 const xDefaultUrl = lang === 'de' ? canonical : alternateUrl;
 const locale = lang === 'de' ? 'de_DE' : 'en_GB';
 const alternateLocale = lang === 'de' ? 'en_GB' : 'de_DE';
+// Single source of truth for the visible byline and schema dateModified.
+const lastReviewed = '2026-07-22';
 const robots = noindex
   ? 'noindex, follow'
   : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
@@ -58,10 +72,15 @@ const structuredData = {
         addressCountry: 'DE',
       },
       areaServed: ['Germany', 'European Union'],
-      audience: [
-        { '@type': 'BusinessAudience', audienceType: 'B2B' },
-        { '@type': 'Audience', audienceType: 'B2C' },
+      openingHoursSpecification: [
+        { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday'], opens: '09:00', closes: '18:00' },
+        { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Saturday', opens: '10:00', closes: '14:00' },
       ],
+      subOrganization: {
+        '@type': ['EducationalOrganization', 'Organization'],
+        name: 'WAMOCON Academy GmbH',
+        url: 'https://test-it-academy.com/',
+      },
       knowsAbout: [
         'Software testing',
         'IT test management',
@@ -70,7 +89,13 @@ const structuredData = {
         'SAP testing',
         'Artificial intelligence in software quality',
       ],
-      sameAs: Object.values(company.social),
+      sameAs: [
+        'https://www.youtube.com/@wamocon.testing',
+        'https://www.facebook.com/WAMOCON/',
+        'https://www.linkedin.com/company/wamocon-gmbh',
+        'https://www.instagram.com/wmc_testmanagement/',
+        'https://www.kununu.com/de/wamocon/kommentare',
+      ],
       contactPoint: {
         '@type': 'ContactPoint',
         telephone: company.phone,
@@ -88,19 +113,60 @@ const structuredData = {
       publisher: { '@id': 'https://www.wamocon.com/#organization' },
     },
     {
+      '@type': 'Person',
+      '@id': 'https://www.wamocon.com/#waleri-moretz',
+      name: 'Waleri Moretz',
+      honorificPrefix: 'Dipl.-Ing.',
+      jobTitle: lang === 'de' ? 'Geschäftsführer' : 'Managing Director',
+      description: lang === 'de'
+        ? 'Diplom-Ingenieur und Geschäftsführer der WAMOCON GmbH. Verantwortet seit 2015 Testmanagement- und Qualitätssicherungsprojekte für Konzerne in Deutschland und der EU.'
+        : 'Graduate engineer and managing director of WAMOCON GmbH. Has been responsible for enterprise test-management and quality-assurance projects across Germany and the EU since 2015.',
+      worksFor: { '@id': 'https://www.wamocon.com/#organization' },
+      knowsAbout: ['IT test management', 'Software quality assurance', 'SAP testing', 'Test automation'],
+      knowsLanguage: ['de', 'en'],
+      url: 'https://www.wamocon.com/',
+      sameAs: ['https://test-it-academy.com/#waleri-moretz'],
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonical}#breadcrumb`,
+      itemListElement: [
+        { name: lang === 'de' ? 'Startseite' : 'Home', path: lang === 'de' ? '/' : '/en/' },
+        ...breadcrumbs,
+        ...(Astro.url.pathname !== '/' && Astro.url.pathname !== '/en/' && breadcrumbs.length === 0
+          ? [{ name: title.split('|')[0].trim(), path: Astro.url.pathname }]
+          : []),
+      ].map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: item.name,
+        item: new URL(item.path, Astro.site).href,
+      })),
+    },
+    {
       '@type': 'WebPage',
       '@id': `${canonical}#webpage`,
+      breadcrumb: { '@id': `${canonical}#breadcrumb` },
       url: canonical,
       name: title,
       description,
       inLanguage: lang === 'de' ? 'de-DE' : 'en-GB',
       isPartOf: { '@id': 'https://www.wamocon.com/#website' },
       about: { '@id': 'https://www.wamocon.com/#organization' },
+      datePublished: '2026-07-01',
+      dateModified: lastReviewed,
+      reviewedBy: { '@id': 'https://www.wamocon.com/#waleri-moretz' },
+      publisher: { '@id': 'https://www.wamocon.com/#organization' },
       primaryImageOfPage: {
         '@type': 'ImageObject',
         url: new URL(image, Astro.site).href,
       },
+      speakable: {
+        '@type': 'SpeakableSpecification',
+        cssSelector: ['h1', '.faq__item h3', '.faq__item > p'],
+      },
     },
+    ...schema,
   ],
 };
 ---
@@ -117,7 +183,7 @@ const structuredData = {
     <meta name="robots" content={robots} />
     <meta name="author" content="WAMOCON GmbH" />
     <meta name="theme-color" content="#101010" />
-    <link rel="canonical" href={canonical} />
+    {!noindex && <link rel="canonical" href={canonical} />}
     {!noindex && (
       <>
         <link rel="alternate" hreflang={lang} href={canonical} />
@@ -174,7 +240,7 @@ const structuredData = {
         left: -999px;
         top: 0;
         z-index: var(--z-modal);
-        background: var(--color-accent);
+        background: var(--color-accent-surface);
         color: #fff;
         padding: 0.75rem 1.25rem;
         border-radius: 0 0 var(--radius-sm) 0;

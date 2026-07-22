@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalPage from '../components/sections/LegalPage.astro';
+
+const lang = 'de' as const;
+---
+
+<BaseLayout
+  title="Erklärung zur Barrierefreiheit | WAMOCON GmbH"
+  description="Erklärung zur Barrierefreiheit der Website der WAMOCON GmbH nach dem Barrierefreiheitsstärkungsgesetz (BFSG)."
+  lang={lang}
+>
+  <LegalPage title="Erklärung zur Barrierefreiheit" updated="Stand: 21. Juli 2026">
+    <p>
+      Die WAMOCON GmbH ist bemüht, ihre Website im Einklang mit dem Barrierefreiheitsstärkungsgesetz (BFSG)
+      barrierefrei zugänglich zu machen. Diese Erklärung gilt für die Website
+      <a href="https://www.wamocon.com/">www.wamocon.com</a>.
+    </p>
+
+    <h2>Stand der Vereinbarkeit mit den Anforderungen</h2>
+    <p>
+      Als Maßstab wenden wir die Norm EN 301 549 an, die auf die Web Content Accessibility Guidelines
+      (WCAG) 2.1 Konformitätsstufe AA verweist. Diese Website ist mit den genannten Anforderungen
+      <strong>teilweise vereinbar</strong>. Die nachstehend aufgeführten Punkte sind uns bekannt und werden
+      derzeit überarbeitet.
+    </p>
+
+    <h2>Nicht barrierefreie Inhalte</h2>
+    <ul>
+      <li>
+        Für einzelne Videoinhalte liegen noch keine vollständigen Untertitel oder Transkripte vor
+        (WCAG 1.2.2, 1.2.3).
+      </li>
+      <li>
+        Eingebettete Inhalte von Drittanbietern, insbesondere YouTube und Google Maps, unterliegen nicht
+        unserer Kontrolle. Für die Barrierefreiheit dieser Inhalte ist der jeweilige Anbieter verantwortlich.
+      </li>
+      <li>
+        Einzelne dekorative Animationen und Bewegungseffekte werden derzeit überprüft. Nutzerinnen und Nutzer,
+        die in ihrem Betriebssystem reduzierte Bewegung aktiviert haben, erhalten bereits eine reduzierte
+        Darstellung (WCAG 2.3.3).
+      </li>
+    </ul>
+
+    <h2>Alternativen und Kontakt</h2>
+    <p>
+      Sind einzelne Inhalte für Sie nicht zugänglich, wenden Sie sich bitte an uns. Wir stellen Ihnen die
+      benötigten Informationen auf einem anderen Weg zur Verfügung, zum Beispiel telefonisch oder per E-Mail.
+    </p>
+
+    <h2>Feedback und Kontaktangaben</h2>
+    <p>
+      Sie können uns Barrieren auf dieser Website jederzeit melden und barrierefreie Alternativen anfordern:
+    </p>
+    <p>
+      WAMOCON GmbH<br />
+      Mergenthalerallee 79 - 81<br />
+      65760 Eschborn<br />
+      Telefon: <a href="tel:+4961965838311">+49 6196 5838311</a><br />
+      E-Mail: <a href="mailto:info@wamocon.com">info@wamocon.com</a>
+    </p>
+    <p>
+      Wir bestätigen den Eingang Ihrer Rückmeldung zeitnah und antworten inhaltlich
+      <strong>innerhalb von sechs Wochen</strong>.
+    </p>
+
+    <h2>Durchsetzungsverfahren</h2>
+    <p>
+      Wenn Sie mit unserer Antwort nicht zufrieden sind oder keine Antwort erhalten, können Sie sich an die
+      Marktüberwachungsstelle der Länder für die Barrierefreiheit von Produkten und Dienstleistungen (MLBF)
+      wenden. Die MLBF prüft, ob die Anforderungen des BFSG eingehalten werden.
+    </p>
+    <p>
+      Marktüberwachungsstelle der Länder für die Barrierefreiheit von Produkten und
+      Dienstleistungen – Anstalt öffentlichen Rechts (MLBF AöR)<br />
+      Carl-Miller-Straße 6<br />
+      39112 Magdeburg<br />
+      Telefon: <a href="tel:+493912892302">+49 391 289 230 23</a><br />
+      E-Mail: <a href="mailto:kontakt@mlbf-barrierefrei.de">kontakt@mlbf-barrierefrei.de</a><br />
+      <a href="https://mlbf-barrierefrei.de/" target="_blank" rel="noopener noreferrer">
+        mlbf-barrierefrei.de
+      </a>
+    </p>
+
+    <h2>Erstellung dieser Erklärung</h2>
+    <p>
+      Diese Erklärung wurde am 21. Juli 2026 erstellt. Grundlage war eine interne Prüfung der Website anhand
+      der WCAG 2.1 Stufe AA. Wir überprüfen die Erklärung regelmäßig und aktualisieren sie, sobald sich
+      Funktionen oder der Stand der Barrierefreiheit ändern.
+    </p>
+  </LegalPage>
+</BaseLayout>

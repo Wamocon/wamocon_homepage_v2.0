@@ -1,0 +1,198 @@
+---
+/**
+ * FAQ section optimised for AI citability (GEO) and rich results.
+ *
+ * Each answer is written as a self-contained block: it restates the subject,
+ * answers in the first sentence, and stays in the 40-160 word range that
+ * generative engines quote most reliably. The component also emits FAQPage
+ * JSON-LD so the same content is machine-readable.
+ */
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  heading: string;
+  intro?: string;
+  items: FaqItem[];
+  /** Set false on pages that already emit FAQPage schema elsewhere. */
+  emitSchema?: boolean;
+  /** Named expert accountable for the answers (E-E-A-T signal). */
+  bylineName?: string;
+  bylineRole?: string;
+  /** ISO date the answers were last checked by that person. */
+  lastReviewed?: string;
+  lang?: 'de' | 'en';
+}
+
+const {
+  heading,
+  intro,
+  items,
+  emitSchema = true,
+  bylineName,
+  bylineRole,
+  lastReviewed,
+  lang = 'de',
+} = Astro.props;
+
+const reviewedLabel = lastReviewed
+  ? (lang === 'de'
+      ? `Zuletzt fachlich geprüft am ${new Date(lastReviewed).toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' })}`
+      : `Last reviewed on ${new Date(lastReviewed).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}`)
+  : '';
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
+---
+
+<section class="faq section" aria-labelledby="faq-heading">
+  <div class="container">
+    <h2 id="faq-heading">{heading}</h2>
+    {intro && <p class="faq__intro">{intro}</p>}
+
+    <div class="faq__list">
+      {items.map((item) => (
+        <details class="faq__item">
+          <summary>
+            <h3>{item.question}</h3>
+          </summary>
+          <p>{item.answer}</p>
+        </details>
+      ))}
+    </div>
+    {bylineName && (
+
+    <div class="faq__byline">
+      <p>
+        <strong>{bylineName}</strong><br />
+        <span>{bylineRole}</span>
+      </p>
+      <p class="faq__reviewed">{reviewedLabel}</p>
+    </div>
+      )}
+  </div>
+</section>
+
+{emitSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
+
+<style>
+  .faq {
+    /* One shared measure so heading, intro, list and byline align and the
+       whole block sits centred in the container.
+       Must NOT use `ch`: that unit resolves against each element's own
+       font-size, so the heading would compute ~3x wider than the list. */
+    --faq-measure: min(68rem, 100%);
+    padding-block: clamp(3.5rem, 7vw, 6rem);
+  }
+
+  .faq h2 {
+    max-width: var(--faq-measure);
+    margin-inline: auto;
+    margin-bottom: 0.75rem;
+    font-size: clamp(1.9rem, 4vw, 2.9rem);
+  }
+
+  .faq__intro {
+    max-width: var(--faq-measure);
+    margin-inline: auto;
+    margin-bottom: 2rem;
+    color: var(--color-text-muted);
+    line-height: 1.65;
+  }
+
+  .faq__list {
+    display: grid;
+    gap: 0.75rem;
+    max-width: var(--faq-measure);
+    margin-inline: auto;
+  }
+
+  .faq__item {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm, 6px);
+    background: rgb(255 255 255 / 0.03);
+  }
+
+  .faq__item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.05rem 1.25rem;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .faq__item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq__item summary::after {
+    content: '+';
+    flex: none;
+    color: var(--color-accent);
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .faq__item[open] summary::after {
+    content: '\2212';
+  }
+
+  .faq__item summary h3 {
+    margin: 0;
+    font-size: clamp(1rem, 1.6vw, 1.12rem);
+    font-weight: var(--fw-semibold);
+    line-height: 1.4;
+  }
+
+  .faq__item summary:hover h3,
+  .faq__item summary:focus-visible h3 {
+    color: var(--color-accent);
+  }
+
+  .faq__item > p {
+    margin: 0;
+    padding: 0 1.25rem 1.25rem;
+    max-width: 78ch;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+
+  .faq__byline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    max-width: var(--faq-measure);
+    margin-inline: auto;
+    margin-top: 1.75rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--border-subtle, rgba(255,255,255,.14));
+  }
+
+  .faq__byline p {
+    margin: 0;
+    font-size: 0.84rem;
+    line-height: 1.55;
+    color: var(--color-text-muted);
+  }
+
+  .faq__byline strong {
+    color: var(--color-text);
+  }
+
+  .faq__reviewed {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

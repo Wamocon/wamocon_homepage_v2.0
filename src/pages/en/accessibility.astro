@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LegalPage from '../../components/sections/LegalPage.astro';
+
+const lang = 'en' as const;
+---
+
+<BaseLayout
+  title="Accessibility Statement | WAMOCON GmbH"
+  description="Accessibility statement for the WAMOCON GmbH website under the German Accessibility Strengthening Act (BFSG)."
+  lang={lang}
+>
+  <LegalPage title="Accessibility Statement" updated="Last updated: 21 July 2026">
+    <p>
+      WAMOCON GmbH is committed to making its website accessible in accordance with the German Accessibility
+      Strengthening Act (Barrierefreiheitsstärkungsgesetz, BFSG). This statement applies to the website
+      <a href="https://www.wamocon.com/">www.wamocon.com</a>.
+    </p>
+
+    <h2>Compliance status</h2>
+    <p>
+      We apply the EN 301 549 standard, which refers to the Web Content Accessibility Guidelines (WCAG) 2.1
+      at conformance level AA. This website is <strong>partially compliant</strong> with those requirements.
+      The items listed below are known to us and are currently being addressed.
+    </p>
+
+    <h2>Non-accessible content</h2>
+    <ul>
+      <li>Some video content does not yet have complete captions or transcripts (WCAG 1.2.2, 1.2.3).</li>
+      <li>
+        Embedded third-party content, in particular YouTube and Google Maps, is outside our control. The
+        respective provider is responsible for the accessibility of that content.
+      </li>
+      <li>
+        Some decorative animations and motion effects are currently under review. Visitors who have enabled
+        reduced motion in their operating system already receive a reduced presentation (WCAG 2.3.3).
+      </li>
+    </ul>
+
+    <h2>Alternatives and contact</h2>
+    <p>
+      If any content is not accessible to you, please contact us. We will provide the information you need by
+      another route, for example by telephone or e-mail.
+    </p>
+
+    <h2>Feedback and contact details</h2>
+    <p>You can report accessibility barriers on this website and request accessible alternatives at any time:</p>
+    <p>
+      WAMOCON GmbH<br />
+      Mergenthalerallee 79 - 81<br />
+      65760 Eschborn, Germany<br />
+      Phone: <a href="tel:+4961965838311">+49 6196 5838311</a><br />
+      E-mail: <a href="mailto:info@wamocon.com">info@wamocon.com</a>
+    </p>
+    <p>
+      We acknowledge receipt of your feedback promptly and provide a substantive reply
+      <strong>within six weeks</strong>.
+    </p>
+
+    <h2>Enforcement procedure</h2>
+    <p>
+      If you are not satisfied with our response, or receive no response, you can contact the German market
+      surveillance authority for the accessibility of products and services (MLBF), which checks compliance
+      with the BFSG.
+    </p>
+    <p>
+      Marktüberwachungsstelle der Länder für die Barrierefreiheit von Produkten und
+      Dienstleistungen – Anstalt öffentlichen Rechts (MLBF AöR)<br />
+      Carl-Miller-Straße 6<br />
+      39112 Magdeburg, Germany<br />
+      Telephone: <a href="tel:+493912892302">+49 391 289 230 23</a><br />
+      E-mail: <a href="mailto:kontakt@mlbf-barrierefrei.de">kontakt@mlbf-barrierefrei.de</a><br />
+      <a href="https://mlbf-barrierefrei.de/" target="_blank" rel="noopener noreferrer">
+        mlbf-barrierefrei.de
+      </a>
+    </p>
+
+    <h2>Preparation of this statement</h2>
+    <p>
+      This statement was prepared on 21 July 2026 following an internal review of the website against WCAG 2.1
+      level AA. We review it regularly and update it whenever functions or the state of accessibility change.
+    </p>
+  </LegalPage>
+</BaseLayout>

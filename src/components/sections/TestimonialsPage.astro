@@ -54,6 +54,9 @@ const c = de
       heroTitle: 'Erfahrungen mit WAMOCON GmbH',
       heroLead: 'Authentische Stimmen unserer Kunden.',
       heroSub: 'Lesen Sie, was unsere Kunden über die Qualität unserer Arbeit und den erstklassigen Kundenservice bei der WAMOCON GmbH sagen.',
+      // Pflichtangabe nach § 5b Abs. 3 UWG: ob und wie die Echtheit von
+      // Verbraucherbewertungen sichergestellt wird.
+      authenticity: 'Hinweis zur Echtheit unserer Bewertungen: Alle hier veröffentlichten Kundenstimmen stammen von Kundinnen und Kunden sowie Teilnehmenden, die tatsächlich mit der WAMOCON GmbH beziehungsweise der WAMOCON Academy GmbH zusammengearbeitet haben. Vor der Veröffentlichung gleichen wir jede Bewertung anhand unserer Projekt- und Teilnahmeunterlagen ab. Bewertungen werden weder gekauft noch gegen eine Gegenleistung eingeholt; wir veröffentlichen sie unverändert und unabhängig davon, ob sie positiv oder kritisch ausfallen.',
       more: 'Mehr lesen',
       academyTitle: 'Kundenstimmen: So erleben Kunden die WAMOCON Academy GmbH',
       academyLead: 'Authentische Stimmen unserer Kunden.',
@@ -76,6 +79,7 @@ const c = de
       heroTitle: 'Customer voices: experiences with WAMOCON GmbH',
       heroLead: 'Authentic voices of our customers.',
       heroSub: 'Read what our customers say about the quality of our work and the first-class customer service at WAMOCON GmbH.',
+      authenticity: 'How we ensure our reviews are genuine: every customer voice published here comes from a client or participant who has actually worked with WAMOCON GmbH or WAMOCON Academy GmbH. Before publication we verify each review against our project and participation records. Reviews are never bought or obtained in exchange for any benefit; we publish them unedited, whether they are positive or critical.',
       more: 'Read more',
       academyTitle: 'Customer voices: how customers experience WAMOCON Academy GmbH',
       academyLead: 'Authentic voices of our customers.',
@@ -101,6 +105,7 @@ const c = de
     <p class="t-red tm-hero__eyebrow">{c.heroheading}</p>
     <h1 class="tm-hero__title">{c.heroTitle}</h1>
     <p class="tm-hero__sub"><strong>{c.heroLead}</strong> {c.heroSub}</p>
+    <p class="tm-hero__authenticity">{c.authenticity}</p>
   </div>
 </section>
 
@@ -206,6 +211,13 @@ const c = de
   .tm-hero__title { font-size: clamp(2rem, 5.5vw, 3.6rem); font-weight: var(--fw-bold); line-height: 1.08; margin-bottom: 1.2rem; }
   .tm-hero__sub { max-width: 820px; margin: 0 auto; color: var(--color-text-muted); line-height: 1.6; }
   .tm-hero__sub strong { color: var(--color-text); }
+  .tm-hero__authenticity {
+    max-width: 820px;
+    margin: 1.1rem auto 0;
+    color: var(--color-text-muted);
+    font-size: 0.86rem;
+    line-height: 1.6;
+  }
 
   .reviews { columns: 3; column-gap: 1.3rem; }
   .review-card {
@@ -253,7 +265,7 @@ const c = de
   .tm-submit {
     display: inline-block;
     padding: 1rem 2.4rem;
-    background: var(--color-accent);
+    background: var(--color-accent-surface);
     color: #fff;
     font-weight: var(--fw-semibold);
     border: none;
@@ -324,7 +336,7 @@ const c = de
   .tm-form__privacy a { color: var(--color-accent); }
   .tm-form__send {
     padding: 0.9rem 2rem;
-    background: var(--color-accent);
+    background: var(--color-accent-surface);
     color: #fff;
     font-weight: var(--fw-semibold);
     border: none;

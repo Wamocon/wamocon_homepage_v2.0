@@ -91,7 +91,7 @@ const jsonLd = {
       'creator': {
         '@type': 'Organization',
         'name': 'WAMOCON GmbH',
-        'url': 'https://wamocon.com',
+        'url': 'https://www.wamocon.com',
         'address': {
           '@type': 'PostalAddress',
           'streetAddress': 'Mergenthalerallee 79 - 81',
@@ -117,13 +117,6 @@ const jsonLd = {
           ...(app.url ? { 'url': app.url } : {}),
         }))
       ),
-    },
-    {
-      '@type': 'BreadcrumbList',
-      'itemListElement': [
-        { '@type': 'ListItem', 'position': 1, 'name': 'WAMOCON', 'item': de ? 'https://wamocon.com/' : 'https://wamocon.com/en/' },
-        { '@type': 'ListItem', 'position': 2, 'name': de ? 'Apps' : 'Apps', 'item': de ? 'https://wamocon.com/apps/' : 'https://wamocon.com/en/apps/' },
-      ],
     },
   ],
 };

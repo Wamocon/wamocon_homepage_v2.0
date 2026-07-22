@@ -1,19 +1,140 @@
 # https://www.robotstxt.org/robotstxt.html
+# WAMOCON GmbH - public company website.
+# Public content may be crawled, indexed and cited with attribution.
+
 User-agent: *
+# Consistent with the crawl-and-cite policy stated below.
+Content-Signal: ai-train=yes, search=yes, ai-retrieval=yes
 Allow: /
 Disallow: /api/
 
-# AI search and answer engines may crawl public company content.
+# ---------------------------------------------------------------
+# Traditional search engines
+# ---------------------------------------------------------------
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+
+User-agent: Googlebot-Image
+Allow: /
+Disallow: /api/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /api/
+
+# ---------------------------------------------------------------
+# AI answer engines and assistants (generative search).
+# Explicitly allowed so the site can be discovered, quoted and
+# cited in AI-generated answers.
+# ---------------------------------------------------------------
+
+# OpenAI / ChatGPT
+User-agent: GPTBot
+Allow: /
+Disallow: /api/
+
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /api/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /api/
 
+# Anthropic / Claude
 User-agent: ClaudeBot
 Allow: /
+Disallow: /api/
 
+User-agent: Claude-User
+Allow: /
+Disallow: /api/
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /api/
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /api/
+
+# Perplexity
 User-agent: PerplexityBot
 Allow: /
+Disallow: /api/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /api/
+
+# Google Gemini / AI Overviews grounding
+User-agent: Google-Extended
+Allow: /
+Disallow: /api/
+
+# Microsoft Copilot
+User-agent: BingPreview
+Allow: /
+Disallow: /api/
+
+# Apple Intelligence
+User-agent: Applebot
+Allow: /
+Disallow: /api/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /api/
+
+# Meta AI
+User-agent: meta-externalagent
+Allow: /
+Disallow: /api/
+
+User-agent: FacebookBot
+Allow: /
+Disallow: /api/
+
+# Amazon
+User-agent: Amazonbot
+Allow: /
+Disallow: /api/
+
+# Common Crawl - the dataset many models are trained on
+User-agent: CCBot
+Allow: /
+Disallow: /api/
+
+# Other answer engines
+User-agent: YouBot
+Allow: /
+Disallow: /api/
+
+User-agent: DuckAssistBot
+Allow: /
+Disallow: /api/
+
+User-agent: cohere-ai
+Allow: /
+Disallow: /api/
+
+User-agent: Diffbot
+Allow: /
+Disallow: /api/
+
+User-agent: Timpibot
+Allow: /
+Disallow: /api/
+
+# ---------------------------------------------------------------
+# Machine-readable summaries for AI systems
+#   https://www.wamocon.com/llms.txt
+#   https://www.wamocon.com/llms-full.txt
+# ---------------------------------------------------------------
 
 Sitemap: https://www.wamocon.com/sitemap-index.xml

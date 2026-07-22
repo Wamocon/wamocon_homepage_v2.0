@@ -16,61 +16,7 @@ const t = (k: keyof (typeof ui)['de']) => ui[lang][k];
 const aboutHref = nav.find((n) => n.key === 'about')![lang].href;
 const privacyHref = legalNav.privacy[lang].href;
 
-const faqs = lang === 'de'
-  ? [
-      {
-        question: 'Was macht die WAMOCON GmbH?',
-        answer: 'WAMOCON ist ein IT-Dienstleister aus Eschborn mit Schwerpunkt auf Softwaretests, IT-Testmanagement, Qualitätssicherung, Testautomatisierung und KI-gestützten Softwarelösungen.',
-      },
-      {
-        question: 'Für wen arbeitet WAMOCON?',
-        answer: 'WAMOCON bietet Leistungen für Unternehmen und Verbraucher an. Der konkrete Leistungsumfang wird passend zur jeweiligen Anfrage vereinbart.',
-      },
-      {
-        question: 'Welche Testleistungen bietet WAMOCON?',
-        answer: 'Das Angebot umfasst unter anderem Teststrategie, Testplanung, Testdurchführung, Testautomatisierung, Qualitätsmanagement sowie Unterstützung bei SAP- und Enterprise-Softwareprojekten.',
-      },
-      {
-        question: 'Ist eine Anfrage über die Website verbindlich?',
-        answer: 'Nein. Website-Formulare dienen ausschließlich einer unverbindlichen ersten Anfrage. Für die Kontaktaufnahme genügt neben dem Namen eine E-Mail-Adresse oder Telefonnummer.',
-      },
-      {
-        question: 'Wo befindet sich WAMOCON?',
-        answer: 'Der Sitz der WAMOCON GmbH befindet sich in der Mergenthalerallee 79 - 81, 65760 Eschborn bei Frankfurt am Main.',
-      },
-    ]
-  : [
-      {
-        question: 'What does WAMOCON GmbH do?',
-        answer: 'WAMOCON is an IT services company in Eschborn specialising in software testing, IT test management, quality assurance, test automation and AI-supported software solutions.',
-      },
-      {
-        question: 'Who does WAMOCON work for?',
-        answer: 'WAMOCON provides services for businesses and consumers. The specific scope is agreed according to each inquiry.',
-      },
-      {
-        question: 'Which testing services does WAMOCON provide?',
-        answer: 'Services include test strategy, test planning, test execution, test automation, quality management and support for SAP and enterprise software projects.',
-      },
-      {
-        question: 'Is an inquiry submitted through the website binding?',
-        answer: 'No. Website forms are exclusively for a non-binding initial inquiry. In addition to a name, either an email address or phone number is sufficient.',
-      },
-      {
-        question: 'Where is WAMOCON located?',
-        answer: 'WAMOCON GmbH is located at Mergenthalerallee 79 - 81, 65760 Eschborn, near Frankfurt am Main, Germany.',
-      },
-    ];
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faqs.map((faq) => ({
-    '@type': 'Question',
-    name: faq.question,
-    acceptedAnswer: { '@type': 'Answer', text: faq.answer },
-  })),
-};
 
 // Split a heading so the first N words can be highlighted in CI red.
 const splitFirst = (s: string, n = 1) => {
@@ -219,7 +165,7 @@ const modal = {
     <div class="qa__text" data-reveal="left">
       <h2>{home.qa.heading[lang]}</h2>
       <p class="text-muted">{home.qa.text[lang]}</p>
-      <h4 class="qa__list-title">{home.qa.listTitle[lang]}</h4>
+      <h3 class="qa__list-title">{home.qa.listTitle[lang]}</h3>
       <ul class="qa__list">
         {home.qa.list[lang].map((li) => <li>{li}</li>)}
       </ul>
@@ -274,6 +220,7 @@ const modal = {
         {modal.consentPre}<a href={privacyHref}>{modal.consentLink}</a>{modal.consentPost}
         {lang === 'de' ? ' Bitte geben Sie E-Mail oder Telefon an.' : ' Please provide an email address or phone number.'}
       </p>
+      <p class="form-responsible">{lang === 'de' ? "Ihre Anfrage wird bearbeitet von Dipl.-Ing. Waleri Moretz, Geschäftsführer der WAMOCON GmbH." : "Your enquiry is handled by Dipl.-Ing. Waleri Moretz, Managing Director of WAMOCON GmbH."}</p>
       <button type="submit" class="btn btn--primary lead-modal__submit">{modal.submit}</button>
     </form>
   </div>
@@ -467,25 +414,6 @@ const modal = {
   </div>
 </section>
 
-<!-- ============ FREQUENTLY ASKED QUESTIONS ============ -->
-<section class="section faq" aria-labelledby="faq-title">
-  <div class="container faq__inner">
-    <div class="section-head" data-reveal="up">
-      <span class="eyebrow">WAMOCON</span>
-      <h2 id="faq-title">{lang === 'de' ? 'Häufige Fragen' : 'Frequently asked questions'}</h2>
-    </div>
-    <div class="faq__list">
-      {faqs.map((faq) => (
-        <details class="faq__item" data-reveal="up">
-          <summary>{faq.question}</summary>
-          <p>{faq.answer}</p>
-        </details>
-      ))}
-    </div>
-  </div>
-</section>
-
-<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
 <style>
   /* ---------- shared ---------- */
@@ -764,7 +692,7 @@ const modal = {
     width: 8px;
     height: 8px;
     border-radius: 2px;
-    background: var(--color-accent);
+    background: var(--color-accent-surface);
   }
   .qa__text p { margin-bottom: 1rem; }
   .education__text h2 { margin-bottom: 1.5rem; }
@@ -867,7 +795,7 @@ const modal = {
     font: inherit;
     font-weight: var(--fw-semibold);
     color: #fff;
-    background: var(--color-accent);
+    background: var(--color-accent-surface);
     border: none;
     border-radius: var(--radius-pill);
     cursor: pointer;
@@ -896,7 +824,7 @@ const modal = {
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: var(--color-accent);
+    background: var(--color-accent-surface);
   }
 
   /* ---------- academy ---------- */
@@ -998,23 +926,6 @@ const modal = {
   }
 
   /* ---------- FAQ ---------- */
-  .faq__inner { max-width: 1080px; }
-  .faq__list { display: grid; gap: 0.85rem; }
-  .faq__item {
-    padding: 1.15rem 1.35rem;
-    background: var(--surface-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
-  }
-  .faq__item summary {
-    cursor: pointer;
-    color: var(--color-text);
-    font-weight: var(--fw-semibold);
-  }
-  .faq__item p {
-    margin-top: 0.85rem;
-    color: var(--color-text-muted);
-  }
 
   /* ---------- responsive ---------- */
   @media (max-width: 1100px) {
@@ -1114,7 +1025,7 @@ const modal = {
     transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast);
   }
   .lead-modal__close:hover {
-    background: var(--color-accent);
+    background: var(--color-accent-surface);
     color: #fff;
   }
   .lead-modal__title {
@@ -1176,7 +1087,7 @@ const modal = {
     font-weight: var(--fw-semibold);
     letter-spacing: 0.02em;
     color: #fff;
-    background: var(--color-accent);
+    background: var(--color-accent-surface);
     border: none;
     border-radius: var(--radius-pill);
     cursor: pointer;
@@ -1218,6 +1129,13 @@ const modal = {
     color: var(--color-text-muted);
     line-height: 1.6;
     margin: 0;
+  }
+
+  .form-responsible {
+    margin-top: 0.6rem;
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+    line-height: 1.5;
   }
 </style>
 
