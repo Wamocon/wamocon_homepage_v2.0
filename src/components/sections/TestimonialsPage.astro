@@ -32,7 +32,7 @@ const reviewsEn: Review[] = [
   { name: 'Scout Weissgerber', more: true, full: 'Hello WAMOCON, our positioning in the digital world worked smoothly. We were able to introduce existing systems as well as a new payment system in a controlled and transparent manner thanks to WAMOCON. Through your test management we experienced transparency at all times throughout the entire project. This secured fast decision-making for us. We quickly identified and eliminated gaps and obstacles. Once again I would like to thank you very clearly, Mr Moretz, and your team for the professional support over the summer months.' },
   { name: 'Sarah Will', more: true, full: 'Thank you WAMOCON team for your commitment! Waleri, you installed a test method for us with which we successfully introduced our ERP solution. Your team management saved us a lot of time and money. I rate the consulting and expertise with 5 stars. Anyone looking for test management, I recommend turning to WAMOCON. The WAMOCON team went to great lengths to ensure that my requirements were met. They were always professional and friendly and answered my questions and concerns promptly. I appreciate the excellent work you have done and I will definitely recommend your company. It is great to see that there are still companies that care about their customers and deliver high-quality work.' },
   { name: 'Roland Weiler', role: 'iBS AG', more: true, full: 'iBS has been working successfully with WAMOCON since 2018 as part of a large development project in test management. From the very first day, iBS has benefited from WAMOCON’s expertise in test and quality management. The WAMOCON colleagues create added value that helps us exceed the high demands of our customers.' },
-  { name: 'Thomas Kolb', more: true, full: 'Hello dear WAMOCON, As Lead Test Manager, I worked together with Daniel Moretz, Erwin Moretz and Nikolaj Schefner at our joint customer iBS - Innovative Banking Solution AG. Their IT experts were responsible for the tester role in the BASS Sparen project. The aim of the project was to develop and provide an SAP solution for the building society groups. Your IT consultants supported the specialist departments with test design and test execution throughout the entire test lifecycle. Test management pursued a hybrid solution consisting of the SCRUM and waterfall test methods. The framework conditions were set up agilely and implemented classically. The technical expertise, confident use of test methods, teamwork, communication, quality assurance of specifications, creation of test data and test cases, as well as solution-oriented thinking and action in the areas of building society contract creation and modification, building society contract billing, building society contract payout, accounting and bonus should be emphasized. The work results met the requirements to the fullest satisfaction. They ensured that the application met the customer\u2019s requirements on delivery. I would like to thank WAMOCON and its IT experts for the excellent cooperation and the services provided and wish them all the best and continued success.' },
+  { name: 'Thomas Kolb', more: true, full: 'Hello dear WAMOCON, As Lead Test Manager, I worked together with Daniel Moretz, Erwin Moretz and Nikolaj Schefner at our joint customer iBS Innovative Banking Solution AG. Their IT experts were responsible for the tester role in the BASS Sparen project. The aim of the project was to develop and provide an SAP solution for the building society groups. Your IT consultants supported the specialist departments with test design and test execution throughout the entire test lifecycle. Test management pursued a hybrid solution consisting of the SCRUM and waterfall test methods. The framework conditions were set up agilely and implemented classically. The technical expertise, confident use of test methods, teamwork, communication, quality assurance of specifications, creation of test data and test cases, as well as solution-oriented thinking and action in the areas of building society contract creation and modification, building society contract billing, building society contract payout, accounting and bonus should be emphasized. The work results met the requirements to the fullest satisfaction. They ensured that the application met the customer\u2019s requirements on delivery. I would like to thank WAMOCON and its IT experts for the excellent cooperation and the services provided and wish them all the best and continued success.' },
   { name: 'Andreas Strasser', more: false, full: 'Many thanks to the Wamocon team, especially Mr Moretz, for the support! The consulting was unique, especially in its depth!' },
   { name: 'Orhan Kilic', more: false, full: 'Hello friends, I am very satisfied, would like to give more but unfortunately can only give 5 stars, good business and stay HEALTHY!' },
   { name: 'Sylvia Borgschulte', more: false, full: 'Excellent work and service' },
@@ -206,14 +206,15 @@ const c = de
 <style>
   .t-red { color: var(--color-accent); }
 
-  .tm-hero { padding: clamp(3rem, 8vw, 6rem) 0 clamp(1.5rem, 4vw, 3rem); text-align: center; }
+  /* Flush left, like every other page on the site. */
+  .tm-hero { padding: clamp(3rem, 8vw, 6rem) 0 clamp(1.5rem, 4vw, 3rem); }
   .tm-hero__eyebrow { margin-bottom: 0.6rem; font-weight: var(--fw-semibold); letter-spacing: 0.08em; text-transform: uppercase; }
   .tm-hero__title { font-size: clamp(2rem, 5.5vw, 3.6rem); font-weight: var(--fw-bold); line-height: 1.08; margin-bottom: 1.2rem; }
-  .tm-hero__sub { max-width: 820px; margin: 0 auto; color: var(--color-text-muted); line-height: 1.6; }
+  .tm-hero__sub { max-width: 820px; color: var(--color-text-muted); line-height: 1.6; }
   .tm-hero__sub strong { color: var(--color-text); }
   .tm-hero__authenticity {
     max-width: 820px;
-    margin: 1.1rem auto 0;
+    margin: 1.1rem 0 0;
     color: var(--color-text-muted);
     font-size: 0.86rem;
     line-height: 1.6;
@@ -247,10 +248,10 @@ const c = de
     padding: 0;
   }
   .review-card__more:hover { text-decoration: underline; }
-  .reviews__google { text-align: center; margin-top: 2rem; }
+  .reviews__google { margin-top: 2rem; }
 
-  .tm-h2 { font-size: clamp(1.7rem, 4vw, 2.8rem); font-weight: var(--fw-bold); text-align: center; line-height: 1.15; margin-bottom: 1rem; }
-  .tm-academy-sub { max-width: 820px; margin: 0 auto clamp(2rem, 4vw, 3rem); text-align: center; color: var(--color-text-muted); line-height: 1.6; }
+  .tm-h2 { font-size: clamp(1.7rem, 4vw, 2.8rem); font-weight: var(--fw-bold); line-height: 1.15; margin-bottom: 1rem; }
+  .tm-academy-sub { max-width: 820px; margin: 0 0 clamp(2rem, 4vw, 3rem); color: var(--color-text-muted); line-height: 1.6; }
   .tm-academy-sub strong { color: var(--color-text); }
 
   .tm-videos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.3rem; }
@@ -261,7 +262,7 @@ const c = de
   .video-card figcaption strong { color: var(--color-text); }
   .video-card figcaption span { font-size: 0.85rem; }
 
-  .tm-submit-wrap { text-align: center; margin-top: clamp(2rem, 4vw, 3rem); }
+  .tm-submit-wrap { margin-top: clamp(2rem, 4vw, 3rem); }
   .tm-submit {
     display: inline-block;
     padding: 1rem 2.4rem;

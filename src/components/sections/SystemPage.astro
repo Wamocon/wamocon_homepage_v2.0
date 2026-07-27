@@ -98,7 +98,12 @@ const academyUrl = 'https://test-it-academy.com/';
 <section class="section">
   <div class="container">
     <div class="sys-academy">
-      <img class="sys-academy__img" src="/images/academy-person.png" alt={c.academyTitle} loading="lazy" />
+      <div class="sys-academy__figure">
+        <img class="sys-academy__img" src="/images/academy-person.png" alt={c.academyTitle} loading="lazy" />
+        <span class="ai-badge" aria-label={lang === 'de' ? 'Diese Grafik wurde mit Künstlicher Intelligenz erstellt' : 'This graphic was created using artificial intelligence'}>
+          {lang === 'de' ? 'KI-generiert' : 'AI-generated'}
+        </span>
+      </div>
       <div class="sys-academy__body">
         <h2><span class="t-white">{c.academyTitle}</span></h2>
         {c.academyBlocks.map((b) => (
@@ -117,14 +122,15 @@ const academyUrl = 'https://test-it-academy.com/';
   .t-red { color: var(--color-accent); }
   .t-white { color: var(--color-text); }
 
-  .sys-hero { padding: clamp(3rem, 8vw, 6rem) 0 clamp(2rem, 5vw, 3.5rem); text-align: center; }
+  /* The site sets all copy flush left; the hero used to be the one centred block. */
+  .sys-hero { padding: clamp(3rem, 8vw, 6rem) 0 clamp(2rem, 5vw, 3.5rem); }
   .sys-hero__eyebrow {
     font-size: clamp(1.4rem, 3.5vw, 2.2rem);
     font-weight: var(--fw-semibold);
     color: var(--color-text);
     margin-bottom: 1.5rem;
   }
-  .sys-hero__lead { max-width: 900px; margin: 0 auto 2rem; }
+  .sys-hero__lead { max-width: 900px; margin: 0 0 2rem; }
   .sys-hero__lead p { color: var(--color-text-muted); line-height: 1.65; margin-bottom: 1rem; }
   .sys-hero__title {
     font-size: clamp(2.4rem, 7vw, 5rem);
@@ -132,13 +138,12 @@ const academyUrl = 'https://test-it-academy.com/';
     line-height: 1.05;
     margin-bottom: 2.5rem;
   }
-  .sys-hero__img { max-width: 720px; width: 100%; margin: 0 auto; display: block; }
+  .sys-hero__img { max-width: 720px; width: 100%; margin: 0; display: block; }
 
   .sys-h2 {
     font-size: clamp(1.8rem, 4.5vw, 3rem);
     font-weight: var(--fw-bold);
     line-height: 1.1;
-    text-align: center;
     margin-bottom: clamp(1.8rem, 4vw, 2.8rem);
   }
 
@@ -184,7 +189,23 @@ const academyUrl = 'https://test-it-academy.com/';
     border-radius: var(--radius-lg);
     padding: clamp(1.6rem, 4vw, 3rem);
   }
-  .sys-academy__img { width: 100%; border-radius: var(--radius-md); }
+  .sys-academy__figure { position: relative; }
+  .sys-academy__img { width: 100%; border-radius: var(--radius-md); display: block; }
+  /* Art. 50(5): perceivable, accessible AI label. High-contrast dark pill. */
+  .sys-academy__figure .ai-badge {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    padding: 0.28rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: var(--fw-semibold);
+    line-height: 1;
+    pointer-events: none;
+  }
   .sys-academy__body h2 { font-size: clamp(1.5rem, 3.2vw, 2.2rem); line-height: 1.2; margin-bottom: 1.4rem; }
   .sys-academy__body p { color: var(--color-text-muted); line-height: 1.6; margin-bottom: 1.1rem; }
   .sys-academy__body strong { color: var(--color-text); }

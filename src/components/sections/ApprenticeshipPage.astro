@@ -68,12 +68,12 @@ const training = de
       heading1: 'Deine Ausbildung',
       heading2: 'bei WAMOCON',
       intro:
-        'Bei uns bist du nicht nur Azubi, sondern von Tag 1 ein vollwertiges Teammitglied. Wir machen dich fit für die IT-Welt von morgen - mit spannenden Projekten, modernsten Technologien und individueller Förderung',
+        'Bei uns bist du nicht nur Azubi, sondern von Tag 1 ein vollwertiges Teammitglied. Wir machen dich fit für die IT-Welt von morgen, mit spannenden Projekten, modernsten Technologien und individueller Förderung',
       subheading: 'Was du konkret machst und lernst',
       rows: [
         {
           t: 'Unser digitales Ausbildungssystem mit persönlichem KI-Assistenten',
-          d: 'Berufsschultheorie, IHK-Vorgaben, praxisnahe Szenarien und Use Cases – gebündelt in einem System, das dich über deine gesamte Ausbildungszeit begleitet. Dein KI-Assistent schafft jederzeit volle Transparenz über alle Inhalte, hilft dir den Überblick zu behalten, unterstützt dich bei jedem Schritt und hält die Kommunikation mit deinem Ausbilder direkt aufrecht.',
+          d: 'Berufsschultheorie, IHK-Vorgaben, praxisnahe Szenarien und Use Cases, gebündelt in einem System, das dich über deine gesamte Ausbildungszeit begleitet. Dein KI-Assistent schafft jederzeit volle Transparenz über alle Inhalte, hilft dir den Überblick zu behalten, unterstützt dich bei jedem Schritt und hält die Kommunikation mit deinem Ausbilder direkt aufrecht.',
         },
         {
           t: 'Softwareentwicklung von A bis Z',
@@ -105,12 +105,12 @@ const training = de
       heading1: 'Your apprenticeship',
       heading2: 'at WAMOCON',
       intro:
-        'With us you are not just a trainee, but a full team member from day 1. We get you ready for the IT world of tomorrow - with exciting projects, state-of-the-art technologies and individual support',
+        'With us you are not just a trainee, but a full team member from day 1. We get you ready for the IT world of tomorrow, with exciting projects, state-of-the-art technologies and individual support',
       subheading: 'What you actually do and learn',
       rows: [
         {
           t: 'Our digital training system with a personal AI assistant',
-          d: 'Vocational school theory, IHK requirements, practical scenarios and use cases – bundled in one system that accompanies you throughout your entire training. Your AI assistant provides full transparency on all content at any time, helps you keep track, supports you at every step and maintains direct communication with your trainer.',
+          d: 'Vocational school theory, IHK requirements, practical scenarios and use cases, bundled in one system that accompanies you throughout your entire training. Your AI assistant provides full transparency on all content at any time, helps you keep track, supports you at every step and maintains direct communication with your trainer.',
         },
         {
           t: 'Software development from A to Z',
@@ -434,13 +434,14 @@ const apply = de
     <ul class="check-grid">
       {bring.list.map((b) => <li>{b}</li>)}
     </ul>
-    <div class="az-center">
-      <a class="az-btn" href="#bewerbung">{bring.cta}</a>
-    </div>
     <h3 class="az-h3">{bring.advantageTitle}</h3>
     <ul class="check-grid check-grid--2">
       {bring.advantageList.map((b) => <li>{b}</li>)}
     </ul>
+    <!-- The CTA closes the section; it used to sit between the two lists. -->
+    <div class="az-center">
+      <a class="az-btn" href="#bewerbung">{bring.cta}</a>
+    </div>
   </div>
 </section>
 
@@ -568,8 +569,9 @@ const apply = de
     letter-spacing: -0.02em;
     margin: 0 0 1.5rem;
   }
+  /* Kept as a markup hook; the site aligns every heading left. */
   .az-h2--center {
-    text-align: center;
+    text-align: left;
   }
   .az-h3 {
     font-size: var(--fs-h3);
@@ -590,7 +592,6 @@ const apply = de
     margin: 0 0 1rem;
   }
   .az-center {
-    text-align: center;
     margin: 2.5rem 0;
   }
   .az-center--mb {
@@ -684,8 +685,6 @@ const apply = de
     margin-top: 1.25rem;
     border-color: rgba(244, 14, 14, 0.4);
     background: rgba(244, 14, 14, 0.07);
-    align-items: center;
-    text-align: center;
   }
   .glance__label {
     font-weight: var(--fw-bold);
@@ -864,7 +863,7 @@ const apply = de
     gap: 1.5rem 3rem;
     list-style: none;
     padding: 0;
-    margin: 0 auto 3rem;
+    margin: 0 0 3rem;
     max-width: 760px;
   }
   .docs li {

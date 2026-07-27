@@ -17,6 +17,10 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  /* overflow-x on <body> alone does not stop the viewport from scrolling
+     sideways: the reveal animations start 40px off-axis and decorative shapes
+     bleed past the edge, which let narrow screens pan right. */
+  overflow-x: hidden;
 }
 
 body {

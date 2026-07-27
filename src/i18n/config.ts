@@ -68,7 +68,7 @@ export const nav: Array<{
   },
   {
     key: 'azubi',
-    de: { label: 'Azubi - FIAE', href: '/azubi-fae/' },
+    de: { label: 'Azubi FIAE', href: '/azubi-fae/' },
     en: { label: 'Apprenticeship', href: '/en/apprenticeship/' },
   },
   {
@@ -146,15 +146,15 @@ export const ui = {
 /** Company-wide contact details (shared across languages). */
 export const company = {
   name: 'WAMOCON GmbH',
-  street: 'Mergenthalerallee 79 - 81',
+  street: 'Mergenthalerallee 79–81',
   city: '65760 Eschborn',
   phone: '+49 6196 5838311',
   phoneHref: 'tel:+4961965838311',
   email: 'info@wamocon.com',
   emailHref: 'mailto:info@wamocon.com',
   hours: {
-    de: ['Mo - Fr: 9:00 - 18:00', 'Sa: 10:00 - 14:00'],
-    en: ['Mon - Fri: 9:00 - 18:00', 'Sat: 10:00 - 14:00'],
+    de: ['Mo bis Fr: 9:00 bis 18:00', 'Sa: 10:00 bis 14:00'],
+    en: ['Mon to Fri: 9:00 to 18:00', 'Sat: 10:00 to 14:00'],
   },
   social: {
     youtube: 'https://www.youtube.com/@wamocon.testing',

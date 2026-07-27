@@ -94,7 +94,7 @@ const jsonLd = {
         'url': 'https://www.wamocon.com',
         'address': {
           '@type': 'PostalAddress',
-          'streetAddress': 'Mergenthalerallee 79 - 81',
+          'streetAddress': 'Mergenthalerallee 79–81',
           'postalCode': '65760',
           'addressLocality': 'Eschborn',
           'addressRegion': 'Hessen',
@@ -155,6 +155,9 @@ const jsonLd = {
           loading="eager"
           fetchpriority="high"
         />
+        <span class="ai-badge" aria-label={lang === 'de' ? 'Dieses Bild wurde mit Künstlicher Intelligenz erstellt' : 'This image was created using artificial intelligence'}>
+          {lang === 'de' ? 'KI-generiert' : 'AI-generated'}
+        </span>
       </div>
     </div>
   </div>
@@ -347,6 +350,25 @@ const jsonLd = {
     width: 100%;
     height: auto;
     display: block;
+  }
+  /* Art. 50(5) EU AI Act: the label must be perceivable and accessible.
+     Solid dark background + white text = high contrast; sits above the
+     ::before overlay (z-index 1). */
+  .apps-hero__img-wrap .ai-badge {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    z-index: 2;
+    padding: 0.28rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    pointer-events: none;
   }
   @keyframes hero-float {
     0%, 100% { transform: translateY(0) rotate(0deg); }

@@ -148,7 +148,7 @@ export const home: HomeContent = {
       {
         title: { de: 'KI (LLM-as-a-Judge)', en: 'AI (LLM-as-a-Judge)' },
         text: {
-          de: 'WAMOCON setzt auf LaaJ – ein skalierbares Produkt und eine Dienstleistung zur automatisierten Bewertung von KI-Systemen. LaaJ bewertet Ausgaben generativer KI konsistent, schnell und nach Ihren Kriterien. So ersetzen Sie teure manuelle Prüfungen, reduzieren KI-Halluzinationen und schaffen vertrauenswürdige, qualitätsgesicherte KI-Anwendungen.',
+          de: 'WAMOCON setzt auf LaaJ, ein skalierbares Produkt und eine Dienstleistung zur automatisierten Bewertung von KI-Systemen. LaaJ bewertet Ausgaben generativer KI konsistent, schnell und nach Ihren Kriterien. So ersetzen Sie teure manuelle Prüfungen, reduzieren KI-Halluzinationen und schaffen vertrauenswürdige, qualitätsgesicherte KI-Anwendungen.',
           en: 'WAMOCON relies on LaaJ, a scalable product and service for the automated evaluation of AI systems. LaaJ assesses generative AI outputs consistently, quickly and according to your criteria. This replaces expensive manual reviews, reduces AI hallucinations and creates trustworthy, quality-assured AI applications.',
         },
       },
@@ -160,14 +160,14 @@ export const home: HomeContent = {
       en: 'We build <span class="text-accent">solutions</span> for every challenge',
     },
     intro: {
-      de: 'In aufeinander aufbauenden Entwicklungswellen verwandeln wir konkrete Problemstellungen in digitale Produkte – von Büro-Automatisierung, Marketing und KI-gestützter Analyse über Immobilien, Mobilität und Recht bis hin zu E-Commerce und Lifestyle.',
+      de: 'In aufeinander aufbauenden Entwicklungswellen verwandeln wir konkrete Problemstellungen in digitale Produkte: von Büro-Automatisierung, Marketing und KI-gestützter Analyse über Immobilien, Mobilität und Recht bis hin zu E-Commerce und Lifestyle.',
       en: 'In successive waves of development we turn concrete challenges into digital products, from office automation, marketing and AI-powered analysis, through real estate, mobility and law, to e-commerce and lifestyle.',
     },
   },
   qa: {
     heading: { de: 'Qualitätssicherung durch erfahrene IT-Tester', en: 'Quality assurance by experienced IT testers' },
     text: {
-      de: 'Mit WAMOCON müssen Sie sich keine Sorgen um die Qualität Ihrer IT-Tester machen. Unsere sorgfältig ausgewählten Spezialisten verstehen Ihre Anforderungen und liefern maßgeschneiderte Lösungen, die Ihre Projekte sicher und erfolgreich machen – ob für langfristige Festanstellungen oder flexible Projektaufgaben. Vertrauen Sie auf unsere Erfahrung und lassen Sie uns gemeinsam die perfekte Lösung für Ihr Team finden.',
+      de: 'Mit WAMOCON müssen Sie sich keine Sorgen um die Qualität Ihrer IT-Tester machen. Unsere sorgfältig ausgewählten Spezialisten verstehen Ihre Anforderungen und liefern maßgeschneiderte Lösungen, die Ihre Projekte sicher und erfolgreich machen, ob für langfristige Festanstellungen oder flexible Projektaufgaben. Vertrauen Sie auf unsere Erfahrung und lassen Sie uns gemeinsam die perfekte Lösung für Ihr Team finden.',
       en: 'With WAMOCON you never have to worry about the quality of your IT testers. Our carefully selected specialists understand your requirements and deliver tailored solutions that make your projects safe and successful, whether for long-term permanent positions or flexible project assignments.',
     },
     listTitle: { de: 'Warum IT-Tester von WAMOCON?', en: 'Why IT testers from WAMOCON?' },
@@ -297,8 +297,8 @@ export const home: HomeContent = {
         title: { de: 'Einführung SAP BASS-SPAREN System', en: 'Introduction of SAP BASS-SPAREN system' },
         client: 'iBS Innovative Banking Solutions AG',
         popupTitle: {
-          de: 'Einführung SAP BASS-SPAREN System – iBS Innovative Banking Solutions AG',
-          en: 'Implementation of SAP BASS-SPAREN System – iBS Innovative Banking Solutions AG',
+          de: 'Einführung SAP BASS-SPAREN System bei iBS Innovative Banking Solutions AG',
+          en: 'Implementation of SAP BASS-SPAREN System at iBS Innovative Banking Solutions AG',
         },
         company: {
           de: 'iBS mit Sitz in Wiesbaden ist ein führendes Unternehmen im Finanzdienstleistungssektor und spezialisiert sich auf innovative Lösungen im Bereich Spar- und Anlageberatung.',
@@ -313,8 +313,8 @@ export const home: HomeContent = {
         title: { de: 'Einführung SAP ERP-System in 50 Ländern', en: 'Introduction of SAP ERP system in 50 countries' },
         client: 'Phoenix Contact GmbH',
         popupTitle: {
-          de: 'Einführung SAP ERP-System in 50 Ländern – Phoenix Contact GmbH',
-          en: 'Implementation of SAP ERP system in 50 countries – Phoenix Contact GmbH',
+          de: 'Einführung SAP ERP-System in 50 Ländern bei Phoenix Contact GmbH',
+          en: 'Implementation of SAP ERP system in 50 countries at Phoenix Contact GmbH',
         },
         company: {
           de: 'Phoenix Contact ist ein weltweit führender Anbieter von Komponenten, Systemen und Lösungen im Bereich Elektrotechnik, Elektronik und Automatisierung. Das Unternehmen bietet innovative Produkte und Dienstleistungen für industrielle Anwendungen und strebt nach Digitalisierung und Vernetzung von Produktionsprozessen.',
@@ -329,8 +329,8 @@ export const home: HomeContent = {
         title: { de: 'Einführung SAP ERP- und CRM-System', en: 'Introduction of SAP ERP and CRM system' },
         client: 'Lekkerland Deutschland GmbH & Co. KG',
         popupTitle: {
-          de: 'Einführung SAP ERP-System und CRM-System – Lekkerland Deutschland GmbH & Co. KG',
-          en: 'Introduction of SAP ERP system and CRM system – Lekkerland Deutschland GmbH & Co. KG',
+          de: 'Einführung SAP ERP-System und CRM-System bei Lekkerland Deutschland GmbH & Co. KG',
+          en: 'Introduction of SAP ERP system and CRM system at Lekkerland Deutschland GmbH & Co. KG',
         },
         company: {
           de: 'Lekkerland ist ein führendes Großhandelsunternehmen für Alltagskonsumgüter, das sich auf Convenience spezialisiert hat. Das Unternehmen bietet maßgeschneiderte Logistik- und Handelslösungen für Kunden in verschiedenen Branchen, darunter Einzelhandel, Gastronomie und Tankstellen.',
@@ -401,7 +401,7 @@ export const home: HomeContent = {
   tour: {
     heading: { de: '360° Büro Tour', en: '360° Office tour' },
     text: {
-      de: 'Erkunden Sie unser Büro virtuell – öffnen Sie die interaktive 360°-Ansicht in Google Maps.',
+      de: 'Erkunden Sie unser Büro virtuell. Öffnen Sie die interaktive 360°-Ansicht in Google Maps.',
       en: 'Explore our office virtually. Open the interactive 360° view in Google Maps.',
     },
     cta: { de: 'In Google Maps öffnen', en: 'Open in Google Maps' },
