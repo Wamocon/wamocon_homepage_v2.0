@@ -399,10 +399,19 @@ td,
 th {
   overflow-wrap: break-word;
 }
-h1,
-h2,
-h3 {
-  hyphens: auto;
+
+/* NOTE: no `hyphens: auto` here. It reads fine for German prose but it also
+   hyphenates proper nouns — it split the WAMOCON wordmark into "WAMO-CON".
+   `overflow-wrap` above already prevents long words from overflowing; it just
+   does it without inserting a hyphen. */
+
+/* Brand names and wordmarks must never be split or hyphenated, even when they
+   are wider than their container (they are allowed to overflow instead). */
+.hero__title,
+.brand-word {
+  overflow-wrap: normal;
+  word-break: keep-all;
+  hyphens: none;
 }
 
 /* Long unbroken strings (URLs, e-mail addresses) in body copy. */
