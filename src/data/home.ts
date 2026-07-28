@@ -82,8 +82,7 @@ export const home: HomeContent = {
     },
     stats: [
       { value: '100+', label: { de: 'zufriedene Kunden weltweit', en: 'satisfied customers worldwide' } },
-      { value: '50+', label: { de: 'erfolgreiche IT-Projekte', en: 'successful IT projects' } },
-      { value: '100+', label: { de: 'verlässliche Partnerschaften', en: 'reliable partnerships' } },
+      { value: '50+', label: { de: 'Jahre Projekterfahrung', en: 'years of project experience' } },
       { value: '50+', label: { de: 'neue KI Apps', en: 'new AI apps' } },
     ],
   },
@@ -118,10 +117,10 @@ export const home: HomeContent = {
         },
       },
       {
-        title: { de: 'Leistungstests', en: 'Performance testing' },
+        title: { de: 'Testanalyse', en: 'Test analysis' },
         text: {
-          de: 'Durchführung von Leistungstests zur Bewertung der Anwendungsleistung unter verschiedenen Last- und Stressbedingungen. Ziel ist es, Engpässe zu identifizieren und die Performance zu optimieren.',
-          en: 'Performance tests to evaluate application performance under various load and stress conditions. The goal is to identify bottlenecks and optimise performance.',
+          de: 'Wir analysieren die IST-Situation Ihrer Test- und Qualitätsprozesse, decken Schwachstellen auf und geben gezielte Handlungsempfehlungen. Mit Hands-on-Mentalität optimieren und verbessern wir so Ihren gesamten Test- und Qualitätssicherungsprozess.',
+          en: 'We analyse the current state of your test and quality processes, uncover weak points and give targeted recommendations. With a hands-on mentality we optimise and improve your entire test and quality-assurance process.',
         },
       },
       {
@@ -195,8 +194,8 @@ export const home: HomeContent = {
   why: {
     heading: { de: 'Warum WAMOCON?', en: 'Why WAMOCON?' },
     intro: {
-      de: '40 Jahre gebündelte Praxiserfahrung unseres Teams. Leidenschaft für IT-Qualität. Maßgeschneiderte Lösungen und Experten, die Ihre Projekte sicher und erfolgreich machen.',
-      en: '40 years of combined practical experience within our team. A passion for IT quality. Tailored solutions and experts who make your projects safe and successful.',
+      de: 'über 50 Jahre gebündelte Praxiserfahrung unseres Teams. Leidenschaft für IT-Qualität. Maßgeschneiderte Lösungen und Experten, die Ihre Projekte sicher und erfolgreich machen.',
+      en: 'over 50 years of combined practical experience within our team. A passion for IT quality. Tailored solutions and experts who make your projects safe and successful.',
     },
     points: [
       {
@@ -291,7 +290,7 @@ export const home: HomeContent = {
     cta: { de: 'Mehr zum Unternehmen', en: 'More about the company' },
   },
   projects: {
-    heading: { de: 'WAMOCONs IT-Projekte', en: "WAMOCON's IT projects" },
+    heading: { de: 'Ausschnitt unserer erfolgreichen SAP-Projekte', en: 'A selection of our successful SAP projects' },
     items: [
       {
         title: { de: 'Einführung SAP BASS-SPAREN System', en: 'Introduction of SAP BASS-SPAREN system' },
@@ -357,7 +356,7 @@ export const home: HomeContent = {
     ],
   },
   education: {
-    heading: { de: 'IT-Bildungszentrum', en: 'IT education center' },
+    heading: { de: 'Unsere Academy', en: 'Our Academy' },
     paragraphs: {
       de: [
         'Softwaretester sind gefragter denn je, Tendenz steigend. Als offizieller Partner des International Software Testing Qualifications Board (ISTQB®) bietet die WAMOCON Akademie hochwertige Aus- und Weiterbildung im Softwaretesten.',
@@ -371,7 +370,7 @@ export const home: HomeContent = {
     youtubeId: 'Q_0mtjo8GAU',
   },
   academy: {
-    heading: { de: 'Kontinuierliche Entwicklung im Testmanagement', en: 'Continuous development in test management' },
+    heading: { de: 'Kontinuierliche Entwicklung', en: 'Continuous development' },
     pairs: [
       {
         title: { de: 'Deine Weiterentwicklung ist unser Antrieb!', en: 'Your development is our drive!' },
@@ -395,14 +394,14 @@ export const home: HomeContent = {
         },
       },
     ],
-    cta: { de: 'Mehr über die Akademie', en: 'More about the academy' },
+    cta: { de: 'Academy entdecken', en: 'Discover the Academy' },
     ctaUrl: 'https://test-it-academy.com/',
   },
   tour: {
-    heading: { de: '360° Büro Tour', en: '360° Office tour' },
+    heading: { de: 'Büro Tour', en: 'Office tour' },
     text: {
-      de: 'Erkunden Sie unser Büro virtuell. Öffnen Sie die interaktive 360°-Ansicht in Google Maps.',
-      en: 'Explore our office virtually. Open the interactive 360° view in Google Maps.',
+      de: 'Werfen Sie einen virtuellen Blick in unsere Räume in Eschborn, vom Empfang über die Schulungs- und Projekträume bis zu den Teamflächen. Öffnen Sie die interaktive 360°-Ansicht direkt in Google Maps.',
+      en: 'Take a virtual look inside our offices in Eschborn, from reception and the training and project rooms to the team areas. Open the interactive 360° view directly in Google Maps.',
     },
     cta: { de: 'In Google Maps öffnen', en: 'Open in Google Maps' },
     embedUrl:

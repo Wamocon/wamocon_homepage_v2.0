@@ -1,0 +1,609 @@
+---
+/**
+ * Webdesign department + portfolio page. WMC-native (uses BaseLayout via the
+ * page), so header, footer, cookie banner and language dropdown are consistent.
+ */
+import Button from '../ui/Button.astro';
+import ContactBlock from './ContactBlock.astro';
+import { webdesign as w, industries, projects } from '../../data/webdesign';
+import type { Lang } from '../../i18n/config';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+
+// Marquee shows the portfolio screenshots twice for a seamless loop.
+const marquee = [...projects, ...projects];
+const industryLabel = (key: string) =>
+  industries.find((i) => i.key === key)?.label[lang] ?? key;
+---
+
+<!-- ============ HERO / HOOK ============ -->
+<section class="wd-hero">
+  <div class="wd-hero__glow" aria-hidden="true"></div>
+  <div class="container wd-hero__inner">
+    <div class="wd-hero__copy" data-reveal="up">
+      <span class="wd-hero__badge">{w.hero.eyebrow[lang]}</span>
+      <h1 class="wd-hero__title">{w.hero.title[lang]}</h1>
+      <p class="wd-hero__lead">{w.hero.lead[lang]}</p>
+      <div class="wd-hero__actions">
+        <Button href="#kontakt" variant="primary" size="lg">{w.hero.ctaPrimary[lang]}</Button>
+        <Button href="#referenzen" variant="outline" size="lg">{w.hero.ctaSecondary[lang]}</Button>
+      </div>
+      <ul class="wd-hero__stats">
+        {w.hero.stats.map((s) => (
+          <li>
+            <span class="wd-hero__stat-value">{s.value}</span>
+            <span class="wd-hero__stat-label">{s.label[lang]}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- Floating browser mockups of real client sites. -->
+    <div class="wd-hero__showcase" data-reveal="zoom" aria-hidden="true">
+      <figure class="wd-frame wd-frame--back">
+        <span class="wd-frame__bar"><i></i><i></i><i></i></span>
+        <img src="/images/webdesign/sabas-home.png" alt="" loading="eager" width="1440" height="900" />
+      </figure>
+      <figure class="wd-frame wd-frame--mid">
+        <span class="wd-frame__bar"><i></i><i></i><i></i></span>
+        <img src="/images/webdesign/mikail-hair-salon.png" alt="" loading="eager" width="1440" height="900" />
+      </figure>
+      <figure class="wd-frame wd-frame--front">
+        <span class="wd-frame__bar"><i></i><i></i><i></i></span>
+        <img src="/images/webdesign/maryam-barbershop.png" alt="" loading="eager" width="1440" height="900" />
+      </figure>
+    </div>
+  </div>
+
+  <!-- Auto-scrolling live-preview strip as the visual hook. -->
+  <div class="wd-marquee" aria-hidden="true">
+    <div class="wd-marquee__track">
+      {marquee.map((p) => (
+        <figure class="wd-marquee__item">
+          <img src={p.image} alt="" loading="lazy" width="1440" height="900" />
+          <figcaption>{p.name}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEPARTMENT ============ -->
+<section class="section wd-dept">
+  <div class="container">
+    <div class="wd-section-head" data-reveal="up">
+      <h2>{w.department.heading[lang]}</h2>
+      <p class="text-muted">{w.department.intro[lang]}</p>
+    </div>
+    <div class="wd-cap-grid">
+      {w.department.capabilities.map((c, i) => (
+        <article class="wd-cap" data-reveal="up" data-reveal-delay={(i % 3) * 80}>
+          <span class="wd-cap__num">{String(i + 1).padStart(2, '0')}</span>
+          <h3>{c.title[lang]}</h3>
+          <p class="text-muted">{c.text[lang]}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ============ PORTFOLIO ============ -->
+<section class="section section--alt wd-portfolio" id="referenzen">
+  <div class="container">
+    <div class="wd-section-head" data-reveal="up">
+      <h2>{w.portfolio.heading[lang]}</h2>
+      <p class="text-muted">{w.portfolio.intro[lang]}</p>
+    </div>
+
+    <div class="wd-filters" role="tablist" aria-label={w.portfolio.heading[lang]}>
+      {industries.map((cat, i) => (
+        <button
+          type="button"
+          class:list={['wd-filter', { 'is-active': i === 0 }]}
+          data-filter={cat.key}
+          aria-pressed={i === 0 ? 'true' : 'false'}
+        >
+          {cat.label[lang]}
+        </button>
+      ))}
+    </div>
+
+    <div class="wd-grid">
+      {projects.map((p) => (
+        <article
+          class:list={['wd-card', { 'wd-card--featured': p.featured }]}
+          data-category={p.category}
+        >
+          <a class="wd-card__media" href={p.url} target="_blank" rel="noopener noreferrer">
+            <img src={p.image} alt={`${p.name} – Website`} loading="lazy" width="1440" height="900" />
+            {p.featured && <span class="wd-card__badge">{w.portfolio.featuredLabel[lang]}</span>}
+            <span class="wd-card__open">{w.portfolio.live[lang]} ↗</span>
+          </a>
+          <div class="wd-card__body">
+            <div class="wd-card__meta">
+              <span class="wd-card__industry">{industryLabel(p.category)}</span>
+              <span class="wd-card__location">{p.location}</span>
+            </div>
+            <h3 class="wd-card__name">{p.name}</h3>
+            <p class="wd-card__tagline">{p.tagline[lang]}</p>
+            <p class="wd-card__desc text-muted">{p.description[lang]}</p>
+            <a class="wd-card__link" href={p.url} target="_blank" rel="noopener noreferrer">
+              {w.portfolio.live[lang]} <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ============ SEARCH — proof / research invited ============ -->
+<section class="section section--alt wd-trust">
+  <div class="container">
+    <div class="wd-section-head" data-reveal="up">
+      <h2>{w.trust.heading[lang]}</h2>
+      <p class="text-muted">{w.trust.text[lang]}</p>
+    </div>
+    <ul class="wd-trust__stats">
+      {w.trust.stats.map((s) => (
+        <li data-reveal="up">
+          <span class="wd-trust__value">{s.value}</span>
+          <span class="wd-trust__label">{s.label[lang]}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<!-- ============ DESIRE — outcomes ============ -->
+<section class="section wd-outcomes">
+  <div class="container">
+    <div class="wd-section-head" data-reveal="up">
+      <h2>{w.outcomes.heading[lang]}</h2>
+      <p class="text-muted">{w.outcomes.intro[lang]}</p>
+    </div>
+    <div class="wd-outcomes__grid">
+      {w.outcomes.items.map((o, i) => (
+        <article class="wd-outcome" data-reveal="up" data-reveal-delay={(i % 2) * 80}>
+          <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path d="M3 8.5l3 3 7-7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          <div>
+            <h3>{o.title[lang]}</h3>
+            <p class="text-muted">{o.text[lang]}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ============ ACTION — PREMIUM OFFER ============ -->
+<section class="section wd-offer">
+  <div class="container wd-offer__inner">
+    <div class="wd-offer__intro" data-reveal="up">
+      <span class="wd-eyebrow">{w.offer.eyebrow[lang]}</span>
+      <h2>{w.offer.heading[lang]}</h2>
+      <p class="wd-offer__anchor">{w.offer.anchor[lang]}</p>
+      <p class="text-muted">{w.offer.compare[lang]}</p>
+    </div>
+    <div class="wd-offer__card" data-reveal="up" data-reveal-delay="80">
+      <div class="wd-offer__price">
+        <span class="wd-offer__amount">{w.offer.price}</span>
+        <span class="wd-offer__note">{w.offer.priceNote[lang]}</span>
+      </div>
+      <ul class="wd-offer__features">
+        {w.offer.features.map((f) => (
+          <li>
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 8.5l3 3 7-7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            <span>{f[lang]}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="wd-offer__guarantee">{w.offer.guarantee[lang]}</p>
+      <Button href="#kontakt" variant="primary" size="lg" class="wd-offer__cta">{w.offer.cta[lang]}</Button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LIKE — zero risk / SHARE / LOVE ============ -->
+<section class="section wd-close">
+  <div class="container wd-close__grid">
+    <div class="wd-close__card wd-close__card--risk" data-reveal="up">
+      <h2>{w.guarantee.heading[lang]}</h2>
+      <ul class="wd-close__list">
+        {w.guarantee.points.map((p) => (
+          <li>
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 8.5l3 3 7-7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            <span>{p[lang]}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="wd-close__card" data-reveal="up" data-reveal-delay="80">
+      <h3>{w.share.heading[lang]}</h3>
+      <p class="text-muted">{w.share.text[lang]}</p>
+    </div>
+  </div>
+
+  <div class="container wd-love" data-reveal="up">
+    <div>
+      <h2>{w.love.heading[lang]}</h2>
+      <p class="text-muted">{w.love.text[lang]}</p>
+    </div>
+    <Button href="#kontakt" variant="primary" size="lg">{w.love.cta[lang]}</Button>
+  </div>
+</section>
+
+<div id="kontakt">
+  <ContactBlock lang={lang} />
+</div>
+
+<style>
+  .wd-eyebrow {
+    display: inline-block;
+    margin-bottom: 0.9rem;
+    color: var(--color-accent);
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.82rem;
+  }
+  .wd-section-head { max-width: 760px; margin-bottom: clamp(2rem, 5vw, 3.5rem); }
+  .wd-section-head h2 { margin-bottom: 1rem; }
+
+  /* ---------- hero ---------- */
+  .wd-hero {
+    position: relative;
+    overflow: hidden;
+    padding-top: clamp(2.5rem, 7vw, 5rem);
+    padding-bottom: clamp(1rem, 3vw, 2rem);
+  }
+  /* Dramatic warm-sun + red glow that sets this page apart. */
+  .wd-hero__glow {
+    position: absolute;
+    inset: -20% -10% auto -10%;
+    height: 130%;
+    background:
+      radial-gradient(46% 60% at 78% 20%, rgba(255, 138, 0, 0.22), transparent 70%),
+      radial-gradient(50% 55% at 92% 42%, rgba(244, 14, 14, 0.28), transparent 72%),
+      radial-gradient(60% 55% at 12% 8%, rgba(244, 14, 14, 0.12), transparent 70%);
+    pointer-events: none;
+    filter: saturate(1.05);
+  }
+  .wd-hero__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+    min-height: clamp(420px, 52vw, 640px);
+  }
+  .wd-hero__copy { max-width: 640px; }
+  .wd-hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.2rem;
+    padding: 0.4rem 0.95rem;
+    border: 1px solid rgba(244, 14, 14, 0.5);
+    border-radius: 999px;
+    background: rgba(244, 14, 14, 0.1);
+    color: #fff;
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.74rem;
+  }
+  .wd-hero__badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--color-accent); box-shadow: 0 0 10px 2px rgba(244, 14, 14, 0.7); }
+  .wd-hero__title {
+    font-size: clamp(2.5rem, 5.6vw, 4.6rem);
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+  }
+  .wd-hero__lead {
+    max-width: 54ch;
+    margin-top: 1.4rem;
+    font-size: clamp(1.05rem, 1.7vw, 1.3rem);
+    color: var(--color-text-muted);
+  }
+  .wd-hero__actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+  .wd-hero__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+  .wd-hero__stat-value {
+    display: block;
+    font-size: clamp(1.7rem, 3vw, 2.6rem);
+    font-weight: var(--fw-bold);
+    background: linear-gradient(120deg, #ff8a00, var(--color-accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1;
+  }
+  .wd-hero__stat-label { display: block; margin-top: 0.4rem; font-size: 0.9rem; color: var(--color-text-muted); }
+
+  /* ---------- hero showcase (floating browser mockups) ---------- */
+  .wd-hero__showcase {
+    position: relative;
+    min-height: clamp(320px, 34vw, 480px);
+    perspective: 1600px;
+  }
+  .wd-frame {
+    position: absolute;
+    margin: 0;
+    width: min(78%, 460px);
+    border-radius: 14px;
+    overflow: hidden;
+    background: #0c0c0c;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 40px 90px rgba(0, 0, 0, 0.6);
+    will-change: transform;
+  }
+  .wd-frame__bar {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    height: 26px;
+    padding: 0 12px;
+    background: #161616;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .wd-frame__bar i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.25); }
+  .wd-frame__bar i:first-child { background: #ff5f57; }
+  .wd-frame__bar i:nth-child(2) { background: #febc2e; }
+  .wd-frame__bar i:nth-child(3) { background: #28c840; }
+  .wd-frame img { display: block; width: 100%; height: auto; }
+  .wd-frame--back { top: 0; right: 2%; transform: rotate(4deg) translateZ(-40px); opacity: 0.75; animation: wd-float 9s ease-in-out infinite; }
+  .wd-frame--mid { top: 16%; right: 16%; transform: rotate(-3deg); opacity: 0.9; animation: wd-float 8s ease-in-out infinite reverse; }
+  .wd-frame--front { top: 34%; right: 0; transform: rotate(2deg); z-index: 2; box-shadow: 0 50px 110px rgba(244, 14, 14, 0.25), 0 40px 90px rgba(0, 0, 0, 0.6); animation: wd-float 7s ease-in-out infinite; }
+  @keyframes wd-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -14px; } }
+  @media (prefers-reduced-motion: reduce) { .wd-frame { animation: none !important; } }
+
+  /* ---------- marquee hook ---------- */
+  .wd-marquee {
+    margin-top: clamp(2.5rem, 6vw, 4.5rem);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+    overflow: hidden;
+  }
+  .wd-marquee__track {
+    display: flex;
+    gap: 1.25rem;
+    width: max-content;
+    animation: wd-scroll 60s linear infinite;
+  }
+  .wd-marquee:hover .wd-marquee__track { animation-play-state: paused; }
+  .wd-marquee__item {
+    position: relative;
+    flex: 0 0 auto;
+    width: clamp(260px, 32vw, 420px);
+    margin: 0;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+    background: #000;
+  }
+  .wd-marquee__item img { display: block; width: 100%; height: auto; }
+  .wd-marquee__item figcaption {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    padding: 0.9rem 1rem 0.7rem;
+    font-size: 0.82rem;
+    color: #fff;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.82));
+  }
+  @keyframes wd-scroll { from { transform: translateX(0); } to { transform: translateX(calc(-50% - 0.625rem)); } }
+  @media (prefers-reduced-motion: reduce) { .wd-marquee__track { animation: none; } }
+
+  /* ---------- department capabilities ---------- */
+  .wd-cap-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .wd-cap {
+    padding: 2rem;
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    transition: transform var(--dur-med) var(--ease-out), border-color var(--dur-med);
+  }
+  .wd-cap:hover { transform: translateY(-6px); border-color: rgba(244, 14, 14, 0.4); }
+  .wd-cap__num { display: block; font-size: 1.4rem; font-weight: var(--fw-bold); color: var(--color-accent); line-height: 1; margin-bottom: 0.9rem; }
+  .wd-cap h3 { margin-bottom: 0.6rem; font-size: 1.2rem; }
+
+  /* ---------- portfolio ---------- */
+  .wd-filters { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: clamp(1.5rem, 3vw, 2.25rem); }
+  .wd-filter {
+    padding: 0.55rem 1.1rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--color-text-muted);
+    font: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color var(--dur-fast), border-color var(--dur-fast), background var(--dur-fast);
+  }
+  .wd-filter:hover { color: var(--color-text); border-color: var(--color-accent); }
+  .wd-filter.is-active { color: #fff; background: var(--color-accent-surface); border-color: var(--color-accent-surface); }
+
+  .wd-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  .wd-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: transform var(--dur-med) var(--ease-out), border-color var(--dur-med);
+  }
+  .wd-card:hover { transform: translateY(-6px); border-color: rgba(244, 14, 14, 0.4); }
+  .wd-card.is-hidden { display: none; }
+  .wd-card--featured { grid-column: 1 / -1; }
+
+  .wd-card__media { position: relative; display: block; aspect-ratio: 16 / 10; overflow: hidden; }
+  .wd-card__media img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform var(--dur-med) var(--ease-out); }
+  .wd-card:hover .wd-card__media img { transform: scale(1.03); }
+  .wd-card__badge {
+    position: absolute; top: 1rem; left: 1rem;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.72rem; font-weight: var(--fw-semibold); letter-spacing: 0.04em; text-transform: uppercase;
+    color: #fff; background: var(--color-accent-surface); border-radius: var(--radius-pill);
+  }
+  .wd-card__open {
+    position: absolute; right: 1rem; bottom: 1rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem; font-weight: var(--fw-semibold);
+    color: #fff; background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: var(--radius-pill);
+    opacity: 0; transform: translateY(6px);
+    transition: opacity var(--dur-fast), transform var(--dur-fast);
+  }
+  .wd-card__media:hover .wd-card__open, .wd-card__media:focus-visible .wd-card__open { opacity: 1; transform: none; }
+
+  .wd-card__body { display: flex; flex-direction: column; gap: 0.5rem; padding: 1.5rem; }
+  .wd-card__meta { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; }
+  .wd-card__industry { color: var(--color-accent); font-weight: var(--fw-semibold); font-size: 0.82rem; }
+  .wd-card__location { color: var(--color-text-muted); font-size: 0.82rem; }
+  .wd-card__name { font-size: 1.35rem; margin: 0.1rem 0 0; }
+  .wd-card__tagline { font-weight: var(--fw-semibold); color: var(--color-text); margin: 0; }
+  .wd-card__desc { line-height: 1.6; margin: 0.2rem 0 0.4rem; }
+  .wd-card--featured .wd-card__body { max-width: 60ch; }
+  .wd-card__link { margin-top: auto; color: var(--color-accent); font-weight: var(--fw-semibold); }
+  .wd-card__link:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+
+  @media (min-width: 900px) {
+    .wd-card--featured { display: grid; grid-template-columns: 1.15fr 0.85fr; }
+    .wd-card--featured .wd-card__media { aspect-ratio: auto; height: 100%; }
+  }
+
+  /* ---------- offer ---------- */
+  .wd-offer__inner {
+    display: grid;
+    grid-template-columns: 1fr 0.9fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .wd-offer__anchor { color: var(--color-accent); font-weight: var(--fw-semibold); font-size: 1.2rem; margin: 0.4rem 0 1rem; }
+  .wd-offer__card {
+    padding: clamp(1.8rem, 4vw, 2.75rem);
+    background: var(--surface-card);
+    border: 1px solid rgba(244, 14, 14, 0.35);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  }
+  .wd-offer__price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem 1rem; margin-bottom: 1.5rem; }
+  .wd-offer__amount { font-size: clamp(2.2rem, 5vw, 3rem); font-weight: var(--fw-bold); color: #fff; line-height: 1; }
+  .wd-offer__note { color: var(--color-text-muted); font-size: 0.95rem; }
+  .wd-offer__features { display: grid; gap: 0.8rem; margin-bottom: 1.5rem; }
+  .wd-offer__features li { display: flex; gap: 0.7rem; align-items: flex-start; line-height: 1.5; }
+  .wd-offer__features svg { flex: 0 0 auto; margin-top: 0.15rem; color: var(--color-accent); }
+  .wd-offer__guarantee { padding-top: 1.25rem; border-top: 1px solid var(--border-subtle); color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.6; }
+  .wd-offer__cta { margin-top: 1.5rem; }
+
+  /* ---------- trust (Search) ---------- */
+  .wd-trust__stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    list-style: none;
+  }
+  .wd-trust__stats li {
+    padding: 1.75rem;
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+  }
+  .wd-trust__value { display: block; font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: var(--fw-bold); color: var(--color-accent-2, var(--color-accent)); line-height: 1; }
+  .wd-trust__label { display: block; margin-top: 0.5rem; font-size: 0.9rem; color: var(--color-text-muted); }
+
+  /* ---------- outcomes (Desire) ---------- */
+  .wd-outcomes__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .wd-outcome {
+    display: flex;
+    gap: 1rem;
+    padding: 1.75rem;
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+  }
+  .wd-outcome svg { flex: 0 0 auto; margin-top: 0.2rem; color: var(--color-accent); }
+  .wd-outcome h3 { margin-bottom: 0.4rem; font-size: 1.2rem; }
+
+  /* ---------- close (Like / Share / Love) ---------- */
+  .wd-close__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+  .wd-close__card {
+    padding: clamp(1.6rem, 3vw, 2.4rem);
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+  }
+  .wd-close__card--risk { border-color: rgba(244, 14, 14, 0.35); }
+  .wd-close__card h2 { margin-bottom: 1.25rem; }
+  .wd-close__card h3 { margin-bottom: 0.9rem; font-size: 1.4rem; }
+  .wd-close__list { display: grid; gap: 0.8rem; }
+  .wd-close__list li { display: flex; gap: 0.7rem; align-items: flex-start; line-height: 1.5; }
+  .wd-close__list svg { flex: 0 0 auto; margin-top: 0.15rem; color: var(--color-accent); }
+  .wd-love {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem 2.5rem;
+    padding: clamp(1.6rem, 3vw, 2.4rem);
+    background: linear-gradient(120deg, rgba(244, 14, 14, 0.12), transparent 70%), var(--surface-card);
+    border: 1px solid rgba(244, 14, 14, 0.3);
+    border-radius: var(--radius-lg);
+  }
+  .wd-love h2 { margin-bottom: 0.6rem; }
+  .wd-love > div { max-width: 60ch; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 980px) {
+    .wd-hero__inner { grid-template-columns: 1fr; min-height: 0; }
+    .wd-hero__showcase { min-height: clamp(300px, 70vw, 440px); margin-top: 1rem; }
+    .wd-frame { width: min(70%, 420px); }
+  }
+  @media (max-width: 900px) {
+    .wd-cap-grid { grid-template-columns: 1fr 1fr; }
+    .wd-grid { grid-template-columns: 1fr; }
+    .wd-offer__inner { grid-template-columns: 1fr; }
+    .wd-trust__stats { grid-template-columns: 1fr 1fr; }
+    .wd-outcomes__grid { grid-template-columns: 1fr; }
+    .wd-close__grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .wd-cap-grid { grid-template-columns: 1fr; }
+    .wd-hero__stats { gap: 1.5rem; }
+    /* Single clean mockup on small screens. */
+    .wd-hero__showcase { min-height: 62vw; }
+    .wd-frame--back, .wd-frame--mid { display: none; }
+    .wd-frame--front { top: 0; right: 50%; transform: translateX(50%) rotate(0); width: min(92%, 420px); }
+  }
+</style>
+
+<script>
+  // Portfolio industry filter.
+  const filters = document.querySelectorAll<HTMLButtonElement>('.wd-filter');
+  const cards = document.querySelectorAll<HTMLElement>('.wd-card');
+  filters.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.filter;
+      filters.forEach((f) => {
+        const active = f === btn;
+        f.classList.toggle('is-active', active);
+        f.setAttribute('aria-pressed', String(active));
+      });
+      cards.forEach((card) => {
+        const show = key === 'all' || card.dataset.category === key;
+        card.classList.toggle('is-hidden', !show);
+      });
+    });
+  });
+</script>

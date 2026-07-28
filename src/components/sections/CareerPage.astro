@@ -7,6 +7,10 @@ interface Props {
 }
 const { lang } = Astro.props;
 const de = lang === "de";
+// Cross-links to related pages (review HP#23 / HP#26).
+const aboutTeamHref = de ? "/ueber-uns/#team" : "/en/about-us/#team";
+const voicesHref = de ? "/mitarbeiter-stimmen/" : "/en/employee-voices/";
+const azubiHref = de ? "/azubi-fae/" : "/en/apprenticeship/";
 
 const VIDEO_BASE =
   "https://github.com/Wamocon/wamocon_homepage/raw/leon-dev/public";
@@ -77,7 +81,7 @@ const c = de
       ],
       jobsHead: "Stellenangebote",
       tabs: ["Kurzbeschreibung", "Aufgaben", "Anforderungen", "Was bieten wir"],
-      applyBtn: "Antwort",
+      applyBtn: "Jetzt bewerben",
       voicesHead: "Was unsere Mitarbeiter sagen",
       voices: [
         {
@@ -244,7 +248,7 @@ const c = de
       ],
       jobsHead: "Vacancies",
       tabs: ["Brief description", "Tasks", "Requirements", "What we offer"],
-      applyBtn: "Answer",
+      applyBtn: "Apply now",
       voicesHead: "What our employees say",
       voices: [
         {
@@ -511,8 +515,9 @@ const jobs = de
       },
     ];
 
-const kununu = de
-  ? [
+// Kununu reviews are kept in their original wording in both languages —
+// authentic employee voices must not be altered by translation (review HP#31).
+const kununu = [
       { r: "4,8", t: "Zentralgelegener Arbeitsplatz: professionelle und angenehme Arbeitsatmosphäre", d: "Mai 2025", role: "Angestellte/r · Administration" },
       { r: "5,0", t: "Great place to grow and learn", d: "Mai 2025", role: "Werkstudent/in · IT" },
       { r: "5,0", t: "Familiäre Atmosphäre, super um sich extremst schnell weiterzuentwickeln.", d: "Mai 2025", role: "Praktikant/in · IT" },
@@ -523,18 +528,6 @@ const kununu = de
       { r: "4,8", t: "Super Arbeitgeber mit klasse Aufstiegschancen", d: "November 2020", role: "Angestellte/r · IT" },
       { r: "5,0", t: "Familien Atmosphäre", d: "April 2020", role: "Ex-Angestellte/r · IT" },
       { r: "5,0", t: "Der Beste Arbeitgeber der Region!", d: "April 2020", role: "Ex-Angestellte/r · IT" },
-    ]
-  : [
-      { r: "4.8", t: "Centrally located workplace: professional and pleasant working atmosphere", d: "May 2025", role: "Employee · Administration" },
-      { r: "5.0", t: "Great place to grow and learn", d: "May 2025", role: "Working student · IT" },
-      { r: "5.0", t: "Family-like atmosphere, great for developing extremely quickly.", d: "May 2025", role: "Intern · IT" },
-      { r: "5.0", t: "Proud WMC member for over 8 years!!!", d: "May 2025", role: "Employee · Eschborn" },
-      { r: "4.9", t: "I experience a highly positive and engaging work environment", d: "April 2025", role: "Employee · IT" },
-      { r: "4.5", t: "Review by a former employer in the field of software testing", d: "January 2024", role: "Former employee · IT" },
-      { r: "5.0", t: "A top employer with innovative projects and real development opportunities", d: "May 2025", role: "Employee · IT" },
-      { r: "4.8", t: "Great employer with excellent advancement opportunities", d: "November 2020", role: "Employee · IT" },
-      { r: "5.0", t: "Family atmosphere", d: "April 2020", role: "Former employee · IT" },
-      { r: "5.0", t: "The best employer in the region!", d: "April 2020", role: "Former employee · IT" },
     ];
 
 const videos = [
@@ -592,6 +585,17 @@ const videoConsent = de
   <div class="wrap">
     <h2 class="head"><span class="t-red">{c.joinHeadRed}</span> <span class="t-white">{c.joinHeadWhite}</span></h2>
     {c.joinText.map((p) => <p class="lead">{p}</p>)}
+    <div class="career-crosslinks">
+      <a class="career-crosslink" href={aboutTeamHref}>
+        {de ? "Lernen Sie das ganze Team kennen" : "Meet the whole team"} <span aria-hidden="true">→</span>
+      </a>
+      <a class="career-crosslink" href={voicesHref}>
+        {de ? "Mitarbeiter-Stimmen ansehen" : "See employee voices"} <span aria-hidden="true">→</span>
+      </a>
+      <a class="career-crosslink" href={azubiHref}>
+        {de ? "Ausbildung: Azubi FIAE" : "Apprenticeship: FIAE trainee"} <span aria-hidden="true">→</span>
+      </a>
+    </div>
   </div>
 
   <!-- STELLENANGEBOTE -->
@@ -741,10 +745,11 @@ const videoConsent = de
   .career {
     color: var(--color-text);
   }
+  /* Match the site-wide container width so this page is as wide as the others. */
   .wrap {
-    max-width: 1200px;
+    max-width: var(--container-max);
     margin: 0 auto;
-    padding: clamp(2.5rem, 6vw, 5rem) 1.25rem;
+    padding: clamp(2.5rem, 6vw, 5rem) var(--container-pad);
   }
   .wrap.hero {
     padding-top: clamp(1.5rem, 3vw, 2.5rem);
@@ -775,6 +780,9 @@ const videoConsent = de
     margin: 0 0 1.25rem;
     max-width: 80ch;
   }
+  .career-crosslinks { display: flex; flex-wrap: wrap; gap: 1rem 2rem; margin-top: 1.5rem; }
+  .career-crosslink { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--color-accent); font-weight: var(--fw-semibold); }
+  .career-crosslink:hover { text-decoration: underline; text-underline-offset: 0.2em; }
   .hero {
     display: grid;
     grid-template-columns: 1.1fr 0.9fr;
@@ -1073,13 +1081,16 @@ const videoConsent = de
   }
   .panel ul {
     margin: 0 0 1rem;
-    padding-left: 1.25rem;
+    padding-left: 1.4rem;
     color: var(--color-text-muted);
     line-height: 1.7;
+    list-style: disc outside;
   }
   .panel li {
     margin-bottom: 0.5rem;
+    padding-left: 0.25rem;
   }
+  .panel li::marker { color: var(--color-accent); }
   /* KUNUNU */
   .krate {
     color: var(--color-accent);

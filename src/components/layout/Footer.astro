@@ -4,7 +4,7 @@
  * logo + copyright on the left, two columns of page links, and a legal column.
  * All links come from src/i18n/config.ts.
  */
-import { nav, legalNav, ui, company, type Lang } from '../../i18n/config';
+import { nav, legalNav, ui, company, type Lang, type NavLink } from '../../i18n/config';
 
 interface Props {
   lang: Lang;
@@ -13,13 +13,15 @@ const { lang } = Astro.props;
 const t = (k: keyof (typeof ui)['de']) => ui[lang][k];
 const year = new Date().getFullYear();
 
-const linkFor = (key: string) => nav.find((n) => n.key === key)![lang];
+// Flatten nav (dropdown groups + children) so footer keys resolve either way.
+const flat: NavLink[] = nav.flatMap((n) => (n.children ? n.children : [n]));
+const linkFor = (key: string) => flat.find((n) => n.key === key)![lang];
 
 // Two link columns + a legal column, exactly like the official footer.
 const col1 = ['home', 'system', 'apps', 'cooperation', 'testimonials', 'references'].map(linkFor);
-const col2 = ['career', 'about', 'employees', 'azubi', 'webdesign', 'contact'].map(linkFor);
+const col2 = ['career', 'about', 'employees', 'azubi', 'webdesign'].map(linkFor);
 const legal = [legalNav.privacy[lang], legalNav.imprint[lang], legalNav.accessibility[lang]];
-const privacySettings = lang === 'de' ? 'Externe Inhalte zurücksetzen' : 'Reset external-content choices';
+const privacySettings = lang === 'de' ? 'Cookie-Einstellungen' : 'Cookie settings';
 
 // Art. 50 EU AI Act transparency notice. Must be shown in the language of the
 // page — a German-only notice does not inform an English-speaking visitor.
@@ -41,7 +43,7 @@ const aiNotice = lang === 'de'
       <p class="footer__copy">
         Copyright © {year} {company.name}.<br />{t('footer.rights')}
       </p>
-      <button class="footer__privacy" type="button" data-reset-external-consent>
+      <button class="footer__privacy" type="button" data-open-consent-settings>
         {privacySettings}
       </button>
     </div>
@@ -113,12 +115,11 @@ const aiNotice = lang === 'de'
     color: var(--color-accent);
   }
   .footer__ai-notice {
-    margin: 0 auto;
+    margin: 0;
     padding-bottom: clamp(2rem, 4vw, 3rem);
     color: var(--color-text-muted);
     font-size: 0.75rem;
     line-height: 1.55;
-    text-align: center;
     max-width: 940px;
   }
 
@@ -135,16 +136,3 @@ const aiNotice = lang === 'de'
   }
 </style>
 
-<script>
-  document.querySelectorAll<HTMLButtonElement>('[data-reset-external-consent]').forEach((button) => {
-    button.addEventListener('click', () => {
-      try {
-        localStorage.removeItem('wamocon-consent-youtube');
-        localStorage.removeItem('wamocon-consent-google-maps');
-      } catch {
-        // Reload still removes already loaded third-party frames from this page.
-      }
-      window.location.reload();
-    });
-  });
-</script>

@@ -5,6 +5,7 @@
  */
 import Button from '../../ui/Button.astro';
 import ExternalEmbed from '../../ui/ExternalEmbed.astro';
+import ContactBlock from '../ContactBlock.astro';
 import { home } from '../../../data/home';
 import { nav, ui, legalNav, type Lang } from '../../../i18n/config';
 
@@ -13,8 +14,18 @@ interface Props {
 }
 const { lang } = Astro.props;
 const t = (k: keyof (typeof ui)['de']) => ui[lang][k];
-const aboutHref = nav.find((n) => n.key === 'about')![lang].href;
+// Keys now live inside dropdown groups, so search the flattened nav.
+const flatNav = nav.flatMap((n) => (n.children ? n.children : [n]));
+const hrefForKey = (key: string) => flatNav.find((n) => n.key === key)![lang].href;
+const aboutHref = hrefForKey('about');
+const reviewsHref = hrefForKey('testimonials');
+const referencesHref = hrefForKey('references');
+const systemHref = hrefForKey('system');
 const privacyHref = legalNav.privacy[lang].href;
+// Magazine download switches with the active language (DE / EN edition).
+const magazinUrl = lang === 'de'
+  ? 'https://wamocon-my.sharepoint.com/:b:/p/waleri_moretz/EZUMpxrfjYdPt7g1H7xkQhkBnuG6v-tWKLCPNZIN6Wejlw?e=bQVx7k&download=1'
+  : 'https://wamocon-my.sharepoint.com/my?id=%2Fpersonal%2Fwaleri%5Fmoretz%5Fwamocon%5Fcom%2FDocuments%2F01%5FWMC%2F01%20Vertrieb%20und%20Marketing%2F01%2D01%20Marketing%2F01%2D01%2D14%20WMC%20Marketing%2F07%20WMC%20Magazin%2FFinal%20Magazin%20WAMOCON&viewid=6e86f4bd%2D8476%2D4fa5%2Dad74%2D5e1cf1eedc8b';
 
 
 
@@ -69,6 +80,7 @@ const modal = {
     close: 'Close',
   },
 }[lang];
+
 ---
 
 <!-- ============ HERO ============ -->
@@ -227,6 +239,27 @@ const modal = {
 </div>
 
 
+<!-- ============ 360° BOOSTER TEASER ============ -->
+<section class="section booster-teaser">
+  <div class="container booster-teaser__inner" data-reveal="up">
+    <div class="booster-teaser__copy">
+      <span class="booster-teaser__badge">360°</span>
+      <h2>{lang === 'de' ? 'Das 360° Booster System' : 'The 360° Booster System'}</h2>
+      <p class="text-muted">
+        {lang === 'de'
+          ? 'Unser strukturierter Weg vom ersten Kontakt bis zum erfolgreichen IT-Projekt: sechs aufeinander aufbauende Schritte, die Testerinnen und Tester sicher durch jedes Projekt führen und ihre Karriere gezielt weiterentwickeln.'
+          : 'Our structured path from first contact to a successful IT project: six sequential steps that guide testers safely through every project and develop their careers in a targeted way.'}
+      </p>
+      <Button href={systemHref} variant="primary" size="lg">
+        {lang === 'de' ? 'Zum 360° Booster System' : 'Explore the 360° Booster System'}
+      </Button>
+    </div>
+    <figure class="booster-teaser__media">
+      <img src="/images/system-360.svg" alt={lang === 'de' ? 'Das 360° Booster System mit sechs Schritten' : 'The 360° Booster System with six steps'} loading="lazy" />
+    </figure>
+  </div>
+</section>
+
 <!-- ============ WHY WAMOCON ============ -->
 <section class="section why">
   <div class="container">
@@ -250,14 +283,21 @@ const modal = {
 <!-- ============ ABOUT ============ -->
 <section class="section about">
   <div class="container about__inner">
-    <h2 class="about__heading" data-reveal="up">
-      <span class="about__heading-accent">{aboutHeading.first}</span>{aboutHeading.rest}
-    </h2>
-    <div class="about__grid">
-      <div class="about__cols" data-reveal="left">
+    <div class="about__grid" data-reveal="up">
+      <div class="about__cols">
+        <h2 class="about__heading">
+          <span class="about__heading-accent">{aboutHeading.first}</span>{aboutHeading.rest}
+        </h2>
         {home.about.paragraphs[lang].map((p) => <p class="text-muted">{p}</p>)}
+        <div class="about__actions">
+          <Button href={aboutHref} variant="primary">{lang === 'de' ? 'Mehr über uns' : 'More about us'}</Button>
+          <a class="about__magazin" href={magazinUrl} target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            {lang === 'de' ? 'Magazin herunterladen' : 'Download magazine'}
+          </a>
+        </div>
       </div>
-      <figure class="about__media" data-reveal="right">
+      <figure class="about__media">
         <img
           src="/images/about-skyline.jpg"
           alt="Frankfurt Skyline"
@@ -312,6 +352,11 @@ const modal = {
         ))
       }
     </div>
+    <div class="projects__cta" data-reveal="up">
+      <a class="projects__link" href={reviewsHref}>
+        {lang === 'de' ? 'Was unsere Kunden sagen' : 'What our clients say'} <span aria-hidden="true">→</span>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -342,9 +387,22 @@ const modal = {
     <div class="section-head" data-reveal="up">
       <h2>{home.clients.heading[lang]}</h2>
     </div>
-    <ul class="clients__list" data-reveal="up">
-      {home.clients.list.map((c) => <li class="clients__item">{c}</li>)}
-    </ul>
+  </div>
+  <!-- Two rows of client names that drift in opposite directions. -->
+  <div class="clients__marquee" data-reveal="up" aria-label={home.clients.heading[lang]}>
+    <div class="clients__track">
+      {[...home.clients.list, ...home.clients.list].map((c) => <span class="clients__chip">{c}</span>)}
+    </div>
+    <div class="clients__track clients__track--reverse" aria-hidden="true">
+      {[...home.clients.list, ...home.clients.list].map((c) => <span class="clients__chip">{c}</span>)}
+    </div>
+  </div>
+  <div class="container">
+    <div class="clients__cta" data-reveal="up">
+      <a class="projects__link" href={referencesHref}>
+        {lang === 'de' ? 'Alle Referenzen ansehen' : 'View all references'} <span aria-hidden="true">→</span>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -389,6 +447,84 @@ const modal = {
   </div>
 </section>
 
+<!-- ============ DiTeLe TEASER ============ -->
+<section class="section ditele-teaser">
+  <div class="container ditele-teaser__inner" data-reveal="up">
+    <div class="ditele-teaser__copy">
+      <span class="eyebrow">DiTeLe</span>
+      <h2>{lang === 'de' ? 'Lernen mit DiTeLe' : 'Learn with DiTeLe'}</h2>
+      <p class="text-muted">
+        {lang === 'de'
+          ? 'DiTeLe ist die digitale Lernplattform der WAMOCON Academy: praxisnahe Kurse zum Softwaretesting mit Videos, Szenarien und Übungen, jederzeit und in Ihrem Tempo.'
+          : 'DiTeLe is the WAMOCON Academy’s digital learning platform: practical software-testing courses with videos, scenarios and exercises, anytime and at your own pace.'}
+      </p>
+      <Button href="https://onlinekurs.test-it-academy.de/" target="_blank" variant="primary" size="lg">
+        {lang === 'de' ? 'Ditele entdecken' : 'Discover DiTeLe'}
+      </Button>
+    </div>
+    <div class="ditele-teaser__demo">
+      <div class="dq" data-dq>
+        <div class="dq__top">
+          <span class="dq__live"><span class="dq__dot" aria-hidden="true"></span>{lang === 'de' ? 'Live-Demo: DiTeLe Praxisübung' : 'Live demo: DiTeLe practice exercise'}</span>
+          <span class="dq__count">{lang === 'de' ? 'Frage 1 von 300+' : 'Question 1 of 300+'}</span>
+        </div>
+        <h3 class="dq__q">{lang === 'de' ? 'Was ist der Hauptzweck des Softwaretestens?' : 'What is the main purpose of software testing?'}</h3>
+        <ul class="dq__options">
+          {[
+            { k: 'A', de: 'Fehler finden', en: 'Find defects', c: false },
+            { k: 'B', de: 'Qualität bewerten', en: 'Assess quality', c: false },
+            { k: 'C', de: 'Anforderungen validieren', en: 'Validate requirements', c: false },
+            { k: 'D', de: 'Alle oben genannten', en: 'All of the above', c: true },
+          ].map((o) => (
+            <li>
+              <button type="button" class="dq__option" data-dq-option data-correct={String(o.c)}>
+                <span class="dq__key">{o.k}</span>
+                <span>{lang === 'de' ? o.de : o.en}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+        <p class="dq__feedback" data-dq-feedback hidden></p>
+        <p class="dq__hint">
+          {lang === 'de'
+            ? 'Das ist Übung 1 von 45+ in DiTeLe. Mit DiTeLe lernst du nicht nur über Softwaretesten – du machst es.'
+            : 'This is exercise 1 of 45+ in DiTeLe. With DiTeLe you don’t just learn about software testing – you do it.'}
+        </p>
+        <a class="dq__cta" href="https://onlinekurs.test-it-academy.de/#preise" target="_blank" rel="noopener noreferrer">
+          {lang === 'de' ? 'Alle Übungen in DiTeLe freischalten' : 'Unlock all exercises in DiTeLe'}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const dqDe = document.documentElement.lang !== 'en';
+  document.querySelectorAll<HTMLElement>('[data-dq]').forEach((quiz) => {
+    const options = quiz.querySelectorAll<HTMLButtonElement>('[data-dq-option]');
+    const feedback = quiz.querySelector<HTMLElement>('[data-dq-feedback]');
+    options.forEach((option) => {
+      option.addEventListener('click', () => {
+        if (quiz.dataset.answered) return;
+        quiz.dataset.answered = '1';
+        const correct = option.getAttribute('data-correct') === 'true';
+        option.classList.add(correct ? 'is-correct' : 'is-wrong');
+        options.forEach((o) => {
+          if (o.getAttribute('data-correct') === 'true') o.classList.add('is-correct');
+          o.disabled = true;
+        });
+        if (feedback) {
+          feedback.hidden = false;
+          feedback.textContent = correct
+            ? (dqDe ? 'Richtig! Alle drei Ziele gehören zum Softwaretesten.' : 'Correct! All three goals are part of software testing.')
+            : (dqDe ? 'Nicht ganz – richtig ist D: Alle oben genannten.' : 'Not quite – the answer is D: all of the above.');
+          feedback.classList.add(correct ? 'is-correct' : 'is-wrong');
+        }
+      });
+    });
+  });
+</script>
+
 <!-- ============ 360 OFFICE TOUR ============ -->
 <section class="section tour">
   <div class="container">
@@ -414,15 +550,21 @@ const modal = {
   </div>
 </section>
 
+<!-- ============ CONTACT ============ -->
+<ContactBlock lang={lang} />
+
 
 <style>
   /* ---------- shared ---------- */
   .section-head {
-    max-width: 760px;
+    max-width: 900px;
     margin-bottom: clamp(2rem, 5vw, 3.5rem);
   }
+  /* Let short headings stay on one line and wrap in a balanced way instead of
+     being forced onto two lines by a narrow container (review HP#11). */
   .section-head h2 {
     margin-bottom: 1rem;
+    text-wrap: balance;
   }
   .accent {
     color: var(--color-accent);
@@ -491,10 +633,10 @@ const modal = {
   }
   .hero__stats {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem 2rem;
     margin-top: clamp(2rem, 4vw, 3rem);
-    max-width: 760px;
+    max-width: 620px;
   }
   .hero__stat-value {
     display: block;
@@ -707,6 +849,47 @@ const modal = {
   .education__text h2 { margin-bottom: 1.5rem; }
   .education__text p { margin-bottom: 1rem; }
 
+  /* ---------- 360° booster teaser ---------- */
+  .booster-teaser__inner {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+    padding: clamp(2rem, 4vw, 3rem);
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    position: relative;
+    overflow: hidden;
+  }
+  .booster-teaser__inner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(60% 90% at 85% 10%, var(--glow-top), transparent 70%);
+    pointer-events: none;
+  }
+  .booster-teaser__copy { position: relative; z-index: 1; }
+  .booster-teaser__badge { display: inline-block; margin-bottom: 0.6rem; color: var(--color-accent); font-weight: var(--fw-bold); font-size: 1.4rem; }
+  .booster-teaser__copy h2 { margin-bottom: 1rem; }
+  .booster-teaser__copy p { margin-bottom: 1.75rem; max-width: 60ch; }
+  .booster-teaser__media {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+  }
+  .booster-teaser__media img {
+    display: block;
+    width: 100%;
+    max-width: 460px;
+    height: auto;
+    margin-inline: auto;
+  }
+  @media (max-width: 860px) {
+    .booster-teaser__inner { grid-template-columns: 1fr; }
+    .booster-teaser__media img { max-width: 360px; }
+  }
+
   /* ---------- why ---------- */
   .why__grid {
     display: grid;
@@ -726,33 +909,43 @@ const modal = {
   /* ---------- about ---------- */
   /* No extra max-width here — the module has to line up with every other
      section on the page, which is bounded by .container alone. */
-  .about__heading { margin-bottom: 2rem; }
+  .about__heading { margin-bottom: 1.25rem; }
   .about__heading-accent { color: var(--color-accent); }
+  /* Text and image share one unified card, no gap between them. */
   .about__grid {
     display: grid;
     grid-template-columns: 1.05fr 0.95fr;
-    gap: clamp(1.5rem, 4vw, 3rem);
-    align-items: start;
+    gap: 0;
+    align-items: stretch;
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg, 18px);
+    overflow: hidden;
   }
   .about__cols {
     display: grid;
     gap: 1.25rem;
+    align-content: center;
+    padding: clamp(1.75rem, 4vw, 3.25rem);
   }
   .about__cols p { font-size: 1.05rem; }
+  .about__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; margin-top: 1.75rem; }
+  .about__magazin { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--color-accent); font-weight: var(--fw-semibold); }
+  .about__magazin:hover { text-decoration: underline; text-underline-offset: 0.2em; }
   .about__media {
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    border: 1px solid var(--border-subtle);
+    position: relative;
+    min-height: 100%;
   }
   .about__media img {
     width: 100%;
     height: 100%;
+    min-height: 320px;
     object-fit: cover;
-    aspect-ratio: 4 / 3;
     display: block;
   }
   @media (max-width: 860px) {
     .about__grid { grid-template-columns: 1fr; }
+    .about__media img { min-height: 0; aspect-ratio: 16 / 9; }
   }
 
   /* ---------- benefits cta ---------- */
@@ -806,27 +999,45 @@ const modal = {
     transform: translateY(-2px);
     box-shadow: 0 10px 24px rgba(244, 14, 14, 0.35);
   }
-  .clients__list {
+  /* Moving client banner: two rows drifting in opposite directions. */
+  .clients__marquee {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 0.75rem 2rem;
+    gap: 1rem;
+    padding-block: 0.5rem;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+    overflow: hidden;
   }
-  .clients__item {
-    position: relative;
-    padding: 0.6rem 0 0.6rem 1.5rem;
-    border-bottom: 1px solid var(--border-subtle);
+  .clients__track {
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+    animation: clients-scroll 60s linear infinite;
+  }
+  .clients__track--reverse { animation-direction: reverse; animation-duration: 75s; }
+  .clients__marquee:hover .clients__track { animation-play-state: paused; }
+  .clients__chip {
+    flex: 0 0 auto;
+    padding: 0.6rem 1.2rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    background: var(--surface-card);
     color: var(--color-text-muted);
+    font-size: 0.95rem;
+    white-space: nowrap;
   }
-  .clients__item::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 1.05em;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--color-accent-surface);
+  @keyframes clients-scroll { from { transform: translateX(0); } to { transform: translateX(calc(-50% - 0.5rem)); } }
+  @media (prefers-reduced-motion: reduce) { .clients__track { animation: none; flex-wrap: wrap; } }
+  .clients__cta { margin-top: 2rem; }
+  .projects__cta { margin-top: 2.5rem; }
+  .projects__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-accent);
+    font-weight: var(--fw-semibold);
   }
+  .projects__link:hover { text-decoration: underline; text-underline-offset: 0.2em; }
 
   /* ---------- academy ---------- */
   /* Left aligned and full container width, like every other module. The old
@@ -883,6 +1094,64 @@ const modal = {
   @media (max-width: 640px) {
     .academy__row { grid-template-columns: 1fr; gap: 0.5rem; }
   }
+
+  /* ---------- DiTeLe teaser ---------- */
+  .ditele-teaser__inner {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(1.75rem, 4vw, 3.25rem);
+    align-items: center;
+    padding: clamp(2rem, 4vw, 3rem);
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+  }
+  .ditele-teaser__copy { max-width: 640px; }
+  .ditele-teaser__copy h2 { margin-bottom: 1rem; }
+  .ditele-teaser__copy p { margin-bottom: 1.75rem; }
+
+  /* Live-demo quiz (same as the Academy DiTeLe page). */
+  .dq {
+    padding: clamp(1.1rem, 2.5vw, 1.6rem);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    background: rgb(255 255 255 / 0.03);
+  }
+  .dq__top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.9rem; }
+  .dq__live { display: inline-flex; align-items: center; gap: 0.45rem; color: var(--color-accent); font-size: 0.78rem; font-weight: var(--fw-bold); letter-spacing: 0.02em; }
+  .dq__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-accent); animation: dq-pulse 1.8s ease-out infinite; }
+  @keyframes dq-pulse { 0% { box-shadow: 0 0 0 0 rgb(244 14 14 / 0.55); } 100% { box-shadow: 0 0 0 10px rgb(244 14 14 / 0); } }
+  .dq__count { color: var(--color-text-muted); font-size: 0.78rem; font-weight: var(--fw-semibold); }
+  .dq__q { margin: 0 0 1rem; font-size: clamp(1.1rem, 2vw, 1.3rem); line-height: 1.35; }
+  .dq__options { list-style: none; display: grid; gap: 0.6rem; margin: 0; padding: 0; }
+  .dq__option {
+    display: flex; align-items: center; gap: 0.75rem; width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border-subtle); border-radius: 10px;
+    background: rgb(255 255 255 / 0.02); color: var(--color-text);
+    font-size: 1rem; text-align: left; cursor: pointer;
+    transition: border-color 0.16s ease, background 0.16s ease, transform 0.12s ease;
+  }
+  .dq__option:hover:not(:disabled) { border-color: var(--color-accent); background: var(--color-accent-surface); transform: translateY(-1px); }
+  .dq__option:disabled { cursor: default; }
+  .dq__key { display: grid; place-items: center; width: 26px; height: 26px; flex: none; border: 1px solid var(--border-subtle); border-radius: 6px; font-size: 0.8rem; font-weight: var(--fw-bold); }
+  .dq__option.is-correct { border-color: #22c55e; background: rgb(34 197 94 / 0.12); }
+  .dq__option.is-correct .dq__key { border-color: #22c55e; color: #22c55e; }
+  .dq__option.is-wrong { border-color: #ef4444; background: rgb(239 68 68 / 0.1); }
+  .dq__option.is-wrong .dq__key { border-color: #ef4444; color: #ef4444; }
+  .dq__feedback { margin: 0.9rem 0 0; font-size: 0.95rem; font-weight: var(--fw-semibold); }
+  .dq__feedback.is-correct { color: #22c55e; }
+  .dq__feedback.is-wrong { color: var(--color-accent); }
+  .dq__hint { margin: 0.9rem 0 1.1rem; color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.5; }
+  .dq__cta {
+    display: block; width: 100%; padding: 0.95rem 1.2rem;
+    background: var(--color-accent); color: #fff; font-weight: var(--fw-bold);
+    text-align: center; border-radius: 8px;
+    transition: background 0.18s ease, transform 0.16s ease;
+  }
+  .dq__cta:hover { background: var(--color-accent-hover); transform: translateY(-2px); }
+  @media (max-width: 860px) { .ditele-teaser__inner { grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce) { .dq__dot { animation: none; } }
 
   /* ---------- tour ---------- */
   .tour__text {
@@ -995,7 +1264,7 @@ const modal = {
   }
   .lead-modal__panel {
     position: relative;
-    width: min(460px, 100%);
+    width: min(640px, 100%);
     max-height: 90vh;
     overflow-y: auto;
     padding: clamp(1.75rem, 4vw, 2.75rem);
@@ -1039,6 +1308,14 @@ const modal = {
   .lead-modal__form {
     display: grid;
     gap: 1rem;
+  }
+  .lead-modal__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  @media (max-width: 480px) {
+    .lead-modal__row { grid-template-columns: 1fr; }
   }
   .lead-modal__field {
     display: grid;

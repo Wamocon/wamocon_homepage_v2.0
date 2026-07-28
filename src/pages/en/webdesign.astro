@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WebdesignPage from '../../components/sections/WebdesignPage.astro';
+import { webdesign } from '../../data/webdesign';
+
+const lang = 'en' as const;
+---
+
+<BaseLayout title={webdesign.seo.title[lang]} description={webdesign.seo.description[lang]} lang={lang}>
+  <WebdesignPage lang={lang} />
+</BaseLayout>

@@ -25,7 +25,7 @@ const c = de
         { h: 'Effiziente Planung für deinen Erfolg', p: 'Gestalte deine Projektarbeit stressfrei und strukturiert. Mit gezielten Kontrollfragen behältst du jedes Detail im Blick und sicherst dir eine optimale Planung.' },
         { h: 'Erfolgreich starten: Deine erste Aufgabe', p: 'Lerne, wie du effizient die richtigen Projektinformationen sammelst. Mit klaren Methoden meisterst du jede Aufgabe problemlos.' },
         { h: 'Ausführung mit Präzision', p: 'Stelle sicher, dass du jeden Testfall im Detail verstehst. Unsere bewährten Methoden helfen dir, dich abzuheben und jede Herausforderung souverän zu meistern.' },
-        { h: 'Sicherer Projektabschluss', p: 'Keine Panik, wenn die Zeit drängt! Mit unserer 40-jährigen Erfahrung und einer bewährten Schritt-für-Schritt-Anleitung meisterst du jede Herausforderung und bringst dein Projekt erfolgreich ins Ziel.' },
+        { h: 'Sicherer Projektabschluss', p: 'Keine Panik, wenn die Zeit drängt! Mit unserer über 50-jährigen Erfahrung und einer bewährten Schritt-für-Schritt-Anleitung meisterst du jede Herausforderung und bringst dein Projekt erfolgreich ins Ziel.' },
       ],
       academyTitle: 'Entdecken Sie Ihre Weiterbildungsmöglichkeiten mit IT-Testmanagement Kursen auf unserer Academy-Webseite!',
       academyBlocks: [
@@ -50,7 +50,7 @@ const c = de
         { h: 'Efficient planning for your success', p: 'Design your project work stress-free and structured. With targeted control questions, you keep an eye on every detail and secure optimal planning.' },
         { h: 'Get started successfully: your first task', p: 'Learn how to efficiently gather the right project information. With clear methods, you master every task with ease.' },
         { h: 'Execution with precision', p: 'Make sure you understand every test case in detail. Our proven methods help you stand out and master every challenge with confidence.' },
-        { h: 'Secure project completion', p: 'No panic when time is short! With 40 years of combined practical experience within our team and a proven step-by-step guide, you master every challenge and bring your project to a successful conclusion.' },
+        { h: 'Secure project completion', p: 'No panic when time is short! With over 50 years of combined practical experience within our team and a proven step-by-step guide, you master every challenge and bring your project to a successful conclusion.' },
       ],
       academyTitle: 'Discover your further training opportunities with IT test management courses on our Academy website!',
       academyBlocks: [
@@ -130,7 +130,8 @@ const academyUrl = 'https://test-it-academy.com/';
     color: var(--color-text);
     margin-bottom: 1.5rem;
   }
-  .sys-hero__lead { max-width: 900px; margin: 0 0 2rem; }
+  /* Full-width, left-aligned intro copy (fills the screen instead of a narrow column). */
+  .sys-hero__lead { max-width: none; margin: 0 0 2rem; }
   .sys-hero__lead p { color: var(--color-text-muted); line-height: 1.65; margin-bottom: 1rem; }
   .sys-hero__title {
     font-size: clamp(2.4rem, 7vw, 5rem);
@@ -138,7 +139,8 @@ const academyUrl = 'https://test-it-academy.com/';
     line-height: 1.05;
     margin-bottom: 2.5rem;
   }
-  .sys-hero__img { max-width: 720px; width: 100%; margin: 0; display: block; }
+  /* The diagram is a graphic, so it is centred and a little larger. */
+  .sys-hero__img { max-width: 960px; width: 100%; margin-inline: auto; display: block; }
 
   .sys-h2 {
     font-size: clamp(1.8rem, 4.5vw, 3rem);

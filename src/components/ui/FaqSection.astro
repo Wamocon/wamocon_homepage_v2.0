@@ -86,24 +86,22 @@ const faqSchema = {
 
 <style>
   .faq {
-    /* One shared measure so heading, intro, list and byline align and the
-       whole block sits centred in the container.
-       Must NOT use `ch`: that unit resolves against each element's own
-       font-size, so the heading would compute ~3x wider than the list. */
-    --faq-measure: min(68rem, 100%);
+    /* Full container width, flush left — heading, intro, list and byline all
+       span the whole width so there is no empty gutter on the right. */
+    --faq-measure: 100%;
     padding-block: clamp(3.5rem, 7vw, 6rem);
   }
 
   .faq h2 {
     max-width: var(--faq-measure);
-    margin-inline: auto;
+    margin-inline: 0;
     margin-bottom: 0.75rem;
     font-size: clamp(1.9rem, 4vw, 2.9rem);
   }
 
   .faq__intro {
     max-width: var(--faq-measure);
-    margin-inline: auto;
+    margin-inline: 0;
     margin-bottom: 2rem;
     color: var(--color-text-muted);
     line-height: 1.65;
@@ -113,7 +111,7 @@ const faqSchema = {
     display: grid;
     gap: 0.75rem;
     max-width: var(--faq-measure);
-    margin-inline: auto;
+    margin-inline: 0;
   }
 
   .faq__item {
@@ -163,7 +161,7 @@ const faqSchema = {
   .faq__item > p {
     margin: 0;
     padding: 0 1.25rem 1.25rem;
-    max-width: 78ch;
+    max-width: none;
     color: var(--color-text-muted);
     line-height: 1.7;
   }
@@ -175,7 +173,7 @@ const faqSchema = {
     justify-content: space-between;
     gap: 0.5rem 1.5rem;
     max-width: var(--faq-measure);
-    margin-inline: auto;
+    margin-inline: 0;
     margin-top: 1.75rem;
     padding-top: 1.1rem;
     border-top: 1px solid var(--border-subtle, rgba(255,255,255,.14));

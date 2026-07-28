@@ -40,7 +40,10 @@ const reviewsEn: Review[] = [
   { name: 'Maanik Garg', more: false, full: '5 stars! Great work' },
 ];
 
-const reviews = de ? reviewsDe : reviewsEn;
+// Customer testimonials are shown in their original German in both languages —
+// we must not alter authentic customer voices by translating them (review HP#30).
+const reviews = reviewsDe;
+void reviewsEn;
 
 const academyVideos = [
   { name: 'Artur', id: 'GIzxhk4tzmM' },

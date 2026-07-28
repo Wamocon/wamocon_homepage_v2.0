@@ -16,70 +16,90 @@ export const defaultLang: Lang = 'de';
  * Primary navigation. `key` is stable; `label` and `href` are per language.
  * German pages live at the site root, English pages under /en/.
  */
-export const nav: Array<{
+export interface NavLink {
   key: string;
   de: { label: string; href: string };
   en: { label: string; href: string };
-}> = [
+  children?: NavLink[];
+}
+
+export const nav: NavLink[] = [
   {
     key: 'home',
     de: { label: 'Start', href: '/' },
     en: { label: 'Home', href: '/en/' },
   },
   {
-    key: 'system',
+    // Dropdown group. The parent links to the primary child (the 360° page).
+    key: 'system-group',
     de: { label: 'Unser System', href: '/unser-system/' },
     en: { label: 'Our System', href: '/en/our-system/' },
+    children: [
+      {
+        key: 'system',
+        de: { label: '360°', href: '/unser-system/' },
+        en: { label: '360°', href: '/en/our-system/' },
+      },
+      {
+        key: 'apps',
+        de: { label: 'Apps', href: '/apps/' },
+        en: { label: 'Apps', href: '/en/apps/' },
+      },
+      {
+        key: 'about',
+        de: { label: 'Über uns', href: '/ueber-uns/' },
+        en: { label: 'About us', href: '/en/about-us/' },
+      },
+    ],
   },
   {
-    key: 'apps',
-    de: { label: 'Apps', href: '/apps/' },
-    en: { label: 'Apps', href: '/en/apps/' },
-  },
-  {
-    key: 'cooperation',
+    key: 'coop-group',
     de: { label: 'Zusammenarbeit', href: '/zusammenarbeit/' },
     en: { label: 'Cooperation', href: '/en/cooperation/' },
+    children: [
+      {
+        key: 'cooperation',
+        de: { label: 'Studium', href: '/zusammenarbeit/' },
+        en: { label: 'Studies', href: '/en/cooperation/' },
+      },
+      {
+        key: 'career',
+        de: { label: 'Karriere', href: '/karriere/' },
+        en: { label: 'Career', href: '/en/career/' },
+      },
+      {
+        key: 'azubi',
+        de: { label: 'Ausbildung', href: '/azubi-fae/' },
+        en: { label: 'Apprenticeship', href: '/en/apprenticeship/' },
+      },
+    ],
   },
   {
-    key: 'testimonials',
-    de: { label: 'Bewertungen', href: '/bewertungen/' },
+    key: 'testimonials-group',
+    de: { label: 'Testimonials', href: '/bewertungen/' },
     en: { label: 'Testimonials', href: '/en/testimonials/' },
-  },
-  {
-    key: 'references',
-    de: { label: 'Referenzen', href: '/referenzen/' },
-    en: { label: 'References', href: '/en/references/' },
-  },
-  {
-    key: 'career',
-    de: { label: 'Karriere', href: '/karriere/' },
-    en: { label: 'Career', href: '/en/career/' },
-  },
-  {
-    key: 'about',
-    de: { label: 'Über uns', href: '/ueber-uns/' },
-    en: { label: 'About us', href: '/en/about-us/' },
-  },
-  {
-    key: 'employees',
-    de: { label: 'Mitarbeiter Stimmen', href: '/mitarbeiter-stimmen/' },
-    en: { label: 'Employee Voices', href: '/en/employee-voices/' },
-  },
-  {
-    key: 'azubi',
-    de: { label: 'Azubi FIAE', href: '/azubi-fae/' },
-    en: { label: 'Apprenticeship', href: '/en/apprenticeship/' },
+    children: [
+      {
+        key: 'testimonials',
+        de: { label: 'Was Kunden sagen', href: '/bewertungen/' },
+        en: { label: 'What clients say', href: '/en/testimonials/' },
+      },
+      {
+        key: 'employees',
+        de: { label: 'Was Mitarbeiter sagen', href: '/mitarbeiter-stimmen/' },
+        en: { label: 'What employees say', href: '/en/employee-voices/' },
+      },
+      {
+        key: 'references',
+        de: { label: 'Referenzen', href: '/referenzen/' },
+        en: { label: 'References', href: '/en/references/' },
+      },
+    ],
   },
   {
     key: 'webdesign',
-    de: { label: 'Webdesign', href: '/webdesign/' },
-    en: { label: 'Webdesign', href: '/webdesign/' },
-  },
-  {
-    key: 'contact',
-    de: { label: 'Kontakt', href: '/kontakt/' },
-    en: { label: 'Contact', href: '/en/contact/' },
+    de: { label: 'Webdesign Alanya', href: '/webdesign/' },
+    en: { label: 'Webdesign Alanya', href: '/en/webdesign/' },
   },
 ];
 
@@ -160,6 +180,6 @@ export const company = {
     youtube: 'https://www.youtube.com/@wamocon.testing',
     facebook: 'https://www.facebook.com/WAMOCON/',
     linkedin: 'https://de.linkedin.com/company/wamocon-gmbh',
-    instagram: 'https://www.instagram.com/wmc_testmanagement/profilecard/?igsh=dWQ1azhlcDZnNmxs',
+    instagram: 'https://www.instagram.com/wmc_testmanagement',
   },
 } as const;

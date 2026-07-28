@@ -15,10 +15,18 @@ const currentPath = Astro.url.pathname;
 const homeHref = lang === 'de' ? '/' : '/en/';
 const altHref = getAlternateLangUrl(currentPath, lang);
 
-const isActive = (href: string) => {
-  const normalize = (p: string) => (p.endsWith('/') ? p : p + '/');
-  return normalize(currentPath) === normalize(href);
-};
+const normalizePath = (p: string) => (p.endsWith('/') ? p : p + '/');
+const isActive = (href: string) => normalizePath(currentPath) === normalizePath(href);
+// A dropdown parent is active when the current page is one of its children.
+const isGroupActive = (item: (typeof nav)[number]) =>
+  isActive(item[lang].href) || (item.children?.some((c) => isActive(c[lang].href)) ?? false);
+
+// Language options for the switcher dropdown. The active language links to the
+// current page (a no-op); the other links to its translated equivalent.
+const languages = [
+  { code: 'de', label: 'Deutsch', short: 'DE', href: lang === 'de' ? currentPath : altHref },
+  { code: 'en', label: 'English', short: 'EN', href: lang === 'en' ? currentPath : altHref },
+] as const;
 ---
 
 <header class="header" id="site-header">
@@ -31,14 +39,30 @@ const isActive = (href: string) => {
       <ul class="header__list">
         {
           nav.map((item) => (
-            <li>
+            <li class:list={['header__item', { 'has-children': item.children?.length }]}>
               <a
                 href={item[lang].href}
-                class:list={['header__link', { 'is-active': isActive(item[lang].href) }]}
+                class:list={['header__link', { 'is-active': isGroupActive(item) }]}
                 aria-current={isActive(item[lang].href) ? 'page' : undefined}
               >
                 {item[lang].label}
+                {item.children?.length ? <span class="header__caret" aria-hidden="true"></span> : null}
               </a>
+              {item.children?.length ? (
+                <ul class="header__submenu">
+                  {item.children.map((child) => (
+                    <li>
+                      <a
+                        href={child[lang].href}
+                        class:list={['header__sublink', { 'is-active': isActive(child[lang].href) }]}
+                        aria-current={isActive(child[lang].href) ? 'page' : undefined}
+                      >
+                        {child[lang].label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </li>
           ))
         }
@@ -46,9 +70,42 @@ const isActive = (href: string) => {
     </nav>
 
     <div class="header__actions">
-      <a class="header__lang" href={altHref} aria-label={ui[lang]['lang.label']}>
-        {ui[lang]['lang.switch']}
-      </a>
+      <div class="lang-switch" data-lang-switch>
+        <button
+          type="button"
+          class="lang-switch__button"
+          id="lang-switch-button"
+          aria-haspopup="true"
+          aria-expanded="false"
+          aria-label={ui[lang]['lang.label']}
+        >
+          <svg class="lang-switch__globe" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18" />
+          </svg>
+          <span class="lang-switch__current">{lang.toUpperCase()}</span>
+          <svg class="lang-switch__caret" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </button>
+        <ul class="lang-switch__menu" role="menu" aria-labelledby="lang-switch-button">
+          {languages.map((l) => (
+            <li role="none">
+              <a
+                role="menuitem"
+                href={l.href}
+                hreflang={l.code}
+                lang={l.code}
+                class:list={['lang-switch__option', { 'is-active': l.code === lang }]}
+                aria-current={l.code === lang ? 'true' : undefined}
+              >
+                <span>{l.label}</span>
+                {l.code === lang && (
+                  <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 8.5l3 3 7-7.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
       <button
         class="header__burger"
         type="button"
@@ -137,24 +194,115 @@ const isActive = (href: string) => {
     width: 100%;
   }
 
+  /* ---- dropdown groups ---- */
+  .header__item { position: relative; }
+  .header__link { display: inline-flex; align-items: center; gap: 0.3rem; }
+  .header__caret {
+    width: 6px; height: 6px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg) translateY(-1px);
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+  .header__submenu {
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    left: 0;
+    min-width: 220px;
+    padding: 0.4rem;
+    list-style: none;
+    background: rgba(20, 20, 20, 0.98);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), visibility var(--dur-fast);
+    z-index: 5;
+  }
+  .header__item:hover > .header__submenu,
+  .header__item:focus-within > .header__submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+  .header__item:hover > .header__link .header__caret { transform: rotate(225deg) translateY(-1px); }
+  .header__sublink {
+    display: block;
+    padding: 0.6rem 0.75rem;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    font-size: 0.92rem;
+    white-space: nowrap;
+  }
+  .header__sublink:hover,
+  .header__sublink.is-active { color: var(--color-accent); background: rgba(255, 255, 255, 0.06); }
+
   .header__actions {
     display: flex;
     align-items: center;
     gap: var(--space-sm);
   }
 
-  .header__lang {
-    font-weight: var(--fw-semibold);
-    font-size: 0.9rem;
-    letter-spacing: 0.06em;
-    padding: 0.5rem 0.9rem;
+  /* ---- language switcher (shows the active language + dropdown) ---- */
+  .lang-switch {
+    position: relative;
+  }
+  .lang-switch__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.75rem;
     border: 1px solid var(--border-strong);
     border-radius: var(--radius-pill);
+    color: var(--color-text);
+    font-weight: var(--fw-semibold);
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
   }
-  .header__lang:hover {
+  .lang-switch__button:hover,
+  .lang-switch__button[aria-expanded='true'] {
     color: var(--color-accent);
     border-color: var(--color-accent);
   }
+  .lang-switch__globe { flex: 0 0 auto; }
+  .lang-switch__caret { transition: transform var(--dur-fast) var(--ease-out); }
+  .lang-switch__button[aria-expanded='true'] .lang-switch__caret { transform: rotate(180deg); }
+  .lang-switch__menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    min-width: 168px;
+    padding: 0.35rem;
+    background: rgba(20, 20, 20, 0.98);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+    list-style: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out), visibility var(--dur-fast);
+  }
+  .lang-switch.is-open .lang-switch__menu {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+  .lang-switch__option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+  }
+  .lang-switch__option:hover { background: rgba(255, 255, 255, 0.06); color: var(--color-text); }
+  .lang-switch__option.is-active { color: var(--color-accent); font-weight: var(--fw-semibold); }
 
   .header__burger {
     display: none;
@@ -219,6 +367,22 @@ const isActive = (href: string) => {
       padding: 1rem 0;
       font-size: 1.1rem;
     }
+    /* Submenus expand inline (indented) instead of hovering on mobile. */
+    .header__item .header__caret { display: none; }
+    .header__submenu {
+      position: static;
+      min-width: 0;
+      padding: 0 0 0.75rem 1rem;
+      margin: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+    }
+    .header__submenu li { border-bottom: 0; }
+    .header__sublink { padding: 0.6rem 0; font-size: 1rem; }
     body.nav-open {
       overflow: hidden;
     }
@@ -268,4 +432,23 @@ const isActive = (href: string) => {
   };
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Language dropdown: toggle on click, close on outside click / Escape.
+  const langSwitch = document.querySelector('[data-lang-switch]');
+  const langButton = document.getElementById('lang-switch-button');
+  const closeLang = () => {
+    langSwitch?.classList.remove('is-open');
+    langButton?.setAttribute('aria-expanded', 'false');
+  };
+  langButton?.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const open = langSwitch?.classList.toggle('is-open');
+    langButton.setAttribute('aria-expanded', String(Boolean(open)));
+  });
+  document.addEventListener('click', (event) => {
+    if (langSwitch && !langSwitch.contains(event.target as Node)) closeLang();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeLang();
+  });
 </script>

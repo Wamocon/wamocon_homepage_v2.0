@@ -53,7 +53,7 @@ const cta = de
       contactText:
         'Sie testen bereits eine unserer Anwendungen oder möchten wissen, ob sie für Ihr Vorhaben geeignet ist? Melden Sie sich direkt bei uns.',
       contactCta: 'Jetzt Kontakt aufnehmen',
-      contactHref: '/kontakt/',
+      contactHref: '#apps-kontakt',
       ideaTitle: 'Ihre Idee umsetzen',
       ideaText:
         'Sie planen ein Softwareprojekt und suchen einen Partner für die Entwicklung? Beschreiben Sie uns Ihr Vorhaben in unserem Portal. Wir prüfen Ihre Wünsche und erstellen ein Angebot für Sie.',
@@ -67,7 +67,7 @@ const cta = de
       contactText:
         "Are you currently testing one of our apps or wondering if it fits your specific requirements? Send us a message and we will get in touch.",
       contactCta: 'Get in touch',
-      contactHref: '/en/contact/',
+      contactHref: '#apps-kontakt',
       ideaTitle: 'Realise your project',
       ideaText:
         "Do you have an idea for an app and want to know about development costs? Describe your project in our portal. We will review your request and send you a proposal.",
@@ -244,7 +244,7 @@ const jsonLd = {
   </div>
 </section>
 
-<ContactBlock lang={lang} />
+<div id="apps-kontakt"><ContactBlock lang={lang} /></div>
 
 <style>
   /* ==========================================================================
@@ -398,11 +398,11 @@ const jsonLd = {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 1rem;
     font-size: clamp(1.15rem, 2.5vw, 1.6rem);
     font-weight: var(--fw-semibold);
-    text-align: center;
+    text-align: left;
     color: var(--color-text);
     letter-spacing: -0.01em;
     line-height: 1.4;
@@ -461,9 +461,7 @@ const jsonLd = {
 
   /* ---------- dual CTA ---------- */
   .dual-cta__header {
-    text-align: center;
     max-width: 680px;
-    margin-inline: auto;
     margin-bottom: clamp(2rem, 5vw, 3.5rem);
   }
   .dual-cta__header h2 {
@@ -473,8 +471,6 @@ const jsonLd = {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: clamp(1.25rem, 3vw, 2rem);
-    max-width: 980px;
-    margin-inline: auto;
   }
   .dual-cta__card {
     position: relative;
@@ -542,23 +538,19 @@ const jsonLd = {
   @media (max-width: 960px) {
     .apps-hero__inner {
       grid-template-columns: 1fr;
-      text-align: center;
+      text-align: left;
     }
     .apps-hero__content {
       max-width: 100%;
     }
     .apps-hero__actions {
-      justify-content: center;
+      justify-content: flex-start;
     }
     .apps-hero__media {
       max-width: 560px;
-      margin-inline: auto;
     }
     .apps-hero {
       min-height: auto;
-    }
-    .apps-hero__subtitle {
-      margin-inline: auto;
     }
   }
   @media (max-width: 700px) {

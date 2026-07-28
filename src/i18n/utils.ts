@@ -1,5 +1,13 @@
 /** Helper functions for language detection and translation. */
-import { ui, defaultLang, nav, legalNav, type Lang } from './config';
+import { ui, defaultLang, nav, legalNav, type Lang, type NavLink } from './config';
+
+/** Flatten the nav (dropdown groups + their children) into a single list. */
+function flattenNav(items: NavLink[]): Array<{ de: string; en: string }> {
+  return items.flatMap((item) => [
+    { de: item.de.href, en: item.en.href },
+    ...(item.children ? flattenNav(item.children) : []),
+  ]);
+}
 
 /** Detect the active language from the current URL pathname. */
 export function getLangFromUrl(url: URL): Lang {
@@ -32,7 +40,7 @@ export function getAlternateLangUrl(currentPath: string, current: Lang): string 
   const path = normalize(currentPath);
 
   const entries = [
-    ...nav.map((item) => ({ de: item.de.href, en: item.en.href })),
+    ...flattenNav(nav),
     ...Object.values(legalNav).map((item) => ({ de: item.de.href, en: item.en.href })),
   ];
 

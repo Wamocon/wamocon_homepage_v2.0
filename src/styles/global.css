@@ -17,10 +17,10 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
-  /* overflow-x on <body> alone does not stop the viewport from scrolling
-     sideways: the reveal animations start 40px off-axis and decorative shapes
-     bleed past the edge, which let narrow screens pan right. */
-  overflow-x: hidden;
+  /* `clip`, not `hidden`: it contains the sideways bleed from reveal animations
+     and decorative shapes WITHOUT turning <html> into a scroll container —
+     `overflow-x: hidden` did, which broke the sticky header. */
+  overflow-x: clip;
 }
 
 body {
@@ -32,7 +32,7 @@ body {
   background-color: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
   min-height: 100vh;
 }
 

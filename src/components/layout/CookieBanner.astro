@@ -1,0 +1,149 @@
+---
+/**
+ * Central cookie/consent banner. Appears on first visit until a decision is
+ * stored. Governs external media (YouTube + Google Maps) which the site's
+ * <privacy-embed> elements load only after consent. A stored top-level decision
+ * (`wamocon-consent-v1`) keeps the banner from reappearing; the per-service keys
+ * `wamocon-consent-youtube` / `wamocon-consent-google-maps` stay compatible with
+ * the existing embeds and the footer reset button.
+ */
+import type { Lang } from '../../i18n/config';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+
+const copy = lang === 'de'
+  ? {
+      label: 'Datenschutzeinstellungen',
+      title: 'Ihre Privatsphäre, Ihre Entscheidung',
+      text: 'Wir verwenden technisch notwendige Speicherungen. Externe Medien von YouTube und Google Maps laden wir nur mit Ihrer Einwilligung. Sie können Ihre Auswahl jederzeit im Footer ändern.',
+      accept: 'Alle akzeptieren', reject: 'Alle ablehnen', settings: 'Einstellungen',
+      settingsTitle: 'Datenschutzeinstellungen', necessary: 'Technisch notwendig',
+      necessaryText: 'Erforderlich für Einwilligungsverwaltung, Sicherheit und die von Ihnen angeforderte Formularfunktion.',
+      media: 'Externe Medien', mediaText: 'Erlaubt Inhalte von YouTube und Google Maps. Dabei können Daten in die USA übertragen werden.',
+      always: 'Immer aktiv', save: 'Auswahl speichern', cancel: 'Abbrechen', privacy: 'Datenschutzerklärung',
+    }
+  : {
+      label: 'Privacy settings',
+      title: 'Your privacy, your choice',
+      text: 'We use technically necessary storage. External media from YouTube and Google Maps is loaded only with your consent. You can change your choice at any time in the footer.',
+      accept: 'Accept all', reject: 'Reject all', settings: 'Settings',
+      settingsTitle: 'Privacy settings', necessary: 'Strictly necessary',
+      necessaryText: 'Required for consent management, security and the form function you request.',
+      media: 'External media', mediaText: 'Allows content from YouTube and Google Maps. Data may be transferred to the United States.',
+      always: 'Always active', save: 'Save selection', cancel: 'Cancel', privacy: 'Privacy policy',
+    };
+const privacyHref = lang === 'de' ? '/datenschutz/' : '/en/privacy/';
+---
+
+<aside class="consent" data-consent-root role="dialog" aria-modal="true" aria-labelledby="consent-title" hidden>
+  <div class="consent__panel" data-consent-summary>
+    <p class="consent__eyebrow">{copy.label}</p>
+    <h2 id="consent-title">{copy.title}</h2>
+    <p>{copy.text}</p>
+    <div class="consent__actions">
+      <button type="button" data-consent-accept>{copy.accept}</button>
+      <button type="button" data-consent-reject>{copy.reject}</button>
+      <button type="button" data-consent-settings>{copy.settings}</button>
+    </div>
+    <a class="consent__privacy" href={privacyHref}>{copy.privacy}</a>
+  </div>
+
+  <div class="consent__panel" data-consent-details hidden>
+    <h2>{copy.settingsTitle}</h2>
+    <div class="consent__option">
+      <div><strong>{copy.necessary}</strong><p>{copy.necessaryText}</p></div>
+      <span>{copy.always}</span>
+    </div>
+    <label class="consent__option" for="consent-external-media">
+      <div><strong>{copy.media}</strong><p>{copy.mediaText}</p></div>
+      <input id="consent-external-media" type="checkbox" data-consent-media />
+    </label>
+    <div class="consent__actions">
+      <button type="button" data-consent-save>{copy.save}</button>
+      <button type="button" data-consent-cancel>{copy.cancel}</button>
+    </div>
+    <a class="consent__privacy" href={privacyHref}>{copy.privacy}</a>
+  </div>
+</aside>
+
+<style>
+  .consent { position: fixed; inset: 0; z-index: calc(var(--z-modal, 1000) + 10); display: grid; place-items: end center; padding: 1rem; background: rgb(0 0 0 / .68); }
+  .consent[hidden], .consent [hidden] { display: none; }
+  .consent__panel { box-sizing: border-box; width: min(520px, 100%); max-height: calc(100dvh - 2rem); overflow-y: auto; padding: clamp(1.1rem, 2.4vw, 1.5rem); border: 1px solid rgb(255 255 255 / .18); background: #181818; color: #fff; box-shadow: 0 20px 70px rgb(0 0 0 / .5); border-radius: var(--radius-md); }
+  .consent__eyebrow { margin-bottom: .3rem; color: var(--color-accent); font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+  .consent h2 { margin-bottom: .5rem; font-size: clamp(1.05rem, 2.2vw, 1.25rem); }
+  .consent p { color: rgb(255 255 255 / .78); font-size: .84rem; line-height: 1.5; }
+  .consent__actions { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-top: 1.25rem; }
+  /* Base = secondary outline button. */
+  .consent__actions button { min-height: 48px; padding: .7rem 1rem; border-radius: 8px; font-size: .9rem; font-weight: 600; cursor: pointer; white-space: nowrap; background: transparent; color: #fff; border: 1px solid rgb(255 255 255 / .28); transition: background 160ms ease, border-color 160ms ease, color 160ms ease; }
+  .consent__actions button:hover, .consent__actions button:focus-visible { border-color: var(--color-accent); color: var(--color-accent); }
+  /* Primary = solid red (prefixed for specificity over the base rule). Accept spans the row above. */
+  .consent__actions [data-consent-accept], .consent__actions [data-consent-save] { grid-column: 1 / -1; background: var(--color-accent); color: #fff; border-color: var(--color-accent); }
+  .consent__actions [data-consent-save] { grid-column: auto; }
+  .consent__actions [data-consent-accept]:hover, .consent__actions [data-consent-save]:hover,
+  .consent__actions [data-consent-accept]:focus-visible, .consent__actions [data-consent-save]:focus-visible { background: var(--color-accent-hover, #c81111); color: #fff; border-color: var(--color-accent); }
+  .consent__privacy { display: inline-block; margin-top: .8rem; color: rgb(255 255 255 / .75); font-size: .78rem; text-decoration: underline; text-underline-offset: .22em; }
+  .consent__option { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; padding: .8rem 0; border-top: 1px solid rgb(255 255 255 / .16); }
+  .consent__option strong { display: block; margin-bottom: .2rem; }
+  .consent__option > span { color: rgb(255 255 255 / .68); font-size: .78rem; }
+  .consent__option input { width: 24px; height: 24px; accent-color: var(--color-accent); }
+  [data-consent-details] .consent__actions { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 620px) { .consent { place-items: end stretch; padding: 0; } .consent__panel { max-height: 92dvh; border-radius: 0; } .consent__actions { grid-template-columns: 1fr; } [data-consent-details] .consent__actions { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  const DECISION_KEY = 'wamocon-consent-v1';
+  const SERVICE_KEYS = ['wamocon-consent-youtube', 'wamocon-consent-google-maps'];
+  const root = document.querySelector<HTMLElement>('[data-consent-root]');
+  const summary = root?.querySelector<HTMLElement>('[data-consent-summary]');
+  const details = root?.querySelector<HTMLElement>('[data-consent-details]');
+  const mediaToggle = root?.querySelector<HTMLInputElement>('[data-consent-media]');
+
+  const readDecision = () => {
+    try { return localStorage.getItem(DECISION_KEY); } catch { return null; }
+  };
+  const hasExternalMedia = () => {
+    try { return SERVICE_KEYS.every((k) => localStorage.getItem(k) === 'granted'); } catch { return false; }
+  };
+
+  const applyExternalMedia = (allowed: boolean) => {
+    try {
+      SERVICE_KEYS.forEach((k) => allowed ? localStorage.setItem(k, 'granted') : localStorage.removeItem(k));
+    } catch {}
+    if (allowed) {
+      // Load any embeds already on the page without a reload.
+      document.querySelectorAll<HTMLElement & { loadFromConsent?: () => void }>('privacy-embed')
+        .forEach((embed) => embed.loadFromConsent?.());
+    }
+  };
+
+  const close = () => { if (root) root.hidden = true; };
+  const showSummary = () => { if (!root || !summary || !details) return; root.hidden = false; summary.hidden = false; details.hidden = true; summary.querySelector<HTMLElement>('button')?.focus(); };
+  const showSettings = () => { if (!root || !summary || !details) return; root.hidden = false; summary.hidden = true; details.hidden = false; if (mediaToggle) mediaToggle.checked = hasExternalMedia(); mediaToggle?.focus(); };
+  const decide = (externalMedia: boolean) => {
+    try { localStorage.setItem(DECISION_KEY, JSON.stringify({ version: 1, externalMedia, savedAt: new Date().toISOString() })); } catch {}
+    applyExternalMedia(externalMedia);
+    close();
+  };
+
+  if (!readDecision()) showSummary();
+
+  root?.querySelector('[data-consent-accept]')?.addEventListener('click', () => decide(true));
+  root?.querySelector('[data-consent-reject]')?.addEventListener('click', () => decide(false));
+  root?.querySelector('[data-consent-settings]')?.addEventListener('click', showSettings);
+  root?.querySelector('[data-consent-save]')?.addEventListener('click', () => decide(Boolean(mediaToggle?.checked)));
+  root?.querySelector('[data-consent-cancel]')?.addEventListener('click', () => readDecision() ? close() : showSummary());
+  document.querySelectorAll('[data-open-consent-settings]').forEach((button) => button.addEventListener('click', showSettings));
+
+  // Footer "reset" reopens the banner instead of only reloading.
+  document.querySelectorAll('[data-reset-external-consent]').forEach((button) => {
+    button.addEventListener('click', () => {
+      try { localStorage.removeItem(DECISION_KEY); } catch {}
+    }, { capture: true });
+  });
+
+  Object.assign(window, {
+    wamoconConsent: { open: showSettings, hasExternalMedia, grantExternalMedia: () => decide(true) },
+  });
+</script>

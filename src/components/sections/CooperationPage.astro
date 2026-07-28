@@ -181,26 +181,6 @@ const c = de
     </div>
   </div>
 
-  <!-- IHK -->
-  <div class="wrap ihk">
-    <div class="ihk-img">
-      <img src="/images/coop-student.jpg" alt="IHK Ausbildung" loading="lazy" />
-    </div>
-    <div class="ihk-body">
-      <h2 class="head"><span class="t-white">{c.ihkHead}</span></h2>
-      <div class="badge">{c.ihkBadge}</div>
-      <p class="lead">{c.ihkText}</p>
-      <dl class="facts">
-        {c.ihkFacts.map((f) => (
-          <div class="fact">
-            <dt>{f.k}</dt>
-            <dd>{f.v}</dd>
-          </div>
-        ))}
-      </dl>
-    </div>
-  </div>
-
   <!-- PROVADIS -->
   <div class="wrap">
     <h2 class="head center-h"><span class="t-red">{c.provadisHead}</span></h2>
@@ -243,7 +223,7 @@ const c = de
     <div class="partners">
       <h2 class="head"><span class="t-red">{c.contactHead}</span></h2>
       <p class="lead">{c.contactSub}</p>
-      {c.partners.map((p) => (
+      {c.partners.slice(0, 1).map((p) => (
         <div class="partner">
           <img class="partner-img" src={p.img} alt={p.name} loading="lazy" />
           <h3>{p.name}</h3>
@@ -277,10 +257,11 @@ const c = de
   .coop {
     color: var(--color-text);
   }
+  /* Match the site-wide container width so this page is as wide as the others. */
   .wrap {
-    max-width: 1200px;
+    max-width: var(--container-max);
     margin: 0 auto;
-    padding: clamp(2.5rem, 6vw, 5rem) 1.25rem;
+    padding: clamp(2.5rem, 6vw, 5rem) var(--container-pad);
   }
   .t-red {
     color: var(--color-accent);
@@ -476,7 +457,7 @@ const c = de
     display: grid;
     grid-template-columns: 1.1fr 0.9fr;
     gap: clamp(2rem, 5vw, 4rem);
-    align-items: start;
+    align-items: center;
   }
   .partner {
     margin-bottom: 1.75rem;

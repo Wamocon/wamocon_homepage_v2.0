@@ -26,9 +26,6 @@ const { title, text, ctaLabel, ctaHref, ctaTarget } = Astro.props;
   .cta-banner {
     position: relative;
     overflow: hidden;
-    text-align: center;
-    max-width: 860px;
-    margin-inline: auto;
     padding: clamp(2.5rem, 6vw, 4.5rem);
     background: var(--surface-card);
     border: 1px solid var(--border-subtle);
@@ -46,7 +43,7 @@ const { title, text, ctaLabel, ctaHref, ctaTarget } = Astro.props;
   }
   .cta-banner p {
     max-width: 60ch;
-    margin: 0 auto 2rem;
+    margin: 0 0 2rem;
     position: relative;
   }
 </style>

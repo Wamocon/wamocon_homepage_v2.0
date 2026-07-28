@@ -487,6 +487,9 @@ const apply = de
           ))
         }
       </dl>
+      <a class="persp__link" href={de ? '/karriere/' : '/en/career/'}>
+        {de ? 'Alle Karrieremöglichkeiten bei WAMOCON' : 'All career opportunities at WAMOCON'} <span aria-hidden="true">→</span>
+      </a>
     </div>
     <img
       class="persp__img"
@@ -829,6 +832,8 @@ const apply = de
     color: var(--color-text-muted);
     line-height: var(--lh-body);
   }
+  .persp__link { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.75rem; color: var(--color-accent); font-weight: var(--fw-semibold); }
+  .persp__link:hover { text-decoration: underline; text-underline-offset: 0.2em; }
   .persp__img {
     width: 100%;
     height: auto;
@@ -859,12 +864,11 @@ const apply = de
   /* ---- APPLY ---- */
   .docs {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.5rem 3rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem 2rem;
     list-style: none;
     padding: 0;
     margin: 0 0 3rem;
-    max-width: 760px;
   }
   .docs li {
     display: flex;
@@ -918,6 +922,11 @@ const apply = de
   @media (max-width: 600px) {
     .docs {
       grid-template-columns: 1fr;
+    }
+  }
+  @media (min-width: 601px) and (max-width: 900px) {
+    .docs {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
   @media (max-width: 900px) {
