@@ -7,10 +7,9 @@ interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-const de = lang === 'de';
 
-const c = de
-  ? {
+const c = {
+  de: {
       heroEyebrow: 'Dein Erfolgsweg zum Experten im IT-Bereich',
       heroParas: [
         'WAMOCON hat einen umfassenden Ansatz entwickelt, der alle Aspekte des IT-Testens abdeckt. Dieses 360-Grad-System zum Aufbau einer erfolgreichen Karriere umfasst eine Reihe von Schritten und befähigt Sie, Herausforderungen zu meistern, indem es Ihnen den Weg zum Erfolg auf die effektivste Weise zeigt.',
@@ -34,8 +33,8 @@ const c = de
       ],
       academyCta: 'Starten Sie jetzt Ihre Erfolgsgeschichte, mit uns!',
       academyBtn: 'Jetzt Academy entdecken',
-    }
-  : {
+    },
+  en: {
       heroEyebrow: 'Your path to success as an expert in the IT sector',
       heroParas: [
         'WAMOCON has developed a comprehensive approach that covers all aspects of IT testing. This 360-degree system for building a successful career comprises a series of steps and empowers you to master challenges by showing you the path to success in the most effective way.',
@@ -59,7 +58,39 @@ const c = de
       ],
       academyCta: 'Start your success story now, with us!',
       academyBtn: 'Discover the Academy now',
-    };
+    },
+  tr: {
+      heroEyebrow: 'BT alanında uzmanlığa giden başarı yolunuz',
+      heroParas: [
+        'WAMOCON, BT testinin tüm yönlerini kapsayan bütünsel bir yaklaşım geliştirdi. Başarılı bir kariyer inşa etmeye yönelik bu 360 derecelik sistem, birbirini izleyen adımlardan oluşur ve size başarıya giden yolu en etkili biçimde göstererek zorlukların üstesinden gelmenizi sağlar.',
+        'WAMOCON ekibi bu sistemi, her bir çalışanın iş kalitesini, testlerin başarısını ve BT projelerinin tamamlanmasını iyileştirmek için kullanır.',
+      ],
+      heroTitle: '360° Booster Sistemi',
+      stepsLead: 'BT projesinde başarı: 360° sistemi',
+      stepsRest: ' her kariyer seviyesi için',
+      steps: [
+        { h: 'Hayalindeki projeye ilk adım', p: 'Potansiyel müşterileri hedefe yönelik içerikle ikna et. Kanıtlanmış blueprint stratejimiz, hayalindeki projeye giden yolu nasıl açacağını gösterir.' },
+        { h: 'Başarılı bir işe başlangıç, artık çok kolay', p: 'Proje ekibinle en iyi şekilde başla. Etkili iletişim ve net süreçler sorunsuz bir akış sağlar; nasıl olduğunu sana gösteriyoruz.' },
+        { h: 'Başarın için verimli planlama', p: 'Proje çalışmanı stressiz ve yapılandırılmış biçimde kurgula. Hedefe yönelik kontrol sorularıyla her ayrıntıyı gözden kaçırmaz ve en iyi planlamayı güvence altına alırsın.' },
+        { h: 'Başarılı bir başlangıç: ilk görevin', p: 'Doğru proje bilgilerini nasıl verimli topladığını öğren. Net yöntemlerle her görevin altından kolayca kalkarsın.' },
+        { h: 'Kusursuz uygulama', p: 'Her test senaryosunu ayrıntısıyla anladığından emin ol. Kanıtlanmış yöntemlerimiz fark yaratmana ve her zorluğu güvenle aşmana yardımcı olur.' },
+        { h: 'Güvenli proje kapanışı', p: 'Zaman daralınca paniğe kapılma! 50 yılı aşkın birikmiş deneyimimiz ve kanıtlanmış adım adım kılavuzumuzla her zorluğun üstesinden gelir, projeni başarıyla tamamlarsın.' },
+      ],
+      academyTitle: 'Akademi web sitemizdeki BT test yönetimi kurslarıyla gelişim fırsatlarınızı keşfedin!',
+      academyBlocks: [
+        { s: 'Kariyer yolunuzda desteğiniz', p: 'Akademimiz, test yönetiminin temel mekanizmalarında ustalaşmanıza yardımcı olur. Bütünsel yaklaşımımızla kariyer yolculuğunuzda size güvenle eşlik eder ve mesleki hedeflerinize ulaşmanızı destekleriz.' },
+        { s: 'İlerlemek isteyen herkes için', p: 'İster öğrenci, ister genç danışman, ister kariyer değiştiren olun; eğitimlerimiz başarılı olmanız için doğru araçları elinize verir. Proje yöneticileri ve yöneticiler de projeleri bir üst seviyeye taşıyan uygulanabilir çözümlerden ve sağlam stratejilerden yararlanır.' },
+      ],
+      academyCta: 'Başarı hikâyenizi bizimle hemen başlatın!',
+      academyBtn: 'Akademiyi hemen keşfedin',
+    },
+}[lang];
+
+const aiBadge = {
+  de: { label: 'Diese Grafik wurde mit Künstlicher Intelligenz erstellt', text: 'KI-generiert' },
+  en: { label: 'This graphic was created using artificial intelligence', text: 'AI-generated' },
+  tr: { label: 'Bu grafik yapay zekâ ile oluşturulmuştur', text: 'Yapay zekâ üretimi' },
+}[lang];
 
 const academyUrl = 'https://test-it-academy.com/';
 ---
@@ -100,9 +131,7 @@ const academyUrl = 'https://test-it-academy.com/';
     <div class="sys-academy">
       <div class="sys-academy__figure">
         <img class="sys-academy__img" src="/images/academy-person.png" alt={c.academyTitle} loading="lazy" />
-        <span class="ai-badge" aria-label={lang === 'de' ? 'Diese Grafik wurde mit Künstlicher Intelligenz erstellt' : 'This graphic was created using artificial intelligence'}>
-          {lang === 'de' ? 'KI-generiert' : 'AI-generated'}
-        </span>
+        <span class="ai-badge" aria-label={aiBadge.label}>{aiBadge.text}</span>
       </div>
       <div class="sys-academy__body">
         <h2><span class="t-white">{c.academyTitle}</span></h2>
@@ -183,7 +212,10 @@ const academyUrl = 'https://test-it-academy.com/';
 
   .sys-academy {
     display: grid;
-    grid-template-columns: 380px 1fr;
+    /* minmax(0, 1fr): a bare `1fr` keeps its automatic min-content floor, so a
+       long unbreakable heading pushed this column past the card on tablets.
+       The image column also shrinks now instead of holding a hard 380px. */
+    grid-template-columns: minmax(220px, 380px) minmax(0, 1fr);
     gap: clamp(1.5rem, 4vw, 3.5rem);
     align-items: center;
     background: var(--surface-card);
@@ -224,9 +256,9 @@ const academyUrl = 'https://test-it-academy.com/';
   .sys-btn:hover { background: var(--color-accent-hover); }
 
   @media (max-width: 900px) {
-    .sys-steps { grid-template-columns: 1fr 1fr; }
+    .sys-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (max-width: 700px) {
-    .sys-steps, .sys-academy { grid-template-columns: 1fr; }
+    .sys-steps, .sys-academy { grid-template-columns: minmax(0, 1fr); }
   }
 </style>

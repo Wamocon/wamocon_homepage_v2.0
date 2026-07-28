@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LegalPage from '../../components/sections/LegalPage.astro';
+
+const lang = 'tr' as const;
+---
+
+<BaseLayout
+  title="Erişilebilirlik Beyanı | WAMOCON GmbH"
+  description="Alman Erişilebilirliği Güçlendirme Yasası (BFSG) kapsamında WAMOCON GmbH web sitesi için erişilebilirlik beyanı."
+  lang={lang}
+>
+  <LegalPage title="Erişilebilirlik Beyanı" updated="Son güncelleme: 21 Temmuz 2026">
+    <p>
+      Bağlayıcı olan <a href="/barrierefreiheit/">Almanca sürümdür</a>; bu çeviri yalnızca bilgilendirme
+      amaçlıdır.
+    </p>
+
+    <p>
+      WAMOCON GmbH, web sitesini Alman Erişilebilirliği Güçlendirme Yasası
+      (Barrierefreiheitsstärkungsgesetz, BFSG) uyarınca erişilebilir kılmayı taahhüt eder. Bu beyan
+      <a href="https://www.wamocon.com/">www.wamocon.com</a> web sitesi için geçerlidir.
+    </p>
+
+    <h2>Uyumluluk durumu</h2>
+    <p>
+      Web İçeriği Erişilebilirlik Kılavuzu’na (WCAG) 2.1, AA uyumluluk düzeyine atıfta bulunan EN 301 549
+      standardını uyguluyoruz. Bu web sitesi söz konusu gerekliliklerle <strong>kısmen uyumludur</strong>.
+      Aşağıda listelenen hususlar tarafımızca bilinmekte ve üzerinde çalışılmaktadır.
+    </p>
+
+    <h2>Erişilebilir olmayan içerikler</h2>
+    <ul>
+      <li>Bazı video içeriklerinde henüz eksiksiz altyazı veya döküm bulunmuyor (WCAG 1.2.2, 1.2.3).</li>
+      <li>
+        Gömülü üçüncü taraf içerikler, özellikle YouTube ve Google Haritalar, bizim kontrolümüz dışındadır.
+        Bu içeriklerin erişilebilirliğinden ilgili sağlayıcı sorumludur.
+      </li>
+      <li>
+        Bazı dekoratif animasyonlar ve hareket efektleri hâlen gözden geçirilmektedir. İşletim sisteminde
+        azaltılmış hareket ayarını etkinleştiren ziyaretçiler şimdiden sadeleştirilmiş bir sunum alır
+        (WCAG 2.3.3).
+      </li>
+    </ul>
+
+    <h2>Alternatifler ve iletişim</h2>
+    <p>
+      Herhangi bir içerik sizin için erişilebilir değilse lütfen bizimle iletişime geçin. İhtiyaç duyduğunuz
+      bilgiyi telefon veya e-posta gibi başka bir yolla size iletiriz.
+    </p>
+
+    <h2>Geri bildirim ve iletişim bilgileri</h2>
+    <p>
+      Bu web sitesindeki erişilebilirlik engellerini dilediğiniz zaman bildirebilir ve erişilebilir
+      alternatifler talep edebilirsiniz:
+    </p>
+    <p>
+      WAMOCON GmbH<br />
+      Mergenthalerallee 79–81<br />
+      65760 Eschborn, Almanya<br />
+      Telefon: <a href="tel:+4961965838311">+49 6196 5838311</a><br />
+      E-posta: <a href="mailto:info@wamocon.com">info@wamocon.com</a>
+    </p>
+    <p>
+      Geri bildiriminizin alındığını kısa sürede teyit eder ve <strong>altı hafta içinde</strong> esasa
+      ilişkin bir yanıt veririz.
+    </p>
+
+    <h2>Yaptırım süreci</h2>
+    <p>
+      Yanıtımızdan memnun kalmazsanız veya hiç yanıt alamazsanız, BFSG’ye uyumu denetleyen Alman ürün ve
+      hizmetler erişilebilirliği piyasa gözetim makamına (MLBF) başvurabilirsiniz.
+    </p>
+    <p>
+      Marktüberwachungsstelle der Länder für die Barrierefreiheit von Produkten und
+      Dienstleistungen – Anstalt öffentlichen Rechts (MLBF AöR)<br />
+      Carl-Miller-Straße 6<br />
+      39112 Magdeburg, Almanya<br />
+      Telefon: <a href="tel:+493912892302">+49 391 289 230 23</a><br />
+      E-posta: <a href="mailto:kontakt@mlbf-barrierefrei.de">kontakt@mlbf-barrierefrei.de</a><br />
+      <a href="https://mlbf-barrierefrei.de/" target="_blank" rel="noopener noreferrer">
+        mlbf-barrierefrei.de
+      </a>
+    </p>
+
+    <h2>Bu beyanın hazırlanması</h2>
+    <p>
+      Bu beyan, web sitesinin WCAG 2.1 AA düzeyine göre kurum içinde gözden geçirilmesinin ardından
+      21 Temmuz 2026 tarihinde hazırlanmıştır. Beyanı düzenli olarak gözden geçirir ve işlevler ya da
+      erişilebilirlik durumu değiştiğinde güncelleriz.
+    </p>
+  </LegalPage>
+</BaseLayout>

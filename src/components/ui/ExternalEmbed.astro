@@ -1,5 +1,5 @@
 ---
-import type { Lang } from '../../i18n/config';
+import { legalNav, type Lang } from '../../i18n/config';
 
 interface Props {
   service: 'youtube' | 'google-maps';
@@ -40,10 +40,24 @@ const copy = {
     privacy: 'Read the privacy policy',
     external: 'Open directly with provider',
   },
+  tr: {
+    youtube: {
+      heading: 'YouTube videosunu yükle',
+      text: 'İçeriği yükleyerek verilerin YouTube/Google’a aktarılmasını kabul etmiş olursunuz. Seçiminiz bu tarayıcıda saklanır.',
+      button: 'YouTube’a izin ver',
+    },
+    'google-maps': {
+      heading: 'Google Haritalar’ı yükle',
+      text: 'İçeriği yükleyerek verilerin Google’a aktarılmasını kabul etmiş olursunuz. Seçiminiz bu tarayıcıda saklanır.',
+      button: 'Google Haritalar’a izin ver',
+    },
+    privacy: 'Gizlilik politikasını okuyun',
+    external: 'Doğrudan sağlayıcıda aç',
+  },
 } as const;
 
 const text = copy[lang][service];
-const privacyHref = lang === 'de' ? '/datenschutz/' : '/en/privacy/';
+const privacyHref = legalNav.privacy[lang].href;
 ---
 
 <privacy-embed

@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AppsPage from '../../components/sections/AppsPage.astro';
+
+const lang = 'tr' as const;
+---
+
+<BaseLayout
+  title="Eschborn’da yazılım ve yapay zekâ uygulama geliştirme | WAMOCON"
+  description="WAMOCON, iş hayatı ve günlük yaşam için kullanışlı yazılım uygulamaları geliştirir. Uygulamalarımızı keşfedin veya özel bir çözüm için fikrinizi bizimle paylaşın."
+  lang={lang}
+>
+  <AppsPage lang={lang} />
+</BaseLayout>

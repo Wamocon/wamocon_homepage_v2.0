@@ -7,7 +7,6 @@ interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-const de = lang === 'de';
 
 const clients = [
   '50 Hertz Transmission GmbH',
@@ -36,15 +35,20 @@ const clients = [
   'VGF GmbH',
 ];
 
-const labels = de
-  ? {
-      heading: 'Wer sind unsere Kunden?',
-      lead: 'Unsere Kunden vertrauen auf die Expertise der WAMOCON GmbH.',
-    }
-  : {
-      heading: 'Who are our customers?',
-      lead: 'Our customers trust the expertise of WAMOCON GmbH.',
-    };
+const labels = {
+  de: {
+    heading: 'Wer sind unsere Kunden?',
+    lead: 'Unsere Kunden vertrauen auf die Expertise der WAMOCON GmbH.',
+  },
+  en: {
+    heading: 'Who are our customers?',
+    lead: 'Our customers trust the expertise of WAMOCON GmbH.',
+  },
+  tr: {
+    heading: 'Müşterilerimiz kimler?',
+    lead: 'Müşterilerimiz WAMOCON GmbH’nin uzmanlığına güveniyor.',
+  },
+}[lang];
 ---
 
 <section class="ref-hero">

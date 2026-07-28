@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ApprenticeshipPage from '../../components/sections/ApprenticeshipPage.astro';
+
+const lang = 'tr' as const;
+---
+
+<BaseLayout
+  title="Uygulama geliştirme bilişim uzmanlığı eğitimi | WAMOCON"
+  description="Eschborn’da uygulama geliştirme bilişim uzmanlığı (IHK) mesleki eğitimi: ilk günden gerçek projeler, kişisel mentor ve iyi performansta işe alım garantisi."
+  lang={lang}
+>
+  <ApprenticeshipPage lang={lang} />
+</BaseLayout>

@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AboutPage from '../../components/sections/AboutPage.astro';
+
+const lang = 'tr' as const;
+---
+
+<BaseLayout
+  title="WAMOCON: Eschborn merkezli BT test yönetimi"
+  description="Ekibimizin 50 yılı aşkın birikmiş saha deneyimi: WAMOCON GmbH’yi, vizyonumuzu ve kilometre taşlarımızı keşfedin."
+  lang={lang}
+>
+  <AboutPage lang={lang} />
+</BaseLayout>

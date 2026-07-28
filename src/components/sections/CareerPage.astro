@@ -1,22 +1,49 @@
 ---
 import ContactBlock from "./ContactBlock.astro";
-import type { Lang } from "../../i18n/config";
+import { formChrome, legalNav, nav, type Lang } from "../../i18n/config";
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-const de = lang === "de";
+const flatNav = nav.flatMap((n) => (n.children ? n.children : [n]));
+const hrefFor = (key: string) => flatNav.find((n) => n.key === key)![lang].href;
 // Cross-links to related pages (review HP#23 / HP#26).
-const aboutTeamHref = de ? "/ueber-uns/#team" : "/en/about-us/#team";
-const voicesHref = de ? "/mitarbeiter-stimmen/" : "/en/employee-voices/";
-const azubiHref = de ? "/azubi-fae/" : "/en/apprenticeship/";
+const aboutTeamHref = `${hrefFor("about")}#team`;
+const voicesHref = hrefFor("employees");
+const azubiHref = hrefFor("azubi");
+const form = formChrome[lang];
+
+/** Link labels and small UI strings outside the main copy block. */
+const ui = {
+  de: {
+    meetTeam: "Lernen Sie das ganze Team kennen",
+    seeVoices: "Mitarbeiter-Stimmen ansehen",
+    apprenticeship: "Ausbildung: Azubi FIAE",
+    readMore: "Mehr lesen",
+    close: "Schließen",
+  },
+  en: {
+    meetTeam: "Meet the whole team",
+    seeVoices: "See employee voices",
+    apprenticeship: "Apprenticeship: FIAE trainee",
+    readMore: "Read more",
+    close: "Close",
+  },
+  tr: {
+    meetTeam: "Tüm ekiple tanışın",
+    seeVoices: "Çalışan görüşlerini inceleyin",
+    apprenticeship: "Mesleki eğitim: FIAE çıraklığı",
+    readMore: "Devamını oku",
+    close: "Kapat",
+  },
+}[lang];
 
 const VIDEO_BASE =
   "https://github.com/Wamocon/wamocon_homepage/raw/leon-dev/public";
 
-const c = de
-  ? {
+const c = {
+  de: {
       heroTitleRed: "Karriere bei WAMOCON,",
       heroTitleWhite: "Ihre Zukunft im IT-Testmanagement beginnt hier",
       heroText: [
@@ -182,8 +209,8 @@ const c = de
       formConsentPost: " gelesen hast. Bitte gib E-Mail oder Telefon an.",
       formBtn: "Hinterlassen Sie eine Anfrage",
       formClose: "Lerne von Experten, um selbst einer zu werden.",
-    }
-  : {
+    },
+  en: {
       heroTitleRed: "Career at WAMOCON,",
       heroTitleWhite: "your future in IT test management starts here",
       heroText: [
@@ -349,10 +376,178 @@ const c = de
       formConsentPost: ". Please provide an email address or phone number.",
       formBtn: "Leave a request",
       formClose: "Learn from experts to become one yourself.",
-    };
+    },
+  tr: {
+      heroTitleRed: "WAMOCON’da kariyer,",
+      heroTitleWhite: "BT test yönetimindeki geleceğiniz burada başlıyor",
+      heroText: [
+        "Teknolojiye olan tutkunuzu gerçek gelişim fırsatlarıyla birleştiren bir kariyer yaşayın. WAMOCON’da yeniliği, kaliteyi ve kişisel gelişimi yaşayan dinamik bir ekibin parçası olursunuz.",
+        "Bireysel destek, en modern donanım ve yolun her adımında sizi destekleyen aile sıcaklığında bir ortamla, heyecan verici BT projelerinde potansiyelinizi ortaya çıkarın.",
+      ],
+      heroBtn: "Açık pozisyonları göster",
+      systemHeadRed: "Sistemle başarı:",
+      systemHeadWhite: "WAMOCON’daki mesleki özgürlüğün",
+      systemIntro:
+        "WAMOCON’da kariyerini kendin şekillendirirsin. Güçlü yönlerini ortaya koyabileceğin, sorumluluk üstlenebileceğin ve güçlü bir ekiple birlikte başarıyı kutlayabileceğin çerçeveyi sana sunuyoruz.",
+      systemCards: [
+        {
+          t: "Dinamik çalışma dünyaları: ofis, müşteri sahasında veya uzaktan",
+          d: "En verimli olduğun yeri kendin seç: modern merkezimizde ya da doğrudan heyecan verici müşteri projelerinin sahasında. WAMOCON’da dinamik bir çalışma ortamı, düzenli fikir alışverişini ve yenilikçi çözüm yaklaşımlarını destekler. İş gününü sana uyacak biçimde kurgula.",
+        },
+        {
+          t: "Fikirleri paylaş, başarıyı birlikte şekillendir",
+          d: "WAMOCON merkezinde ve saha görevlerinde en iyi fikirler ekip içinde doğar. Toplantılar ve aktif paylaşımla yaratıcılığın ve verimliliğin el ele gittiği bir ortam yaratıyoruz. Bizdeki çalışman, meslektaşlarınla ve müşterilerle kurduğun yakın temasla aynı ölçüde zenginleşir.",
+        },
+        {
+          t: "Başarıya ve bilgiye giden yolun: öğrenim ile işi birleştir",
+          d: "Mesleki hedeflerini akademik yolunla birleştir. WAMOCON’da öğrenimi ve uygulamalı çalışmayı en iyi biçimde bir araya getiren, kendine özgü bir konsept uyguluyoruz. Böylece bilgini doğrudan uygulayabilir, sürekli büyüyebilir ve hem mesleki hem kişisel olarak gelişebilirsin.",
+        },
+      ],
+      systemClose:
+        "WAMOCON’un esneklik ve iş-yaşam dengesi yaklaşımı, burayı özel hayatını riske atmadan mesleki olarak gelişmek isteyenler için ideal bir yer hâline getiriyor.",
+      benefitsHeadRed: "Başarı hikâyeni başlat,",
+      benefitsHeadWhite: "WAMOCON ekibinin parçası ol!",
+      benefits: [
+        {
+          t: "Çeşitli görevler",
+          d: "Öğrenciler, mezunlar ve kariyer değiştirenler için sektörler arası, heyecan verici projeler.",
+        },
+        {
+          t: "Bireysel destek",
+          d: "Kişisel mentorlar ve yanında aile sıcaklığında bir uzman ekip.",
+        },
+        {
+          t: "Cazip koşullar",
+          d: "Ortalamanın üzerinde maaş ve Provadis’teki öğrenim ücretlerinin karşılanması.",
+        },
+        {
+          t: "Kariyer desteği",
+          d: "Saygın bir özel yüksekokulda öğrenim seçeneği ve kapsamlı ileri eğitim imkânları.",
+        },
+        {
+          t: "Modern donanım",
+          d: "Verimli çalışma için en yeni BT donanımı (ör. i9 dizüstü, BOSE kulaklık, taşınabilir şarj cihazı).",
+        },
+        {
+          t: "Esneklik",
+          d: "Evden çalışma seçeneği ve dengeli bir iş-yaşam düzeni.",
+        },
+      ],
+      joinHeadRed: "Ekibimizin",
+      joinHeadWhite: "bir parçası ol!",
+      joinText: [
+        "Seni gerçekten ileri taşıyacak bir kariyer mi arıyorsun? WAMOCON’da bir işten fazlasını bulursun: seni destekleyen, zorlayan ve sana inanan bir ortam.",
+        "Yatay hiyerarşiye, açık iletişime ve gerçek ekip çalışmasına önem veriyoruz. Burada yalnızca ne yapabildiğin değil, kim olduğun ve nereye gitmek istediğin de önemli.",
+        "Hemen başvur ve birlikte büyüyen, öğrenen ve başarıyı kutlayan bir ekibin parçası ol.",
+      ],
+      jobsHead: "Açık pozisyonlar",
+      tabs: ["Kısa açıklama", "Görevler", "Gereksinimler", "Neler sunuyoruz"],
+      applyBtn: "Hemen başvur",
+      voicesHead: "Çalışanlarımız ne diyor",
+      voices: [
+        {
+          t: "Verimlilik ve gelişim",
+          q: "WAMOCON’da modern çalışma koşullarından ve mesleki ilerlemeni destekleyen, sahaya dönük projelerden yararlanırsın.",
+          img: "/images/team-waleri.png",
+          author: "Waleri Moretz",
+          role: "Genel Müdür",
+          popupTitle: "WAMOCON’da modern ve yenilikçi çalışma koşulları",
+          full: [
+            { type: "p", text: "WAMOCON’un yöneticisi olarak, çalışanlarımızın verimliliği ve sürekli gelişimi destekleyen bir ortamda çalışmasına büyük önem veriyorum. Bizde en modern teknolojiden, esnek çalışma modellerinden ve aile sıcaklığında bir şirket kültüründen yararlanırsın. WAMOCON’daki herkesin potansiyelini tam olarak ortaya koyabilmesi için verimliliğe, yeniliğe ve güçlü ekip çalışmasına odaklanıyorum." },
+            { type: "h", text: "Avantajlarımıza genel bakış:" },
+            { type: "ul", items: [
+              "En modern BT donanımı: Yapay zekâ destekli test otomasyonu araçlarıyla donatılmış, en yeni nesil dizüstü bilgisayarlarla çalışırsın.",
+              "Esnek çalışma modelleri: Sana en uygun yerde çalışabilirsin: ofiste, evden veya yolda.",
+              "Aile sıcaklığında şirket kültürü: Bizde yakın çalışır ve birbirimizi destekleriz.",
+              "Sürekli eğitim: Test otomasyonu, yapay zekâ ve yazılım geliştirme alanlarında düzenli eğitimler programımızın parçasıdır.",
+              "Heyecan verici projeler: Dijitalleşme, yapay zekâ ve bulut teknolojileri alanındaki BT projelerinin parçası olursun.",
+            ] },
+            { type: "h", text: "Çalışma koşullarının ayrıntıları: modern BT donanımıyla en üst verimlilik" },
+            { type: "p", text: "Özellikle test otomasyonu ve kalite güvencesi için geliştirilmiş, en modern dizüstü bilgisayarlar ve güçlü araçlarla çalışmanı sağlıyorum. Yüksekliği ayarlanabilir masalara sahip ergonomik çalışma alanları, konforlu ve sağlıklı çalışmana katkı sunuyor. Yapay zekâ destekli işlevlerimiz test senaryosu oluşturma, test yürütme ve hata analizinde sana yardımcı olur; böylece işini verimli ve kusursuz biçimde tamamlarsın." },
+            { type: "h", text: "Esneklik ve dinamik çalışma" },
+            { type: "p", text: "WAMOCON’da esnek ve dinamik çalışma özgürlüğün var. Çalışma alanların, her projeye hazırlanman için doğru araçlarla donatılmıştır. Yolda da verimli kalabilmen için çok işlevli iş sırt çantaları ve harici bataryalar almanı sağlıyorum. Güvenli bulut teknolojilerimiz ve BT desteğimiz sayesinde çalışma ortamına her zaman ve her yerden erişebilirsin." },
+            { type: "h", text: "Geleceğe yön veren BT projeleri" },
+            { type: "p", text: "Yalnızca yazılım geliştirmede kalite güvencesini kökten değiştirmekle kalmayıp dijital dönüşümü ve veri yönetimini de ileri taşıyan yenilikçi projelerde çalışacaksın. Süreçlerimizi iyileştirmek ve BT’nin geleceğini aktif olarak şekillendirmek için yapay zekâ ve büyük veri gibi yeni teknolojilere sürekli yatırım yapıyorum. WAMOCON’da bulut tabanlı platformlarda ve otomatik test ortamlarında yer alma ve BT’nin geleceğine yön verme şansın var." },
+            { type: "h", text: "Aile sıcaklığında şirket kültürü ve kişisel gelişim" },
+            { type: "p", text: "WAMOCON’da her çalışanın desteklendiği ve gelişme imkânı bulduğu, aile sıcaklığında bir şirket kültürü yaşattığımız için gurur duyuyorum. Kültürümüz açık iletişime, iş birliğine ve mükemmellik arayışına dayanır. Bizde herkes yeni fikirler sunmaya ve yaratıcı çözümler bulmaya teşvik edilir." },
+            { type: "quote", text: "„WAMOCON ekibinin lideri olarak, her çalışanın değer gördüğü ve yeni mesleki yüksekliklere ulaşmak için ihtiyaç duyduğu desteği aldığı bir ortam yarattığım için mutluyum. Aile sıcaklığındaki şirket kültürümüz, yenilikçi teknolojilerin kullanımıyla birleşerek sana potansiyelini tam olarak ortaya koyma ve BT’nin geleceğini şekillendirme imkânı sunuyor.“" },
+            { type: "p", text: "WAMOCON’da, özellikle test otomasyonu ve yapay zekâ alanlarında kapsamlı eğitim ve gelişim imkânları sunuyorum. Kişisel ve mesleki gelişimine yapılan bu yatırım yalnızca senin için değil, yenilikçi bir BT şirketi olarak konumumuz için de değerlidir." },
+          ],
+        },
+        {
+          t: "Ekip ruhu",
+          q: "Aile sıcaklığındaki ortamımızda güven ve iş birliği merkezdedir; güçlü bir “biz” duygusu için.",
+          img: "/images/team-erwin.png",
+          author: "Erwin Moretz",
+          role: "Test uzmanı ve test otomasyon uzmanı",
+          popupTitle: "WAMOCON’daki birlik ruhu: bana ilham veren nitelikler",
+          full: [
+            { type: "p", text: "WAMOCON’da, herkesin büyük ve dost bir ailenin parçası gibi hissettiği sıcak ve destekleyici bir atmosfer yaratmaya büyük önem veriyoruz. Bizim için yalnızca sözler değil; güvene, adalete ve şeffaflığa dayanan eylemler de önemlidir. Bu ilkeler keyifli ve verimli bir çalışma ortamının temelini oluşturur." },
+            { type: "h", text: "Karşılıklı destek ve dayanışma" },
+            { type: "p", text: "ekip çalışmamızın temel dayanaklarıdır. Meslektaşlarımızın yardımı ve tavsiyeleri sayesinde her birimiz kendi yetkinliğinden emin hisseder. Bu, birlikte üstün sonuçlar elde etmemizi ve tüm zorlukların üstesinden gelmemizi sağlar." },
+            { type: "h", text: "Deneyim ve bilgi paylaşımı" },
+            { type: "p", text: "Bu, günlük çalışmamızı sürekli bir öğrenme ve gelişme sürecine dönüştürür. Yeni fikirlere açıklık ve kendi başarılarını paylaşma isteği, her ekip üyesinin mesleki gelişimini destekler ve ortak yetkinlikleri güçlendirir." },
+            { type: "p", text: "WAMOCON’da yalnızca iş hedeflerine ulaşmayı değil, herkesin potansiyelini ortaya koyabileceği bir çalışma alanı yaratmayı da hedefliyoruz. Bu değerler ekibimizi özel kılıyor ve her iş gününü anlam ve ilhamla dolduruyor." },
+          ],
+        },
+        {
+          t: "İş seyahatleri",
+          q: "Konforlu biçimde organize edilen seyahatlerimiz, tümüyle görevlerine ve hedeflerine odaklanmanı sağlar.",
+          img: "/images/team-nikolaj.png",
+          author: "Nikolai Scheffner",
+          role: "Test yöneticisi ve test otomasyon uzmanı",
+          popupTitle: "İş seyahatleri: konfor ve kaygısızlık",
+          full: [
+            { type: "p", text: "Kısa süre önce WAMOCON ile bir iş seyahatindeydim ve şirketin bize nasıl azami konfor sunduğuna dair izlenimlerimi paylaşmak istiyorum. Biletlerden transferlere, şehir içi ulaşım kartlarına kadar her şey düşünülmüştü; bu da seyahatin lojistiğiyle uğraşmadan meslektaşlarımla birlikte tümüyle önümüzdeki görevlere odaklanmamızı sağladı." },
+            { type: "h", text: "Konforlu konaklama" },
+            { type: "p", text: "Varışın ardından, bir iş gününün ardından dinlenmek için gereken her şeyle donatılmış konforlu odaların bulunduğu bir otele yerleştirildik. Bu koşullar, konaklamanın tamamı boyunca fiziksel ve duygusal olarak çok iyi hissetmemizi sağladı." },
+            { type: "h", text: "Beslenme ve iyi hissetme" },
+            { type: "p", text: "Seyahatin önemli bir parçası da nitelikli beslenmeydi. Şirket lezzetli ve sağlıklı yemek yememizi sağladı; bu da gün boyu yüksek enerji ve odaklanmayı korumamıza katkıda bulundu." },
+            { type: "h", text: "Sonuca odaklanma" },
+            { type: "p", text: "WAMOCON’un seyahati özenle organize etmesi sayesinde meslektaşlarım ve ben tümüyle işe odaklanabildik ve gereksiz kaygılar olmadan belirlenen hedeflere ulaştık. Bu yüksek destek düzeyi, WAMOCON’u çalışanlara özenin ilk sırada geldiği, çalışmak için mükemmel bir yer hâline getiriyor." },
+            { type: "p", text: "Bu seyahat yalnızca mesleki gelişimimi desteklemekle kalmadı, şirkete çalışanlarına gösterdiği ilgi ve saygı için duyduğum minneti de pekiştirdi. Çalışanlarına karşı bu özenli ve saygılı tutumu için WAMOCON’a içtenlikle teşekkür ediyorum." },
+          ],
+        },
+        {
+          t: "Mentorluk",
+          q: "Deneyimli mentorlar, mesleki hedeflerine ulaşman ve gelişmen için sana bireysel ve uygulamaya dönük biçimde eşlik eder.",
+          img: "/images/team-daniel.png",
+          author: "Daniel Moretz",
+          role: "Test yöneticisi ve test otomasyon uzmanı",
+          popupTitle: "WAMOCON’da mentor olarak deneyimim",
+          full: [
+            { type: "p", text: "WAMOCON’da mentorluk, yeni çalışanların uyum ve öğrenme sürecinin merkezinde yer alır. Mentor rolünü üstlendiğimde, buradaki mentorluğun yalnızca bilgi aktarımından ibaret olmadığını fark ettim. Bu, yeni gelenlerin teorik temelleri öğrenmesinin yanı sıra bunları uygulamada da aktif biçimde kullanmasını amaçlayan bütünsel bir yaklaşım." },
+            { type: "h", text: "Bireysel yaklaşım ve uygulamalı kullanım" },
+            { type: "p", text: "Her stajyerin eğitiminde bireysel bir yaklaşım gözetiyoruz; çünkü kişisel ilgi ve desteğin, mesleki ortama başarılı uyumun sırrı olduğunu biliyoruz. Benim rehberliğimde stajyerler gerçek projelerde yer alır; bu da yalnızca teoriyi uygulamalarını değil, değerli pratik deneyim kazanmalarını da sağlar." },
+            { type: "h", text: "Özel ilişkiler kurmak" },
+            { type: "p", text: "Meslektaşlarımın da vurguladığı gibi, WAMOCON’da mentorluk yalnızca bir eğitimden ibaret değildir. Ortak başarı için birlikte çalıştığımız, benzersiz ilişkiler kurma sürecidir. Bu ilişkiler derin bir karşılıklı anlayışı ve iş birliğini besler; bu da üstün sonuçların temelini oluşturur." },
+            { type: "h", text: "Karşılıklı büyüme ve gelişim" },
+            { type: "p", text: "Mentorluktaki ortaklığın yalnızca şirketin başarısına katkı sunmakla kalmayıp, sürece katılan herkesin mesleki gelişimini de desteklediğine inanıyorum. Başkalarının gelişmesine yardım ederken her mentor kendi gelişimi ve ustalaşması için de fırsatlar bulur." },
+            { type: "p", text: "WAMOCON’daki mentorluk, çalışanlara mesleki ve kişisel gelişim için benzersiz imkânlar sunarak etkinliğini kanıtlıyor. Bu da şirketimizi yalnızca bir çalışma yeri değil, herkesin potansiyelini ortaya koyup gerçekleştirebileceği bir alan hâline getiriyor." },
+          ],
+        },
+      ],
+      kununuHead: "Kununu değerlendirmeleri",
+      kununuBtn: "Kununu’daki tüm değerlendirmeleri görün",
+      teamVideoHead: "Gelecekteki ekibinle tanış",
+      formHeadRed: "Vazgeçilmez bir",
+      formHeadWhite: "ekip üyesi ol",
+      formText:
+        "Bize bağlayıcı olmayan bir başvuru talebi gönder ve tercih ettiğin iletişim kanalını seç. Sana dönüş yapacağız.",
+      formName: "Ad ve soyad",
+      formPhone: "Telefon",
+      formEmail: "E-posta",
+      formConsent: "Göndererek şunu okuduğunu onaylamış olursun:",
+      formConsentLink: "gizlilik politikası",
+      formConsentHref: "/tr/gizlilik",
+      formConsentPost: ". Lütfen e-posta veya telefon bilgisi gir.",
+      formBtn: "Talep bırakın",
+      formClose: "Uzmanlardan öğren, kendin de uzman ol.",
+    },
+}[lang];
 
-const jobs = de
-  ? [
+const jobs = {
+  de: [
       {
         title: "Ausbildungsangebot: Fachinformatiker:in Anwendungsentwicklung",
         short:
@@ -432,8 +627,8 @@ const jobs = de
           "Erhalte bei Bedarf einen Studienplatz an der angesehenen Hochschule Provadis in Frankfurt am Main.",
         ],
       },
-    ]
-  : [
+    ],
+  en: [
       {
         title: "Apprenticeship: IT specialist for application development",
         short:
@@ -513,9 +708,91 @@ const jobs = de
           "If needed, receive a study place at the renowned Provadis university in Frankfurt am Main.",
         ],
       },
-    ];
+    ],
+  tr: [
+      {
+        title: "Mesleki eğitim: Uygulama geliştirme bilişim uzmanı",
+        short:
+          "Uygulamaları yalnızca kullanmak değil, kendin geliştirmek mi istiyorsun? WAMOCON’da uygulama geliştirme bilişim uzmanı olarak dijital bir problem çözücüye dönüşürsün. İlk fikirden bitmiş ürüne kadar gerçek zorlukları çözen yazılımlar geliştirirsin. İster web uygulaması, ister test aracı, ister bulut çözümü olsun: BT proje dünyasının tam ortasındasın. Bu süreçte yazılımın nasıl ortaya çıktığını öğrenir, tekniği akıl ve yaratıcılıkla birleştiren bir ekibin parçası olursun.",
+        tasks: [
+          "Java, Python, JavaScript ve benzeri dillerle modern yazılımlar geliştirirsin.",
+          "SQL veritabanları, REST API’leri ve Spring ya da React gibi çatılarla çalışırsın.",
+          "Git, Jira, Docker gibi araçları kullanır ve çevik yöntemlerle (ör. Scrum) geliştirirsin.",
+          "Yazılımını Postman ve Katalon gibi araçlarla otomatik ve yapılandırılmış biçimde test edersin.",
+          "Gereksinimleri analiz eder, kullanıcı hikâyelerini planlar ve çözümler geliştirirsin.",
+          "Öne çıkan nokta: Yapay zekâ ve bulutla kendi dijital eğitim sistemini kurarsın!",
+          "UX, arka uç mantığı, veri işleme ve kalite güvencesinin nasıl bağlantılı olduğunu öğrenirsin.",
+          "Teori ve uygulama en iyi biçimde birleşir: öğrendiğini hemen gerçek projede uygularsın.",
+        ],
+        req: [
+          "Ortaokul diploması (10. sınıf) veya lise/meslek lisesi diploması",
+          "BT’ye, yazılıma ve problem çözmeye ilgi",
+          "Düşünmekten, geliştirmekten ve anlamaktan keyif alma",
+          "Takım çalışmasına yatkınlık ve iletişime isteklilik",
+          "Titizlik, merak ve sorumluluk alma isteği",
+          "Programlama veya teknikle ilk deneyim mi var? Güzel olur ama zorunlu değil.",
+        ],
+        offer: [
+          "Kişisel destek: Sabit bir mentor, düzenli geri bildirim görüşmeleri ve bireysel öğrenme yolları edinirsin.",
+          "İlk günden gerçek uygulama: Baştan itibaren gerçek müşteri projelerinin parçasısın.",
+          "İleri teknoloji ve yenilik: Modern araç ve çatılarla çalışır; yapay zekâ, bulut ve DevOps kullanırsın.",
+          "Adil ücret ve ek imkânlar: Üst düzey eğitim ücreti, teknik desteği, e-öğrenme erişimi, etkinlikler ve daha fazlası.",
+          "Modern donanım: Kendi dizüstü bilgisayarın, kulaklık, çift ekran, modern araçlar ve ergonomik çalışma alanı dâhil.",
+          "Kısaltma mümkün: İyi performans mı? O zaman süreyi 2,5 veya 2 yıla düşürürsün.",
+          "Üstüne öğrenim: Eğitim sonrası ör. Provadis ile ikili öğrenim (işletme bilişimi / bilgisayar bilimi).",
+          "Ekip ruhu ve kültür: Açık, saygılı ve eşit düzeyde hareket eden bir çalışma arkadaşlığı ortamı.",
+          "Eğitim başlamadan staj: Yaz döneminde hiçbir yükümlülük olmadan bir tanışma stajıyla bizi tanı.",
+        ],
+      },
+      {
+        title: "(Junior) Test uzmanı",
+        short:
+          "BT danışmanı rolündeki test uzmanı olarak, kullanıcı hikâyelerinden ve teknik belgelerden gelen gereksinimleri anlamak ve müşteri sisteminde hedefe yönelik biçimde hayata geçirmek üzere yoğun bir eğitim alırsın. Müşterileri, ister klasik ister çevik olsun, yazılım yaşam döngüsünün tüm aşamalarında güvenle yönlendirir ve en yüksek ürün kalitesini güvence altına alırsın. Katkınla tüm gereksinimlerin eksiksiz karşılanmasını ve nitelikli sonuçlar elde edilmesini sağlarsın.",
+        tasks: [
+          "Standartlaştırılmış yöntemlere göre yapılandırılmış test senaryoları geliştirir ve bunları farklı test aşamalarında (sistem, entegrasyon, kabul ve regresyon testleri) yürütürsün.",
+          "Sapmaları müşteriye özgü test araçlarıyla eksiksiz belgeler ve durumun sürekli izlenmesini sağlarsın.",
+          "Hatalar giderildiğinde, düzeltmeleri doğrulamak ve ilerlemeyi şeffaf tutmak için yeniden test yaparsın.",
+        ],
+        req: [
+          "Almanca ve İngilizcede dil açısından yetkinsin, ekip içinde çalışmayı seversin ve meslektaşlarınla açık iletişim kurarsın.",
+          "Yeni zorluklara meraklısın, hızlı öğrenirsin, bağımsız çalışırsın; güçlü bir BT ilgisi ve teknolojiye tutku taşırsın.",
+        ],
+        offer: [
+          "Derinlikli uzmanlık bilgisinden yararlan, hem mesleki hem kişisel olarak gelişmeye devam et.",
+          "Kurum içi ve dışı kapsamlı eğitim programlarından faydalan.",
+          "Farklı projelerde çok yönlü ve değişken görevlerin seni bekliyor.",
+          "Yolunda sana eşlik eden deneyimli mentorlardan bireysel destek al.",
+          "Gerektiğinde Frankfurt am Main’deki saygın Provadis Yüksekokulu’nda bir öğrenim yeri edin.",
+        ],
+      },
+      {
+        title: "(Junior) Test otomasyon uzmanı",
+        short:
+          "Test otomasyon uzmanı olarak test senaryolarını otomatikleştirir ve iyileştirir, mevcut otomasyonların bakımını yapar ve böylece karmaşık yazılım çözümlerinin kalitesini güvence altına alırsın. Bu süreçte müşterilerimize yazılım yaşam döngüsünün tüm aşamalarında eşlik eder ve ürünlerin güvenilir ve yüksek performanslı biçimde teslim edilmesini sağlarsın.",
+        tasks: [
+          "Standartlaştırılmış ve etkili test otomasyonları geliştirmek üzere sağlam bir eğitim alırsın.",
+          "En modern yöntemlere göre otomatik test senaryolarının oluşturulması, çalıştırılması ve belgelenmesi.",
+          "Mevcut test senaryolarının uygulanabilirlik ve verimlilik açısından analizi ve iyileştirilmesi.",
+          "Testlerin otomatikleştirilmesi için teknik betiklerin geliştirilmesi ve bakımı.",
+          "Kalite güvencesi amacıyla teknik dokümantasyon, hata analizleri ve kod bölümleri üzerinde çalışma.",
+        ],
+        req: [
+          "Excel, Word ve Notes gibi MS Office programlarıyla çalışmaya hâkimsin; Skype for Business ve Outlook gibi iletişim araçlarına aşinasın.",
+          "Betik veya programlama dillerinde temel bilgi sana ek bir avantaj sağlar.",
+          "Güçlü yönlerin ekip çalışması ile meslektaşlarına açık ve iletişime dönük yaklaşımındır; bu da profilini en iyi şekilde tamamlar.",
+        ],
+        offer: [
+          "Derinlikli uzmanlık bilgisinden yararlan, hem mesleki hem kişisel olarak gelişmeye devam et.",
+          "Kurum içi ve dışı kapsamlı eğitim programlarından faydalan.",
+          "Farklı projelerde çok yönlü ve değişken görevlerin seni bekliyor.",
+          "Yolunda sana eşlik eden deneyimli mentorlardan bireysel destek al.",
+          "Gerektiğinde Frankfurt am Main’deki saygın Provadis Yüksekokulu’nda bir öğrenim yeri edin.",
+        ],
+      },
+    ],
+}[lang];
 
-// Kununu reviews are kept in their original wording in both languages —
+// Kununu reviews are kept in their original wording in every language edition —
 // authentic employee voices must not be altered by translation (review HP#31).
 const kununu = [
       { r: "4,8", t: "Zentralgelegener Arbeitsplatz: professionelle und angenehme Arbeitsatmosphäre", d: "Mai 2025", role: "Angestellte/r · Administration" },
@@ -535,9 +812,12 @@ const videos = [
   { name: "Erwin", src: `${VIDEO_BASE}/Mitarbeiter-Referenzvideo-Erwin.mp4`, poster: "/images/team-erwin.png" },
   { name: "Niko", src: `${VIDEO_BASE}/Mitarbeiter-Referenzvideo-Niko.mp4`, poster: "/images/team-nikolaj.png" },
 ];
-const videoConsent = de
-  ? { button: "Video von GitHub laden", note: "Dabei wird eine Verbindung zu GitHub hergestellt.", privacy: "Datenschutz", href: "/datenschutz/" }
-  : { button: "Load video from GitHub", note: "This establishes a connection to GitHub.", privacy: "Privacy policy", href: "/en/privacy/" };
+const videoConsent = {
+  de: { button: "Video von GitHub laden", note: "Dabei wird eine Verbindung zu GitHub hergestellt." },
+  en: { button: "Load video from GitHub", note: "This establishes a connection to GitHub." },
+  tr: { button: "Videoyu GitHub’dan yükle", note: "Bu sırada GitHub ile bir bağlantı kurulur." },
+}[lang];
+const videoPrivacy = { label: form.privacyLabel, href: legalNav.privacy[lang].href };
 ---
 
 <section class="career">
@@ -587,13 +867,13 @@ const videoConsent = de
     {c.joinText.map((p) => <p class="lead">{p}</p>)}
     <div class="career-crosslinks">
       <a class="career-crosslink" href={aboutTeamHref}>
-        {de ? "Lernen Sie das ganze Team kennen" : "Meet the whole team"} <span aria-hidden="true">→</span>
+        {ui.meetTeam} <span aria-hidden="true">→</span>
       </a>
       <a class="career-crosslink" href={voicesHref}>
-        {de ? "Mitarbeiter-Stimmen ansehen" : "See employee voices"} <span aria-hidden="true">→</span>
+        {ui.seeVoices} <span aria-hidden="true">→</span>
       </a>
       <a class="career-crosslink" href={azubiHref}>
-        {de ? "Ausbildung: Azubi FIAE" : "Apprenticeship: FIAE trainee"} <span aria-hidden="true">→</span>
+        {ui.apprenticeship} <span aria-hidden="true">→</span>
       </a>
     </div>
   </div>
@@ -648,7 +928,7 @@ const videoConsent = de
             <h3>{v.t}</h3>
             <p class="voice__quote">&bdquo;{v.q}&ldquo;</p>
             <button type="button" class="voice__more" data-voice-open={vi}>
-              {de ? "Mehr lesen" : "Read more"}
+              {ui.readMore}
             </button>
           </div>
         </article>
@@ -661,7 +941,7 @@ const videoConsent = de
     <div class="vpopup" id={`vpopup-${vi}`} data-voice-panel={vi} hidden>
       <div class="vpopup__overlay" data-voice-close></div>
       <div class="vpopup__box" role="dialog" aria-modal="true" aria-labelledby={`vpopup-title-${vi}`}>
-        <button type="button" class="vpopup__close" data-voice-close aria-label={de ? "Schließen" : "Close"}>×</button>
+        <button type="button" class="vpopup__close" data-voice-close aria-label={ui.close}>×</button>
         <div class="vpopup__head">
           <img class="vpopup__avatar" src={v.img} alt={v.author} loading="lazy" />
           <div>
@@ -707,7 +987,7 @@ const videoConsent = de
             <video controls preload="none" playsinline poster={v.poster} aria-label={v.name}></video>
             <div class="vidcard__privacy">
               <button type="button" data-external-video data-src={v.src}>{videoConsent.button}</button>
-              <small>{videoConsent.note} <a href={videoConsent.href}>{videoConsent.privacy}</a></small>
+              <small>{videoConsent.note} <a href={videoPrivacy.href}>{videoPrivacy.label}</a></small>
             </div>
           </div>
           <h3>{v.name}</h3>
@@ -724,14 +1004,14 @@ const videoConsent = de
     <div class="form-box">
       <h2 class="head"><span class="t-red">{c.formHeadRed}</span> <span class="t-white">{c.formHeadWhite}</span></h2>
       <p class="lead">{c.formText}</p>
-      <form class="apply-form js-lead-form" data-redirect={de ? "/danke/" : "/en/thank-you/"}>
+      <form class="apply-form js-lead-form" data-redirect={form.thankYou}>
         <input type="hidden" name="type" value="career" />
         <input type="hidden" name="lang" value={lang} />
         <label><span>{c.formName}</span><input type="text" name="name" autocomplete="name" required /></label>
         <label><span>{c.formPhone}</span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" /></label>
         <label><span>{c.formEmail}</span><input type="email" name="email" autocomplete="email" /></label>
         <p class="consent">{c.formConsent} <a href={c.formConsentHref}>{c.formConsentLink}</a>{c.formConsentPost}</p>
-      <p class="form-responsible">{lang === 'de' ? "Ihre Anfrage wird bearbeitet von Dipl.-Ing. Waleri Moretz, Geschäftsführer der WAMOCON GmbH." : "Your enquiry is handled by Dipl.-Ing. Waleri Moretz, Managing Director of WAMOCON GmbH."}</p>
+      <p class="form-responsible">{form.responsible}</p>
         <button type="submit" class="btn">{c.formBtn}</button>
       </form>
       <p class="form-close">{c.formClose}</p>

@@ -21,13 +21,19 @@ const linkFor = (key: string) => flat.find((n) => n.key === key)![lang];
 const col1 = ['home', 'system', 'apps', 'cooperation', 'testimonials', 'references'].map(linkFor);
 const col2 = ['career', 'about', 'employees', 'azubi', 'webdesign'].map(linkFor);
 const legal = [legalNav.privacy[lang], legalNav.imprint[lang], legalNav.accessibility[lang]];
-const privacySettings = lang === 'de' ? 'Cookie-Einstellungen' : 'Cookie settings';
+const privacySettings = {
+  de: 'Cookie-Einstellungen',
+  en: 'Cookie settings',
+  tr: 'Çerez ayarları',
+}[lang];
 
 // Art. 50 EU AI Act transparency notice. Must be shown in the language of the
-// page — a German-only notice does not inform an English-speaking visitor.
-const aiNotice = lang === 'de'
-  ? 'Einzelne grafische Elemente dieser Website (abstrakte Illustrationen und 3D-Renderings) wurden mit Hilfe Künstlicher Intelligenz erstellt. Alle Fotografien von Personen, Räumen und Veranstaltungen sind echte Aufnahmen und nicht KI-generiert. Sämtliche Texte werden redaktionell von einem Menschen geprüft und verantwortet.'
-  : 'Some graphical elements on this website (abstract illustrations and 3D renderings) were created with the help of artificial intelligence. All photographs of people, places and events are genuine and not AI-generated. All texts are editorially reviewed and approved by a human.';
+// page — a German-only notice does not inform a visitor reading another edition.
+const aiNotice = {
+  de: 'Einzelne grafische Elemente dieser Website (abstrakte Illustrationen und 3D-Renderings) wurden mit Hilfe Künstlicher Intelligenz erstellt. Alle Fotografien von Personen, Räumen und Veranstaltungen sind echte Aufnahmen und nicht KI-generiert. Sämtliche Texte werden redaktionell von einem Menschen geprüft und verantwortet.',
+  en: 'Some graphical elements on this website (abstract illustrations and 3D renderings) were created with the help of artificial intelligence. All photographs of people, places and events are genuine and not AI-generated. All texts are editorially reviewed and approved by a human.',
+  tr: 'Bu web sitesindeki bazı grafik öğeler (soyut illüstrasyonlar ve 3D görseller) yapay zekâ yardımıyla oluşturulmuştur. Kişilere, mekânlara ve etkinliklere ait tüm fotoğraflar gerçek çekimlerdir ve yapay zekâ ile üretilmemiştir. Tüm metinler bir insan tarafından editoryal olarak kontrol edilir ve sorumluluğu üstlenilir.',
+}[lang];
 ---
 
 <footer class="footer">

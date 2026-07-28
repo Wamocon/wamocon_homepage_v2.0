@@ -5,36 +5,66 @@
  */
 import ContactBlock from './ContactBlock.astro';
 import ExternalEmbed from '../ui/ExternalEmbed.astro';
-import type { Lang } from '../../i18n/config';
+import { nav, type Lang } from '../../i18n/config';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-const de = lang === 'de';
-
+const flatNav = nav.flatMap((n) => (n.children ? n.children : [n]));
 const eignungstestUrl =
   'https://docs.google.com/forms/d/e/1FAIpQLSdDC5ZhxHLFQI0vf3rMr48HEe_y28EwSeS8af59CU0gfXf4Uw/viewform?usp=dialog';
-const voicesHref = de ? '/mitarbeiter-stimmen/' : '/en/employee-voices/';
+const voicesHref = flatNav.find((n) => n.key === 'employees')![lang].href;
+const careerHref = flatNav.find((n) => n.key === 'career')![lang].href;
 
-const hero = de
-  ? {
+/** Alt text and link labels that sit outside the copy blocks below. */
+const alts = {
+  de: {
+    training: 'Ausbildung bei WAMOCON',
+    perspectives: 'Perspektiven nach der Ausbildung',
+    application: 'Bewerbung bei WAMOCON',
+    careerLink: 'Alle Karrieremöglichkeiten bei WAMOCON',
+  },
+  en: {
+    training: 'Apprenticeship at WAMOCON',
+    perspectives: 'Perspectives after the apprenticeship',
+    application: 'Application at WAMOCON',
+    careerLink: 'All career opportunities at WAMOCON',
+  },
+  tr: {
+    training: 'WAMOCON’da mesleki eğitim',
+    perspectives: 'Eğitim sonrası kariyer olanakları',
+    application: 'WAMOCON’a başvuru',
+    careerLink: 'WAMOCON’daki tüm kariyer fırsatları',
+  },
+}[lang];
+
+const hero = {
+  de: {
       titleWhite: 'Werde Fachinformatiker bei WAMOCON',
       titleRed: 'Jetzt in die Zukunft starten!',
       p1: 'Du brennst für Software, willst innovative Lösungen erfolgreich entwickeln und in einem dynamischen Team in Eschborn durchstarten? Dann ist unsere Ausbildung zum Fachinformatiker für Anwendungsentwicklung genau dein Ding!',
       p2: 'Führe jetzt den Eignungstest aus und erfahre, ob du das Zeug zum FAE hast!',
       cta: 'Eignungstest zum FAE',
-    }
-  : {
+    },
+  en: {
       titleWhite: 'Become an IT specialist at WAMOCON',
       titleRed: 'Start your future now!',
       p1: 'Are you passionate about software, want to develop innovative solutions successfully and get started in a dynamic team in Eschborn? Then our apprenticeship as an IT specialist for application development is exactly your thing!',
       p2: 'Take the aptitude test now and find out if you have what it takes to become an FIAE!',
       cta: 'Aptitude test for FIAE',
-    };
+    },
+  tr: {
+      titleWhite: 'WAMOCON’da bilişim uzmanı ol',
+      titleRed: 'Geleceğe şimdi başla!',
+      p1: 'Yazılıma tutkuyla bağlıysan, yenilikçi çözümleri başarıyla geliştirmek ve Eschborn’daki dinamik bir ekipte hızla yol almak istiyorsan, uygulama geliştirme bilişim uzmanlığı eğitimimiz tam sana göre!',
+      p2: 'Yetenek testini şimdi çöz ve FAE olmak için gerekenlere sahip misin öğren!',
+      cta: 'FAE yetenek testi',
+    },
+}[lang];
 
-const glance = de
-  ? {
+const glance = {
+  de: {
       heading1: 'Das wichtigste',
       heading2: 'Auf einen Blick',
       cards: [
@@ -47,8 +77,8 @@ const glance = de
       ],
       advantageLabel: 'Dein Vorteil',
       advantageValue: 'Übernahmegarantie bei guten Leistungen',
-    }
-  : {
+    },
+  en: {
       heading1: 'The most important',
       heading2: 'At a glance',
       cards: [
@@ -61,10 +91,25 @@ const glance = de
       ],
       advantageLabel: 'Your advantage',
       advantageValue: 'Guaranteed permanent position with good performance',
-    };
+    },
+  tr: {
+      heading1: 'En önemlisi',
+      heading2: 'Bir bakışta',
+      cards: [
+        { t: 'Eğitim süresi', d: '3 yıl (kısaltma mümkün)' },
+        { t: 'Konum', d: 'Eschborn' },
+        { t: 'Başlangıç tarihi', d: 'Her yıl 1 Ağustos' },
+        { t: 'Diploma', d: 'Uygulama geliştirme bilişim uzmanı (k/e/d) (IHK)' },
+        { t: 'Ücret', d: 'Cazip ve ortalamanın üzerinde' },
+        { t: 'Son başvuru tarihi', d: '15 Temmuz’a kadar' },
+      ],
+      advantageLabel: 'Avantajın',
+      advantageValue: 'İyi performansta işe alım garantisi',
+    },
+}[lang];
 
-const training = de
-  ? {
+const training = {
+  de: {
       heading1: 'Deine Ausbildung',
       heading2: 'bei WAMOCON',
       intro:
@@ -100,8 +145,8 @@ const training = de
       highlightTitle: 'Dein Azubi Highlight Projekt',
       highlightText:
         'Unsere fertige Eigenentwicklung löst ein konkretes KI-Problem am Markt. Du trainierst diese spezifische KI mit LaaJ (LLM-as-a-Judge), optimierst ihre Bewertungslogik und sorgst dafür, dass sie unter realen Bedingungen zuverlässig arbeitet. So lernst du, wie man eine marktreife KI nicht nur baut, sondern auch trainiert, absichert und weiterentwickelt.',
-    }
-  : {
+    },
+  en: {
       heading1: 'Your apprenticeship',
       heading2: 'at WAMOCON',
       intro:
@@ -137,10 +182,48 @@ const training = de
       highlightTitle: 'Your apprentice highlight project',
       highlightText:
         'Our finished in-house development solves a concrete AI problem on the market. You train this specific AI with LaaJ (LLM-as-a-Judge), optimise its evaluation logic and ensure that it works reliably under real conditions. This way you learn how to not only build a market-ready AI, but also train, secure and further develop it.',
-    };
+    },
+  tr: {
+      heading1: 'WAMOCON’daki',
+      heading2: 'mesleki eğitimin',
+      intro:
+        'Bizde yalnızca bir çırak değil, ilk günden itibaren ekibin tam bir üyesisin. Heyecan verici projeler, en modern teknolojiler ve bireysel destekle seni yarının BT dünyasına hazırlıyoruz',
+      subheading: 'Somut olarak ne yapacak ve ne öğreneceksin',
+      rows: [
+        {
+          t: 'Kişisel yapay zekâ asistanlı dijital eğitim sistemimiz',
+          d: 'Meslek okulu teorisi, IHK gereklilikleri, sahaya dönük senaryolar ve kullanım örnekleri; eğitiminin tamamı boyunca sana eşlik eden tek bir sistemde toplandı. Yapay zekâ asistanın tüm içerikte her an tam şeffaflık sağlar, genel görünümü korumana yardımcı olur, her adımda seni destekler ve eğitmeninle iletişimi doğrudan canlı tutar.',
+        },
+        {
+          t: 'A’dan Z’ye yazılım geliştirme',
+          d: 'Kavramları anlama, gereksinimleri analiz etme, yazılım tasarlama, programlama (Java, Python, JavaScript vb.), test etme ve hayata geçirme.',
+        },
+        {
+          t: 'Modern teknolojiler ve araçlar',
+          d: 'Git, Jira, Confluence, Docker, Kubernetes (temel düzey), bulut platformları, veritabanları (SQL) ve API’lerle (REST) çalışır, çevik yöntemleri (Scrum, Kanban) öğrenirsin.',
+        },
+        {
+          t: 'Ekip içinde proje çalışması',
+          d: 'Gerçek müşteri projelerinde ve kurum içi geliştirme projelerinde (ör. dijital eğitim sistemi) görev alma.',
+        },
+        {
+          t: 'Kalite güvencesi ve test',
+          d: 'Test senaryoları oluşturma, otomatik testler yürütme, yazılım kalitesini güvence altına alma (ISTQB temelleri).',
+        },
+        {
+          t: 'Veritabanları ve veri yönetimi',
+          d: 'Veritabanı teknolojilerini anlama ve uygulama.',
+        },
+        { t: 'Sorun giderme ve destek', d: 'Hata analizi ve çözüm üretme.' },
+      ],
+      highlightTitle: 'Çırak öne çıkan projen',
+      highlightText:
+        'Tamamlanmış kendi geliştirmemiz, pazardaki somut bir yapay zekâ sorununu çözüyor. Bu yapay zekâyı LaaJ (LLM-as-a-Judge) ile eğitir, değerlendirme mantığını iyileştirir ve gerçek koşullarda güvenilir çalışmasını sağlarsın. Böylece pazara hazır bir yapay zekânın yalnızca nasıl kurulduğunu değil; nasıl eğitildiğini, güvence altına alındığını ve geliştirildiğini de öğrenirsin.',
+    },
+}[lang];
 
-const bring = de
-  ? {
+const bring = {
+  de: {
       heading1: 'Das bringst',
       heading2: 'du mit',
       intro:
@@ -158,8 +241,8 @@ const bring = de
         'Erste Programmiererfahrungen (z.B. durch Schulprojekte, AGs, private Projekte).',
         'Erfahrungen mit Betriebssystemen und Office-Anwendungen.',
       ],
-    }
-  : {
+    },
+  en: {
       heading1: 'This is what',
       heading2: 'you bring',
       intro:
@@ -177,10 +260,30 @@ const bring = de
         'First programming experience (e.g. through school projects, clubs, private projects).',
         'Experience with operating systems and office applications.',
       ],
-    };
+    },
+  tr: {
+      heading1: 'Senden',
+      heading2: 'beklediklerimiz',
+      intro:
+        'Bizde başlamak için kod yazma uzmanı olman gerekmiyor. Bizim için çok daha önemlisi hevesin ve öğrenme isteğin!',
+      list: [
+        'BT’ye, bilgisayarlara ve yazılım geliştirmeye karşı büyük ilgi.',
+        'Mantıksal düşünme ve analitik beceriler.',
+        'Yüksek öğrenme isteği ve öz motivasyon.',
+        'Takım çalışmasına yatkınlık ve güçlü iletişim.',
+        'Güvenilirlik ve titiz çalışma biçimi.',
+      ],
+      cta: 'Hemen başvur!',
+      advantageTitle: 'Avantaj sayılır (ama zorunlu değil)',
+      advantageList: [
+        'İlk programlama deneyimleri (ör. okul projeleri, kulüpler, kişisel projeler).',
+        'İşletim sistemleri ve ofis uygulamalarıyla deneyim.',
+      ],
+    },
+}[lang];
 
-const offer = de
-  ? {
+const offer = {
+  de: {
       heading1: 'Das bieten wir dir:',
       heading2: 'Deine Vorteile bei WAMOCON',
       cards: [
@@ -229,8 +332,8 @@ const offer = de
           ],
         },
       ],
-    }
-  : {
+    },
+  en: {
       heading1: 'This is what we offer you:',
       heading2: 'Your benefits at WAMOCON',
       cards: [
@@ -279,10 +382,61 @@ const offer = de
           ],
         },
       ],
-    };
+    },
+  tr: {
+      heading1: 'Sana sunduklarımız:',
+      heading2: 'WAMOCON’daki avantajların',
+      cards: [
+        {
+          t: 'Üst düzey eğitim ve destek',
+          items: [
+            'Eğitimin boyunca kişisel mentor.',
+            'Bireysel destek ve düzenli geri bildirim.',
+            'Deneyimli ve yardımsever bir geliştirici ekibine dâhil olma.',
+          ],
+        },
+        {
+          t: 'Heyecan verici ve sahaya dönük görevler',
+          items: [
+            'İlk günden itibaren gerçek ve zorlayıcı projelerde görev alma.',
+            'En modern teknolojilerin ve çevik geliştirme yöntemlerinin kullanımı.',
+          ],
+        },
+        {
+          t: 'Gelişim ve kariyer olanakları',
+          items: [
+            'Başarıyla tamamladığında çok yüksek işe alınma şansı.',
+            'Eğitim sonrasında ileri eğitim ve uzmanlaşma imkânları.',
+            'E-öğrenme, uzman literatürü, kurum içi eğitimler ve çalışma gruplarına erişim.',
+            'Sertifika edinmede destek (ör. ISTQB®, bulut sertifikaları).',
+            'Eğitim sonrası ikili öğrenim programı seçeneği (ör. Provadis Yüksekokulu iş birliğiyle).',
+          ],
+        },
+        {
+          t: 'Harika bir çalışma ortamı ve ekip',
+          items: [
+            'Eschborn’da modern ofisler ve üst düzey donanımlı çalışma alanları.',
+            'Yatay hiyerarşiye ve samimi hitaba dayalı açık şirket kültürü.',
+            'Düzenli ekip etkinlikleri ve ortak aktiviteler.',
+            'Ücretsiz içecek, meyve vb.',
+          ],
+        },
+        {
+          t: 'Cazip koşullar',
+          items: [
+            'Ortalamanın üzerinde eğitim ücreti',
+            'Aile sıcaklığında bir ortam',
+            'Verimli mesleki ve kişisel gelişim',
+            'Düzenli performans değerlendirmeleri',
+            'Bilişim uzmanlığı mesleki eğitimi ile BT danışmanlığı arasında yüksek entegrasyon',
+          ],
+        },
+      ],
+    },
+}[lang];
 
-const perspectives = de
-  ? {
+const perspectives = {
+  de: {
       heading1: 'Deine Perspektiven',
       heading2: 'nach der Ausbildung',
       items: [
@@ -300,8 +454,8 @@ const perspectives = de
           d: 'Vom Junior zum Senior Entwickler, Teamleiter, Projektmanager oder Fachexperte.',
         },
       ],
-    }
-  : {
+    },
+  en: {
       heading1: 'Your perspectives',
       heading2: 'after the apprenticeship',
       items: [
@@ -319,37 +473,72 @@ const perspectives = de
           d: 'From junior to senior developer, team leader, project manager or specialist.',
         },
       ],
-    };
+    },
+  tr: {
+      heading1: 'Eğitim sonrası',
+      heading2: 'kariyer olanakların',
+      items: [
+        { t: 'Junior geliştirici olarak işe alım', d: 'Doğrudan WAMOCON ekibine katılım.' },
+        {
+          t: 'Uzmanlaşma imkânları',
+          d: 'Ör. frontend/backend geliştirme, mobil geliştirme, bulut mühendisliği, DevOps, test otomasyonu, BT danışmanlığı.',
+        },
+        {
+          t: 'İleri eğitim',
+          d: 'Çalışırken sürdürülen öğrenim programlarında veya mesleki sertifikasyonlarda destek.',
+        },
+        {
+          t: 'WAMOCON’da kariyer yolları',
+          d: 'Junior geliştiricilikten senior geliştiriciliğe, ekip liderliğine, proje yöneticiliğine veya konu uzmanlığına.',
+        },
+      ],
+    },
+}[lang];
 
-const voices = de
-  ? {
+const voices = {
+  de: {
       heading: 'Einblicke & Stimmen',
       sub: 'Was sagen unsere ehemaligen Azubis & Dual Studenten?',
       link: 'Mitarbeiter Meinungen!',
-    }
-  : {
+    },
+  en: {
       heading: 'Insights & voices',
       sub: 'What do our former trainees & dual students say?',
       link: 'Employee opinions!',
-    };
+    },
+  tr: {
+      heading: 'İzlenimler ve görüşler',
+      sub: 'Eski çıraklarımız ve ikili öğrenim öğrencilerimiz ne diyor?',
+      link: 'Çalışan görüşleri!',
+    },
+}[lang];
 
-const apply = de
-  ? {
+const apply = {
+  de: {
       headPre: 'Was wir von ',
       headAccent: 'dir',
       headPost: ' brauchen',
       docs: ['Anschreiben', 'Lebenslauf', 'Praktika', 'Schulzeugnisse'],
       line1: 'Schicke an folgende E-Mail Adresse deine Bewerbung samt Unterlagen:',
       line2: 'Wir antworten dir innerhalb von 48 Stunden.',
-    }
-  : {
+    },
+  en: {
       headPre: 'What we need from ',
       headAccent: 'you',
       headPost: '',
       docs: ['Cover letter', 'CV', 'Internships', 'School certificates'],
       line1: 'Send your application including documents to the following e-mail address:',
       line2: 'We will reply to you within 48 hours.',
-    };
+    },
+  tr: {
+      headPre: 'Senden ',
+      headAccent: 'ihtiyacımız',
+      headPost: ' olanlar',
+      docs: ['Ön yazı', 'Özgeçmiş', 'Stajlar', 'Okul karneleri'],
+      line1: 'Başvurunu belgelerinle birlikte şu e-posta adresine gönder:',
+      line2: 'Sana 48 saat içinde yanıt veriyoruz.',
+    },
+}[lang];
 ---
 
 <!-- ============ HERO ============ -->
@@ -367,7 +556,7 @@ const apply = de
     <div class="azhero__media" data-reveal="left">
       <img
         src="/images/azubi-hero.jpg"
-        alt={de ? 'Ausbildung bei WAMOCON' : 'Apprenticeship at WAMOCON'}
+        alt={alts.training}
         width="760"
         height="620"
         loading="eager"
@@ -487,14 +676,14 @@ const apply = de
           ))
         }
       </dl>
-      <a class="persp__link" href={de ? '/karriere/' : '/en/career/'}>
-        {de ? 'Alle Karrieremöglichkeiten bei WAMOCON' : 'All career opportunities at WAMOCON'} <span aria-hidden="true">→</span>
+      <a class="persp__link" href={careerHref}>
+        {alts.careerLink} <span aria-hidden="true">→</span>
       </a>
     </div>
     <img
       class="persp__img"
       src="/images/azubi-perspektiven.jpg"
-      alt={de ? 'Perspektiven nach der Ausbildung' : 'Perspectives after the apprenticeship'}
+      alt={alts.perspectives}
       width="640"
       height="520"
       loading="lazy"
@@ -546,7 +735,7 @@ const apply = de
       <img
         class="apply__img"
         src="/images/office-developers.jpg"
-        alt={de ? 'Bewerbung bei WAMOCON' : 'Application at WAMOCON'}
+        alt={alts.application}
         width="640"
         height="520"
         loading="lazy"
@@ -632,7 +821,7 @@ const apply = de
   }
   .azhero__inner {
     display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
     gap: clamp(2rem, 5vw, 4.5rem);
     align-items: center;
   }
@@ -930,17 +1119,19 @@ const apply = de
     }
   }
   @media (max-width: 900px) {
+    /* minmax(0, 1fr): a bare 1fr keeps a min-content floor, and long German
+       compounds ("Anwendungsentwicklung") then push the hero past 320px. */
     .azhero__inner,
     .persp,
     .apply {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
     .azhero__media,
     .persp__img {
       order: -1;
     }
     .glance {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
     .offer-grid {
       grid-template-columns: 1fr;

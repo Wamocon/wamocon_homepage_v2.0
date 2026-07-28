@@ -2,13 +2,12 @@
 /** Bewertungen / Testimonials — faithful reproduction of customer reviews. */
 import ContactBlock from './ContactBlock.astro';
 import ExternalEmbed from '../ui/ExternalEmbed.astro';
-import type { Lang } from '../../i18n/config';
+import { legalNav, type Lang } from '../../i18n/config';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-const de = lang === 'de';
 
 type Review = { name: string; role?: string; full: string; more: boolean };
 
@@ -40,8 +39,9 @@ const reviewsEn: Review[] = [
   { name: 'Maanik Garg', more: false, full: '5 stars! Great work' },
 ];
 
-// Customer testimonials are shown in their original German in both languages —
-// we must not alter authentic customer voices by translating them (review HP#30).
+// Customer testimonials are shown in their original German in every language
+// edition — we must not alter authentic customer voices by translating them
+// (review HP#30). The English set is kept only as an internal reading aid.
 const reviews = reviewsDe;
 void reviewsEn;
 
@@ -51,9 +51,9 @@ const academyVideos = [
   { name: 'Jonathan', id: 'C6jFQwt6E0o' },
 ];
 
-const c = de
-  ? {
-      heroheading:'Kundenstimmen:', 
+const c = {
+  de: {
+      heroheading:'Kundenstimmen:',
       heroTitle: 'Erfahrungen mit WAMOCON GmbH',
       heroLead: 'Authentische Stimmen unserer Kunden.',
       heroSub: 'Lesen Sie, was unsere Kunden über die Qualität unserer Arbeit und den erstklassigen Kundenservice bei der WAMOCON GmbH sagen.',
@@ -76,8 +76,8 @@ const c = de
       fPublication: 'Ich willige ein, dass meine Bewertung als Kundenstimme veröffentlicht werden darf. Diese Einwilligung ist freiwillig und jederzeit widerrufbar.',
       fSend: 'Bewertung senden',
       close: 'Zurück',
-    }
-  : {
+    },
+  en: {
         heroheading:'Customer voices:',
       heroTitle: 'Customer voices: experiences with WAMOCON GmbH',
       heroLead: 'Authentic voices of our customers.',
@@ -99,7 +99,57 @@ const c = de
       fPublication: 'I consent to my review being published as a customer testimonial. This consent is voluntary and can be withdrawn at any time.',
       fSend: 'Send review',
       close: 'Back',
-    };
+    },
+  tr: {
+      heroheading: 'Müşteri görüşleri:',
+      heroTitle: 'WAMOCON GmbH ile edinilen deneyimler',
+      heroLead: 'Müşterilerimizin gerçek sesleri.',
+      heroSub: 'Müşterilerimizin WAMOCON GmbH’deki çalışma kalitemiz ve birinci sınıf müşteri hizmetimiz hakkında neler söylediğini okuyun.',
+      authenticity: 'Değerlendirmelerimizin gerçekliği hakkında bilgi: Burada yayımlanan tüm müşteri görüşleri, WAMOCON GmbH veya WAMOCON Academy GmbH ile fiilen çalışmış müşterilere ve katılımcılara aittir. Yayımlamadan önce her değerlendirmeyi proje ve katılım kayıtlarımızla karşılaştırarak doğrularız. Değerlendirmeler satın alınmaz ve karşılığında herhangi bir menfaat sunularak toplanmaz; olumlu ya da eleştirel olmasına bakılmaksızın değiştirmeden yayımlarız.',
+      more: 'Devamını oku',
+      academyTitle: 'Müşteri görüşleri: Müşteriler WAMOCON Academy GmbH’yi nasıl deneyimliyor',
+      academyLead: 'Müşterilerimizin gerçek sesleri.',
+      academySub: 'Katılımcılarımız, WAMOCON Academy’de aldıkları birinci sınıf eğitimi ve kişiye özel desteği anlatıyor. Bu benzersiz deneyimler, kariyerleri nasıl desteklediğimizi ve bireysel potansiyeli nasıl ortaya çıkardığımızı gösteriyor.',
+      videoRole: 'WAMOCON Academy katılımcısı',
+      submit: 'Değerlendirmenizi gönderin',
+      formTitle: 'Değerlendirmenizi gönderin',
+      formSub: 'Değerlendirmenizi bağlayıcı olmaksızın bize gönderin. Yalnızca sorumuz olursa sizinle iletişime geçeriz.',
+      fName: 'Adınız',
+      fPhone: 'Telefon',
+      fEmail: 'E-posta',
+      fComment: 'Yorumlar / dosya bağlantısı',
+      fConsent: 'Göndererek gizlilik politikasını okuduğunuzu onaylamış olursunuz. Lütfen e-posta veya telefon bilgisi girin.',
+      fPublication: 'Değerlendirmemin müşteri görüşü olarak yayımlanmasına izin veriyorum. Bu izin gönüllüdür ve dilediğim zaman geri alınabilir.',
+      fSend: 'Değerlendirmeyi gönder',
+      close: 'Geri',
+    },
+}[lang];
+
+// Page-chrome strings that sit outside the `c` block.
+const chrome = {
+  de: {
+    starsLabel: '5 von 5 Sternen',
+    googleCount: '11 Bewertungen auf Google',
+    thanks: 'Vielen Dank! Wir melden uns bei Ihnen.',
+    privacyLabel: 'Datenschutz',
+    thankYou: '/danke/',
+  },
+  en: {
+    starsLabel: '5 out of 5 stars',
+    googleCount: '11 reviews on Google',
+    thanks: 'Thank you! We will get in touch with you.',
+    privacyLabel: 'Privacy policy',
+    thankYou: '/en/thank-you/',
+  },
+  tr: {
+    starsLabel: '5 üzerinden 5 yıldız',
+    googleCount: 'Google’da 11 değerlendirme',
+    thanks: 'Teşekkür ederiz! En kısa sürede size dönüş yapacağız.',
+    privacyLabel: 'Gizlilik politikası',
+    thankYou: '/tr/tesekkurler/',
+  },
+}[lang];
+const privacyHref = legalNav.privacy[lang].href;
 ---
 
 <!-- HERO -->
@@ -118,7 +168,7 @@ const c = de
     <div class="reviews">
       {reviews.map((t, i) => (
         <figure class="review-card" data-reveal="up" data-reveal-delay={(i % 3) * 70}>
-          <div class="review-stars" role="img" aria-label={de ? '5 von 5 Sternen' : '5 out of 5 stars'}>
+          <div class="review-stars" role="img" aria-label={chrome.starsLabel}>
             {Array.from({ length: 5 }).map(() => (
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M12 2.5l2.9 5.88 6.49.94-4.7 4.58 1.11 6.46L12 17.77l-5.8 3.07 1.11-6.46-4.7-4.58 6.49-.94L12 2.5z" />
@@ -135,7 +185,7 @@ const c = de
         </figure>
       ))}
     </div>
-    <p class="reviews__google text-muted">{de ? '11 Bewertungen auf Google' : '11 reviews on Google'}</p>
+    <p class="reviews__google text-muted">{chrome.googleCount}</p>
   </div>
 </section>
 
@@ -188,7 +238,7 @@ const c = de
     <button class="tm-modal__close" type="button" data-close aria-label={c.close}>×</button>
     <h3 class="tm-modal__title" id="form-modal-title">{c.formTitle}</h3>
     <p class="tm-modal__sub">{c.formSub}</p>
-    <form id="review-form" class="tm-form js-lead-form" data-redirect={de ? '/danke/' : '/en/thank-you/'}>
+    <form id="review-form" class="tm-form js-lead-form" data-redirect={chrome.thankYou}>
       <input type="hidden" name="type" value="testimonial" />
       <input type="hidden" name="lang" value={lang} />
       <label><span>{c.fName}</span><input type="text" name="name" autocomplete="name" required /></label>
@@ -199,10 +249,10 @@ const c = de
         <input type="checkbox" name="testimonialConsent" />
         <span>{c.fPublication}</span>
       </label>
-      <p class="tm-form__privacy">{c.fConsent} <a href={de ? '/datenschutz/' : '/en/privacy/'}>{de ? 'Datenschutz' : 'Privacy policy'}</a></p>
+      <p class="tm-form__privacy">{c.fConsent} <a href={privacyHref}>{chrome.privacyLabel}</a></p>
       <button type="submit" class="tm-form__send">{c.fSend}</button>
     </form>
-    <p class="tm-form__thanks" id="review-thanks" hidden>{de ? 'Vielen Dank! Wir melden uns bei Ihnen.' : 'Thank you! We will get in touch with you.'}</p>
+    <p class="tm-form__thanks" id="review-thanks" hidden>{chrome.thanks}</p>
   </div>
 </div>
 

@@ -3,8 +3,8 @@
  * Site header: logo, primary navigation, language switcher and mobile menu.
  * Fully driven by src/i18n/config.ts — edit nav there, it updates everywhere.
  */
-import { nav, ui, type Lang } from '../../i18n/config';
-import { getAlternateLangUrl } from '../../i18n/utils';
+import { nav, ui, languages, langCodes, type Lang } from '../../i18n/config';
+import { getLangUrls, homeHref as homeHrefFor } from '../../i18n/utils';
 
 interface Props {
   lang: Lang;
@@ -12,8 +12,8 @@ interface Props {
 const { lang } = Astro.props;
 
 const currentPath = Astro.url.pathname;
-const homeHref = lang === 'de' ? '/' : '/en/';
-const altHref = getAlternateLangUrl(currentPath, lang);
+const homeHref = homeHrefFor(lang);
+const langUrls = getLangUrls(currentPath, lang);
 
 const normalizePath = (p: string) => (p.endsWith('/') ? p : p + '/');
 const isActive = (href: string) => normalizePath(currentPath) === normalizePath(href);
@@ -22,11 +22,14 @@ const isGroupActive = (item: (typeof nav)[number]) =>
   isActive(item[lang].href) || (item.children?.some((c) => isActive(c[lang].href)) ?? false);
 
 // Language options for the switcher dropdown. The active language links to the
-// current page (a no-op); the other links to its translated equivalent.
-const languages = [
-  { code: 'de', label: 'Deutsch', short: 'DE', href: lang === 'de' ? currentPath : altHref },
-  { code: 'en', label: 'English', short: 'EN', href: lang === 'en' ? currentPath : altHref },
-] as const;
+// current page (a no-op); the others link to their translated equivalent.
+const langOptions = langCodes.map((code) => ({
+  code,
+  label: languages[code],
+  href: code === lang ? currentPath : langUrls[code],
+}));
+
+const navAriaLabel = { de: 'Hauptnavigation', en: 'Main navigation', tr: 'Ana navigasyon' }[lang];
 ---
 
 <header class="header" id="site-header">
@@ -35,7 +38,7 @@ const languages = [
       <img src="/images/logo-wamocon.png" alt="WAMOCON" width="150" height="150" />
     </a>
 
-    <nav class="header__nav" aria-label="Hauptnavigation" id="primary-nav">
+    <nav class="header__nav" aria-label={navAriaLabel} id="primary-nav">
       <ul class="header__list">
         {
           nav.map((item) => (
@@ -87,7 +90,7 @@ const languages = [
           <svg class="lang-switch__caret" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
         </button>
         <ul class="lang-switch__menu" role="menu" aria-labelledby="lang-switch-button">
-          {languages.map((l) => (
+          {langOptions.map((l) => (
             <li role="none">
               <a
                 role="menuitem"
@@ -122,7 +125,10 @@ const languages = [
 
 <style>
   .header {
-    --header-height: 112px;
+    /* NOTE: --header-height is deliberately NOT redeclared here. The script at
+       the bottom writes the measured height onto :root; declaring it on .header
+       would shadow that value for every descendant and pin the mobile drawer to
+       a stale offset. :root carries the fallback instead. */
     position: sticky;
     top: 0;
     z-index: var(--z-header);
@@ -143,14 +149,22 @@ const languages = [
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--space-md);
-    min-height: 112px;
+    /* Shrinks with the viewport so logo + switcher + burger always fit. */
+    gap: clamp(0.5rem, 2vw, var(--space-md));
+    min-height: var(--header-min-h);
     max-width: var(--header-max);
   }
 
+  .header__logo {
+    flex: 0 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+  }
   .header__logo img {
-    height: 100px;
+    height: var(--header-logo-h);
     width: auto;
+    max-width: 100%;
     object-fit: contain;
   }
 
@@ -242,7 +256,8 @@ const languages = [
   .header__actions {
     display: flex;
     align-items: center;
-    gap: var(--space-sm);
+    flex: 0 0 auto;
+    gap: clamp(0.35rem, 1.5vw, var(--space-sm));
   }
 
   /* ---- language switcher (shows the active language + dropdown) ---- */
@@ -332,7 +347,10 @@ const languages = [
       top: var(--header-height);
       left: 0;
       right: 0;
+      /* Ends at the viewport bottom. `bottom: 0` alone leaves the last links
+         under the mobile browser chrome, so cap the height with dvh too. */
       bottom: 0;
+      max-height: calc(100dvh - var(--header-height));
       background: rgba(16, 16, 16, 0.98);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
@@ -348,6 +366,9 @@ const languages = [
       visibility: visible;
       transform: translateY(0);
       overflow-y: auto;
+      /* Keeps the drawer's scroll to itself. Without this, reaching the top or
+         bottom of the menu chains the gesture on to the page underneath. */
+      overscroll-behavior: contain;
       -webkit-overflow-scrolling: touch;
     }
     .header__list {
@@ -383,8 +404,13 @@ const languages = [
     }
     .header__submenu li { border-bottom: 0; }
     .header__sublink { padding: 0.6rem 0; font-size: 1rem; }
+    /* Scroll lock while the drawer is open. It has to sit on <html> as well as
+       <body>: the document element is the scroll container here, so locking
+       only <body> leaves the page behind the drawer scrollable. */
+    html.nav-open,
     body.nav-open {
       overflow: hidden;
+      overscroll-behavior: none;
     }
     .header__burger[aria-expanded='true'] span:nth-child(1) {
       transform: translateY(7px) rotate(45deg);
@@ -396,6 +422,36 @@ const languages = [
       transform: translateY(-7px) rotate(-45deg);
     }
   }
+
+  /* ---- Small phones: keep logo + switcher + burger on one line ---- */
+  @media (max-width: 480px) {
+    .lang-switch__button {
+      padding: 0.45rem 0.55rem;
+      gap: 0.25rem;
+      font-size: 0.82rem;
+    }
+    /* The globe is decorative; the two-letter code already says "language". */
+    .lang-switch__globe {
+      display: none;
+    }
+    .lang-switch__menu {
+      min-width: 150px;
+    }
+    .header__burger {
+      padding: 8px 4px 8px 8px;
+    }
+    .header__burger span {
+      width: 22px;
+    }
+  }
+
+  /* Touch targets stay at the 44px minimum even as the bar shrinks. */
+  @media (max-width: 1080px) {
+    .lang-switch__button,
+    .header__burger {
+      min-height: 44px;
+    }
+  }
 </style>
 
 <script>
@@ -404,6 +460,9 @@ const languages = [
   const toggle = document.getElementById('nav-toggle');
   const navEl = document.getElementById('primary-nav');
 
+  // The mobile drawer is positioned directly below the bar, so the measured
+  // height has to stay in sync with it — including after the logo image loads
+  // and after an orientation change, not just on the initial paint.
   function updateHeaderHeight() {
     if (header) {
       document.documentElement.style.setProperty('--header-height', `${header.offsetHeight}px`);
@@ -411,20 +470,43 @@ const languages = [
   }
   updateHeaderHeight();
   window.addEventListener('resize', updateHeaderHeight);
+  window.addEventListener('orientationchange', updateHeaderHeight);
+  if (header && 'ResizeObserver' in window) {
+    new ResizeObserver(updateHeaderHeight).observe(header);
+  } else {
+    window.addEventListener('load', updateHeaderHeight);
+  }
+
+  // Single open/close path so the scroll lock can never get out of sync.
+  // `nav-open` goes on <html> as well as <body>: the document element is the
+  // scroll container, so locking <body> alone still lets the page behind the
+  // drawer scroll (the drawer would move while the page moved underneath it).
+  const setNavOpen = (open: boolean) => {
+    navEl?.classList.toggle('is-open', open);
+    toggle?.setAttribute('aria-expanded', String(open));
+    document.documentElement.classList.toggle('nav-open', open);
+    document.body.classList.toggle('nav-open', open);
+    // Start each opening from the top of the menu rather than wherever the
+    // previous session left it.
+    if (open && navEl) navEl.scrollTop = 0;
+  };
 
   toggle?.addEventListener('click', () => {
-    const open = navEl?.classList.toggle('is-open');
-    toggle.setAttribute('aria-expanded', String(open));
-    document.body.classList.toggle('nav-open', open);
+    setNavOpen(!navEl?.classList.contains('is-open'));
   });
 
   // Close menu when a link is clicked.
   navEl?.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      navEl.classList.remove('is-open');
-      toggle?.setAttribute('aria-expanded', 'false');
-      document.body.classList.remove('nav-open');
-    });
+    link.addEventListener('click', () => setNavOpen(false));
+  });
+
+  // Escape closes the drawer, and growing past the mobile breakpoint has to
+  // release the lock — otherwise the desktop layout is left unscrollable.
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && navEl?.classList.contains('is-open')) setNavOpen(false);
+  });
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 1080 && navEl?.classList.contains('is-open')) setNavOpen(false);
   });
 
   const onScroll = () => {

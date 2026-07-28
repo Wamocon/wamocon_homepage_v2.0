@@ -158,4 +158,76 @@ export const wamoconFaq: FaqSet = {
       },
     ],
   },
+  tr: {
+    heading: 'WAMOCON hakkında sıkça sorulan sorular',
+    intro:
+      'Şirketlerin bize test yönetimi, iş birliği modelleri ve yazılım kalite güvencesi konusunda en sık sorduğu soruların yanıtları.',
+    items: [
+      {
+        question: 'WAMOCON GmbH ne yapar?',
+        answer:
+          'Kurumsal projeler için yazılım testlerini bağımsız olarak planlar, yönetir ve yürütürüz; merkezimiz Frankfurt yakınlarındaki Eschborn’dur. Altı alan: test yönetimi, kalite güvencesi, test otomasyonu, yapay zekâ destekli kalite güvencesi (LLM-as-a-Judge), SAP test projeleri ve BT danışmanlığı. Referanslarımız arasında Deutsche Telekom, Deutsche Bank, Intel ve EnBW yer alır.',
+      },
+      {
+        question: 'WAMOCON kimler için çalışır?',
+        answer:
+          'Büyük holdinglerden orta ölçekli şirketlere kadar. Üç tipik müşteri profili: büyük SAP veya çekirdek bankacılık sistemleri olan holdingler, bir sürümü güvence altına almak isteyen orta ölçekli şirketler ve test kapasitesi satın alan BT hizmet sağlayıcıları. Kapsam tek bir test uzmanından eksiksiz bir test birimine kadar uzanır; Almanya ve AB genelinde, Almanca ve İngilizce olarak.',
+      },
+      {
+        question: 'WAMOCON somut olarak hangi test hizmetlerini sunar?',
+        answer:
+          'Altı hizmet, tek tek ya da paket hâlinde: test stratejisi, test planlaması, ISTQB yöntemlerine göre test senaryosu ve test verisi tasarımı, tüm test seviyelerinde test yürütme (entegrasyon, sistem, kabul, regresyon), test otomasyonu ve yapay zekâ testi — üretken yapay zekânın LLM-as-a-Judge ile değerlendirilmesi. Ayrıca hata yönetimi ve sürüm raporlarını içeren kalite yönetimi.',
+      },
+      {
+        question: 'Web sitesi üzerinden yapılan bir talep bağlayıcı mıdır?',
+        answer:
+          'Hayır. Formlar bağlayıcı olmayan bir iletişim yoludur, sözleşme değildir. Adınız ve bir e-posta adresi veya telefon numarası yeterlidir. Size geri döner, durumu netleştirir ve uygun bir model öneririz; yazılı teklif ancak bundan sonra hazırlanır. Doğrudan +49 6196 5838311 numarasından da ulaşabilirsiniz.',
+      },
+      {
+        question: 'Test yönetimi nedir ve şirketlerin buna neden ihtiyacı var?',
+        answer:
+          'Test yönetimi, test sürecinin tamamının planlanması, yönlendirilmesi ve raporlanmasıdır. Bir proje gayriresmî kontroller için fazla büyüdüğünde, hata eğilimlerini anekdotlardan çıkarıp ölçülebilir hâle getirir. İkinci gerekçe bağımsızlıktır: Kendi yazılımını test eden, aynı hata sınıflarını gözden kaçırır. Dış test yöneticileri ayrıca proje bittikten sonra müşteride kalan yöntem bilgisini de getirir.',
+      },
+      {
+        question: 'WAMOCON’un 360° sistemi nedir?',
+        answer:
+          'Bir projeyi belirsiz kalite gereksinimlerinden kontrollü ve şeffaf bir sürüme taşıyan metodolojimizdir. Klasik test yönetimini çevik teslimatla birleştirir: şelale yönetişimi içinde Scrum sprintleri, gereksinim analizinden sürüm raporuna kadar beş aşama. Faydası: uçtan uca şeffaflık ve erken görünür hâle gelen boşluklar.',
+      },
+      {
+        question: 'Şirketler WAMOCON ile nasıl çalışabilir?',
+        answer:
+          'Üç model üzerinden: personel takviyesi (müşteri ekibi içinde tek tek test uzmanları veya test yöneticileri), proje ekipleri (eksiksiz bir test birimi tanımlı bir kapsamı üstlenir) ve danışmanlık (test stratejisi, araç seçimi, kalite süreçleri). Hizmet yerinde, Eschborn’dan ya da uzaktan verilir. Tek bir test uzmanıyla başlayıp projeyle birlikte büyüyebilirsiniz.',
+      },
+      {
+        question: 'WAMOCON hangi sektörler ve müşteriler için çalışır?',
+        answer:
+          'Enerji, bankacılık, telekomünikasyon, sanayi, lojistik ve kamu yönetimi; aralarında 50Hertz, Deutsche Bank, Deutsche Telekom, EnBW ve Federal İş Kurumu’nun bulunduğu, adı açıkça belirtilen 24 referansla. iBS AG ile 2018’den bu yana yapı tasarruf sandıkları için bir SAP programı yürütülüyor; test yönetimi Scrum ve şelale yöntemlerinin melez bir bileşimi.',
+      },
+      {
+        question: 'WAMOCON kariyer değiştirenleri ve çırakları da yetiştiriyor mu?',
+        answer:
+          'Evet. Mesleğe yeni başlayanlar ve kariyer değiştirenler operasyonel test görevleriyle işe başlar, WAMOCON Akademi üzerinden ISTQB sertifikası alır ve giderek artan proje sorumluluğu üstlenir. Ayrıca Eschborn’da uygulama geliştirme alanında bilişim uzmanı yetiştiriyoruz. Açık pozisyonları ve deneyimleri Kariyer ile Çalışan Yorumları sayfalarında bulabilirsiniz.',
+      },
+      {
+        question: 'WAMOCON GmbH ile WAMOCON Academy GmbH arasındaki fark nedir?',
+        answer:
+          'Eschborn’daki aynı adreste, ortak yönetim altında hukuken ayrı iki şirket. WAMOCON GmbH test yönetimi ve kalite güvencesi hizmeti verir; WAMOCON Academy GmbH ise ISTQB tarafından akredite eğitim sağlayıcı olarak listelenen eğitim merkezini işletir. Bu bağ bilinçlidir: eğitmenler devam eden projelerden ders anlatır.',
+      },
+      {
+        question: 'WAMOCON kendi yazılımlarını ve yapay zekâ uygulamalarını da geliştiriyor mu?',
+        answer:
+          'Evet, test hizmetlerinin yanı sıra. Bunlar arasında sözleşme, belge ve talep yönetimi için kurumsal uygulamalar ile sınav hazırlığı ve yetkinlik analizi için yapay zekâ araçları yer alır. Test projelerimizle aynı kalite mantığıyla geliştirilirler; bir kısmı Uygulamalar sayfasında herkese açık olarak bağlantılanmıştır.',
+      },
+      {
+        question: 'WAMOCON nerede bulunuyor ve şirkete nasıl ulaşılır?',
+        answer:
+          'Mergenthalerallee 79–81, 65760 Eschborn adresinde, Frankfurt am Main şehir sınırının hemen yanında. Telefonla +49 6196 5838311, e-postayla info@wamocon.com üzerinden veya web sitesindeki iletişim bölümlerinden ulaşabilirsiniz. Grubun ISTQB akreditasyonlu eğitim merkezi olan WAMOCON Academy GmbH de aynı adreste bulunur.',
+      },
+      {
+        question: 'WAMOCON veri koruma ve uyumluluğu nasıl ele alıyor?',
+        answer:
+          'GDPR’ye uygun olarak. Web sitesi üzerinden toplanan verileri yalnızca talebinizi yanıtlamak için kullanırız; ayrıntılar gizlilik politikasında yer alır. YouTube veya Google Haritalar gibi harici içerikler yalnızca çerez bandı üzerinden onayınızdan sonra yüklenir. Yayımlanan müşteri yorumlarını yayımlamadan önce proje belgeleriyle karşılaştırarak doğrularız.',
+      },
+    ],
+  },
 };

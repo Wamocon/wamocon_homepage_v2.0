@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EmployeeVoicesPage from '../../components/sections/EmployeeVoicesPage.astro';
+
+const lang = 'tr' as const;
+---
+
+<BaseLayout
+  title="Çalışan yorumları | WAMOCON GmbH"
+  description="Çalışanlarımız kendi hikâyelerini ve WAMOCON’da edindikleri deneyimi anlatıyor."
+  lang={lang}
+>
+  <EmployeeVoicesPage lang={lang} />
+</BaseLayout>

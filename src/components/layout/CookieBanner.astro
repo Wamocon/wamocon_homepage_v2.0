@@ -7,33 +7,44 @@
  * `wamocon-consent-youtube` / `wamocon-consent-google-maps` stay compatible with
  * the existing embeds and the footer reset button.
  */
-import type { Lang } from '../../i18n/config';
+import { legalNav, type Lang } from '../../i18n/config';
 
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 
-const copy = lang === 'de'
-  ? {
-      label: 'Datenschutzeinstellungen',
-      title: 'Ihre Privatsphäre, Ihre Entscheidung',
-      text: 'Wir verwenden technisch notwendige Speicherungen. Externe Medien von YouTube und Google Maps laden wir nur mit Ihrer Einwilligung. Sie können Ihre Auswahl jederzeit im Footer ändern.',
-      accept: 'Alle akzeptieren', reject: 'Alle ablehnen', settings: 'Einstellungen',
-      settingsTitle: 'Datenschutzeinstellungen', necessary: 'Technisch notwendig',
-      necessaryText: 'Erforderlich für Einwilligungsverwaltung, Sicherheit und die von Ihnen angeforderte Formularfunktion.',
-      media: 'Externe Medien', mediaText: 'Erlaubt Inhalte von YouTube und Google Maps. Dabei können Daten in die USA übertragen werden.',
-      always: 'Immer aktiv', save: 'Auswahl speichern', cancel: 'Abbrechen', privacy: 'Datenschutzerklärung',
-    }
-  : {
-      label: 'Privacy settings',
-      title: 'Your privacy, your choice',
-      text: 'We use technically necessary storage. External media from YouTube and Google Maps is loaded only with your consent. You can change your choice at any time in the footer.',
-      accept: 'Accept all', reject: 'Reject all', settings: 'Settings',
-      settingsTitle: 'Privacy settings', necessary: 'Strictly necessary',
-      necessaryText: 'Required for consent management, security and the form function you request.',
-      media: 'External media', mediaText: 'Allows content from YouTube and Google Maps. Data may be transferred to the United States.',
-      always: 'Always active', save: 'Save selection', cancel: 'Cancel', privacy: 'Privacy policy',
-    };
-const privacyHref = lang === 'de' ? '/datenschutz/' : '/en/privacy/';
+const copy = {
+  de: {
+    label: 'Datenschutzeinstellungen',
+    title: 'Ihre Privatsphäre, Ihre Entscheidung',
+    text: 'Wir verwenden technisch notwendige Speicherungen. Externe Medien von YouTube und Google Maps laden wir nur mit Ihrer Einwilligung. Sie können Ihre Auswahl jederzeit im Footer ändern.',
+    accept: 'Alle akzeptieren', reject: 'Alle ablehnen', settings: 'Einstellungen',
+    settingsTitle: 'Datenschutzeinstellungen', necessary: 'Technisch notwendig',
+    necessaryText: 'Erforderlich für Einwilligungsverwaltung, Sicherheit und die von Ihnen angeforderte Formularfunktion.',
+    media: 'Externe Medien', mediaText: 'Erlaubt Inhalte von YouTube und Google Maps. Dabei können Daten in die USA übertragen werden.',
+    always: 'Immer aktiv', save: 'Auswahl speichern', cancel: 'Abbrechen', privacy: 'Datenschutzerklärung',
+  },
+  en: {
+    label: 'Privacy settings',
+    title: 'Your privacy, your choice',
+    text: 'We use technically necessary storage. External media from YouTube and Google Maps is loaded only with your consent. You can change your choice at any time in the footer.',
+    accept: 'Accept all', reject: 'Reject all', settings: 'Settings',
+    settingsTitle: 'Privacy settings', necessary: 'Strictly necessary',
+    necessaryText: 'Required for consent management, security and the form function you request.',
+    media: 'External media', mediaText: 'Allows content from YouTube and Google Maps. Data may be transferred to the United States.',
+    always: 'Always active', save: 'Save selection', cancel: 'Cancel', privacy: 'Privacy policy',
+  },
+  tr: {
+    label: 'Gizlilik ayarları',
+    title: 'Gizliliğiniz, sizin kararınız',
+    text: 'Teknik olarak zorunlu depolama kullanıyoruz. YouTube ve Google Maps üzerindeki harici içerikleri yalnızca sizin onayınızla yüklüyoruz. Seçiminizi dilediğiniz zaman sayfa altındaki bağlantıdan değiştirebilirsiniz.',
+    accept: 'Tümünü kabul et', reject: 'Tümünü reddet', settings: 'Ayarlar',
+    settingsTitle: 'Gizlilik ayarları', necessary: 'Teknik olarak zorunlu',
+    necessaryText: 'Onay yönetimi, güvenlik ve talep ettiğiniz form işlevi için gereklidir.',
+    media: 'Harici içerikler', mediaText: 'YouTube ve Google Maps içeriklerine izin verir. Bu sırada veriler ABD’ye aktarılabilir.',
+    always: 'Her zaman etkin', save: 'Seçimi kaydet', cancel: 'İptal', privacy: 'Gizlilik politikası',
+  },
+}[lang];
+const privacyHref = legalNav.privacy[lang].href;
 ---
 
 <aside class="consent" data-consent-root role="dialog" aria-modal="true" aria-labelledby="consent-title" hidden>

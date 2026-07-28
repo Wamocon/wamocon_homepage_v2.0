@@ -14,66 +14,117 @@ interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-const de = lang === 'de';
 
 const totalApps = appCategories.reduce((sum, cat) => sum + cat.apps.length, 0);
 
 /* ---- Copy ---- */
-const hero = de
-  ? {
-      eyebrow: 'Unsere Apps im Überblick',
-      title: 'Software, die wirklich',
-      titleAccent: 'funktioniert.',
-      subtitle:
-        'Wir entwickeln nützliche Anwendungen für Ihren Arbeitsalltag und Ihr Privatleben. Unsere Software ist einfach zu bedienen und löst konkrete Aufgaben ohne unnötige Funktionen.',
-      imgAlt: 'Die Softwareanwendungen von WAMOCON für Büro, künstliche Intelligenz, Mobilität und Freizeit, entwickelt in Eschborn nahe Frankfurt',
-    }
-  : {
-      eyebrow: 'Our Apps',
-      title: 'Software that actually',
-      titleAccent: 'works.',
-      subtitle:
-        'We design clean applications for your work and daily life. Our software is straightforward and built to help you get things done without unnecessary complexity.',
-      imgAlt: 'Software applications by WAMOCON for business, artificial intelligence, mobility and lifestyle, developed in Eschborn near Frankfurt',
-    };
+const hero = {
+  de: {
+    eyebrow: 'Unsere Apps im Überblick',
+    title: 'Software, die wirklich',
+    titleAccent: 'funktioniert.',
+    subtitle:
+      'Wir entwickeln nützliche Anwendungen für Ihren Arbeitsalltag und Ihr Privatleben. Unsere Software ist einfach zu bedienen und löst konkrete Aufgaben ohne unnötige Funktionen.',
+    imgAlt: 'Die Softwareanwendungen von WAMOCON für Büro, künstliche Intelligenz, Mobilität und Freizeit, entwickelt in Eschborn nahe Frankfurt',
+  },
+  en: {
+    eyebrow: 'Our Apps',
+    title: 'Software that actually',
+    titleAccent: 'works.',
+    subtitle:
+      'We design clean applications for your work and daily life. Our software is straightforward and built to help you get things done without unnecessary complexity.',
+    imgAlt: 'Software applications by WAMOCON for business, artificial intelligence, mobility and lifestyle, developed in Eschborn near Frankfurt',
+  },
+  tr: {
+    eyebrow: 'Uygulamalarımıza genel bakış',
+    title: 'Gerçekten',
+    titleAccent: 'işe yarayan yazılım.',
+    subtitle:
+      'İş gününüz ve özel hayatınız için kullanışlı uygulamalar geliştiriyoruz. Yazılımlarımız kolay kullanılır ve gereksiz özellikler olmadan somut işleri çözer.',
+    imgAlt: 'WAMOCON’un ofis, yapay zekâ, mobilite ve boş zaman için geliştirdiği yazılım uygulamaları; Frankfurt yakınlarındaki Eschborn’da geliştirildi',
+  },
+}[lang];
 
-const story = de
-  ? 'Wir konzentrieren uns auf das Wesentliche. Jede unserer Anwendungen löst eine ganz bestimmte Aufgabe.'
-  : 'We focus on simplicity. Each of our applications is designed to solve a single, clear task.';
+const story = {
+  de: 'Wir konzentrieren uns auf das Wesentliche. Jede unserer Anwendungen löst eine ganz bestimmte Aufgabe.',
+  en: 'We focus on simplicity. Each of our applications is designed to solve a single, clear task.',
+  tr: 'Özün üzerine odaklanıyoruz. Uygulamalarımızın her biri son derece belirli bir işi çözer.',
+}[lang];
 
-const catalogLabel = de
-  ? `${totalApps} Apps in ${appCategories.length} Kategorien`
-  : `${totalApps} apps across ${appCategories.length} categories`;
+const catalogLabel = {
+  de: `${totalApps} Apps in ${appCategories.length} Kategorien`,
+  en: `${totalApps} apps across ${appCategories.length} categories`,
+  tr: `${appCategories.length} kategoride ${totalApps} uygulama`,
+}[lang];
 
-const cta = de
-  ? {
-      heading: 'Lassen Sie uns sprechen.',
-      subtext: 'Haben Sie Fragen zu unseren Anwendungen oder möchten Sie eine eigene Idee umsetzen? Schreiben Sie uns einfach.',
-      contactTitle: 'Rückfragen zu unseren Apps',
-      contactText:
-        'Sie testen bereits eine unserer Anwendungen oder möchten wissen, ob sie für Ihr Vorhaben geeignet ist? Melden Sie sich direkt bei uns.',
-      contactCta: 'Jetzt Kontakt aufnehmen',
-      contactHref: '#apps-kontakt',
-      ideaTitle: 'Ihre Idee umsetzen',
-      ideaText:
-        'Sie planen ein Softwareprojekt und suchen einen Partner für die Entwicklung? Beschreiben Sie uns Ihr Vorhaben in unserem Portal. Wir prüfen Ihre Wünsche und erstellen ein Angebot für Sie.',
-      ideaCta: 'Anforderung einreichen',
-      ideaHref: 'https://wmc-anforderungsportal.vercel.app/de',
-    }
-  : {
-      heading: "Let's talk.",
-      subtext: "Do you have questions about our software or want to develop your own application? We are happy to help.",
-      contactTitle: 'Questions about our apps',
-      contactText:
-        "Are you currently testing one of our apps or wondering if it fits your specific requirements? Send us a message and we will get in touch.",
-      contactCta: 'Get in touch',
-      contactHref: '#apps-kontakt',
-      ideaTitle: 'Realise your project',
-      ideaText:
-        "Do you have an idea for an app and want to know about development costs? Describe your project in our portal. We will review your request and send you a proposal.",
-      ideaCta: 'Submit requirements',
-      ideaHref: 'https://wmc-anforderungsportal.vercel.app/de',
-    };
+const cta = {
+  de: {
+    heading: 'Lassen Sie uns sprechen.',
+    subtext: 'Haben Sie Fragen zu unseren Anwendungen oder möchten Sie eine eigene Idee umsetzen? Schreiben Sie uns einfach.',
+    contactTitle: 'Rückfragen zu unseren Apps',
+    contactText:
+      'Sie testen bereits eine unserer Anwendungen oder möchten wissen, ob sie für Ihr Vorhaben geeignet ist? Melden Sie sich direkt bei uns.',
+    contactCta: 'Jetzt Kontakt aufnehmen',
+    contactHref: '#apps-kontakt',
+    ideaTitle: 'Ihre Idee umsetzen',
+    ideaText:
+      'Sie planen ein Softwareprojekt und suchen einen Partner für die Entwicklung? Beschreiben Sie uns Ihr Vorhaben in unserem Portal. Wir prüfen Ihre Wünsche und erstellen ein Angebot für Sie.',
+    ideaCta: 'Anforderung einreichen',
+    ideaHref: 'https://wmc-anforderungsportal.vercel.app/de',
+    exploreCta: 'Apps entdecken',
+    ideaTeaserCta: 'Idee besprechen',
+    missionLabel: 'Unsere Mission',
+    appsWord: 'Apps',
+    aiBadgeLabel: 'Dieses Bild wurde mit Künstlicher Intelligenz erstellt',
+    aiBadgeText: 'KI-generiert',
+    schemaDescription:
+      'Die WAMOCON GmbH aus Eschborn entwickelt nützliche Apps für Büro, künstliche Intelligenz und Mobilität. Hier finden Sie alle unsere Anwendungen im Überblick.',
+  },
+  en: {
+    heading: "Let's talk.",
+    subtext: "Do you have questions about our software or want to develop your own application? We are happy to help.",
+    contactTitle: 'Questions about our apps',
+    contactText:
+      "Are you currently testing one of our apps or wondering if it fits your specific requirements? Send us a message and we will get in touch.",
+    contactCta: 'Get in touch',
+    contactHref: '#apps-kontakt',
+    ideaTitle: 'Realise your project',
+    ideaText:
+      "Do you have an idea for an app and want to know about development costs? Describe your project in our portal. We will review your request and send you a proposal.",
+    ideaCta: 'Submit requirements',
+    ideaHref: 'https://wmc-anforderungsportal.vercel.app/de',
+    exploreCta: 'Explore apps',
+    ideaTeaserCta: 'Discuss app idea',
+    missionLabel: 'Our mission',
+    appsWord: 'apps',
+    aiBadgeLabel: 'This image was created using artificial intelligence',
+    aiBadgeText: 'AI-generated',
+    schemaDescription:
+      'WAMOCON GmbH from Eschborn develops useful software applications for office tasks, artificial intelligence and mobility. Explore all our apps in one place.',
+  },
+  tr: {
+    heading: 'Hadi konuşalım.',
+    subtext: 'Uygulamalarımız hakkında sorularınız mı var, yoksa kendi fikrinizi mi hayata geçirmek istiyorsunuz? Bize yazmanız yeterli.',
+    contactTitle: 'Uygulamalarımız hakkında sorular',
+    contactText:
+      'Uygulamalarımızdan birini deniyor ya da projenize uygun olup olmadığını mı merak ediyorsunuz? Doğrudan bize ulaşın.',
+    contactCta: 'Hemen iletişime geçin',
+    contactHref: '#apps-kontakt',
+    ideaTitle: 'Fikrinizi hayata geçirin',
+    ideaText:
+      'Bir yazılım projesi planlıyor ve geliştirme için iş ortağı mı arıyorsunuz? Projenizi portalımızda anlatın. Taleplerinizi inceleyip size bir teklif hazırlayalım.',
+    ideaCta: 'Talebinizi iletin',
+    ideaHref: 'https://wmc-anforderungsportal.vercel.app/de',
+    exploreCta: 'Uygulamaları keşfedin',
+    ideaTeaserCta: 'Fikrinizi konuşalım',
+    missionLabel: 'Misyonumuz',
+    appsWord: 'uygulama',
+    aiBadgeLabel: 'Bu görsel yapay zekâ ile oluşturulmuştur',
+    aiBadgeText: 'Yapay zekâ üretimi',
+    schemaDescription:
+      'Eschborn merkezli WAMOCON GmbH; ofis, yapay zekâ ve mobilite için kullanışlı uygulamalar geliştirir. Tüm uygulamalarımızı burada topluca bulabilirsiniz.',
+  },
+}[lang];
 
 /* ---- Structured Data (JSON-LD) für SEO & GEO ---- */
 const jsonLd = {
@@ -81,10 +132,8 @@ const jsonLd = {
   '@graph': [
     {
       '@type': 'SoftwareApplication',
-      'name': de ? 'WAMOCON Apps' : 'WAMOCON Apps',
-      'description': de
-        ? `Die WAMOCON GmbH aus Eschborn entwickelt nützliche Apps für Büro, künstliche Intelligenz und Mobilität. Hier finden Sie alle unsere Anwendungen im Überblick.`
-        : `WAMOCON GmbH from Eschborn develops useful software applications for office tasks, artificial intelligence and mobility. Explore all our apps in one place.`,
+      'name': 'WAMOCON Apps',
+      'description': cta.schemaDescription,
       'applicationCategory': 'BusinessApplication',
       'operatingSystem': 'Web',
       'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'EUR' },
@@ -106,7 +155,7 @@ const jsonLd = {
     },
     {
       '@type': 'ItemList',
-      'name': de ? 'WAMOCON Apps' : 'WAMOCON Apps',
+      'name': 'WAMOCON Apps',
       'numberOfItems': totalApps,
       'itemListElement': appCategories.flatMap((cat, ci) =>
         cat.apps.map((app, ai) => ({
@@ -137,11 +186,9 @@ const jsonLd = {
       </h1>
       <p class="apps-hero__subtitle" data-reveal="up" data-reveal-delay="120" set:html={hero.subtitle} />
       <div class="apps-hero__actions" data-reveal="up" data-reveal-delay="180">
-        <Button href="#apps-catalogue" variant="primary" size="lg">
-          {de ? 'Apps entdecken' : 'Explore apps'}
-        </Button>
+        <Button href="#apps-catalogue" variant="primary" size="lg">{cta.exploreCta}</Button>
         <Button href={cta.ideaHref} target="_blank" variant="outline" size="lg">
-          {de ? 'Idee besprechen' : 'Discuss app idea'}
+          {cta.ideaTeaserCta}
         </Button>
       </div>
     </div>
@@ -155,16 +202,14 @@ const jsonLd = {
           loading="eager"
           fetchpriority="high"
         />
-        <span class="ai-badge" aria-label={lang === 'de' ? 'Dieses Bild wurde mit Künstlicher Intelligenz erstellt' : 'This image was created using artificial intelligence'}>
-          {lang === 'de' ? 'KI-generiert' : 'AI-generated'}
-        </span>
+        <span class="ai-badge" aria-label={cta.aiBadgeLabel}>{cta.aiBadgeText}</span>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ============ STORY STRIP ============ -->
-<section class="story-strip" aria-label={de ? 'Unsere Mission' : 'Our mission'}>
+<section class="story-strip" aria-label={cta.missionLabel}>
   <div class="story-strip__line" aria-hidden="true"></div>
   <div class="container">
     <p class="story-strip__text" data-reveal="up">
@@ -189,7 +234,7 @@ const jsonLd = {
         <div class="apps__cat">
           <h2 class="apps__cat-title" data-reveal="left">
             {cat.label[lang]}
-            <span class="apps__cat-count">{cat.apps.length} {de ? 'Apps' : 'apps'}</span>
+            <span class="apps__cat-count">{cat.apps.length} {cta.appsWord}</span>
           </h2>
           <div class="apps__grid">
             {cat.apps.map((app) => (

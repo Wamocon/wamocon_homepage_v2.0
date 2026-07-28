@@ -1,18 +1,41 @@
 /** Helper functions for language detection and translation. */
-import { ui, defaultLang, nav, legalNav, type Lang, type NavLink } from './config';
+import {
+  ui,
+  defaultLang,
+  nav,
+  legalNav,
+  extraRoutes,
+  langCodes,
+  type Lang,
+  type NavLink,
+} from './config';
+
+type RouteMap = Record<Lang, string>;
 
 /** Flatten the nav (dropdown groups + their children) into a single list. */
-function flattenNav(items: NavLink[]): Array<{ de: string; en: string }> {
+function flattenNav(items: NavLink[]): RouteMap[] {
   return items.flatMap((item) => [
-    { de: item.de.href, en: item.en.href },
+    { de: item.de.href, en: item.en.href, tr: item.tr.href },
     ...(item.children ? flattenNav(item.children) : []),
   ]);
 }
+
+/** Every known route, as a de/en/tr triple. */
+const routes: RouteMap[] = [
+  ...flattenNav(nav),
+  ...Object.values(legalNav).map((item) => ({
+    de: item.de.href,
+    en: item.en.href,
+    tr: item.tr.href,
+  })),
+  ...extraRoutes,
+];
 
 /** Detect the active language from the current URL pathname. */
 export function getLangFromUrl(url: URL): Lang {
   const [, first] = url.pathname.split('/');
   if (first === 'en') return 'en';
+  if (first === 'tr') return 'tr';
   return defaultLang;
 }
 
@@ -29,23 +52,36 @@ function normalize(path: string): string {
   return path;
 }
 
+/** The home page of a given language. */
+export function homeHref(lang: Lang): string {
+  if (lang === 'en') return '/en/';
+  if (lang === 'tr') return '/tr/';
+  return '/';
+}
+
 /**
- * Resolve the equivalent page URL in the other language.
+ * Resolve the equivalent URL of the current page in every language.
  * Uses the nav/legal config so differing slugs map correctly
- * (e.g. /ueber-uns/ <-> /en/about-us/). Falls back to the other
- * language home page when no mapping exists.
+ * (e.g. /ueber-uns/ <-> /en/about-us/ <-> /tr/hakkimizda/).
+ * Falls back to the language home page when no mapping exists.
  */
-export function getAlternateLangUrl(currentPath: string, current: Lang): string {
-  const other: Lang = current === 'de' ? 'en' : 'de';
+export function getLangUrls(currentPath: string, current: Lang): RouteMap {
   const path = normalize(currentPath);
+  const match = routes.find((entry) => normalize(entry[current]) === path);
+  if (match) return match;
 
-  const entries = [
-    ...flattenNav(nav),
-    ...Object.values(legalNav).map((item) => ({ de: item.de.href, en: item.en.href })),
-  ];
+  return { de: '/', en: '/en/', tr: '/tr/' };
+}
 
-  const match = entries.find((entry) => normalize(entry[current]) === path);
-  if (match) return match[other];
+/**
+ * Resolve the equivalent page URL in one specific other language.
+ * Kept for callers that only need a single target.
+ */
+export function getAlternateLangUrl(currentPath: string, current: Lang, target: Lang): string {
+  return getLangUrls(currentPath, current)[target];
+}
 
-  return other === 'en' ? '/en/' : '/';
+/** All languages except the given one, in stable order. */
+export function otherLangs(lang: Lang): Lang[] {
+  return langCodes.filter((code) => code !== lang);
 }

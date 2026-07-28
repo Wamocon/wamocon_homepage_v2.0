@@ -13,8 +13,8 @@ import '../styles/global.css';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import CookieBanner from '../components/layout/CookieBanner.astro';
-import { getAlternateLangUrl } from '../i18n/utils';
-import { company, type Lang } from '../i18n/config';
+import { getLangUrls, homeHref } from '../i18n/utils';
+import { company, langCodes, type Lang } from '../i18n/config';
 
 interface Props {
   title: string;
@@ -38,18 +38,79 @@ const {
   breadcrumbs = [],
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
-const altPath = getAlternateLangUrl(Astro.url.pathname, lang);
-const altLang = lang === 'de' ? 'en' : 'de';
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
-const alternateUrl = new URL(altPath, Astro.site).href;
-const xDefaultUrl = lang === 'de' ? canonical : alternateUrl;
-const locale = lang === 'de' ? 'de_DE' : 'en_GB';
-const alternateLocale = lang === 'de' ? 'en_GB' : 'de_DE';
+
+/**
+ * Validation / error copy for the shared lead-form script below. Keyed by the
+ * `lang` hidden field each form submits, so a form always speaks its own page's
+ * language regardless of which layout instance rendered it.
+ */
+const formMessages = {
+  de: {
+    contactRequired: 'Bitte geben Sie eine E-Mail-Adresse oder Telefonnummer an.',
+    captcha: 'Bitte bestätigen Sie die Sicherheitsprüfung.',
+    failed:
+      'Ihre Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns per E-Mail.',
+    thankYou: '/danke/',
+  },
+  en: {
+    contactRequired: 'Please provide an email address or phone number.',
+    captcha: 'Please complete the security check.',
+    failed:
+      'Your inquiry could not be sent. Please try again or contact us by email.',
+    thankYou: '/en/thank-you/',
+  },
+  tr: {
+    contactRequired: 'Lütfen bir e-posta adresi veya telefon numarası girin.',
+    captcha: 'Lütfen güvenlik doğrulamasını tamamlayın.',
+    failed:
+      'Talebiniz gönderilemedi. Lütfen tekrar deneyin veya bize e-posta ile ulaşın.',
+    thankYou: '/tr/tesekkurler/',
+  },
+};
+
+// Every language variant of the current page, for hreflang + og:locale:alternate.
+const langUrls = getLangUrls(Astro.url.pathname, lang);
+const ogLocales = { de: 'de_DE', en: 'en_GB', tr: 'tr_TR' } as const;
+const htmlLocales = { de: 'de-DE', en: 'en-GB', tr: 'tr-TR' } as const;
+const alternates = langCodes.map((code) => ({
+  code,
+  href: new URL(langUrls[code], Astro.site).href,
+}));
+// German is the default edition, so it carries x-default.
+const xDefaultUrl = new URL(langUrls.de, Astro.site).href;
+const locale = ogLocales[lang];
+const alternateLocales = langCodes.filter((c) => c !== lang).map((c) => ogLocales[c]);
 // Single source of truth for the visible byline and schema dateModified.
 const lastReviewed = '2026-07-22';
 const robots = noindex
   ? 'noindex, follow'
   : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+
+/** Per-language strings used inside the JSON-LD graph and the skip link. */
+const layoutCopy = {
+  de: {
+    skip: 'Zum Inhalt springen',
+    home: 'Startseite',
+    jobTitle: 'Geschäftsführer',
+    personDescription:
+      'Diplom-Ingenieur und Geschäftsführer der WAMOCON GmbH. Verantwortet seit 2015 Testmanagement- und Qualitätssicherungsprojekte für Konzerne in Deutschland und der EU.',
+  },
+  en: {
+    skip: 'Skip to content',
+    home: 'Home',
+    jobTitle: 'Managing Director',
+    personDescription:
+      'Graduate engineer and managing director of WAMOCON GmbH. Has been responsible for enterprise test-management and quality-assurance projects across Germany and the EU since 2015.',
+  },
+  tr: {
+    skip: 'İçeriğe geç',
+    home: 'Ana Sayfa',
+    jobTitle: 'Genel Müdür',
+    personDescription:
+      'Diplomalı mühendis ve WAMOCON GmbH’nin genel müdürü. 2015’ten bu yana Almanya ve AB genelinde büyük şirketler için test yönetimi ve kalite güvence projelerinden sorumludur.',
+  },
+}[lang];
 const structuredData = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -102,7 +163,7 @@ const structuredData = {
         telephone: company.phone,
         email: company.email,
         contactType: 'customer service',
-        availableLanguage: ['German', 'English'],
+        availableLanguage: ['German', 'English', 'Turkish'],
       },
     },
     {
@@ -110,7 +171,7 @@ const structuredData = {
       '@id': 'https://www.wamocon.com/#website',
       url: 'https://www.wamocon.com/',
       name: 'WAMOCON',
-      inLanguage: ['de-DE', 'en-GB'],
+      inLanguage: ['de-DE', 'en-GB', 'tr-TR'],
       publisher: { '@id': 'https://www.wamocon.com/#organization' },
     },
     {
@@ -118,10 +179,8 @@ const structuredData = {
       '@id': 'https://www.wamocon.com/#waleri-moretz',
       name: 'Waleri Moretz',
       honorificPrefix: 'Dipl.-Ing.',
-      jobTitle: lang === 'de' ? 'Geschäftsführer' : 'Managing Director',
-      description: lang === 'de'
-        ? 'Diplom-Ingenieur und Geschäftsführer der WAMOCON GmbH. Verantwortet seit 2015 Testmanagement- und Qualitätssicherungsprojekte für Konzerne in Deutschland und der EU.'
-        : 'Graduate engineer and managing director of WAMOCON GmbH. Has been responsible for enterprise test-management and quality-assurance projects across Germany and the EU since 2015.',
+      jobTitle: layoutCopy.jobTitle,
+      description: layoutCopy.personDescription,
       worksFor: { '@id': 'https://www.wamocon.com/#organization' },
       knowsAbout: ['IT test management', 'Software quality assurance', 'SAP testing', 'Test automation'],
       knowsLanguage: ['de', 'en'],
@@ -132,9 +191,9 @@ const structuredData = {
       '@type': 'BreadcrumbList',
       '@id': `${canonical}#breadcrumb`,
       itemListElement: [
-        { name: lang === 'de' ? 'Startseite' : 'Home', path: lang === 'de' ? '/' : '/en/' },
+        { name: layoutCopy.home, path: homeHref(lang) },
         ...breadcrumbs,
-        ...(Astro.url.pathname !== '/' && Astro.url.pathname !== '/en/' && breadcrumbs.length === 0
+        ...(!['/', '/en/', '/tr/'].includes(Astro.url.pathname) && breadcrumbs.length === 0
           ? [{ name: title.split('|')[0].trim(), path: Astro.url.pathname }]
           : []),
       ].map((item, index) => ({
@@ -151,7 +210,7 @@ const structuredData = {
       url: canonical,
       name: title,
       description,
-      inLanguage: lang === 'de' ? 'de-DE' : 'en-GB',
+      inLanguage: htmlLocales[lang],
       isPartOf: { '@id': 'https://www.wamocon.com/#website' },
       about: { '@id': 'https://www.wamocon.com/#organization' },
       datePublished: '2026-07-01',
@@ -187,8 +246,9 @@ const structuredData = {
     {!noindex && <link rel="canonical" href={canonical} />}
     {!noindex && (
       <>
-        <link rel="alternate" hreflang={lang} href={canonical} />
-        <link rel="alternate" hreflang={altLang} href={alternateUrl} />
+        {alternates.map((alt) => (
+          <link rel="alternate" hreflang={alt.code} href={alt.href} />
+        ))}
         <link rel="alternate" hreflang="x-default" href={xDefaultUrl} />
       </>
     )}
@@ -202,7 +262,7 @@ const structuredData = {
     <meta property="og:image:alt" content={title} />
     <meta property="og:site_name" content="WAMOCON" />
     <meta property="og:locale" content={locale} />
-    <meta property="og:locale:alternate" content={alternateLocale} />
+    {alternateLocales.map((alt) => <meta property="og:locale:alternate" content={alt} />)}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
@@ -217,7 +277,7 @@ const structuredData = {
   </head>
 
   <body>
-    <a class="skip-link" href="#main">{lang === 'de' ? 'Zum Inhalt springen' : 'Skip to content'}</a>
+    <a class="skip-link" href="#main">{layoutCopy.skip}</a>
     <Header lang={lang} />
     <main id="main">
       <slot />
@@ -409,7 +469,7 @@ const structuredData = {
       }
     </script>
 
-    <script define:vars={{ turnstileSiteKey }}>
+    <script define:vars={{ turnstileSiteKey, formMessages }}>
       // @ts-nocheck
       const isLocalPreview = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
       // The production key is domain-locked; on localhost use Cloudflare's always-pass
@@ -467,14 +527,13 @@ const structuredData = {
 
             const fd = new FormData(form);
             const language = (fd.get('lang') || 'de').toString();
+            const msg = formMessages[language] || formMessages.de;
             const phone = (fd.get('phone') || '').toString().trim();
             const email = (fd.get('email') || '').toString().trim();
             if (!phone && !email) {
               const target = form.querySelector('input[name="email"]') || form.querySelector('input[name="phone"]');
               if (target) {
-                target.setCustomValidity(language === 'en'
-                  ? 'Please provide an email address or phone number.'
-                  : 'Bitte geben Sie eine E-Mail-Adresse oder Telefonnummer an.');
+                target.setCustomValidity(msg.contactRequired);
                 target.reportValidity();
                 target.addEventListener('input', () => target.setCustomValidity(''), { once: true });
               }
@@ -485,9 +544,7 @@ const structuredData = {
               await ensureActiveTurnstile(form).catch(() => {});
               const token = form.querySelector('input[name="cf-turnstile-response"]')?.value || '';
               if (!token) {
-                alert(language === 'en'
-                  ? 'Please complete the security check.'
-                  : 'Bitte bestätigen Sie die Sicherheitsprüfung.');
+                alert(msg.captcha);
                 return;
               }
             }
@@ -512,11 +569,9 @@ const structuredData = {
                 body: JSON.stringify(payload),
               });
               if (!response.ok) throw new Error('Request failed');
-              window.location.assign(form.dataset.redirect || (language === 'en' ? '/en/thank-you/' : '/danke/'));
+              window.location.assign(form.dataset.redirect || msg.thankYou);
             } catch {
-              alert(language === 'en'
-                ? 'Your inquiry could not be sent. Please try again or contact us by email.'
-                : 'Ihre Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns per E-Mail.');
+              alert(msg.failed);
               if (submit) submit.disabled = false;
               if (window.turnstile) window.turnstile.reset();
               const token = form.querySelector('input[name="cf-turnstile-response"]');

@@ -12,7 +12,7 @@ interface Props {
   lang: Lang;
 }
 const { app, category, lang } = Astro.props;
-const soonLabel = lang === 'de' ? 'Bald verfügbar' : 'Coming soon';
+const soonLabel = { de: 'Bald verfügbar', en: 'Coming soon', tr: 'Yakında' }[lang];
 const isLink = !app.soon && !!app.url;
 const Tag = isLink ? 'a' : 'div';
 ---

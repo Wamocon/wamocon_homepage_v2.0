@@ -5,13 +5,13 @@
  * and a full-width CTA bar that opens a general contact popup (self-contained,
  * so it works on every page without page-level modal wiring).
  */
-import { company, type Lang } from '../../i18n/config';
+import { company, legalNav, type Lang } from '../../i18n/config';
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-const de = lang === 'de';
-const privacyHref = de ? '/datenschutz/' : '/en/privacy/';
+const privacyHref = legalNav.privacy[lang].href;
+const thankYouHref = { de: '/danke/', en: '/en/thank-you/', tr: '/tr/tesekkurler/' }[lang];
 
 const social = [
   { name: 'YouTube', href: company.social.youtube, icon: '/images/icon-youtube.svg' },
@@ -64,6 +64,28 @@ const labels = {
     consentPre: 'I hereby confirm that I have read the ',
     consentLink: 'privacy policy',
     consentPost: '. Please provide an email address or phone number.',
+  },
+  tr: {
+    phone: 'Telefon',
+    contactPerson: 'İlgili kişi',
+    contactPersonName: 'Dipl.-Ing. Waleri Moretz, WAMOCON GmbH Genel Müdürü',
+    hours: 'Çalışma saatleri',
+    location: 'Konum',
+    follow: 'Bizi sosyal medyada takip edin',
+    imgAlt: 'Ofiste WAMOCON ekibi',
+    ratingLabel: 'Google puanı 5,0',
+    ctaTitle: 'Doğrudan yazmayı mı tercih edersiniz?',
+    ctaText: 'Mesajınızı gönderin; seçtiğiniz iletişim kanalı üzerinden en kısa sürede size dönüş yapalım.',
+    ctaButton: 'İletişime geçin',
+    modalTitle: 'İletişime geçin',
+    modalSubtitle: 'Bir sorunuz veya talebiniz mi var? Bize mesaj gönderin, en kısa sürede size dönüş yapalım.',
+    name: 'Adınız',
+    message: 'Mesajınız',
+    submit: 'Mesajı gönder',
+    close: 'Kapat',
+    consentPre: 'İşbu formu göndererek ',
+    consentLink: 'gizlilik politikasını',
+    consentPost: ' okuduğumu onaylıyorum. Lütfen e-posta veya telefon bilgisi girin.',
   },
 }[lang];
 ---
@@ -155,7 +177,7 @@ const labels = {
       </button>
       <h2 class="contact-modal__title" id="contact-modal-title">{labels.modalTitle}</h2>
       <p class="contact-modal__subtitle">{labels.modalSubtitle}</p>
-      <form class="contact-modal__form js-lead-form" data-redirect={de ? '/danke/' : '/en/thank-you/'}>
+      <form class="contact-modal__form js-lead-form" data-redirect={thankYouHref}>
         <input type="hidden" name="type" value="contact" />
         <input type="hidden" name="lang" value={lang} />
         <label class="contact-modal__field">

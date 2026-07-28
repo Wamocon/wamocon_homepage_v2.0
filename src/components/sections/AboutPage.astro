@@ -7,10 +7,9 @@ interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-const de = lang === 'de';
 
-const c = de
-  ? {
+const c = {
+  de: {
       heroTitle: 'WAMOCON GmbH, Dein Partner für IT-Innovationen und nachhaltige Lösungen',
       heroBlocks: [
         { h: 'über 50 Jahre gebündelte Praxiserfahrung unseres Teams.', p: 'WAMOCON GmbH liefert praxisorientierte IT-Dienstleistungen entlang des gesamten Softwareentwicklungsprozesses. Unsere Experten entwickeln maßgeschneiderte Lösungen, die Wirkung zeigen.' },
@@ -78,8 +77,8 @@ const c = de
       magazinTitle: 'Erfahren Sie mehr über uns',
       magazinText: 'Entdecken Sie unser Magazin mit spannenden Projekten, Schulungen und unserer Unternehmenskultur.',
       magazinBtn: 'Magazin herunterladen',
-    }
-  : {
+    },
+  en: {
       heroTitle: 'WAMOCON GmbH, your partner for IT innovation and sustainable solutions',
       heroBlocks: [
         { h: 'over 50 years of combined practical experience within our team.', p: 'WAMOCON GmbH delivers practice-oriented IT services along the entire software development process. Our experts develop tailor-made solutions that make an impact.' },
@@ -147,7 +146,77 @@ const c = de
       magazinTitle: 'Find out more about us',
       magazinText: 'Discover our magazine with exciting projects, training courses and our corporate culture.',
       magazinBtn: 'Download magazine',
-    };
+    },
+  tr: {
+      heroTitle: 'WAMOCON GmbH: BT yenilikleri ve sürdürülebilir çözümler için iş ortağın',
+      heroBlocks: [
+        { h: 'Ekibimizin 50 yılı aşkın birikmiş saha deneyimi.', p: 'WAMOCON GmbH, yazılım geliştirme sürecinin tamamı boyunca uygulamaya dönük BT hizmetleri sunar. Uzmanlarımız gerçekten etki yaratan, size özel çözümler geliştirir.' },
+        { h: 'Seni ileri taşıyan yenilikler.', p: 'En modern teknolojilerle, iş hedeflerini destekleyen ve sana belirleyici bir avantaj kazandıran ileri teknoloji çözümler üretiyoruz.' },
+        { h: 'WAMOCON ile geleceğe.', p: 'Şirketini güçlendiren ve başarını kalıcı biçimde güvence altına alan ileri düzey BT çözümleri.' },
+      ],
+      factorsLead: 'Fark yaratan',
+      factorsRest: ' başarı faktörleri',
+      factors: [
+        { h: 'Dünya genelinde 100+ müşteri.', p: 'Başarımız kendini anlatıyor: dünya genelinde 100’den fazla memnun müşteri.' },
+        { h: '50+ BT projesi başarıyla tamamlandı.', p: 'Proje proje, gerçekten değeri olan sonuçlar üretiyoruz.' },
+        { h: 'Dünya genelinde 100+ iş ortaklığı.', p: 'Güçlü bağlantılarla uzun vadeli başarıya.' },
+        { h: '50 yılı aşkın birikmiş saha deneyimi.', p: 'Ekibimizin test ve kalite yönetimindeki ortak deneyimine güvenin.' },
+        { h: 'Verimli. Kusursuz. Yapılandırılmış.', p: 'Başarın için iyi düşünülmüş süreçlerle hızlı uygulama.' },
+        { h: 'Büyüyen bilgi birikimi.', p: 'Test yönetiminde üstün performans için BT uzmanlarımıza düzenli eğitim.' },
+        { h: 'Her zaman güncel.', p: 'Çözümlerimiz en yeni pazar eğilimlerine ve gereksinimlere dayanır.' },
+        { h: 'Birlikte güçlüyüz.', p: 'Aile sıcaklığındaki kültürümüz güveni, adaleti ve şeffaflığı bir araya getirir.' },
+        { h: '50+ yeni yapay zekâ çözümü.', p: 'Pazardaki mevcut sorunlar için yapay zekâ ile geliştirildi.' },
+      ],
+      guideLead: 'Sürdürülebilir kurumsal gelişim için',
+      guideRest: ' yol haritası',
+      guideCards: [
+        {
+          h: 'Gerçekten işe yarayan yazılım çözümleri ve danışmanlık.',
+          items: [
+            'Ekibimizin test ve kalite yönetimi BT projelerinde 50 yılı aşkın birikmiş saha deneyimi.',
+            'Klasik, hibrit ve çevik proje yürütmede uzmanlık.',
+            'ISTQB kurallarına uygun, sahaya dönük ve kanıtlanmış test yönetimi.',
+            'Test uzmanları, otomasyon uzmanları ve test yöneticilerinden oluşan deneyimli bir ekibe erişim.',
+          ],
+        },
+        {
+          h: 'Kariyer hızlandırıcı: Akademimiz',
+          items: [
+            'Frankfurt am Main’deki özel bir yüksekokulda bilgisayar veya işletme bilişimi alanında ücretsiz öğrenim.',
+            'Test yönetimi ve test otomasyonu için uzmanlaşmış programlar.',
+            'Gerçek BT projelerinde uygulamalı çalışma yoluyla kişisel gelişim.',
+            'Deneyimli mentorlardan bireysel destek: başarının anahtarı.',
+          ],
+        },
+      ],
+      solutionLead: 'WAMOCON',
+      solutionMid: ' — ',
+      solutionAccent: 'BT yeniliği ve verimlilik için çözümün',
+      solutionParas: [
+        { s: 'Başarın için sana özel BT çözümleri.', p: 'Proje yönetimi ve testten ERP, S4 HANA ve SAP BASS gibi karmaşık sistemlerin entegrasyonuna kadar WAMOCON sana geniş bir BT hizmetleri yelpazesi sunar. Yenilikçi çözümlerimiz; inşaat, mobil iletişim ve otomotiv sektöründeki şirketlere kalıcı rekabet avantajı sağlar.' },
+        { s: 'İkna eden yenilik ve kalite.', p: 'Proje yönetimi ve testten ERP, S4 HANA ve SAP BASS gibi karmaşık sistemlerin entegrasyonuna kadar WAMOCON sana geniş bir BT hizmetleri yelpazesi sunar. Yenilikçi çözümlerimiz; inşaat, mobil iletişim ve otomotiv sektöründeki şirketlere kalıcı rekabet avantajı sağlar.' },
+      ],
+      visionLead: 'Vizyonumuz: ',
+      visionAccent: 'sürdürülebilir başarı için yenilik ve büyüme',
+      visionItems: [
+        { h: 'Vizyon ve büyüme:', p: 'WAMOCON, modern ve aile odaklı bir BT şirketi olarak Almanya’daki ilk %10 arasında yer almayı hedefler. Yenilikçi test yöntemleri, çalışan eğitimleri ve kalite yönetiminde birinci sınıf danışmanlıkla; yeniliği ve verimliliği birleştiren, sürdürülebilir büyüme ve BT mükemmelliği sağlayan bir platform kuruyoruz.' },
+        { h: 'Misyon ve müşteri odağı:', p: 'Kuruluşumuzdan bu yana WAMOCON, şirketlerin iş hedeflerine ulaşmasını destekleyen ileri teknoloji çözümlerin adı oldu. Teknolojik birikim ile müşteri odaklı danışmanlığın benzersiz birleşimiyle, müşterilerimizin bireysel ihtiyaçlarına tam olarak uyarlanmış çözümler sunuyoruz; dinamik bir pazar ortamında başarı için.' },
+      ],
+      clientsTitle: 'Müşterilerimiz kimler?',
+      teamTitle: 'WAMOCON’un kalbi: nitelikli ekibimiz',
+      teamParas: [
+        { s: 'Heyecan veren tutku ve uzmanlık.', p: 'WAMOCON’un önde gelen bir BT hizmet sağlayıcısı olarak güvenilirlik ve şeffaf iletişimle projeleri nasıl başarıya taşıdığını ve sizin için nasıl gerçek değer yarattığını keşfedin.' },
+        { s: 'Her gün en yüksek standartlar.', p: 'Uzmanlarımız, çözümlerimizin her zaman en yüksek beklentileri karşılaması için tutku ve titizlikle çalışır.' },
+        { s: '', p: 'Başarımızın arkasındaki, yenilik ve mükemmellik arayışımızı ileri taşıyan kararlı ekiple tanışın.' },
+      ],
+      more: 'Daha fazla bilgi',
+      milestonesTitle: 'Başarı hikâyemizin kilometre taşları',
+      factLabel: 'İlginç bir bilgi:',
+      magazinTitle: 'Bizi daha yakından tanıyın',
+      magazinText: 'Heyecan verici projeler, eğitimler ve şirket kültürümüzü anlatan dergimizi keşfedin.',
+      magazinBtn: 'Dergiyi indir',
+    },
+}[lang];
 
 const clients = [
   '50 Hertz Transmission GmbH', 'Deutsche Bank AG', 'Intel Deutschland GmbH',
@@ -186,6 +255,19 @@ const roleEn = [
   'Test Automation Engineer / LaaJ architect',
   'Intern / Software Tester',
 ];
+const roleTr = [
+  'Şirket yöneticisi / Test otomasyon uzmanı / Test yöneticisi / ISTQB® eğitmeni / Proje lideri / Yapay zekâ kalite güvencesi için LaaJ mimarı',
+  'Test uzmanı / Test otomasyon uzmanı / Test yöneticisi / ISTQB® eğitmeni / LLM-as-a-Judge mühendisi',
+  'Genel müdür asistanı / Test uzmanı / LaaJ istem uzmanı',
+  'Test uzmanı / Test otomasyon uzmanı / Test yöneticisi / ISTQB® eğitmeni / LLM-as-a-Judge mühendisi',
+  'Test uzmanı / Test otomasyon uzmanı / LLM-as-a-Judge mühendisi',
+  'Test uzmanı / Test otomasyon uzmanı / LaaJ altın veri kümesi ve istemler',
+  'Test uzmanı / LaaJ altın veri kümesi, istem tasarımı ve değerlendirme',
+  'Test uzmanı / LaaJ altın veri kümesi, istem tasarımı ve değerlendirme',
+  'Test otomasyon uzmanı / LaaJ mimarı',
+  'Test otomasyon uzmanı / LaaJ mimarı',
+  'Stajyer / Yazılım test uzmanı',
+];
 const names = ['Waleri Moretz', 'Daniel Moretz', 'Olga Moretz', 'Nikolaj Schefner', 'Erwin Moretz', 'Nurzhan Kukeyev', 'Leon Moretz', 'Elias Felsing', 'Yash Bhesaniya', 'Maanik Garg', 'Yordan Krastev'];
 const imgs = ['/images/team-waleri.png', '/images/team-daniel.jpg', '/images/team-olga.png', '/images/team-nikolaj.png', '/images/team-erwin.jpg', '/images/team-nurzhan.jpg', '/images/team-leon.jpg', '/images/team-elias.jpg', '/images/team-yash.jpg', '/images/team-maanik.jpg', '/images/team-yordan.jpg'];
 
@@ -214,6 +296,19 @@ const bioTitleEn = [
   'Test automation engineer / LaaJ architect',
   'Test automation engineer with AI specialization',
   'Software Testing Intern',
+];
+const bioTitleTr = [
+  'Genel müdür ve test yöneticisi',
+  'Test yöneticisi, test otomasyon uzmanı ve ISTQB eğitmeni',
+  'Yönetici asistanı ve yazılım test uzmanı',
+  'Test uzmanı / test otomasyon uzmanı / test yöneticisi / ISTQB® eğitmeni',
+  'Test uzmanı ve test otomasyon uzmanı',
+  'Test uzmanı ve test otomasyon uzmanı',
+  'ISTQB sertifikalı test uzmanı',
+  'Test uzmanı',
+  'Test otomasyon uzmanı / LaaJ mimarı',
+  'Yapay zekâ uzmanlığına sahip test otomasyon uzmanı',
+  'Yazılım testi stajyeri',
 ];
 
 const bioDe = [
@@ -338,12 +433,78 @@ const bioEn = [
   ],
 ];
 
+const bioTr = [
+  [
+    'Tüm test ve kalite yönetimi görevlerini uluslararası ISTQB standardına uygun olarak tamamlamıştır. Kariyerine klasik bir yazılım test uzmanı olarak başladı; sürekli gelişimi onu adım adım çevik test uzmanlığına, test koordinatörlüğüne, test otomasyon mühendisliğine ve nihayet test yöneticiliği ile proje yöneticiliğine taşıdı.',
+    'Son 17 yıldır kapsamlı saha deneyimini müşterilerinin hizmetine sunuyor. Hâlihazırda WAMOCON Academy’de ISTQB eğitmeni olarak ek sorumluluk üstleniyor ve yazılım testinden test ile kalite yönetimi üzerine bireysel mentorluğa kadar uzanan çeşitli atölyeler yürütüyor.',
+    'Böylece Waleri yalnızca mesleğe yeni başlayanları desteklemekle kalmıyor, BT sistemlerinin kalitesini sürekli iyileştirmek amacıyla BT proje ekiplerine yönelik seminerler de veriyor.',
+    'Bu sayede müşterileri hedeflerine daha hızlı ve daha verimli ulaşabiliyor. Şu anda, 450 kişiye varan ekiplerle BT test yönetimi projelerinin başarılı planlanması ve hayata geçirilmesi konusunda önde gelen bir uzmandır.',
+  ],
+  [
+    'Daniel Moretz; uygulama yaşam döngüsü yönetiminde 7 yılı aşkın deneyime sahip, deneyimli bir test yöneticisi, test koordinatörü ve ISTQB eğitmenidir. Bunun 3 yılını test yöneticisi, 3 yılını ISTQB eğitmeni olarak geçirmiş; bu da ona işlevsel ve işlevsel olmayan testler, yük ve performans testleri ile test otomasyonu konularında derin bir birikim kazandırmıştır.',
+    'Başlıca görevleri arasında test faaliyetlerinin planlanması, hazırlanması, koordinasyonu ve raporlanması yer alır. Daniel; test senaryolarının oluşturulmasından, test verilerinin tanımlanmasından ve entegrasyon, sistem, kabul ile regresyon testlerinin yürütülmesinden sorumludur. Test yöneticisi rolünde test uzmanları ile geliştiriciler arasında sorunsuz bir iletişim sağlar; eksikliklerin tespit edilip giderildiği toplantı ve seminerleri yönetir. Ayrıca otomatik test betikleri geliştirir, çalıştırır ve bakımını yapar; bu sırada ortaya çıkan hataları analiz edip giderir.',
+    'Daniel’in özel odağı modern test yöntemlerinin uygulanmasıdır. Çevik ama aynı zamanda yapılandırılmış bir test ortamı kurmak için V modelini SCRUM ve SAFe gibi esnek yaklaşımlarla birlikte kullanır. Bu yöntemler, yazılım testlerinin kalitesini sürekli iyileştirmesine ve değişen proje gereksinimlerine esnek biçimde yanıt vermesine olanak tanır.',
+    'Kapsamlı deneyimi ve test otomasyonundaki yetkinliği sayesinde Daniel, test süreçlerinin hızlanmasına katkı sağlarken doğruluk ve güvenilirliği de güvence altına alır. Çalışmaları sayesinde proje ekipleri kalite hedeflerine daha verimli ulaşır, hataları erken tespit edip giderir.',
+  ],
+  [
+    'Olga Moretz; organizasyon yeteneği, etkili iletişim ve teknik kavrayışı benzersiz biçimde bir araya getiren genel müdür yardımcısı ve yazılım test uzmanıdır. Yönetim ve üst yönetim alanındaki 17 yılı aşkın deneyimiyle karmaşık kurumsal zorlukları derinlemesine anlar ve şirketin başarısına vazgeçilmez bir katkı sunar.',
+    'Başlıca görevleri arasında toplantıların koordinasyonu, seyahat organizasyonu ve genel idari işlerin en üst verimlilikle yürütülmesi yer alır. Olga’nın güçlü iletişim becerileri, hem kurum içinde hem de dışında net ve ikna edici bir iletişim kurmasını sağlar.',
+    'Organizasyonel görevlerinin yanı sıra Olga, yazılım test uzmanı olarak teknik becerilerini de işin içine katar. BT projelerinin kalitesini destekleyen etkili test stratejileri geliştirir ve uygular. İş koordinasyonu ve test yönetimindeki deneyimi, özellikle test süreçlerinin verimli kurgulanması ve hataların erken fark edilmesi söz konusu olduğunda onu şirketin önemli bir dayanağı hâline getirir.',
+    'Karmaşık iş akışlarını koordine ederken bir yandan da test stratejileri geliştirebilmesi, Olga’yı son derece çok yönlü bir çalışan yapıyor. Yönetime verdiği proaktif destek ve yorulmak bilmez çabası şirketin başarısına belirgin biçimde katkı sağlıyor.',
+  ],
+  [
+    'Nikolaj, klasik ve çevik projelerde test uzmanı ve test koordinatörü olarak çalışarak kapsamlı saha deneyimi edindi. 7 yıllık proje çalışması boyunca V modeli ve SCRUM (çevik) gibi farklı test yöntemlerini uyguladı.',
+    'Hâlihazırdaki görevleri arasında teknik şartnamelerin, test konseptlerinin, test senaryolarının ve test verilerinin hazırlanması; müşteri gereksinimlerinin ilgili birim tarafından kabulü; entegrasyon, kabul ve regresyon testlerinin koordinasyonu ve yürütülmesi; test ilerlemesinin yönetimi ve hata yönetimi ile test eforunun tahmini yer alır. Nikolaj ayrıca test sonuçlarının belgelenmesi ve raporlanmasından sorumludur.',
+    'Test yönetimindeki yetkinliği, klasik ve çevik yöntemlerde edindiği dört ISTQB® sertifikası ve uygulamalı proje deneyimiyle doğrulanmıştır. Ayrıca 3 yıl test yöneticisi ve 3 yıl ISTQB® eğitmeni olarak deneyime sahiptir.',
+  ],
+  [
+    'Erwin Moretz, yazılım testi alanında 7 yıl ve test otomasyonunda 3 yıl deneyime sahiptir. Projelerinde farklı test tekniklerini kullanarak hataların erken tespit edilip giderilmesini sağlar. Başlıca görevleri arasında test senaryoları ile test verilerinin hazırlanması ve ilgili birimden gelen müşteri gereksinimlerinin kabulü yer alır.',
+    'Entegrasyon, sistem, kabul, regresyon, yük ve performans testleri ile uçtan uca (E2E) testler dâhil olmak üzere farklı aşamalardaki testlerin yürütülmesinden sorumludur. Erwin test sonuçlarını belgeler, eksiklik raporları hazırlar ve bunların giderilmesini takip eder.',
+    'Özel odak noktalarından biri testlerin otomasyonudur. Erwin, manuel test yürütmelerini verimli biçimde ikame etmek üzere özellikle Capture & Replay yaklaşımını kullanarak otomatik testlerin yeniden geliştirilmesinden ve kurulmasından sorumludur. Ayrıca REST ve GraphQL uç noktalarına dayalı mikro hizmetler için JavaScript ile otomatik test senaryoları oluşturma deneyimine sahiptir.',
+    'Çevik test uzmanı olarak Erwin; manuel ve otomatik testler için teknik şartname, test senaryosu ve test verisi hazırlama konusunda kapsamlı proje deneyimi getirir. Çevik yöntemleri kullanarak değişen proje gereksinimlerine esnek ve hızlı uyum sağlar; bu da test süreçlerinin verimliliğini ve kalitesini artırır.',
+    'Test otomasyonu alanındaki çalışmaları, test süreçlerinin hızlanmasına ve hataların azalmasına belirgin biçimde katkı sağlar; bu da daha yüksek verimlilik ve ürün kalitesi anlamına gelir.',
+  ],
+  [
+    'Nürzhan Kukeyev, BT projelerinde test uzmanı ve test otomasyon mühendisi olarak 3 yılı aşkın deneyime sahiptir. UML modellemesi ve müşteri gereksinimlerinin hayata geçirilmesi konusunda kapsamlı bilgi birikimi vardır. İlk BT deneyimini, müşteriyle yakın iş birliği içinde entegre laboratuvarlı bir kurum içi eczane sistemi geliştirip hayata geçirdiği bir eczane dijitalleştirme projesinde edindi.',
+    'Teknik bilgisini MQTT sunucu konseptleri ve JSON mesajlarıyla yoğun çalışarak ve bunları Python3 projelerinde uygulayarak derinleştirdi. Bu, ona yazılım geliştirmenin matematiksel ve sensör tarafındaki yönleri ile çevik geliştirme süreçleri hakkında sağlam bir kavrayış kazandırdı.',
+    'Hâlihazırda ISTQB sertifikalı yazılım test uzmanı ve yazılımcı olarak yeni DiTeLe uygulamasının BT tarafındaki hayata geçirilmesini destekliyor. Görevleri arasında müşteri gereksinimlerinin yazılması, test senaryolarının oluşturulması ve işlevsel ile teknik testlerin yürütülmesi yer alıyor. Buna paralel olarak, büyük ölçekli pan-Avrupa bir projede çevik ISTQB test uzmanı ve SAFe test otomasyon mühendisi olarak çalışıyor.',
+    'Nürzhan, yazılım geliştirme bilgisini ve test otomasyonu deneyimini projelere etkin biçimde katarak test süreçlerinin hızlanmasına ve yazılım kalitesinin artmasına katkı sağlıyor. Hem manuel hem otomatik test yürütebilmesi, proje gereksinimlerine esnek yanıt vermesine ve uygulamayı daha verimli kurgulamasına olanak tanıyor.',
+  ],
+  [
+    'Leon Moretz; test hazırlığı, test yürütme ve test sonuçlarının belgelenmesi konularındaki sağlam bilgisiyle güvenilir ve kararlı bir çalışan olan, ISTQB sertifikalı deneyimli bir test uzmanıdır. Karmaşık sorunları hızla fark etme ve olası eksikliklerin erken tespit edilip giderilmesine katkı sağlayan etkili test stratejilerini hayata geçirme yeteneğine sahiptir.',
+    'Takım çalışmasına yatkınlığı ve ayrıntılara olan güçlü dikkati sayesinde Leon, test edilen yazılım ürünlerinin kalitesinin en yüksek standartlara uygun olmasını güvence altına alır. Güçlü iletişim becerileri ve teknik belgeleri açık ve anlaşılır biçimde yazabilmesi, test süreçlerinin verimliliğini belirgin biçimde artırır ve ekip içinde kesintisiz iş birliği sağlar.',
+    'Leon’un kalite güvencesine olan bağlılığı ve karmaşık test süreçlerini etkin biçimde yönetebilmesi, onu WAMOCON ekibi için değerli bir destek hâline getirir. Deneyimi ve yorulmak bilmez çabası, yazılım ürünlerinin işlevselliğinin ve kalitesinin güvence altına alınmasında belirleyici rol oynar.',
+  ],
+  [
+    'Elias Felsing; kaliteye, yapıya ve güvenilir test süreçlerine net biçimde odaklanan genç bir ISTQB sertifikalı yazılım test uzmanıdır.',
+    'Ekibe test hazırlığı, testlerin yürütülmesi, test senaryolarının oluşturulması ve sistematik hata analizi konularında destek verir. Titiz ve analitik çalışma biçimiyle risklerin erken fark edilmesine ve yazılımın kararlılığının kalıcı olarak artmasına katkı sağlar.',
+    'Yüksek öğrenme isteği, net iletişimi ve güçlü kalite bilinciyle Elias projelere taze bir soluk getirir ve ekip içindeki iş birliğini güçlendirir.',
+  ],
+  [
+    'Yash Bhesaniya; güçlü bir akademik temele ve verilerdeki anomalilerin tespiti ile gizli özniteliklerin çıkarımı konusunda uygulamalı deneyime sahip, deneyimli bir veri bilimcidir. İstatistiksel analiz, makine öğrenmesi, derin öğrenme ve üretken yapay zekâ alanlarında sağlam bilgi birikimine sahiptir. Teknik becerileri arasında Python, Power BI, veritabanı yönetimi ve SQL ile Pandas, Numpy ve Pytorch gibi kütüphanelerle çalışma deneyimi yer alır.',
+    'BT projelerindeki deneyimiyle Yash, anomali tespiti ve bilgi grafiği çıkarımı uygulamalarının geliştirilmesine katkıda bulundu. Hella için bir bilgi grafiği görselleştirme aracını başarıyla geliştirdi ve NASA’nın rulman sensörü verilerindeki anomalileri LSTM modelleriyle tespit etti. Ayrıca güvenli çevrim içi işlemler için bir Android uygulaması tasarladı.',
+    'Güncel projesinde Yash, testlerin verimliliğini ve kalitesini artırmak amacıyla yapay zekâ teknolojilerini test otomasyonuna entegre etmeye odaklanıyor. Yapay zekâ geliştiricisi olarak güçlü yönleri; problem çözme becerisi, yapay zekâ yöntemlerinin yenilikçi biçimde uygulanması ve süreçlerin sürekli iyileştirilmesidir.',
+  ],
+  [
+    'Maanik Garg; hata tespiti için makine öğrenmesi modellerinin hayata geçirilmesinde uzmanlaşmış, deneyimli bir veri bilimci ve test otomasyon uzmanıdır. Random Forest ve XGBoost algoritmalarıyla %87 doğruluk elde ederek veri toplama ve veri hazırlama alanındaki uzmanlığını ortaya koymuştur. Öngörücü modelleme yeteneklerini geliştirmek üzere ileri veri analizi tekniklerini entegre ederek makine öğrenmesi modellerini bulut platformlarında başarıyla devreye almıştır. Projelerinden birinde Maanik, iş birlikçi filtreleme kullanarak kişiselleştirilmiş müzik önerileri sunan bir öneri motoru geliştirdi.',
+    'Bu deneyim, karmaşık sorunları çözmek ve yenilikçi çözümler geliştirmek için ileri yapay zekâ yöntemlerini uygulama becerisini gösteriyor. Güçlü yönü, test süreçlerinin verimliliğini ve kalitesini artırmak üzere problem çözme ve ileri yapay zekâ tekniklerini uygulamadır. Bu yöntemleri hayata geçirerek Maanik, hataların azalmasına ve testlerin optimize edilmesine belirgin katkı sağlıyor; bu da BT sistemlerinde daha yüksek kalite ve performans anlamına geliyor.',
+  ],
+  [
+    'Yordan Krastev, WAMOCON ekibine yazılım testi alanında stajyer olarak destek veriyor. Uluslararası ISTQB standardına göre yapılandırılmış testin temellerini öğreniyor ve test senaryolarının yazılması, çalıştırılması ile belgelenmesine katkıda bulunuyor.',
+    'Merakı, titizliği ve hızlı kavrayışıyla Yordan günlük test çalışmalarına aktif olarak katılıyor ve test sürecinin tamamında uygulamalı deneyim kazanıyor.',
+  ],
+];
+
+const roles = { de: roleDe, en: roleEn, tr: roleTr }[lang];
+const bioTitles = { de: bioTitleDe, en: bioTitleEn, tr: bioTitleTr }[lang];
+const bios = { de: bioDe, en: bioEn, tr: bioTr }[lang];
+
 const team = names.map((name, i) => ({
   name,
-  role: de ? roleDe[i] : roleEn[i],
+  role: roles[i],
   img: imgs[i],
-  bioTitle: de ? bioTitleDe[i] : bioTitleEn[i],
-  bio: de ? bioDe[i] : bioEn[i],
+  bioTitle: bioTitles[i],
+  bio: bios[i],
   slug: name.replace(/\s+/g, '-'),
 }));
 
@@ -394,8 +555,31 @@ const milestonesEn: Milestone[] = [
   { year: '2026', lines: ['More than 50 tailor-made AI product solutions developed for customers from a wide range of industries. Each one trained, tested and put into production with LaaJ.'] },
 ];
 
-const timeline = de ? milestones : milestonesEn;
-const magazinUrl = de
+const milestonesTr: Milestone[] = [
+  { year: '2007', lines: ['Bir vizyonun başlangıcı. Waleri kariyerine, uluslararası alanda önde gelen bir BT şirketinde BT testi ve kalite yönetimi alanında başladı.', 'Almanya’daki ilk pazar analizleri, gelecekteki yeniliklerin temelini attı.'], fact: 'Waleri’nin ilk uluslararası projesi, 2008’de onu yazılım test uzmanı olarak önde gelen bir BT danışmanlık şirketine götürdü; bu, kariyerinde önemli bir adımdı.' },
+  { year: '2008', lines: ['Yenilikçi atılım. Uluslararası alanda önde gelen bir BT şirketi için yeni standartlar belirleyen bir web uygulamasının geliştirilmesi ve devreye alınması.'], fact: 'WAMOCON, Mayıs 2007’de Avrupa elektronik perakendeciliğindeki satış rakamlarını analiz etmeye başladı. Bu adım, önde gelen bir BT hizmet sağlayıcısına uzanan etkileyici yolculuğun başlangıcı oldu.' },
+  { year: '2009', lines: ['Uluslararası alanda önde gelen bir BT şirketi için web uygulaması geliştirilmesi ve hayata geçirilmesi.'] },
+  { year: '2010', lines: ['Bir Alman enerji tedarikçisi için kurumsal dizin uygulaması.', 'Uluslararası alanda önde gelen bir otomotiv şirketinde iç kontrol sistemlerinin geliştirilmesi.'] },
+  { year: '2011', lines: ['Bir Alman toplu taşıma şirketinde SAP ERP 6.0 FI/CO devreye alımı.', 'Uluslararası alanda önde gelen bir otomotiv şirketinde SAP ERP 6.0 FI/CO desteği.'] },
+  { year: '2012', lines: ['Uluslararası alanda önde gelen bir otomotiv şirketinde, alan doluluk kontrolü içeren SAP NACOS geliştirmesi.', 'Uluslararası alanda önde gelen bir danışmanlık şirketinde SAP MRS devreye alımı.'] },
+  { year: '2013', lines: ['Uluslararası bir otomotiv bankasında, test yönetimi odaklı çekirdek bankacılık sistemi devreye alımı.', 'Bir Alman fabrikasında çoklu proje yönetim sistemi geliştirilmesi.'] },
+  { year: '2014', lines: ['Bir Alman toplu taşıma şirketinde yeni SAP ERP 6.0 FI/CO defteri geliştirilmesi.', 'Uluslararası alanda önde gelen bir otomotiv şirketinde SAP ERP 6.0 FI desteği.'] },
+  { year: '2015', lines: ['Uluslararası alanda önde gelen bir ilaç şirketinde yeni SAP Rollout ERP 6 sisteminin hayata geçirilmesi.', 'Önde gelen bir Alman bankasında yeni ServiceNow sisteminin hayata geçirilmesi.', 'Önde gelen bir Alman bankasında sistemin teknik dokümantasyonu.'], fact: 'WAMOCON, Kasım 2015’te şahıs şirketinden GmbH’ye geçiş gibi belirleyici bir adım attı; buna dört yeni çalışanın işe alımı eşlik etti ve şirketin büyümesi ile gelişimi yeni bir seviyeye taşındı.' },
+  { year: '2016', lines: ['Önde gelen bir Alman bankasında SAP ERP 6.0 EHP 8.0 çözümünün sağlanması.', 'Önde gelen bir Alman sigorta şirketinde SAP HANA veritabanı entegrasyonu.', 'Önde gelen bir Alman bankasında sistemlerin teknik dokümantasyonu.'] },
+  { year: '2017', lines: ['Önde gelen bir Alman elektrik sanayi şirketi için S4 HANA finans çözümünün sağlanması.', 'Önde gelen bir Alman lojistik şirketi için mobil terminal ve sunucunun geliştirilmesi ve desteklenmesi.', 'Önde gelen bir Alman lojistik şirketi için SAP ERP 6.0 EHP 8.0 çözümünün sağlanması.', 'Önde gelen bir Alman ulaşım şirketi için planlama sisteminin geliştirilmesi ve desteklenmesi.', 'Önde gelen bir Alman BT sistem evi için Skype for Business çözümünün sağlanması.'] },
+  { year: '2018', lines: ['Önde gelen bir Alman sigorta şirketinde SAP test otomasyonu konseptinin gösterimi.', 'Bir Alman yazılım şirketinde tasarruf için SAP BASS çözümünün devreye alınması.', 'Önde gelen bir Alman ulaşım şirketinde konstrüksiyon sisteminin geliştirilmesi ve desteklenmesi.'] },
+  { year: '2019', lines: ['Almanya’daki önde gelen sigorta şirketleri için ana sistem sürümlerinin desteklenmesi.', 'Bir Alman yazılım şirketinde SAP BASS tasarruf çözümünün devreye alınması.', 'Önde gelen bir Alman ulaşım şirketinde konstrüksiyon sisteminin geliştirilmesi ve desteklenmesi.'] },
+  { year: '2020', lines: ['Kavram kanıtı: bir Alman eğitim merkezinde DiTeLe eğitim platformu.', 'Bir BT danışmanlık şirketinde MS Office 365 entegrasyonu.', 'Önde gelen bir Alman ulaşım şirketinde eski bir sistemin devre dışı bırakılması ve konstrüksiyon sisteminin geliştirilmesi.', 'Bir Alman yazılım şirketinde SAP BASS tasarruf çözümünün geliştirilmesi.'] },
+  { year: '2021', lines: ['Önde gelen bir Alman ulaşım şirketinde eski sistemin devre dışı bırakılması ve konstrüksiyon sisteminin geliştirilmesi.', 'Bir Alman eğitim merkezinde yeni DiTeLe öğrenme platformunun teknoloji çözümü olarak devreye alınması.', 'Bir Alman eğitim merkezinde WAMOCON Akademi’nin kurulması.'] },
+  { year: '2022', lines: ['Önde gelen bir Alman ulaşım şirketinde eski bir sistemin devre dışı bırakılması ve konstrüksiyon sisteminin geliştirilmesi.', 'Önde gelen bir enerji hizmet sağlayıcısında S4 HANA’nın hayata geçirilmesi ve eski sistemin devre dışı bırakılması.', 'Alman eğitim merkezinde DiTeLe öğrenme platformunun geliştirilmesi.'], fact: 'Başarın için bir sistem. WAMOCON, 360° Booster Sistemi ile BT testinin tüm yönlerini kapsayan bütünsel bir yaklaşım oluşturdu. Bu sistem seni adım adım başarılı bir kariyere taşır, zorlukları güvenle aşmana yardımcı olur ve başarıya giden en etkili yolu gösterir. Ekibimiz 360° Booster Sistemi’ni; iş kalitesini yükseltmek, testleri başarıyla yürütmek ve BT projelerini verimli biçimde tamamlamak için kullanıyor.' },
+  { year: '2023', lines: ['Bir Alman eğitim merkezinde ISTQB® Certified Tester v.4.0 Foundation Level ürün test programının geliştirilmesi.', 'Avrupa’nın önde gelen mobil operatörlerinden biri için test yönetimi odaklı yeni bir S4 HANA sisteminin hayata geçirilmesi.', 'Önde gelen bir Alman otomobil üreticisinde bayiler için SAP BI devreye alımı.', 'Önde gelen bir Alman ulaşım şirketi için sefer planı sisteminin geliştirilmesi.', 'Bir Alman eğitim merkezinde yeni ISTQB® Certified Tester Foundation Level seminerinin başlatılması.'], fact: '2023 sonunda WAMOCON, kilit pozisyonlardaki ekibini 5’ten 10’a çıkararak ikiye katladı. Bu, tarihî bir büyümenin başlangıç işareti oldu.' },
+  { year: '2024', lines: ['Önde gelen bir Alman ulaşım şirketi için test yönetimi odaklı konstrüksiyon sisteminin geliştirilmesi.', 'Önde gelen bir Alman ulaşım şirketi için test yönetimi odaklı yeni bir SAP S4 HANA sisteminin hayata geçirilmesi.', 'Ağustos 2024’ten itibaren şirket genelinde yapay zekânın kapsamlı biçimde devreye alınması.'] },
+  { year: '2025', lines: ['Uygulama geliştirme bilişim uzmanlığı mesleki eğitimi için ilk kendi yapay zekâ sistemimiz yayına girdi.'] },
+  { year: '2026', lines: ['En farklı sektörlerden müşteriler için 50’den fazla özel yapay zekâ ürün çözümü geliştirildi. Her biri LaaJ ile eğitildi, test edildi ve canlıya alındı.'] },
+];
+
+const timeline = { de: milestones, en: milestonesEn, tr: milestonesTr }[lang];
+const magazinUrl = lang === 'de'
   ? 'https://wamocon-my.sharepoint.com/:b:/p/waleri_moretz/EZUMpxrfjYdPt7g1H7xkQhkBnuG6v-tWKLCPNZIN6Wejlw?e=bQVx7k&download=1'
   : 'https://wamocon-my.sharepoint.com/my?id=%2Fpersonal%2Fwaleri%5Fmoretz%5Fwamocon%5Fcom%2FDocuments%2F01%5FWMC%2F01%20Vertrieb%20und%20Marketing%2F01%2D01%20Marketing%2F01%2D01%2D14%20WMC%20Marketing%2F07%20WMC%20Magazin%2FFinal%20Magazin%20WAMOCON&viewid=6e86f4bd%2D8476%2D4fa5%2Dad74%2D5e1cf1eedc8b';
 ---

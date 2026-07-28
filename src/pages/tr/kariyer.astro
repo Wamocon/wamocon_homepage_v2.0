@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CareerPage from '../../components/sections/CareerPage.astro';
+
+const lang = 'tr' as const;
+---
+
+<BaseLayout
+  title="WAMOCON’da kariyer | Eschborn’da BT iş ilanları"
+  description="BT test yönetiminde kariyer: WAMOCON’daki açık pozisyonlar, avantajlar, çalışan görüşleri ve başvuru süreci."
+  lang={lang}
+>
+  <CareerPage lang={lang} />
+</BaseLayout>

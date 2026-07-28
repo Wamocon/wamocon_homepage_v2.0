@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LegalPage from '../../components/sections/LegalPage.astro';
+
+const lang = 'tr' as const;
+---
+
+<BaseLayout title="Künye | WAMOCON GmbH" description="WAMOCON GmbH’ye ait sağlayıcı bilgileri ve yasal bilgiler." lang={lang}>
+  <LegalPage title="Künye">
+    <p>
+      Bu künye, Alman Dijital Hizmetler Yasası (DDG) uyarınca hazırlanmıştır. Bağlayıcı olan
+      <a href="/impressum/">Almanca sürümdür</a>; bu çeviri yalnızca bilgilendirme amaçlıdır.
+    </p>
+
+    <h2>DDG 5. madde uyarınca bilgiler</h2>
+    <p>
+      WAMOCON GmbH<br />
+      Mergenthalerallee 79–81<br />
+      65760 Eschborn<br />
+      Almanya
+    </p>
+
+    <h2>Temsil</h2>
+    <p>Genel Müdür: Dipl.-Ing. Waleri Moretz</p>
+
+    <h2>İletişim</h2>
+    <p>
+      Telefon: <a href="tel:+4961965838311">+49 6196 5838311</a><br />
+      E-posta: <a href="mailto:info@wamocon.com">info@wamocon.com</a>
+    </p>
+
+    <h2>Sicil ve KDV bilgileri</h2>
+    <p>
+      Sicil mahkemesi: Frankfurt am Main Sulh Mahkemesi<br />
+      Ticaret sicil numarası: HRB 103893<br />
+      UStG 27a maddesi uyarınca KDV kimlik numarası: DE303792072
+    </p>
+
+    <h2>MStV 18(2) maddesi uyarınca editoryal sorumluluk</h2>
+    <p>
+      Dipl.-Ing. Waleri Moretz<br />
+      Mergenthalerallee 79–81<br />
+      65760 Eschborn<br />
+      Almanya
+    </p>
+
+    <h2>Tüketici uyuşmazlıklarının çözümü</h2>
+    <p>
+      WAMOCON GmbH, bir tüketici tahkim kurulu önünde uyuşmazlık çözüm sürecine katılmaya ne isteklidir
+      ne de yükümlüdür.
+    </p>
+
+    <h2>Veri koruma</h2>
+    <p>
+      Kişisel verilerin işlenmesine ilişkin bilgileri
+      <a href="/tr/gizlilik/">gizlilik politikamızda</a> bulabilirsiniz.
+    </p>
+
+    <h2>Harici bağlantılar</h2>
+    <p>
+      Harici web sitelerinin içeriğinden ilgili işletmeciler sorumludur. Hukuka aykırı bir içerikten
+      haberdar olmamız hâlinde ilgili bağlantıyı gecikmeksizin kaldırırız.
+    </p>
+  </LegalPage>
+</BaseLayout>

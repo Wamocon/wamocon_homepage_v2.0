@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ReferenzenPage from '../../components/sections/ReferenzenPage.astro';
+
+const lang = 'tr' as const;
+---
+
+<BaseLayout
+  title="Referanslar | WAMOCON GmbH"
+  description="Müşterilerimiz WAMOCON GmbH’nin uzmanlığına güveniyor: enerji, bankacılık, telekomünikasyon, sanayi ve lojistik sektörlerinden referanslar."
+  lang={lang}
+>
+  <ReferenzenPage lang={lang} />
+</BaseLayout>

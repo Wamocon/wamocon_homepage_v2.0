@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HomePage from '../../components/sections/home/HomePage.astro';
+import { home } from '../../data/home';
+import { wamoconFaq } from '../../data/faq';
+import FaqSection from '../../components/ui/FaqSection.astro';
+
+const lang = 'tr' as const;
+
+const faq = wamoconFaq[lang];
+const serviceSchema = [
+  {
+    '@type': 'Service',
+    '@id': 'https://www.wamocon.com/#service-testmanagement',
+    name: 'BT test yönetimi',
+    serviceType: 'IT test management',
+    description:
+      'Yazılım projelerinde test sürecinin tamamının planlanması, yönlendirilmesi ve raporlanması; gereksinim analizinden sürüm raporuna kadar.',
+    provider: { '@id': 'https://www.wamocon.com/#organization' },
+    areaServed: ['Germany', 'European Union'],
+    availableLanguage: ['German', 'English', 'Turkish'],
+  },
+  {
+    '@type': 'Service',
+    '@id': 'https://www.wamocon.com/#service-qa',
+    name: 'Yazılım kalite güvencesi',
+    serviceType: 'Software quality assurance',
+    description:
+      'Hataları üretime geçmeden önce görünür kılan standartların, gözden geçirmelerin ve ölçütlerin kurulması.',
+    provider: { '@id': 'https://www.wamocon.com/#organization' },
+    areaServed: ['Germany', 'European Union'],
+  },
+  {
+    '@type': 'Service',
+    '@id': 'https://www.wamocon.com/#service-automation',
+    name: 'Test otomasyonu',
+    serviceType: 'Test automation',
+    description:
+      'Sürümlerin daha hızlı ve tekrarlanabilir biçimde yayımlanabilmesi için otomatik regresyon testlerinin kurulması ve bakımı.',
+    provider: { '@id': 'https://www.wamocon.com/#organization' },
+    areaServed: ['Germany', 'European Union'],
+  },
+  {
+    '@type': 'Service',
+    '@id': 'https://www.wamocon.com/#service-sap',
+    name: 'SAP ve kurumsal yazılım testleri',
+    serviceType: 'SAP testing',
+    description:
+      'SAP ve çekirdek bankacılık sistemleri gibi büyük standart yazılım ortamları için test yönetimi.',
+    provider: { '@id': 'https://www.wamocon.com/#organization' },
+    areaServed: ['Germany', 'European Union'],
+  },
+];
+---
+
+<BaseLayout title={home.seo.title[lang]} description={home.seo.description[lang]} lang={lang} schema={serviceSchema}>
+  <HomePage lang={lang} />
+  <FaqSection
+    heading={faq.heading}
+    intro={faq.intro}
+    items={faq.items}
+    lang={lang}
+    bylineName="Dipl.-Ing. Waleri Moretz"
+    bylineRole="WAMOCON GmbH Genel Müdürü, 2015’ten bu yana BT test yönetimi"
+    lastReviewed="2026-07-22"
+  />
+</BaseLayout>

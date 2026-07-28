@@ -348,7 +348,7 @@ function confirmationEmail(submission) {
   const followUp = isDe
     ? 'Ein Mitglied unseres Teams wird sich innerhalb von <strong style="color:#ffffff;">48 Stunden</strong> bei Ihnen melden.'
     : isTr
-      ? 'Ekibimizden biri <strong style="color:#ffffff;">48 saat içinde</strong> WhatsApp üzerinden sizinle iletişime geçecek.'
+      ? 'Ekibimizden biri <strong style="color:#ffffff;">48 saat içinde</strong> sizinle iletişime geçecek.'
       : 'A member of our team will get back to you within <strong style="color:#ffffff;">48 hours</strong>.';
 
   const testimonialNote = submission.testimonialConsent

@@ -8,7 +8,7 @@ interface Props {
 }
 const { lang } = Astro.props;
 
-const title = lang === 'de' ? 'Kontakte' : 'Contact';
+const title = { de: 'Kontakte', en: 'Contact', tr: 'İletişim' }[lang];
 ---
 
 <section class="contact-head">

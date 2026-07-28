@@ -32,7 +32,7 @@ const industryLabel = (key: string) =>
       <ul class="wd-hero__stats">
         {w.hero.stats.map((s) => (
           <li>
-            <span class="wd-hero__stat-value">{s.value}</span>
+            <span class="wd-hero__stat-value">{s.value[lang]}</span>
             <span class="wd-hero__stat-label">{s.label[lang]}</span>
           </li>
         ))}
@@ -148,7 +148,7 @@ const industryLabel = (key: string) =>
     <ul class="wd-trust__stats">
       {w.trust.stats.map((s) => (
         <li data-reveal="up">
-          <span class="wd-trust__value">{s.value}</span>
+          <span class="wd-trust__value">{s.value[lang]}</span>
           <span class="wd-trust__label">{s.label[lang]}</span>
         </li>
       ))}
@@ -188,7 +188,7 @@ const industryLabel = (key: string) =>
     </div>
     <div class="wd-offer__card" data-reveal="up" data-reveal-delay="80">
       <div class="wd-offer__price">
-        <span class="wd-offer__amount">{w.offer.price}</span>
+        <span class="wd-offer__amount">{w.offer.price[lang]}</span>
         <span class="wd-offer__note">{w.offer.priceNote[lang]}</span>
       </div>
       <ul class="wd-offer__features">
@@ -308,11 +308,15 @@ const industryLabel = (key: string) =>
     color: var(--color-text-muted);
   }
   .wd-hero__actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+  /* Grid rather than flex: `auto-fit` + `minmax(min(...), 1fr)` guarantees the
+     columns collapse instead of overflowing once the labels get long — the
+     Turkish and German labels are wider than the English ones. */
   .wd-hero__stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+    gap: clamp(1.25rem, 3vw, 2.5rem);
     margin-top: clamp(2rem, 4vw, 3rem);
+    list-style: none;
   }
   .wd-hero__stat-value {
     display: block;
@@ -402,7 +406,7 @@ const industryLabel = (key: string) =>
   /* ---------- department capabilities ---------- */
   .wd-cap-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.5rem;
   }
   .wd-cap {
@@ -434,7 +438,7 @@ const industryLabel = (key: string) =>
 
   .wd-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.5rem;
   }
   .wd-card {
@@ -514,7 +518,7 @@ const industryLabel = (key: string) =>
   /* ---------- trust (Search) ---------- */
   .wd-trust__stats {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1.5rem;
     list-style: none;
   }
@@ -528,7 +532,7 @@ const industryLabel = (key: string) =>
   .wd-trust__label { display: block; margin-top: 0.5rem; font-size: 0.9rem; color: var(--color-text-muted); }
 
   /* ---------- outcomes (Desire) ---------- */
-  .wd-outcomes__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .wd-outcomes__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
   .wd-outcome {
     display: flex;
     gap: 1rem;
@@ -541,7 +545,7 @@ const industryLabel = (key: string) =>
   .wd-outcome h3 { margin-bottom: 0.4rem; font-size: 1.2rem; }
 
   /* ---------- close (Like / Share / Love) ---------- */
-  .wd-close__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+  .wd-close__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem; }
   .wd-close__card {
     padding: clamp(1.6rem, 3vw, 2.4rem);
     background: var(--surface-card);
@@ -571,16 +575,15 @@ const industryLabel = (key: string) =>
     .wd-frame { width: min(70%, 420px); }
   }
   @media (max-width: 900px) {
-    .wd-cap-grid { grid-template-columns: 1fr 1fr; }
+    .wd-cap-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .wd-grid { grid-template-columns: 1fr; }
     .wd-offer__inner { grid-template-columns: 1fr; }
-    .wd-trust__stats { grid-template-columns: 1fr 1fr; }
+    .wd-trust__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .wd-outcomes__grid { grid-template-columns: 1fr; }
     .wd-close__grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 560px) {
     .wd-cap-grid { grid-template-columns: 1fr; }
-    .wd-hero__stats { gap: 1.5rem; }
     /* Single clean mockup on small screens. */
     .wd-hero__showcase { min-height: 62vw; }
     .wd-frame--back, .wd-frame--mid { display: none; }

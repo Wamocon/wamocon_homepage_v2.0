@@ -22,7 +22,8 @@ const reviewsHref = hrefForKey('testimonials');
 const referencesHref = hrefForKey('references');
 const systemHref = hrefForKey('system');
 const privacyHref = legalNav.privacy[lang].href;
-// Magazine download switches with the active language (DE / EN edition).
+// Magazine download switches with the active language. Only a DE and an EN
+// edition exist; the Turkish page links to the English one.
 const magazinUrl = lang === 'de'
   ? 'https://wamocon-my.sharepoint.com/:b:/p/waleri_moretz/EZUMpxrfjYdPt7g1H7xkQhkBnuG6v-tWKLCPNZIN6Wejlw?e=bQVx7k&download=1'
   : 'https://wamocon-my.sharepoint.com/my?id=%2Fpersonal%2Fwaleri%5Fmoretz%5Fwamocon%5Fcom%2FDocuments%2F01%5FWMC%2F01%20Vertrieb%20und%20Marketing%2F01%2D01%20Marketing%2F01%2D01%2D14%20WMC%20Marketing%2F07%20WMC%20Magazin%2FFinal%20Magazin%20WAMOCON&viewid=6e86f4bd%2D8476%2D4fa5%2Dad74%2D5e1cf1eedc8b';
@@ -44,12 +45,120 @@ const aboutHeading = splitFirst(home.about.heading[lang]);
 const benefitsHeading = splitFirst(home.benefits.heading[lang]);
 const projectsHeading = splitLast(home.projects.heading[lang]);
 const academyHeading = splitFirst(home.academy.heading[lang], 2);
-const projectCompanyLabel = lang === 'de' ? 'Über das Unternehmen' : 'About the company';
-const projectProjectLabel = lang === 'de' ? 'Über das Projekt' : 'About the project';
-const ceoCaption =
-  lang === 'de'
-    ? 'Waleri Moretz, Visionär und CEO der WAMOCON'
-    : 'Waleri Moretz, Visionary and CEO of WAMOCON';
+const projectCompanyLabel = {
+  de: 'Über das Unternehmen',
+  en: 'About the company',
+  tr: 'Şirket hakkında',
+}[lang];
+const projectProjectLabel = {
+  de: 'Über das Projekt',
+  en: 'About the project',
+  tr: 'Proje hakkında',
+}[lang];
+const ceoCaption = home.goal.signoff[lang];
+
+/** Inline copy that does not live in src/data/home.ts. */
+const page = {
+  de: {
+    boosterTitle: 'Das 360° Booster System',
+    boosterText:
+      'Unser strukturierter Weg vom ersten Kontakt bis zum erfolgreichen IT-Projekt: sechs aufeinander aufbauende Schritte, die Testerinnen und Tester sicher durch jedes Projekt führen und ihre Karriere gezielt weiterentwickeln.',
+    boosterCta: 'Zum 360° Booster System',
+    boosterAlt: 'Das 360° Booster System mit sechs Schritten',
+    aboutCta: 'Mehr über uns',
+    magazine: 'Magazin herunterladen',
+    reviewsLink: 'Was unsere Kunden sagen',
+    referencesLink: 'Alle Referenzen ansehen',
+    ditelHeading: 'Lernen mit DiTeLe',
+    ditelText:
+      'DiTeLe ist die digitale Lernplattform der WAMOCON Academy: praxisnahe Kurse zum Softwaretesting mit Videos, Szenarien und Übungen, jederzeit und in Ihrem Tempo.',
+    ditelCta: 'Ditele entdecken',
+    quizLive: 'Live-Demo: DiTeLe Praxisübung',
+    quizCount: 'Frage 1 von 300+',
+    quizQuestion: 'Was ist der Hauptzweck des Softwaretestens?',
+    quizHint:
+      'Das ist Übung 1 von 45+ in DiTeLe. Mit DiTeLe lernst du nicht nur über Softwaretesten – du machst es.',
+    quizCta: 'Alle Übungen in DiTeLe freischalten',
+    contactHint: ' Bitte geben Sie E-Mail oder Telefon an.',
+    responsible:
+      'Ihre Anfrage wird bearbeitet von Dipl.-Ing. Waleri Moretz, Geschäftsführer der WAMOCON GmbH.',
+    thankYou: '/danke/',
+  },
+  en: {
+    boosterTitle: 'The 360° Booster System',
+    boosterText:
+      'Our structured path from first contact to a successful IT project: six sequential steps that guide testers safely through every project and develop their careers in a targeted way.',
+    boosterCta: 'Explore the 360° Booster System',
+    boosterAlt: 'The 360° Booster System with six steps',
+    aboutCta: 'More about us',
+    magazine: 'Download magazine',
+    reviewsLink: 'What our clients say',
+    referencesLink: 'View all references',
+    ditelHeading: 'Learn with DiTeLe',
+    ditelText:
+      'DiTeLe is the WAMOCON Academy’s digital learning platform: practical software-testing courses with videos, scenarios and exercises, anytime and at your own pace.',
+    ditelCta: 'Discover DiTeLe',
+    quizLive: 'Live demo: DiTeLe practice exercise',
+    quizCount: 'Question 1 of 300+',
+    quizQuestion: 'What is the main purpose of software testing?',
+    quizHint:
+      'This is exercise 1 of 45+ in DiTeLe. With DiTeLe you don’t just learn about software testing – you do it.',
+    quizCta: 'Unlock all exercises in DiTeLe',
+    contactHint: ' Please provide an email address or phone number.',
+    responsible:
+      'Your enquiry is handled by Dipl.-Ing. Waleri Moretz, Managing Director of WAMOCON GmbH.',
+    thankYou: '/en/thank-you/',
+  },
+  tr: {
+    boosterTitle: '360° Booster Sistemi',
+    boosterText:
+      'İlk temastan başarılı BT projesine uzanan yapılandırılmış yolumuz: test uzmanlarını her projede güvenle yönlendiren ve kariyerlerini hedefe yönelik geliştiren, birbirini izleyen altı adım.',
+    boosterCta: '360° Booster Sistemine git',
+    boosterAlt: 'Altı adımdan oluşan 360° Booster Sistemi',
+    aboutCta: 'Hakkımızda daha fazlası',
+    magazine: 'Dergiyi indir',
+    reviewsLink: 'Müşterilerimiz ne diyor',
+    referencesLink: 'Tüm referansları görün',
+    ditelHeading: 'DiTeLe ile öğrenin',
+    ditelText:
+      'DiTeLe, WAMOCON Academy’nin dijital öğrenme platformudur: videolar, senaryolar ve alıştırmalarla uygulamaya dönük yazılım testi kursları; dilediğiniz zaman, kendi hızınızda.',
+    ditelCta: 'DiTeLe’yi keşfedin',
+    quizLive: 'Canlı demo: DiTeLe uygulama alıştırması',
+    quizCount: '300+ sorudan 1.’si',
+    quizQuestion: 'Yazılım testinin temel amacı nedir?',
+    quizHint:
+      'Bu, DiTeLe’deki 45+ alıştırmadan birincisi. DiTeLe ile yazılım testini yalnızca öğrenmezsin – bizzat yaparsın.',
+    quizCta: 'DiTeLe’deki tüm alıştırmaların kilidini aç',
+    contactHint: ' Lütfen e-posta veya telefon bilgisi girin.',
+    responsible:
+      'Talebiniz, WAMOCON GmbH Genel Müdürü Dipl.-Ing. Waleri Moretz tarafından ele alınmaktadır.',
+    thankYou: '/tr/tesekkurler/',
+  },
+}[lang];
+
+/** DiTeLe demo-quiz answer options. */
+const quizOptions = [
+  { k: 'A', label: { de: 'Fehler finden', en: 'Find defects', tr: 'Hata bulmak' }, c: false },
+  { k: 'B', label: { de: 'Qualität bewerten', en: 'Assess quality', tr: 'Kaliteyi değerlendirmek' }, c: false },
+  { k: 'C', label: { de: 'Anforderungen validieren', en: 'Validate requirements', tr: 'Gereksinimleri doğrulamak' }, c: false },
+  { k: 'D', label: { de: 'Alle oben genannten', en: 'All of the above', tr: 'Yukarıdakilerin tümü' }, c: true },
+];
+
+/** Feedback strings for the quiz, passed into the client script below. */
+const quizFeedback = {
+  de: {
+    correct: 'Richtig! Alle drei Ziele gehören zum Softwaretesten.',
+    wrong: 'Nicht ganz – richtig ist D: Alle oben genannten.',
+  },
+  en: {
+    correct: 'Correct! All three goals are part of software testing.',
+    wrong: 'Not quite – the answer is D: all of the above.',
+  },
+  tr: {
+    correct: 'Doğru! Her üç amaç da yazılım testinin parçasıdır.',
+    wrong: 'Tam değil – doğru yanıt D: Yukarıdakilerin tümü.',
+  },
+}[lang];
 
 // Lead-capture popup copy (opened from the "Erfahren Sie mehr" CTA).
 const modal = {
@@ -78,6 +187,19 @@ const modal = {
     consentPost: '.',
     submit: 'Send request',
     close: 'Close',
+  },
+  tr: {
+    title: 'BT test uzmanlarının seçimi hakkında daha fazla bilgi edinin',
+    subtitle: 'Bize bağlayıcı olmayan bir talep gönderin. Belirttiğiniz iletişim kanalı üzerinden size dönüş yapacağız.',
+    name: 'Adınız',
+    phone: 'Telefon',
+    email: 'E-posta',
+    comment: 'Yorumlar / dosya bağlantısı',
+    consentPre: 'İşbu formu göndererek ',
+    consentLink: 'gizlilik politikasını',
+    consentPost: ' okuduğumu onaylıyorum.',
+    submit: 'Talebi gönder',
+    close: 'Kapat',
   },
 }[lang];
 
@@ -209,7 +331,7 @@ const modal = {
     </button>
     <h2 class="lead-modal__title" id="it-tester-title">{modal.title}</h2>
     <p class="lead-modal__subtitle">{modal.subtitle}</p>
-    <form class="lead-modal__form js-lead-form" data-redirect={lang === "de" ? "/danke/" : "/en/thank-you/"}>
+    <form class="lead-modal__form js-lead-form" data-redirect={page.thankYou}>
       <input type="hidden" name="type" value="it-tester" />
       <input type="hidden" name="lang" value={lang} />
       <label class="lead-modal__field">
@@ -230,9 +352,9 @@ const modal = {
       </label>
       <p class="lead-modal__privacy-note">
         {modal.consentPre}<a href={privacyHref}>{modal.consentLink}</a>{modal.consentPost}
-        {lang === 'de' ? ' Bitte geben Sie E-Mail oder Telefon an.' : ' Please provide an email address or phone number.'}
+        {page.contactHint}
       </p>
-      <p class="form-responsible">{lang === 'de' ? "Ihre Anfrage wird bearbeitet von Dipl.-Ing. Waleri Moretz, Geschäftsführer der WAMOCON GmbH." : "Your enquiry is handled by Dipl.-Ing. Waleri Moretz, Managing Director of WAMOCON GmbH."}</p>
+      <p class="form-responsible">{page.responsible}</p>
       <button type="submit" class="btn btn--primary lead-modal__submit">{modal.submit}</button>
     </form>
   </div>
@@ -244,18 +366,12 @@ const modal = {
   <div class="container booster-teaser__inner" data-reveal="up">
     <div class="booster-teaser__copy">
       <span class="booster-teaser__badge">360°</span>
-      <h2>{lang === 'de' ? 'Das 360° Booster System' : 'The 360° Booster System'}</h2>
-      <p class="text-muted">
-        {lang === 'de'
-          ? 'Unser strukturierter Weg vom ersten Kontakt bis zum erfolgreichen IT-Projekt: sechs aufeinander aufbauende Schritte, die Testerinnen und Tester sicher durch jedes Projekt führen und ihre Karriere gezielt weiterentwickeln.'
-          : 'Our structured path from first contact to a successful IT project: six sequential steps that guide testers safely through every project and develop their careers in a targeted way.'}
-      </p>
-      <Button href={systemHref} variant="primary" size="lg">
-        {lang === 'de' ? 'Zum 360° Booster System' : 'Explore the 360° Booster System'}
-      </Button>
+      <h2>{page.boosterTitle}</h2>
+      <p class="text-muted">{page.boosterText}</p>
+      <Button href={systemHref} variant="primary" size="lg">{page.boosterCta}</Button>
     </div>
     <figure class="booster-teaser__media">
-      <img src="/images/system-360.svg" alt={lang === 'de' ? 'Das 360° Booster System mit sechs Schritten' : 'The 360° Booster System with six steps'} loading="lazy" />
+      <img src="/images/system-360.svg" alt={page.boosterAlt} loading="lazy" />
     </figure>
   </div>
 </section>
@@ -290,10 +406,10 @@ const modal = {
         </h2>
         {home.about.paragraphs[lang].map((p) => <p class="text-muted">{p}</p>)}
         <div class="about__actions">
-          <Button href={aboutHref} variant="primary">{lang === 'de' ? 'Mehr über uns' : 'More about us'}</Button>
+          <Button href={aboutHref} variant="primary">{page.aboutCta}</Button>
           <a class="about__magazin" href={magazinUrl} target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16" stroke-linecap="round" stroke-linejoin="round" /></svg>
-            {lang === 'de' ? 'Magazin herunterladen' : 'Download magazine'}
+            {page.magazine}
           </a>
         </div>
       </div>
@@ -354,7 +470,7 @@ const modal = {
     </div>
     <div class="projects__cta" data-reveal="up">
       <a class="projects__link" href={reviewsHref}>
-        {lang === 'de' ? 'Was unsere Kunden sagen' : 'What our clients say'} <span aria-hidden="true">→</span>
+        {page.reviewsLink} <span aria-hidden="true">→</span>
       </a>
     </div>
   </div>
@@ -400,7 +516,7 @@ const modal = {
   <div class="container">
     <div class="clients__cta" data-reveal="up">
       <a class="projects__link" href={referencesHref}>
-        {lang === 'de' ? 'Alle Referenzen ansehen' : 'View all references'} <span aria-hidden="true">→</span>
+        {page.referencesLink} <span aria-hidden="true">→</span>
       </a>
     </div>
   </div>
@@ -452,57 +568,44 @@ const modal = {
   <div class="container ditele-teaser__inner" data-reveal="up">
     <div class="ditele-teaser__copy">
       <span class="eyebrow">DiTeLe</span>
-      <h2>{lang === 'de' ? 'Lernen mit DiTeLe' : 'Learn with DiTeLe'}</h2>
-      <p class="text-muted">
-        {lang === 'de'
-          ? 'DiTeLe ist die digitale Lernplattform der WAMOCON Academy: praxisnahe Kurse zum Softwaretesting mit Videos, Szenarien und Übungen, jederzeit und in Ihrem Tempo.'
-          : 'DiTeLe is the WAMOCON Academy’s digital learning platform: practical software-testing courses with videos, scenarios and exercises, anytime and at your own pace.'}
-      </p>
+      <h2>{page.ditelHeading}</h2>
+      <p class="text-muted">{page.ditelText}</p>
       <Button href="https://onlinekurs.test-it-academy.de/" target="_blank" variant="primary" size="lg">
-        {lang === 'de' ? 'Ditele entdecken' : 'Discover DiTeLe'}
+        {page.ditelCta}
       </Button>
     </div>
     <div class="ditele-teaser__demo">
       <div class="dq" data-dq>
         <div class="dq__top">
-          <span class="dq__live"><span class="dq__dot" aria-hidden="true"></span>{lang === 'de' ? 'Live-Demo: DiTeLe Praxisübung' : 'Live demo: DiTeLe practice exercise'}</span>
-          <span class="dq__count">{lang === 'de' ? 'Frage 1 von 300+' : 'Question 1 of 300+'}</span>
+          <span class="dq__live"><span class="dq__dot" aria-hidden="true"></span>{page.quizLive}</span>
+          <span class="dq__count">{page.quizCount}</span>
         </div>
-        <h3 class="dq__q">{lang === 'de' ? 'Was ist der Hauptzweck des Softwaretestens?' : 'What is the main purpose of software testing?'}</h3>
+        <h3 class="dq__q">{page.quizQuestion}</h3>
         <ul class="dq__options">
-          {[
-            { k: 'A', de: 'Fehler finden', en: 'Find defects', c: false },
-            { k: 'B', de: 'Qualität bewerten', en: 'Assess quality', c: false },
-            { k: 'C', de: 'Anforderungen validieren', en: 'Validate requirements', c: false },
-            { k: 'D', de: 'Alle oben genannten', en: 'All of the above', c: true },
-          ].map((o) => (
+          {quizOptions.map((o) => (
             <li>
               <button type="button" class="dq__option" data-dq-option data-correct={String(o.c)}>
                 <span class="dq__key">{o.k}</span>
-                <span>{lang === 'de' ? o.de : o.en}</span>
+                <span>{o.label[lang]}</span>
               </button>
             </li>
           ))}
         </ul>
         <p class="dq__feedback" data-dq-feedback hidden></p>
-        <p class="dq__hint">
-          {lang === 'de'
-            ? 'Das ist Übung 1 von 45+ in DiTeLe. Mit DiTeLe lernst du nicht nur über Softwaretesten – du machst es.'
-            : 'This is exercise 1 of 45+ in DiTeLe. With DiTeLe you don’t just learn about software testing – you do it.'}
-        </p>
+        <p class="dq__hint">{page.quizHint}</p>
         <a class="dq__cta" href="https://onlinekurs.test-it-academy.de/#preise" target="_blank" rel="noopener noreferrer">
-          {lang === 'de' ? 'Alle Übungen in DiTeLe freischalten' : 'Unlock all exercises in DiTeLe'}
+          {page.quizCta}
         </a>
       </div>
     </div>
   </div>
 </section>
 
-<script>
-  const dqDe = document.documentElement.lang !== 'en';
-  document.querySelectorAll<HTMLElement>('[data-dq]').forEach((quiz) => {
-    const options = quiz.querySelectorAll<HTMLButtonElement>('[data-dq-option]');
-    const feedback = quiz.querySelector<HTMLElement>('[data-dq-feedback]');
+<script define:vars={{ quizFeedback }}>
+  // @ts-nocheck
+  document.querySelectorAll('[data-dq]').forEach((quiz) => {
+    const options = quiz.querySelectorAll('[data-dq-option]');
+    const feedback = quiz.querySelector('[data-dq-feedback]');
     options.forEach((option) => {
       option.addEventListener('click', () => {
         if (quiz.dataset.answered) return;
@@ -515,9 +618,7 @@ const modal = {
         });
         if (feedback) {
           feedback.hidden = false;
-          feedback.textContent = correct
-            ? (dqDe ? 'Richtig! Alle drei Ziele gehören zum Softwaretesten.' : 'Correct! All three goals are part of software testing.')
-            : (dqDe ? 'Nicht ganz – richtig ist D: Alle oben genannten.' : 'Not quite – the answer is D: all of the above.');
+          feedback.textContent = correct ? quizFeedback.correct : quizFeedback.wrong;
           feedback.classList.add(correct ? 'is-correct' : 'is-wrong');
         }
       });

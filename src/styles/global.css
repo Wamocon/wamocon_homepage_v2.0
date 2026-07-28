@@ -371,3 +371,66 @@ p {
     display: none;
   }
 }
+
+/* ==========================================================================
+   Responsive safeguards
+   ========================================================================== */
+
+/* German and Turkish both build very long compound words
+   ("Qualitätsmanagementlösungen", "Erişilebilirlik Beyanı"). With the default
+   `overflow-wrap: normal` an unbreakable word wider than its column simply
+   spills out of the container on narrow screens. Allow a break as a last
+   resort, and let the browser hyphenate using the page's `lang`. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+li,
+dt,
+dd,
+figcaption,
+blockquote,
+label,
+summary,
+td,
+th {
+  overflow-wrap: break-word;
+}
+h1,
+h2,
+h3 {
+  hyphens: auto;
+}
+
+/* Long unbroken strings (URLs, e-mail addresses) in body copy. */
+a {
+  overflow-wrap: break-word;
+}
+
+/* Touch devices: grow the hit area of small text links to a comfortable size
+   without changing how they look. Padding is used rather than min-height so
+   the visual rhythm of the surrounding layout is preserved. */
+@media (pointer: coarse) {
+  .footer__links a,
+  .footer__privacy,
+  .contact__row a,
+  .consent__privacy,
+  .privacy-embed__actions a,
+  .partner p a {
+    display: inline-block;
+    padding-block: 0.55rem;
+  }
+  /* Links that sit inside a running sentence (consent notices, captions) are
+     deliberately left alone — WCAG 2.5.8 exempts inline links, and padding
+     them would break the line box of the surrounding text. */
+  /* Compensate for the padding so the columns keep their original spacing. */
+  .footer__links ul {
+    gap: 0.4rem;
+  }
+  .contact__row {
+    margin-bottom: 1.25rem;
+  }
+}

@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SystemPage from '../../components/sections/SystemPage.astro';
+
+const lang = 'tr' as const;
+---
+
+<BaseLayout
+  title="360° Booster Sistemi | WAMOCON"
+  description="BT alanında uzmanlığa giden başarı yolunuz: WAMOCON’un 360° Booster Sistemi, BT testinin tüm yönlerini altı adımda kapsar."
+  lang={lang}
+>
+  <SystemPage lang={lang} />
+</BaseLayout>

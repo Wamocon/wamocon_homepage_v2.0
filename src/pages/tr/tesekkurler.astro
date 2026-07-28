@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/ui/Button.astro';
+
+const lang = 'tr' as const;
+---
+
+<BaseLayout title="Teşekkürler | WAMOCON GmbH" description="Mesajınız için teşekkür ederiz." lang={lang} noindex>
+  <section class="section thanks">
+    <div class="container thanks__inner">
+      <span class="eyebrow" data-reveal="up">WAMOCON</span>
+      <h1 data-reveal="up" data-reveal-delay="60">Teşekkürler!</h1>
+      <p class="text-muted" data-reveal="up" data-reveal-delay="120">
+        Mesajınız bize ulaştı. En kısa sürede, genellikle 48 saat içinde size dönüş yapacağız.
+      </p>
+      <div data-reveal="up" data-reveal-delay="180">
+        <Button href="/tr/" variant="primary" size="lg">Ana sayfaya dön</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .thanks {
+    min-height: 60vh;
+    display: grid;
+    place-items: center;
+    text-align: center;
+  }
+  .thanks__inner {
+    max-width: 640px;
+  }
+  .thanks h1 {
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    margin-bottom: 1.25rem;
+  }
+  .thanks p {
+    margin-bottom: 2rem;
+    font-size: 1.15rem;
+  }
+</style>

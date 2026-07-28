@@ -6,10 +6,10 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://www.wamocon.com',
   // German is the default language and is served from the site root (/).
-  // English is served from the /en/ sub-path.
+  // English is served from /en/, Turkish from /tr/.
   i18n: {
     defaultLocale: 'de',
-    locales: ['de', 'en'],
+    locales: ['de', 'en', 'tr'],
     routing: {
       prefixDefaultLocale: false,
     },
@@ -31,6 +31,7 @@ export default defineConfig({
           '/404/',
           '/danke/',
           '/en/thank-you/',
+          '/tr/tesekkurler/',
           '/berber-siparis/',
           '/berber-veri-koruma/',
         ].includes(pathname);

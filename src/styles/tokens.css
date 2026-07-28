@@ -56,6 +56,13 @@
   --container-max: 1680px;
   --container-pad: clamp(1rem, 3vw, 3rem);
   --header-max: 2100px;
+  /* Header sizing scales with the viewport: a 100px logo and a 112px bar do not
+     fit next to the language switcher and burger on a 320–400px phone. */
+  --header-logo-h: clamp(48px, 11vw, 100px);
+  --header-min-h: clamp(64px, 13vw, 112px);
+  /* Fallback only — the header script overwrites this on :root with the real
+     measured height, which the mobile drawer offsets against. */
+  --header-height: 112px;
   --radius-sm: 10px;
   --radius-md: 16px;
   --radius-lg: 24px;

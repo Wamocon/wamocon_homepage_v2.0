@@ -1,15 +1,14 @@
 ---
 import ContactBlock from "./ContactBlock.astro";
-import type { Lang } from "../../i18n/config";
+import { formChrome, legalNav, type Lang } from "../../i18n/config";
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-const de = lang === "de";
 
-const c = de
-  ? {
+const c = {
+  de: {
       heroTitle: "Willkommen in der Zukunft der IT-Bildung",
       heroLead:
         "Gemeinsam mit Universitäten weltweit gestalten wir Innovation und Exzellenz. Werden Sie Teil unserer dynamischen Community und bringen Sie Ihre Vision voran.",
@@ -85,8 +84,8 @@ const c = de
       fEmail: "E-Mail",
       fConsent: "Mit dem Absenden bestätigst du, dass du die Datenschutzerklärung gelesen hast. Bitte gib E-Mail oder Telefon an.",
       fBtn: "Anfrage senden",
-    }
-  : {
+    },
+  en: {
       heroTitle: "Welcome to the future of IT education",
       heroLead:
         "Together with universities worldwide, we shape innovation and excellence. Become part of our dynamic community and advance your vision.",
@@ -162,7 +161,88 @@ const c = de
       fEmail: "E-Mail",
       fConsent: "By submitting, you confirm that you have read the privacy policy. Please provide an email address or phone number.",
       fBtn: "Send request",
-    };
+    },
+  tr: {
+      heroTitle: "BT eğitiminin geleceğine hoş geldiniz",
+      heroLead:
+        "Dünyanın dört bir yanındaki üniversitelerle birlikte yenilik ve mükemmelliği şekillendiriyoruz. Dinamik topluluğumuzun parçası olun ve vizyonunuzu ileri taşıyın.",
+      heroBtn: "Hemen bilgi alın!",
+      heroSub:
+        "BT elitinin parçası olun; birinci sınıf test yönetimiyle birleşen, uygulamaya dönük bir eğitim deneyimleyin.",
+      heroBtn2: "Hemen başlayın!",
+      ihkHead: "IHK sertifikalı mesleki eğitim",
+      ihkBadge: "2 IHK çırağı",
+      ihkText:
+        "WAMOCON’da şu anda uygulama geliştirme alanında bilişim uzmanı (IHK) olmak üzere 2 çırak yetiştiriyoruz. Eğitim ikili sistemde yürütülür: şirketimizde uygulamalı, meslek okulunda teorik. Çıraklarımız ilk günden itibaren ekibin tam üyesidir ve gerçek projelerde görev alır.",
+      ihkFacts: [
+        { k: "Meslek dalı", v: "Uygulama geliştirme bilişim uzmanı" },
+        { k: "Diploma", v: "IHK sınavı (ülke genelinde tanınır)" },
+        { k: "Süre", v: "3 yıl (kısaltma mümkün)" },
+        { k: "Yetkili IHK", v: "IHK Frankfurt am Main" },
+      ],
+      provadisHead: "WAMOCON ve Provadis ile BT’de başarıya: Uygulama. Kariyer. Gelecek.",
+      provadisCards: [
+        {
+          t: "Uygulama teoriyle buluşuyor: yarının BT dünyası için eğitiminiz",
+          d: "Provadis Üniversitesi, teori ile uygulamayı kusursuz biçimde birleştiren, sahaya dönük bir eğitim sunar. Sektörün önde gelen uzmanlarından öğrenin ve gerçek projelerde değerli deneyim kazanın. Böylece BT kariyerinize eksiksiz hazırlanmış olarak başlarsınız.",
+        },
+        {
+          t: "Gerçekten değeri olan kariyer fırsatları: 100’den fazla güçlü iş ortağı",
+          d: "Güçlü iş ortağı ağımızdan yararlanın ve hızla yol alın: WAMOCON size başarılı bir BT kariyerinin kapısını açar.",
+        },
+        {
+          t: "Yenilikçi, dijital, sürdürülebilir: başarıya giden yolunuz",
+          d: "Yenilikçi programlarımız sizi dijital geleceğe eksiksiz hazırlar. Dijitalleşme ve sürdürülebilirliğe net bir odakla, Endüstri 4.0’da başarılı bir BT kariyeri için gereken araçları size sunuyoruz.",
+        },
+      ],
+      qualityHead: "WAMOCON: kaliteyi deneyimleyin",
+      qualityCards: [
+        {
+          t: "Kusursuz test yönetimi",
+          d: "Kalite bizim misyonumuz. Çözümlerimiz en yüksek standartları karşılar ve yetkinliğinizi güçlendirir; uygulamaya dönük ve size özel.",
+        },
+        {
+          t: "Gerçekten fark yaratan destek",
+          d: "Başarınız için potansiyelinizi size özel eğitimler ve kişisel destekle geliştiriyoruz.",
+        },
+      ],
+      futureHead: "Geleceğini bizimle şekillendir",
+      futureText:
+        "WAMOCON ve Provadis Üniversitesi ile potansiyelini tam olarak ortaya koyman için tüm kapılar açık. İster öğrenci, ister genç danışman, ister kariyer değiştiren ol; kariyerini bir üst seviyeye taşı ve yetkinliklerinle yöneticileri etkile. Yarının BT dünyasını şekillendiren dinamik bir ağın parçası olduğunu düşün.",
+      contactHead: "Basit ve doğrudan: bizimle iletişime geçin",
+      contactSub: "Geleceğini bizimle şekillendir!",
+      partners: [
+        {
+          name: "Provadis School of International Management and Technology AG",
+          img: "/images/partner-provadis.jpg",
+          addr: "Industriepark Höchst, Geb. B845, 65926 Frankfurt am Main",
+          contactLabel: "İlgili kişiniz: Yüksekokul Satış Müdürü Kirsten Löw",
+          phone: "+49 69 305-7349",
+          phoneHref: "tel:+49693057349",
+          email: "kirsten.loew@provadis-hochschule.de",
+        },
+        {
+          name: "WAMOCON GmbH",
+          img: "/images/partner-wamocon.png",
+          addr: "Mergenthalerallee 79–81, 65760 Eschborn",
+          contactLabel: "İlgili kişiniz: Waleri Moretz",
+          phone: "+49-6196-58-38-311",
+          phoneHref: "tel:+4961965838311",
+          email: "waleri.moretz@wamocon.com",
+        },
+      ],
+      formHead: "Bize ulaşın",
+      formSub: "Bize bağlayıcı olmayan bir talep gönderin. En kısa sürede size dönüş yapacağız.",
+      fName: "Ad / Kurum",
+      fPhone: "Telefon",
+      fEmail: "E-posta",
+      fConsent: "Göndererek gizlilik politikasını okuduğunuzu onaylamış olursunuz. Lütfen e-posta veya telefon bilgisi girin.",
+      fBtn: "Talebi gönder",
+    },
+}[lang];
+
+const form = formChrome[lang];
+const privacyHref = legalNav.privacy[lang].href;
 ---
 
 <section class="coop">
@@ -237,14 +317,14 @@ const c = de
     <div class="form-box">
       <h3 class="form-head">{c.formHead}</h3>
       <p class="lead">{c.formSub}</p>
-      <form class="coop-form js-lead-form" data-redirect={lang === "de" ? "/danke/" : "/en/thank-you/"}>
+      <form class="coop-form js-lead-form" data-redirect={form.thankYou}>
         <input type="hidden" name="type" value="cooperation" />
         <input type="hidden" name="lang" value={lang} />
         <label><span>{c.fName}</span><input type="text" name="name" autocomplete="name" required /></label>
         <label><span>{c.fPhone}</span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" /></label>
         <label><span>{c.fEmail}</span><input type="email" name="email" autocomplete="email" /></label>
-        <p class="consent">{c.fConsent} <a href={lang === 'de' ? '/datenschutz/' : '/en/privacy/'}>{lang === 'de' ? 'Datenschutz' : 'Privacy policy'}</a></p>
-      <p class="form-responsible">{lang === 'de' ? "Ihre Anfrage wird bearbeitet von Dipl.-Ing. Waleri Moretz, Geschäftsführer der WAMOCON GmbH." : "Your enquiry is handled by Dipl.-Ing. Waleri Moretz, Managing Director of WAMOCON GmbH."}</p>
+        <p class="consent">{c.fConsent} <a href={privacyHref}>{form.privacyLabel}</a></p>
+      <p class="form-responsible">{form.responsible}</p>
         <button type="submit" class="btn">{c.fBtn}</button>
       </form>
     </div>
