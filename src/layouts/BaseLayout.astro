@@ -411,7 +411,10 @@ const structuredData = {
 
     <script define:vars={{ turnstileSiteKey }}>
       // @ts-nocheck
-      const ACTIVE_TURNSTILE_SITE_KEY = turnstileSiteKey;
+      const isLocalPreview = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+      // The production key is domain-locked; on localhost use Cloudflare's always-pass
+      // test key so the captcha still renders and can be tested.
+      const ACTIVE_TURNSTILE_SITE_KEY = isLocalPreview ? '1x00000000000000000000AA' : turnstileSiteKey;
       let activeTurnstileLoader;
 
       const loadActiveTurnstile = () => {
