@@ -357,7 +357,12 @@ const navAriaLabel = { de: 'Hauptnavigation', en: 'Main navigation', tr: 'Ana na
       border-bottom: none;
       overflow: hidden;
       visibility: hidden;
-      transform: translateY(-100%);
+      /* Shift it clear of the viewport entirely. A plain translateY(-100%) only
+         moves the panel up by its own height, which leaves its bottom edge
+         resting exactly on the header strip — anything painting inside it then
+         lands on top of the header. Subtracting the header height parks the
+         bottom edge at y=0 instead. */
+      transform: translateY(calc(-100% - var(--header-height, 112px)));
       transition:
         transform var(--dur-med) var(--ease-out),
         visibility var(--dur-med);
@@ -390,7 +395,9 @@ const navAriaLabel = { de: 'Hauptnavigation', en: 'Main navigation', tr: 'Ana na
     }
     /* Submenus expand inline (indented) instead of hovering on mobile. */
     .header__item .header__caret { display: none; }
-    .header__submenu {
+    .header__submenu,
+    .header__item:hover > .header__submenu,
+    .header__item:focus-within > .header__submenu {
       position: static;
       min-width: 0;
       padding: 0 0 0.75rem 1rem;
@@ -399,7 +406,13 @@ const navAriaLabel = { de: 'Hauptnavigation', en: 'Main navigation', tr: 'Ana na
       background: transparent;
       box-shadow: none;
       opacity: 1;
-      visibility: visible;
+      /* MUST be `inherit`, never `visible`. The closed drawer is only moved up
+         by its own height, so its bottom edge still overlaps the header strip.
+         `visibility` is inherited, so a child forcing `visible` re-shows itself
+         even though the drawer is hidden — that painted stray submenu links
+         ("Karriere", "Referenzen", …) on top of the real header. Inheriting
+         ties the submenu to the drawer's own open/closed state. */
+      visibility: inherit;
       transform: none;
     }
     .header__submenu li { border-bottom: 0; }
