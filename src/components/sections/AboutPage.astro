@@ -10,7 +10,8 @@ const { lang } = Astro.props;
 
 const c = {
   de: {
-      heroTitle: 'WAMOCON GmbH, Dein Partner für IT-Innovationen und nachhaltige Lösungen',
+      heroTitleAccent: 'WAMOCON GmbH,',
+      heroTitleRest: ' Dein Partner für IT-Innovationen und nachhaltige Lösungen',
       heroBlocks: [
         { h: 'über 50 Jahre gebündelte Praxiserfahrung unseres Teams.', p: 'WAMOCON GmbH liefert praxisorientierte IT-Dienstleistungen entlang des gesamten Softwareentwicklungsprozesses. Unsere Experten entwickeln maßgeschneiderte Lösungen, die Wirkung zeigen.' },
         { h: 'Innovationen, die dich voranbringen.', p: 'Mit modernsten Technologien schaffen wir Hightech-Lösungen, die deine Geschäftsziele unterstützen und dir einen entscheidenden Vorsprung verschaffen.' },
@@ -79,7 +80,8 @@ const c = {
       magazinBtn: 'Magazin herunterladen',
     },
   en: {
-      heroTitle: 'WAMOCON GmbH, your partner for IT innovation and sustainable solutions',
+      heroTitleAccent: 'WAMOCON GmbH,',
+      heroTitleRest: ' your partner for IT innovation and sustainable solutions',
       heroBlocks: [
         { h: 'over 50 years of combined practical experience within our team.', p: 'WAMOCON GmbH delivers practice-oriented IT services along the entire software development process. Our experts develop tailor-made solutions that make an impact.' },
         { h: 'Innovations that move you forward.', p: 'With state-of-the-art technologies we create high-tech solutions that support your business goals and give you a decisive edge.' },
@@ -148,7 +150,8 @@ const c = {
       magazinBtn: 'Download magazine',
     },
   tr: {
-      heroTitle: 'WAMOCON GmbH: BT yenilikleri ve sürdürülebilir çözümler için iş ortağın',
+      heroTitleAccent: 'WAMOCON GmbH:',
+      heroTitleRest: ' BT yenilikleri ve sürdürülebilir çözümler için iş ortağın',
       heroBlocks: [
         { h: 'Ekibimizin 50 yılı aşkın birikmiş saha deneyimi.', p: 'WAMOCON GmbH, yazılım geliştirme sürecinin tamamı boyunca uygulamaya dönük BT hizmetleri sunar. Uzmanlarımız gerçekten etki yaratan, size özel çözümler geliştirir.' },
         { h: 'Seni ileri taşıyan yenilikler.', p: 'En modern teknolojilerle, iş hedeflerini destekleyen ve sana belirleyici bir avantaj kazandıran ileri teknoloji çözümler üretiyoruz.' },
@@ -587,7 +590,7 @@ const magazinUrl = lang === 'de'
 <!-- HERO -->
 <section class="ab-hero">
   <div class="container">
-    <h1 class="ab-hero__title">{c.heroTitle}</h1>
+    <h1 class="ab-hero__title"><span class="t-red">{c.heroTitleAccent}</span><span class="t-white">{c.heroTitleRest}</span></h1>
     <div class="ab-hero__grid">
       <div class="ab-hero__block" data-reveal="up">
         <strong>{c.heroBlocks[0].h}</strong>

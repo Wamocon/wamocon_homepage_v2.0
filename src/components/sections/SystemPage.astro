@@ -10,12 +10,14 @@ const { lang } = Astro.props;
 
 const c = {
   de: {
-      heroEyebrow: 'Dein Erfolgsweg zum Experten im IT-Bereich',
+      heroEyebrowLead: 'Dein Erfolgsweg zum ',
+      heroEyebrowAccent: 'Experten im IT-Bereich',
       heroParas: [
         'WAMOCON hat einen umfassenden Ansatz entwickelt, der alle Aspekte des IT-Testens abdeckt. Dieses 360-Grad-System zum Aufbau einer erfolgreichen Karriere umfasst eine Reihe von Schritten und befähigt Sie, Herausforderungen zu meistern, indem es Ihnen den Weg zum Erfolg auf die effektivste Weise zeigt.',
         'Das WAMOCON-Team nutzt dieses System, um die Arbeitsqualität jedes einzelnen Mitarbeiters, erfolgreiche Tests und den Abschluss von IT-Projekten zu verbessern.',
       ],
-      heroTitle: 'Das 360 ° Booster System',
+      heroTitleLead: 'Das ',
+      heroTitleAccent: '360° Booster System',
       stepsLead: 'Erfolgreich im IT-Projekt: Das 360°-System',
       stepsRest: ' für alle Karrierestufen',
       steps: [
@@ -35,12 +37,14 @@ const c = {
       academyBtn: 'Jetzt Academy entdecken',
     },
   en: {
-      heroEyebrow: 'Your path to success as an expert in the IT sector',
+      heroEyebrowLead: 'Your path to success as an ',
+      heroEyebrowAccent: 'expert in the IT sector',
       heroParas: [
         'WAMOCON has developed a comprehensive approach that covers all aspects of IT testing. This 360-degree system for building a successful career comprises a series of steps and empowers you to master challenges by showing you the path to success in the most effective way.',
         'The WAMOCON team uses this system to improve the work quality of each individual employee, successful testing and the completion of IT projects.',
       ],
-      heroTitle: 'The 360° Booster System',
+      heroTitleLead: 'The ',
+      heroTitleAccent: '360° Booster System',
       stepsLead: 'Successful in IT projects: the 360° system',
       stepsRest: ' for all career levels',
       steps: [
@@ -60,12 +64,14 @@ const c = {
       academyBtn: 'Discover the Academy now',
     },
   tr: {
-      heroEyebrow: 'BT alanında uzmanlığa giden başarı yolunuz',
+      heroEyebrowLead: 'BT alanında uzmanlığa giden ',
+      heroEyebrowAccent: 'başarı yolunuz',
       heroParas: [
         'WAMOCON, BT testinin tüm yönlerini kapsayan bütünsel bir yaklaşım geliştirdi. Başarılı bir kariyer inşa etmeye yönelik bu 360 derecelik sistem, birbirini izleyen adımlardan oluşur ve size başarıya giden yolu en etkili biçimde göstererek zorlukların üstesinden gelmenizi sağlar.',
         'WAMOCON ekibi bu sistemi, her bir çalışanın iş kalitesini, testlerin başarısını ve BT projelerinin tamamlanmasını iyileştirmek için kullanır.',
       ],
-      heroTitle: '360° Booster Sistemi',
+      heroTitleLead: '',
+      heroTitleAccent: '360° Booster Sistemi',
       stepsLead: 'BT projesinde başarı: 360° sistemi',
       stepsRest: ' her kariyer seviyesi için',
       steps: [
@@ -86,6 +92,9 @@ const c = {
     },
 }[lang];
 
+/** Plain-text title for the diagram's alt attribute. */
+const heroTitleFull = `${c.heroTitleLead}${c.heroTitleAccent}`;
+
 const aiBadge = {
   de: { label: 'Diese Grafik wurde mit Künstlicher Intelligenz erstellt', text: 'KI-generiert' },
   en: { label: 'This graphic was created using artificial intelligence', text: 'AI-generated' },
@@ -98,12 +107,12 @@ const academyUrl = 'https://test-it-academy.com/';
 <!-- HERO -->
 <section class="sys-hero">
   <div class="container">
-    <p class="sys-hero__eyebrow">{c.heroEyebrow}</p>
+    <p class="sys-hero__eyebrow"><span class="t-white">{c.heroEyebrowLead}</span><span class="t-red">{c.heroEyebrowAccent}</span></p>
     <div class="sys-hero__lead">
       {c.heroParas.map((p) => <p>{p}</p>)}
     </div>
-    <h1 class="sys-hero__title">{c.heroTitle}</h1>
-    <img class="sys-hero__img" src="/images/system-360.svg" alt={c.heroTitle} loading="lazy" />
+    <h1 class="sys-hero__title"><span class="t-white">{c.heroTitleLead}</span><span class="t-red">{c.heroTitleAccent}</span></h1>
+    <img class="sys-hero__img" src="/images/system-360.svg" alt={heroTitleFull} loading="lazy" />
   </div>
 </section>
 
