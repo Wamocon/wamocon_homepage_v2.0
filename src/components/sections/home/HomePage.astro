@@ -1015,6 +1015,13 @@ const modal = {
 
 
 
+  /* "Vorteile der Zusammenarbeit" was breaking onto two lines because the
+     shared 900px cap is narrower than the heading needs. Give this one heading
+     the full container width; it still wraps normally on small screens. */
+  .benefits .section-head {
+    max-width: none;
+  }
+
   /* ---------- card photos ----------
      The photo sits full-width at the top of the card and the copy below it.
      Padding moves from the card to .card-body so the image can reach the edges;

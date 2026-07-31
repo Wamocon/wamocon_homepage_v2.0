@@ -10,7 +10,8 @@
     "build": "astro build && node scripts/build-knowledge.mjs",
     "preview": "astro preview",
     "astro": "astro",
-    "build:knowledge": "node scripts/build-knowledge.mjs"
+    "build:knowledge": "node scripts/build-knowledge.mjs",
+    "dev:api": "node scripts/dev-with-api.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.1",

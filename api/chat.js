@@ -20,12 +20,31 @@
 // Optional:
 //   AI_MODEL      defaults to sokrates-fable-qwen27
 //                 (switch to wamocon-homepages-kg once the KG is ready)
+//   CF_ACCESS_CLIENT_ID / CF_ACCESS_CLIENT_SECRET
+//                 Cloudflare Access service-token credentials. Set these when
+//                 the tunnel hostname is protected by Cloudflare Access, so the
+//                 AI endpoint is not reachable by anyone who guesses the URL.
 
 import knowledge from './_knowledge.json' with { type: 'json' };
 
 const API_KEY = process.env.AI_API_KEY;
 const BASE_URL = (process.env.AI_BASE_URL || '').replace(/\/+$/, '');
 const MODEL = process.env.AI_MODEL || 'sokrates-fable-qwen27';
+const CF_ID = process.env.CF_ACCESS_CLIENT_ID;
+const CF_SECRET = process.env.CF_ACCESS_CLIENT_SECRET;
+
+/** Auth headers for the upstream, plus Cloudflare Access when configured. */
+function upstreamHeaders() {
+  const h = {
+    Authorization: `Bearer ${API_KEY}`,
+    'Content-Type': 'application/json',
+  };
+  if (CF_ID && CF_SECRET) {
+    h['CF-Access-Client-Id'] = CF_ID;
+    h['CF-Access-Client-Secret'] = CF_SECRET;
+  }
+  return h;
+}
 
 // Vercel Hobby terminates a function at 10s. Give up at 8.5s so we can return a
 // friendly message instead of the platform's raw gateway error.
@@ -202,7 +221,7 @@ export default async function handler(req, res) {
       setTimeout(() => ctl.abort(), 2000);
       await fetch(`${BASE_URL}/api/chat/completions`, {
         method: 'POST',
-        headers: { Authorization: `Bearer ${API_KEY}`, 'Content-Type': 'application/json' },
+        headers: upstreamHeaders(),
         body: JSON.stringify({
           model: MODEL, stream: false, keep_alive: KEEP_ALIVE, max_tokens: 1,
           messages: [{ role: 'user', content: 'ok' }],
@@ -250,10 +269,7 @@ export default async function handler(req, res) {
   try {
     const upstream = await fetch(`${BASE_URL}/api/chat/completions`, {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${API_KEY}`,
-        'Content-Type': 'application/json',
-      },
+      headers: upstreamHeaders(),
       body: JSON.stringify({
         model: MODEL,
         stream: false,

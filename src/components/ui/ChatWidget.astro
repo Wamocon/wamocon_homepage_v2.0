@@ -3,11 +3,15 @@
  * WAMOCON website assistant.
  *
  * EU AI Act Art. 50(1): a person must be informed that they are interacting
- * with an AI system. The disclosure is therefore part of the panel itself (not
- * hidden behind a link) and is repeated as the first message in the transcript.
+ * with an AI system, so the disclosure sits in the panel itself, not behind a
+ * link. The browser only ever talks to /api/chat — the model endpoint and API
+ * key stay server-side, and answers are grounded in this website's content.
  *
- * The browser only ever talks to /api/chat — the model endpoint and API key stay
- * server-side. Answers are grounded in this website's own content.
+ * NOTE ON STYLES: the stylesheet below is `is:global`, namespaced under `.cw`.
+ * Astro's scoped styles work by stamping a `data-astro-cid-*` attribute onto
+ * markup it renders, but chat messages are created at runtime with
+ * createElement and never receive that attribute — scoped rules would simply
+ * not apply to them, leaving every message after the first unstyled.
  */
 import { legalNav, type Lang } from '../../i18n/config';
 
@@ -19,48 +23,51 @@ const t = {
     open: 'Chat mit dem WAMOCON-Assistenten öffnen',
     close: 'Chat schließen',
     title: 'WAMOCON Assistent',
+    status: 'Antwortet in Sekunden',
     badge: 'KI',
-    disclosure: 'Sie chatten mit einem KI-Assistenten, nicht mit einem Menschen. Er beantwortet Fragen ausschließlich auf Basis der Inhalte dieser Website und kann Fehler machen. Verbindliche Auskünfte erhalten Sie von unserem Team.',
+    disclosure: 'Sie chatten mit einem KI-Assistenten, nicht mit einem Menschen. Er antwortet nur auf Basis dieser Website und kann Fehler machen.',
     intro: 'Hallo! Ich beantworte Fragen zu WAMOCON auf Basis dieser Website. Was möchten Sie wissen?',
     placeholder: 'Ihre Frage zu WAMOCON …',
     send: 'Senden',
-    sending: 'Antwort wird erstellt …',
-    sources: 'Quellen auf dieser Website:',
+    sources: 'Quellen',
     privacy: 'Datenschutz',
     error: 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.',
     warming: 'Der Assistent startet gerade — einen Moment bitte …',
+    resize: 'Fenstergröße ändern (ziehen oder Pfeiltasten)',
     suggestions: ['Was macht WAMOCON?', 'Welche Leistungen bietet ihr?', 'Wie kann ich euch erreichen?'],
   },
   en: {
     open: 'Open chat with the WAMOCON assistant',
     close: 'Close chat',
     title: 'WAMOCON Assistant',
+    status: 'Replies in seconds',
     badge: 'AI',
-    disclosure: 'You are chatting with an AI assistant, not a human. It answers strictly from the content of this website and can make mistakes. For binding information, please contact our team.',
+    disclosure: 'You are chatting with an AI assistant, not a human. It answers only from this website and can make mistakes.',
     intro: 'Hi! I answer questions about WAMOCON based on this website. What would you like to know?',
     placeholder: 'Your question about WAMOCON …',
     send: 'Send',
-    sending: 'Generating answer …',
-    sources: 'Sources on this website:',
+    sources: 'Sources',
     privacy: 'Privacy policy',
     error: 'Something went wrong. Please try again.',
     warming: 'The assistant is starting up — one moment please …',
+    resize: 'Resize window (drag or arrow keys)',
     suggestions: ['What does WAMOCON do?', 'Which services do you offer?', 'How can I contact you?'],
   },
   tr: {
     open: 'WAMOCON asistanıyla sohbeti aç',
     close: 'Sohbeti kapat',
     title: 'WAMOCON Asistanı',
+    status: 'Saniyeler içinde yanıtlar',
     badge: 'YZ',
-    disclosure: 'Bir insanla değil, yapay zekâ asistanıyla sohbet ediyorsunuz. Yalnızca bu web sitesinin içeriğine dayanarak yanıt verir ve hata yapabilir. Bağlayıcı bilgi için lütfen ekibimize ulaşın.',
+    disclosure: 'Bir insanla değil, yapay zekâ asistanıyla sohbet ediyorsunuz. Yalnızca bu web sitesine dayanarak yanıt verir ve hata yapabilir.',
     intro: 'Merhaba! WAMOCON hakkındaki soruları bu web sitesine dayanarak yanıtlıyorum. Ne öğrenmek istersiniz?',
     placeholder: 'WAMOCON hakkındaki sorunuz …',
     send: 'Gönder',
-    sending: 'Yanıt oluşturuluyor …',
-    sources: 'Bu web sitesindeki kaynaklar:',
+    sources: 'Kaynaklar',
     privacy: 'Gizlilik politikası',
     error: 'Bir hata oluştu. Lütfen tekrar deneyin.',
     warming: 'Asistan başlatılıyor — bir saniye lütfen …',
+    resize: 'Pencere boyutunu değiştir (sürükleyin veya ok tuşları)',
     suggestions: ['WAMOCON ne yapar?', 'Hangi hizmetleri sunuyorsunuz?', 'Size nasıl ulaşabilirim?'],
   },
 }[lang];
@@ -70,52 +77,51 @@ const privacyHref = legalNav.privacy[lang].href;
 
 <div class="cw" data-chat-widget data-lang={lang}>
   <button type="button" class="cw__launcher" data-chat-open aria-expanded="false" aria-controls="cw-panel" aria-label={t.open}>
-    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+    <span class="cw__ring" aria-hidden="true"></span>
+    <svg class="cw__ic cw__ic--chat" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="none">
+      <path d="M12 3.2c5 0 9 3.3 9 7.4 0 4.1-4 7.4-9 7.4-.9 0-1.8-.1-2.6-.3l-4.4 2.5.9-3.4C4.1 15.6 3 13.2 3 10.6c0-4.1 4-7.4 9-7.4z"
+            stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
+      <path d="M12 7.1l.9 2.1 2.2.2-1.7 1.5.5 2.2-1.9-1.2-1.9 1.2.5-2.2L8.9 9.4l2.2-.2.9-2.1z" fill="currentColor" />
     </svg>
-    <span class="cw__launcher-badge">{t.badge}</span>
+    <svg class="cw__ic cw__ic--close" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+      <path d="M6 6l12 12M18 6L6 18" />
+    </svg>
   </button>
 
   <section class="cw__panel" id="cw-panel" data-chat-panel hidden aria-label={t.title}>
+    <button type="button" class="cw__grip" data-chat-resize aria-label={t.resize} title={t.resize}>
+      <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+        <path d="M3.5 9.5l6-6M3.5 13l9.5-9.5" />
+      </svg>
+    </button>
+
     <header class="cw__head">
-      <div class="cw__head-title">
-        <strong>{t.title}</strong>
-        <span class="cw__badge">{t.badge}</span>
-      </div>
-      <button type="button" class="cw__close" data-chat-close aria-label={t.close}>
-        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+      <span class="cw__avatar" aria-hidden="true">✦</span>
+      <span class="cw__id">
+        <strong>{t.title}<em class="cw__badge">{t.badge}</em></strong>
+        <small><i class="cw__live" aria-hidden="true"></i>{t.status}</small>
+      </span>
+      <button type="button" class="cw__x" data-chat-close aria-label={t.close}>
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
       </button>
     </header>
 
-    {/* EU AI Act Art. 50 transparency — visible, not behind a link. */}
-    <p class="cw__disclosure">
-      {t.disclosure} <a href={privacyHref}>{t.privacy}</a>
-    </p>
+    {/* EU AI Act Art. 50 transparency — always visible, never behind a link. */}
+    <p class="cw__note">{t.disclosure} <a href={privacyHref}>{t.privacy}</a></p>
 
-    <div class="cw__log" data-chat-log role="log" aria-live="polite" aria-atomic="false">
-      <div class="cw__msg cw__msg--bot"><p>{t.intro}</p></div>
-    </div>
+    <div class="cw__log" data-chat-log role="log" aria-live="polite" aria-atomic="false"></div>
 
-    <div class="cw__suggestions" data-chat-suggestions>
+    <div class="cw__tips" data-chat-suggestions>
       {t.suggestions.map((s) => (
-        <button type="button" class="cw__chip" data-chat-suggestion={s}>{s}</button>
+        <button type="button" class="cw__tip" data-chat-suggestion={s}>{s}</button>
       ))}
     </div>
 
     <form class="cw__form" data-chat-form>
-      <label class="visually-hidden" for="cw-input">{t.placeholder}</label>
-      <input
-        id="cw-input"
-        class="cw__input"
-        type="text"
-        name="message"
-        maxlength="500"
-        autocomplete="off"
-        placeholder={t.placeholder}
-        data-chat-input
-      />
+      <label class="cw__sr" for="cw-input">{t.placeholder}</label>
+      <input id="cw-input" class="cw__input" type="text" name="message" maxlength="500" autocomplete="off" placeholder={t.placeholder} data-chat-input />
       <button type="submit" class="cw__send" data-chat-send aria-label={t.send}>
-        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" /></svg>
+        <svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" /></svg>
       </button>
     </form>
   </section>
@@ -133,34 +139,61 @@ const privacyHref = legalNav.privacy[lang].href;
     const form = root.querySelector('[data-chat-form]');
     const input = root.querySelector('[data-chat-input]');
     const sendBtn = root.querySelector('[data-chat-send]');
-    const suggestions = root.querySelector('[data-chat-suggestions]');
+    const tips = root.querySelector('[data-chat-suggestions]');
+    const grip = root.querySelector('[data-chat-resize]');
 
     let busy = false;
     let warmed = false;
-
     const scrollDown = () => { log.scrollTop = log.scrollHeight; };
 
+    /** A chat bubble. Model output is set as text, never as HTML. */
     function addMessage(role, text) {
-      const wrap = document.createElement('div');
-      wrap.className = `cw__msg cw__msg--${role}`;
-      const p = document.createElement('p');
-      p.textContent = text;           // textContent: never inject model output as HTML
-      wrap.appendChild(p);
-      log.appendChild(wrap);
+      const row = document.createElement('div');
+      row.className = `cw-row cw-row--${role}`;
+      if (role === 'bot') {
+        const av = document.createElement('span');
+        av.className = 'cw-row__av';
+        av.setAttribute('aria-hidden', 'true');
+        av.textContent = '✦';
+        row.appendChild(av);
+      }
+      const bubble = document.createElement('div');
+      bubble.className = 'cw-bubble';
+      bubble.textContent = text;
+      row.appendChild(bubble);
+      log.appendChild(row);
       scrollDown();
-      return wrap;
+      return { row, bubble };
+    }
+
+    /** Animated dots while the model is generating. */
+    function addTyping() {
+      const row = document.createElement('div');
+      row.className = 'cw-row cw-row--bot';
+      const av = document.createElement('span');
+      av.className = 'cw-row__av';
+      av.setAttribute('aria-hidden', 'true');
+      av.textContent = '✦';
+      const bubble = document.createElement('div');
+      bubble.className = 'cw-bubble cw-bubble--typing';
+      for (let i = 0; i < 3; i++) bubble.appendChild(document.createElement('i'));
+      row.append(av, bubble);
+      log.appendChild(row);
+      scrollDown();
+      return { row, bubble };
     }
 
     function addSources(sources) {
       if (!sources || !sources.length) return;
       const wrap = document.createElement('div');
-      wrap.className = 'cw__sources';
+      wrap.className = 'cw-src';
       const label = document.createElement('span');
+      label.className = 'cw-src__label';
       label.textContent = strings.sources;
-      label.style.flexBasis = '100%';   // label on its own line, links beneath
       wrap.appendChild(label);
       for (const s of sources) {
         const a = document.createElement('a');
+        a.className = 'cw-src__link';
         a.href = s.url;
         a.textContent = s.title || s.url;
         wrap.appendChild(a);
@@ -169,8 +202,10 @@ const privacyHref = legalNav.privacy[lang].href;
       scrollDown();
     }
 
-    // Loading the model into VRAM takes ~30s cold. Warming on open means it is
-    // ready by the time the visitor has typed their question.
+    addMessage('bot', strings.intro);
+
+    // The model takes ~30s to load into VRAM when cold; warming as soon as the
+    // panel opens means it is usually ready by the time a question is typed.
     function warm() {
       if (warmed) return;
       warmed = true;
@@ -185,7 +220,7 @@ const privacyHref = legalNav.privacy[lang].href;
       panel.hidden = !open;
       launcher.setAttribute('aria-expanded', String(open));
       root.classList.toggle('is-open', open);
-      if (open) { warm(); input.focus(); scrollDown(); }
+      if (open) { warm(); scrollDown(); if (window.innerWidth > 480) input.focus(); }
     }
 
     launcher.addEventListener('click', () => setOpen(panel.hidden));
@@ -194,23 +229,88 @@ const privacyHref = legalNav.privacy[lang].href;
       if (e.key === 'Escape' && !panel.hidden) { setOpen(false); launcher.focus(); }
     });
 
-    suggestions.addEventListener('click', (e) => {
+    tips.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-chat-suggestion]');
       if (!btn) return;
       input.value = btn.dataset.chatSuggestion;
       form.requestSubmit();
     });
 
+    /* ---- resizable panel -------------------------------------------------
+       The panel is pinned bottom-right, so the grip lives top-left and dragging
+       up/left enlarges it. Size is clamped to the viewport and remembered. */
+    const SIZE_KEY = 'wamocon-chat-size';
+    const MIN_W = 320, MIN_H = 380;
+    const maxW = () => Math.min(760, window.innerWidth - 32);
+    const maxH = () => Math.min(880, window.innerHeight - 120);
+
+    function applySize(w, h) {
+      const cw = Math.max(MIN_W, Math.min(w, maxW()));
+      const ch = Math.max(MIN_H, Math.min(h, maxH()));
+      panel.style.width = `${cw}px`;
+      panel.style.height = `${ch}px`;
+      return { w: cw, h: ch };
+    }
+    const remember = (w, h) => {
+      try { localStorage.setItem(SIZE_KEY, JSON.stringify({ w: Math.round(w), h: Math.round(h) })); } catch {}
+    };
+
+    try {
+      const saved = JSON.parse(localStorage.getItem(SIZE_KEY) || 'null');
+      if (saved && saved.w && saved.h && window.innerWidth > 480) applySize(saved.w, saved.h);
+    } catch {}
+
+    let drag = null;
+    grip.addEventListener('pointerdown', (e) => {
+      if (window.innerWidth <= 480) return;      // full-width sheet on phones
+      e.preventDefault();
+      const r = panel.getBoundingClientRect();
+      drag = { x: e.clientX, y: e.clientY, w: r.width, h: r.height };
+      try { grip.setPointerCapture(e.pointerId); } catch {}
+      panel.classList.add('is-resizing');
+    });
+    grip.addEventListener('pointermove', (e) => {
+      if (!drag) return;
+      // Inverted deltas: dragging up/left must grow the panel.
+      applySize(drag.w + (drag.x - e.clientX), drag.h + (drag.y - e.clientY));
+    });
+    const endDrag = (e) => {
+      if (!drag) return;
+      drag = null;
+      panel.classList.remove('is-resizing');
+      try { grip.releasePointerCapture(e.pointerId); } catch {}
+      const r = panel.getBoundingClientRect();
+      remember(r.width, r.height);
+    };
+    grip.addEventListener('pointerup', endDrag);
+    grip.addEventListener('pointercancel', endDrag);
+
+    // Keyboard alternative, so resizing is not mouse-only.
+    grip.addEventListener('keydown', (e) => {
+      const step = e.shiftKey ? 80 : 32;
+      const moves = { ArrowLeft: [step, 0], ArrowRight: [-step, 0], ArrowUp: [0, step], ArrowDown: [0, -step] };
+      if (!moves[e.key]) return;
+      e.preventDefault();
+      const r = panel.getBoundingClientRect();
+      const [dw, dh] = moves[e.key];
+      const size = applySize(r.width + dw, r.height + dh);
+      remember(size.w, size.h);
+    });
+
+    window.addEventListener('resize', () => {
+      if (!panel.style.width) return;
+      applySize(parseFloat(panel.style.width), parseFloat(panel.style.height));
+    });
+
+    /* ---- asking ---------------------------------------------------------- */
     async function ask(question) {
       if (busy || !question) return;
       busy = true;
       input.value = '';
-      suggestions.hidden = true;
+      tips.hidden = true;
       sendBtn.disabled = true;
       addMessage('user', question);
-
-      const pending = addMessage('bot', strings.sending);
-      pending.classList.add('is-pending');
+      const typing = addTyping();
 
       const call = () => fetch('/api/chat', {
         method: 'POST',
@@ -220,19 +320,19 @@ const privacyHref = legalNav.privacy[lang].href;
 
       try {
         let res = await call();
-        // 504 = the model was still loading into VRAM. Tell the user what is
-        // happening and try once more instead of failing outright.
+        // 504 = the model is still loading into VRAM. Say so, then retry once.
         if (res.status === 504) {
-          pending.querySelector('p').textContent = strings.warming;
+          typing.bubble.classList.remove('cw-bubble--typing');
+          typing.bubble.textContent = strings.warming;
           await new Promise((r) => setTimeout(r, 12000));
           res = await call();
         }
         const data = await res.json().catch(() => ({}));
-        pending.remove();
+        typing.row.remove();
         addMessage('bot', data.answer || strings.error);
         if (data.ok && !data.refused) addSources(data.sources);
       } catch {
-        pending.remove();
+        typing.row.remove();
         addMessage('bot', strings.error);
       } finally {
         busy = false;
@@ -248,198 +348,314 @@ const privacyHref = legalNav.privacy[lang].href;
   })();
 </script>
 
-<style>
+<style is:global>
+  /* Namespaced under .cw and global on purpose — see the note in the frontmatter. */
   .cw {
+    --cw-bg: #17181b;
+    --cw-bg-2: #212329;
+    --cw-line: rgba(255, 255, 255, 0.1);
+    --cw-grad: linear-gradient(140deg, #ff4d2d, var(--color-accent) 60%, #c00d0d);
     position: fixed;
-    right: clamp(0.75rem, 2vw, 1.5rem);
-    bottom: clamp(0.75rem, 2vw, 1.5rem);
+    right: clamp(0.85rem, 2vw, 1.6rem);
+    bottom: clamp(0.85rem, 2vw, 1.6rem);
     z-index: calc(var(--z-modal, 1000) + 2);
-    font-size: 0.95rem;
   }
 
-  /* ---- launcher ---- */
+  /* ---------- launcher ---------- */
   .cw__launcher {
     position: relative;
     display: grid;
     place-items: center;
-    width: 58px;
-    height: 58px;
-    border-radius: 50%;
+    width: 60px; height: 60px;
+    padding: 0;
     border: none;
+    border-radius: 50%;
     color: #fff;
-    background: var(--color-accent);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), var(--shadow-accent, none);
+    background: var(--cw-grad);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
     cursor: pointer;
-    transition: transform var(--dur-fast) var(--ease-out), background var(--dur-fast);
+    transition: transform 240ms cubic-bezier(0.34, 1.4, 0.64, 1), box-shadow 240ms ease;
   }
-  .cw__launcher:hover { transform: translateY(-2px); background: var(--color-accent-hover, #c81111); }
-  .cw.is-open .cw__launcher { transform: scale(0.9); opacity: 0.9; }
-  .cw__launcher-badge {
+  .cw__launcher:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 18px 42px rgba(0, 0, 0, 0.58); }
+  .cw__launcher:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  .cw__ring {
     position: absolute;
-    top: -2px; right: -2px;
-    padding: 1px 6px;
-    border-radius: 999px;
-    background: #101010;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    font-size: 0.6rem;
-    font-weight: var(--fw-bold);
-    letter-spacing: 0.04em;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid var(--color-accent);
+    animation: cw-ping 2.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+    pointer-events: none;
   }
+  @keyframes cw-ping {
+    0% { transform: scale(0.9); opacity: 0.55; }
+    70%, 100% { transform: scale(1.28); opacity: 0; }
+  }
+  .cw__ic--close { display: none; }
+  .cw.is-open .cw__ic--chat { display: none; }
+  .cw.is-open .cw__ic--close { display: block; }
+  .cw.is-open .cw__ring { display: none; }
 
-  /* ---- panel ---- */
+  /* ---------- panel ---------- */
   .cw__panel {
     position: absolute;
     right: 0;
-    bottom: calc(58px + 0.75rem);
+    bottom: calc(60px + 0.9rem);
     display: flex;
     flex-direction: column;
-    width: min(390px, calc(100vw - 1.5rem));
-    max-height: min(620px, calc(100dvh - 6rem));
-    background: #161616;
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+    width: min(400px, calc(100vw - 1.7rem));
+    height: min(600px, calc(100dvh - 7rem));
+    background: var(--cw-bg);
+    border: 1px solid var(--cw-line);
+    border-radius: 20px;
+    box-shadow: 0 26px 70px rgba(0, 0, 0, 0.62);
     overflow: hidden;
+    animation: cw-in 240ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   .cw__panel[hidden] { display: none; }
+  .cw__panel.is-resizing { animation: none; user-select: none; }
+  @keyframes cw-in {
+    from { opacity: 0; transform: translateY(14px) scale(0.97); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* Drag grip: panel is pinned bottom-right, so it sits top-left. */
+  .cw__grip {
+    position: absolute;
+    top: 0; left: 0;
+    z-index: 3;
+    display: grid; place-items: center;
+    width: 28px; height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 20px 0 14px 0;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.32);
+    cursor: nwse-resize;
+    touch-action: none;
+  }
+  .cw__grip:hover { color: #fff; background: rgba(255, 255, 255, 0.08); }
+  .cw__grip:focus-visible { outline: 2px solid var(--color-accent); outline-offset: -2px; }
 
   .cw__head {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.9rem 1rem;
-    border-bottom: 1px solid var(--border-subtle);
+    gap: 0.7rem;
+    padding: 0.85rem 0.9rem 0.85rem 2.1rem;
+    background: linear-gradient(180deg, rgba(244, 14, 14, 0.15), transparent);
+    border-bottom: 1px solid var(--cw-line);
   }
-  .cw__head-title { display: flex; align-items: center; gap: 0.5rem; color: #fff; }
-  .cw__badge {
-    padding: 1px 7px;
-    border-radius: 999px;
-    background: var(--color-accent-surface);
-    color: #fff;
-    font-size: 0.65rem;
-    font-weight: var(--fw-bold);
-    letter-spacing: 0.05em;
-  }
-  .cw__close {
+  .cw__avatar {
+    flex: 0 0 auto;
     display: grid; place-items: center;
     width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--cw-grad);
+    color: #fff;
+    font-size: 0.95rem;
+  }
+  .cw__id { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+  .cw__id strong { display: flex; align-items: center; gap: 0.4rem; color: #fff; font-size: 0.95rem; line-height: 1.2; }
+  .cw__id small { display: flex; align-items: center; gap: 0.35rem; color: rgba(255, 255, 255, 0.5); font-size: 0.72rem; }
+  .cw__badge {
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: var(--color-accent);
+    color: #fff;
+    font-size: 0.6rem;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .cw__live {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #35c759;
+    animation: cw-pulse 2.4s ease-out infinite;
+  }
+  @keyframes cw-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(53, 199, 89, 0.55); }
+    70%, 100% { box-shadow: 0 0 0 7px rgba(53, 199, 89, 0); }
+  }
+  .cw__x {
+    margin-left: auto;
+    display: grid; place-items: center;
+    width: 32px; height: 32px;
     border: 0; border-radius: 50%;
-    background: transparent; color: var(--color-text-muted);
+    background: transparent;
+    color: rgba(255, 255, 255, 0.55);
     cursor: pointer;
   }
-  .cw__close:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+  .cw__x:hover { background: rgba(255, 255, 255, 0.09); color: #fff; }
 
-  /* EU AI Act disclosure — deliberately always visible. */
-  .cw__disclosure {
+  .cw__note {
     margin: 0;
-    padding: 0.7rem 1rem;
-    background: rgba(244, 14, 14, 0.08);
-    border-bottom: 1px solid var(--border-subtle);
-    color: var(--color-text-muted);
-    font-size: 0.75rem;
+    padding: 0.6rem 0.95rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid var(--cw-line);
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.71rem;
     line-height: 1.5;
   }
-  .cw__disclosure a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 0.2em; }
+  .cw__note a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 0.2em; }
 
+  /* ---------- transcript ---------- */
   .cw__log {
     flex: 1 1 auto;
-    min-height: 140px;
+    min-height: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: 1rem;
+    padding: 1rem 0.95rem;
     display: flex;
     flex-direction: column;
-    gap: 0.7rem;
+    gap: 0.75rem;
+    scrollbar-width: thin;
   }
-  .cw__msg { max-width: 88%; }
-  .cw__msg p {
-    margin: 0;
-    padding: 0.65rem 0.85rem;
-    border-radius: 14px;
-    line-height: 1.55;
+  .cw-row { display: flex; align-items: flex-end; gap: 0.5rem; max-width: 100%; }
+  .cw-row--user { justify-content: flex-end; }
+  .cw-row__av {
+    flex: 0 0 auto;
+    display: grid; place-items: center;
+    width: 26px; height: 26px;
+    margin-bottom: 2px;
+    border-radius: 50%;
+    background: var(--cw-grad);
+    color: #fff;
+    font-size: 0.7rem;
+  }
+  .cw-bubble {
+    max-width: 78%;
+    padding: 0.68rem 0.9rem;
+    border-radius: 16px;
     font-size: 0.9rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
   }
-  .cw__msg--bot { align-self: flex-start; }
-  .cw__msg--bot p { background: rgba(255, 255, 255, 0.07); color: var(--color-text); border-bottom-left-radius: 4px; }
-  .cw__msg--user { align-self: flex-end; }
-  .cw__msg--user p { background: var(--color-accent-surface); color: #fff; border-bottom-right-radius: 4px; }
-  .cw__msg.is-pending p { color: var(--color-text-muted); font-style: italic; }
+  .cw-row--bot .cw-bubble {
+    background: var(--cw-bg-2);
+    color: rgba(255, 255, 255, 0.92);
+    border-bottom-left-radius: 5px;
+  }
+  .cw-row--user .cw-bubble {
+    background: var(--cw-grad);
+    color: #fff;
+    border-bottom-right-radius: 5px;
+  }
 
-  .cw__sources {
+  .cw-bubble--typing { display: flex; align-items: center; gap: 4px; padding: 0.85rem 0.9rem; }
+  .cw-bubble--typing i {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.55);
+    animation: cw-bounce 1.3s ease-in-out infinite;
+  }
+  .cw-bubble--typing i:nth-child(2) { animation-delay: 0.16s; }
+  .cw-bubble--typing i:nth-child(3) { animation-delay: 0.32s; }
+  @keyframes cw-bounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+    30% { transform: translateY(-4px); opacity: 1; }
+  }
+
+  /* Source pills sit under the answer, indented to align with the bubble. */
+  .cw-src {
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.3rem 0.55rem;
-    padding: 0 0.2rem;
-    font-size: 0.72rem;
-    color: var(--color-text-subtle, rgba(255,255,255,0.45));
+    align-items: center;
+    gap: 0.35rem;
+    margin: -0.3rem 0 0 34px;
   }
-  .cw__sources a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 0.2em; }
+  .cw-src__label {
+    margin-right: 0.1rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .cw-src__link {
+    max-width: 100%;
+    padding: 0.16rem 0.55rem;
+    border: 1px solid var(--cw-line);
+    border-radius: 999px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.7rem;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cw-src__link:hover { color: #fff; border-color: var(--color-accent); background: rgba(244, 14, 14, 0.12); }
 
-  .cw__suggestions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    padding: 0 1rem 0.75rem;
-  }
-  .cw__suggestions[hidden] { display: none; }
-  .cw__chip {
-    padding: 0.4rem 0.7rem;
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-pill);
+  /* ---------- suggestions + composer ---------- */
+  .cw__tips { display: flex; flex-wrap: wrap; gap: 0.35rem; padding: 0 0.95rem 0.7rem; }
+  .cw__tips[hidden] { display: none; }
+  .cw__tip {
+    padding: 0.38rem 0.7rem;
+    border: 1px solid var(--cw-line);
+    border-radius: 999px;
     background: transparent;
-    color: var(--color-text-muted);
+    color: rgba(255, 255, 255, 0.66);
     font: inherit;
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     cursor: pointer;
+    transition: color 150ms, border-color 150ms, background 150ms;
   }
-  .cw__chip:hover { color: #fff; border-color: var(--color-accent); }
+  .cw__tip:hover { color: #fff; border-color: var(--color-accent); background: rgba(244, 14, 14, 0.1); }
 
   .cw__form {
     display: flex;
     gap: 0.5rem;
-    padding: 0.75rem 1rem 1rem;
-    border-top: 1px solid var(--border-subtle);
+    padding: 0.7rem 0.9rem 0.9rem;
+    border-top: 1px solid var(--cw-line);
+    background: rgba(0, 0, 0, 0.2);
   }
   .cw__input {
     flex: 1 1 auto;
     min-width: 0;
-    padding: 0.7rem 0.9rem;
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-pill);
-    background: rgba(255, 255, 255, 0.06);
+    padding: 0.72rem 0.95rem;
+    border: 1px solid var(--cw-line);
+    border-radius: 999px;
+    background: var(--cw-bg-2);
     color: #fff;
     font: inherit;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
   }
-  .cw__input:focus { outline: 2px solid var(--color-accent); outline-offset: 1px; }
-  .cw__input::placeholder { color: rgba(255, 255, 255, 0.45); }
+  .cw__input::placeholder { color: rgba(255, 255, 255, 0.38); }
+  .cw__input:focus { outline: none; border-color: var(--color-accent); box-shadow: 0 0 0 3px rgba(244, 14, 14, 0.16); }
   .cw__send {
     flex: 0 0 auto;
     display: grid; place-items: center;
-    width: 42px; height: 42px;
+    width: 44px; height: 44px;
     border: 0; border-radius: 50%;
-    background: var(--color-accent); color: #fff;
+    background: var(--cw-grad);
+    color: #fff;
     cursor: pointer;
+    transition: transform 150ms ease, opacity 150ms ease;
   }
-  .cw__send:hover:not(:disabled) { background: var(--color-accent-hover, #c81111); }
-  .cw__send:disabled { opacity: 0.5; cursor: default; }
+  .cw__send:hover:not(:disabled) { transform: scale(1.06); }
+  .cw__send:disabled { opacity: 0.45; cursor: default; }
 
-  .visually-hidden {
+  .cw__sr {
     position: absolute; width: 1px; height: 1px;
     padding: 0; margin: -1px; overflow: hidden;
     clip: rect(0 0 0 0); white-space: nowrap; border: 0;
   }
 
-  /* On phones the panel becomes a near-full-screen sheet. */
+  /* Phones: near-full-screen sheet, resizing disabled. */
   @media (max-width: 480px) {
-    .cw { right: 0.75rem; bottom: 0.75rem; left: 0.75rem; }
+    .cw { right: 0.85rem; bottom: 0.85rem; left: 0.85rem; }
     .cw__launcher { margin-left: auto; }
-    .cw__panel { left: 0; right: 0; width: auto; max-height: calc(100dvh - 7rem); }
+    .cw__panel {
+      left: 0; right: 0;
+      width: auto !important;
+      height: min(78dvh, calc(100dvh - 6.5rem)) !important;
+    }
+    .cw__grip { display: none; }
+    .cw-bubble { max-width: 84%; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .cw__launcher { transition: none; }
+    .cw__launcher, .cw__send { transition: none; }
+    .cw__panel { animation: none; }
+    .cw__ring, .cw__live, .cw-bubble--typing i { animation: none; }
   }
 </style>
