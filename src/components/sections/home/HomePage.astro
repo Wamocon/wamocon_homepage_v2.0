@@ -387,8 +387,11 @@ const modal = {
       {
         home.why.points.map((p, i) => (
           <article class="why-card" data-reveal="up" data-reveal-delay={(i % 4) * 70}>
-            <span class="why-card__num">{p.num}</span>
-            <p>{p.text[lang]}</p>
+            <img class="card-media" src={p.image} alt={p.alt[lang]} width="900" height="600" loading="lazy" decoding="async" />
+            <div class="card-body">
+              <span class="why-card__num">{p.num}</span>
+              <p>{p.text[lang]}</p>
+            </div>
           </article>
         ))
       }
@@ -436,8 +439,11 @@ const modal = {
       {
         home.benefits.items.map((b, i) => (
           <article class="benefit-card" data-reveal="up" data-reveal-delay={(i % 3) * 80}>
-            <h3>{b.title[lang]}</h3>
-            <p class="text-muted">{b.text[lang]}</p>
+            <img class="card-media" src={b.image} alt={b.alt[lang]} width="900" height="600" loading="lazy" decoding="async" />
+            <div class="card-body">
+              <h3>{b.title[lang]}</h3>
+              <p class="text-muted">{b.text[lang]}</p>
+            </div>
           </article>
         ))
       }
@@ -1006,6 +1012,40 @@ const modal = {
   .why-card__num {
     margin-bottom: 1rem;
   }
+
+
+
+  /* ---------- card photos ----------
+     The photo sits full-width at the top of the card and the copy below it.
+     Padding moves from the card to .card-body so the image can reach the edges;
+     3:2 is the images' native ratio, so nothing is cropped a second time. */
+  .card-media {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+  }
+  .card-body {
+    padding: 1.5rem 2rem 2rem;
+  }
+  /* Cards holding a photo hand their padding to .card-body. */
+  .why-card:has(.card-media),
+  .benefit-card:has(.card-media) {
+    padding: 0;
+    overflow: hidden;
+  }
+  /* The benefit card is fully rounded, so the image needs the top corners. */
+  .benefit-card .card-media {
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+  /* Equal-height cards keep the grid tidy whatever the copy length. */
+  .why__grid > .why-card,
+  .benefits__grid > .benefit-card {
+    display: flex;
+    flex-direction: column;
+  }
+  .card-body { flex: 1 1 auto; }
 
   /* ---------- about ---------- */
   /* No extra max-width here — the module has to line up with every other

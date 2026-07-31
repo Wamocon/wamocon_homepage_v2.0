@@ -1,0 +1,445 @@
+---
+/**
+ * WAMOCON website assistant.
+ *
+ * EU AI Act Art. 50(1): a person must be informed that they are interacting
+ * with an AI system. The disclosure is therefore part of the panel itself (not
+ * hidden behind a link) and is repeated as the first message in the transcript.
+ *
+ * The browser only ever talks to /api/chat — the model endpoint and API key stay
+ * server-side. Answers are grounded in this website's own content.
+ */
+import { legalNav, type Lang } from '../../i18n/config';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+
+const t = {
+  de: {
+    open: 'Chat mit dem WAMOCON-Assistenten öffnen',
+    close: 'Chat schließen',
+    title: 'WAMOCON Assistent',
+    badge: 'KI',
+    disclosure: 'Sie chatten mit einem KI-Assistenten, nicht mit einem Menschen. Er beantwortet Fragen ausschließlich auf Basis der Inhalte dieser Website und kann Fehler machen. Verbindliche Auskünfte erhalten Sie von unserem Team.',
+    intro: 'Hallo! Ich beantworte Fragen zu WAMOCON auf Basis dieser Website. Was möchten Sie wissen?',
+    placeholder: 'Ihre Frage zu WAMOCON …',
+    send: 'Senden',
+    sending: 'Antwort wird erstellt …',
+    sources: 'Quellen auf dieser Website:',
+    privacy: 'Datenschutz',
+    error: 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.',
+    warming: 'Der Assistent startet gerade — einen Moment bitte …',
+    suggestions: ['Was macht WAMOCON?', 'Welche Leistungen bietet ihr?', 'Wie kann ich euch erreichen?'],
+  },
+  en: {
+    open: 'Open chat with the WAMOCON assistant',
+    close: 'Close chat',
+    title: 'WAMOCON Assistant',
+    badge: 'AI',
+    disclosure: 'You are chatting with an AI assistant, not a human. It answers strictly from the content of this website and can make mistakes. For binding information, please contact our team.',
+    intro: 'Hi! I answer questions about WAMOCON based on this website. What would you like to know?',
+    placeholder: 'Your question about WAMOCON …',
+    send: 'Send',
+    sending: 'Generating answer …',
+    sources: 'Sources on this website:',
+    privacy: 'Privacy policy',
+    error: 'Something went wrong. Please try again.',
+    warming: 'The assistant is starting up — one moment please …',
+    suggestions: ['What does WAMOCON do?', 'Which services do you offer?', 'How can I contact you?'],
+  },
+  tr: {
+    open: 'WAMOCON asistanıyla sohbeti aç',
+    close: 'Sohbeti kapat',
+    title: 'WAMOCON Asistanı',
+    badge: 'YZ',
+    disclosure: 'Bir insanla değil, yapay zekâ asistanıyla sohbet ediyorsunuz. Yalnızca bu web sitesinin içeriğine dayanarak yanıt verir ve hata yapabilir. Bağlayıcı bilgi için lütfen ekibimize ulaşın.',
+    intro: 'Merhaba! WAMOCON hakkındaki soruları bu web sitesine dayanarak yanıtlıyorum. Ne öğrenmek istersiniz?',
+    placeholder: 'WAMOCON hakkındaki sorunuz …',
+    send: 'Gönder',
+    sending: 'Yanıt oluşturuluyor …',
+    sources: 'Bu web sitesindeki kaynaklar:',
+    privacy: 'Gizlilik politikası',
+    error: 'Bir hata oluştu. Lütfen tekrar deneyin.',
+    warming: 'Asistan başlatılıyor — bir saniye lütfen …',
+    suggestions: ['WAMOCON ne yapar?', 'Hangi hizmetleri sunuyorsunuz?', 'Size nasıl ulaşabilirim?'],
+  },
+}[lang];
+
+const privacyHref = legalNav.privacy[lang].href;
+---
+
+<div class="cw" data-chat-widget data-lang={lang}>
+  <button type="button" class="cw__launcher" data-chat-open aria-expanded="false" aria-controls="cw-panel" aria-label={t.open}>
+    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+    </svg>
+    <span class="cw__launcher-badge">{t.badge}</span>
+  </button>
+
+  <section class="cw__panel" id="cw-panel" data-chat-panel hidden aria-label={t.title}>
+    <header class="cw__head">
+      <div class="cw__head-title">
+        <strong>{t.title}</strong>
+        <span class="cw__badge">{t.badge}</span>
+      </div>
+      <button type="button" class="cw__close" data-chat-close aria-label={t.close}>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+      </button>
+    </header>
+
+    {/* EU AI Act Art. 50 transparency — visible, not behind a link. */}
+    <p class="cw__disclosure">
+      {t.disclosure} <a href={privacyHref}>{t.privacy}</a>
+    </p>
+
+    <div class="cw__log" data-chat-log role="log" aria-live="polite" aria-atomic="false">
+      <div class="cw__msg cw__msg--bot"><p>{t.intro}</p></div>
+    </div>
+
+    <div class="cw__suggestions" data-chat-suggestions>
+      {t.suggestions.map((s) => (
+        <button type="button" class="cw__chip" data-chat-suggestion={s}>{s}</button>
+      ))}
+    </div>
+
+    <form class="cw__form" data-chat-form>
+      <label class="visually-hidden" for="cw-input">{t.placeholder}</label>
+      <input
+        id="cw-input"
+        class="cw__input"
+        type="text"
+        name="message"
+        maxlength="500"
+        autocomplete="off"
+        placeholder={t.placeholder}
+        data-chat-input
+      />
+      <button type="submit" class="cw__send" data-chat-send aria-label={t.send}>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" /></svg>
+      </button>
+    </form>
+  </section>
+</div>
+
+<script define:vars={{ strings: t }}>
+  // @ts-nocheck
+  (() => {
+    const root = document.querySelector('[data-chat-widget]');
+    if (!root) return;
+    const lang = root.dataset.lang || 'de';
+    const panel = root.querySelector('[data-chat-panel]');
+    const launcher = root.querySelector('[data-chat-open]');
+    const log = root.querySelector('[data-chat-log]');
+    const form = root.querySelector('[data-chat-form]');
+    const input = root.querySelector('[data-chat-input]');
+    const sendBtn = root.querySelector('[data-chat-send]');
+    const suggestions = root.querySelector('[data-chat-suggestions]');
+
+    let busy = false;
+    let warmed = false;
+
+    const scrollDown = () => { log.scrollTop = log.scrollHeight; };
+
+    function addMessage(role, text) {
+      const wrap = document.createElement('div');
+      wrap.className = `cw__msg cw__msg--${role}`;
+      const p = document.createElement('p');
+      p.textContent = text;           // textContent: never inject model output as HTML
+      wrap.appendChild(p);
+      log.appendChild(wrap);
+      scrollDown();
+      return wrap;
+    }
+
+    function addSources(sources) {
+      if (!sources || !sources.length) return;
+      const wrap = document.createElement('div');
+      wrap.className = 'cw__sources';
+      const label = document.createElement('span');
+      label.textContent = strings.sources;
+      label.style.flexBasis = '100%';   // label on its own line, links beneath
+      wrap.appendChild(label);
+      for (const s of sources) {
+        const a = document.createElement('a');
+        a.href = s.url;
+        a.textContent = s.title || s.url;
+        wrap.appendChild(a);
+      }
+      log.appendChild(wrap);
+      scrollDown();
+    }
+
+    // Loading the model into VRAM takes ~30s cold. Warming on open means it is
+    // ready by the time the visitor has typed their question.
+    function warm() {
+      if (warmed) return;
+      warmed = true;
+      fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ warm: true }),
+      }).catch(() => {});
+    }
+
+    function setOpen(open) {
+      panel.hidden = !open;
+      launcher.setAttribute('aria-expanded', String(open));
+      root.classList.toggle('is-open', open);
+      if (open) { warm(); input.focus(); scrollDown(); }
+    }
+
+    launcher.addEventListener('click', () => setOpen(panel.hidden));
+    root.querySelector('[data-chat-close]').addEventListener('click', () => { setOpen(false); launcher.focus(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !panel.hidden) { setOpen(false); launcher.focus(); }
+    });
+
+    suggestions.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-chat-suggestion]');
+      if (!btn) return;
+      input.value = btn.dataset.chatSuggestion;
+      form.requestSubmit();
+    });
+
+    async function ask(question) {
+      if (busy || !question) return;
+      busy = true;
+      input.value = '';
+      suggestions.hidden = true;
+      sendBtn.disabled = true;
+      addMessage('user', question);
+
+      const pending = addMessage('bot', strings.sending);
+      pending.classList.add('is-pending');
+
+      const call = () => fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lang, message: question }),
+      });
+
+      try {
+        let res = await call();
+        // 504 = the model was still loading into VRAM. Tell the user what is
+        // happening and try once more instead of failing outright.
+        if (res.status === 504) {
+          pending.querySelector('p').textContent = strings.warming;
+          await new Promise((r) => setTimeout(r, 12000));
+          res = await call();
+        }
+        const data = await res.json().catch(() => ({}));
+        pending.remove();
+        addMessage('bot', data.answer || strings.error);
+        if (data.ok && !data.refused) addSources(data.sources);
+      } catch {
+        pending.remove();
+        addMessage('bot', strings.error);
+      } finally {
+        busy = false;
+        sendBtn.disabled = false;
+        input.focus();
+      }
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      ask(input.value.trim().slice(0, 500));
+    });
+  })();
+</script>
+
+<style>
+  .cw {
+    position: fixed;
+    right: clamp(0.75rem, 2vw, 1.5rem);
+    bottom: clamp(0.75rem, 2vw, 1.5rem);
+    z-index: calc(var(--z-modal, 1000) + 2);
+    font-size: 0.95rem;
+  }
+
+  /* ---- launcher ---- */
+  .cw__launcher {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    border: none;
+    color: #fff;
+    background: var(--color-accent);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), var(--shadow-accent, none);
+    cursor: pointer;
+    transition: transform var(--dur-fast) var(--ease-out), background var(--dur-fast);
+  }
+  .cw__launcher:hover { transform: translateY(-2px); background: var(--color-accent-hover, #c81111); }
+  .cw.is-open .cw__launcher { transform: scale(0.9); opacity: 0.9; }
+  .cw__launcher-badge {
+    position: absolute;
+    top: -2px; right: -2px;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: #101010;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-size: 0.6rem;
+    font-weight: var(--fw-bold);
+    letter-spacing: 0.04em;
+  }
+
+  /* ---- panel ---- */
+  .cw__panel {
+    position: absolute;
+    right: 0;
+    bottom: calc(58px + 0.75rem);
+    display: flex;
+    flex-direction: column;
+    width: min(390px, calc(100vw - 1.5rem));
+    max-height: min(620px, calc(100dvh - 6rem));
+    background: #161616;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+  }
+  .cw__panel[hidden] { display: none; }
+
+  .cw__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .cw__head-title { display: flex; align-items: center; gap: 0.5rem; color: #fff; }
+  .cw__badge {
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: var(--color-accent-surface);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: var(--fw-bold);
+    letter-spacing: 0.05em;
+  }
+  .cw__close {
+    display: grid; place-items: center;
+    width: 34px; height: 34px;
+    border: 0; border-radius: 50%;
+    background: transparent; color: var(--color-text-muted);
+    cursor: pointer;
+  }
+  .cw__close:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+
+  /* EU AI Act disclosure — deliberately always visible. */
+  .cw__disclosure {
+    margin: 0;
+    padding: 0.7rem 1rem;
+    background: rgba(244, 14, 14, 0.08);
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+  .cw__disclosure a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 0.2em; }
+
+  .cw__log {
+    flex: 1 1 auto;
+    min-height: 140px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .cw__msg { max-width: 88%; }
+  .cw__msg p {
+    margin: 0;
+    padding: 0.65rem 0.85rem;
+    border-radius: 14px;
+    line-height: 1.55;
+    font-size: 0.9rem;
+  }
+  .cw__msg--bot { align-self: flex-start; }
+  .cw__msg--bot p { background: rgba(255, 255, 255, 0.07); color: var(--color-text); border-bottom-left-radius: 4px; }
+  .cw__msg--user { align-self: flex-end; }
+  .cw__msg--user p { background: var(--color-accent-surface); color: #fff; border-bottom-right-radius: 4px; }
+  .cw__msg.is-pending p { color: var(--color-text-muted); font-style: italic; }
+
+  .cw__sources {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.3rem 0.55rem;
+    padding: 0 0.2rem;
+    font-size: 0.72rem;
+    color: var(--color-text-subtle, rgba(255,255,255,0.45));
+  }
+  .cw__sources a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 0.2em; }
+
+  .cw__suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0 1rem 0.75rem;
+  }
+  .cw__suggestions[hidden] { display: none; }
+  .cw__chip {
+    padding: 0.4rem 0.7rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--color-text-muted);
+    font: inherit;
+    font-size: 0.78rem;
+    cursor: pointer;
+  }
+  .cw__chip:hover { color: #fff; border-color: var(--color-accent); }
+
+  .cw__form {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem 1rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+  .cw__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    font: inherit;
+    font-size: 0.9rem;
+  }
+  .cw__input:focus { outline: 2px solid var(--color-accent); outline-offset: 1px; }
+  .cw__input::placeholder { color: rgba(255, 255, 255, 0.45); }
+  .cw__send {
+    flex: 0 0 auto;
+    display: grid; place-items: center;
+    width: 42px; height: 42px;
+    border: 0; border-radius: 50%;
+    background: var(--color-accent); color: #fff;
+    cursor: pointer;
+  }
+  .cw__send:hover:not(:disabled) { background: var(--color-accent-hover, #c81111); }
+  .cw__send:disabled { opacity: 0.5; cursor: default; }
+
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  /* On phones the panel becomes a near-full-screen sheet. */
+  @media (max-width: 480px) {
+    .cw { right: 0.75rem; bottom: 0.75rem; left: 0.75rem; }
+    .cw__launcher { margin-left: auto; }
+    .cw__panel { left: 0; right: 0; width: auto; max-height: calc(100dvh - 7rem); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cw__launcher { transition: none; }
+  }
+</style>

@@ -24,7 +24,7 @@ export interface HomeContent {
   services: {
     heading: L;
     intro: L;
-    items: { title: L; text: L }[];
+    items: { title: L; text: L; image: string; alt: L }[];
   };
   showcase: { heading: L; intro: L };
   qa: {
@@ -39,12 +39,12 @@ export interface HomeContent {
   why: {
     heading: L;
     intro: L;
-    points: { num: string; text: L }[];
+    points: { num: string; text: L; image: string; alt: L }[];
   };
   about: { heading: L; paragraphs: LA };
   benefits: {
     heading: L;
-    items: { title: L; text: L }[];
+    items: { title: L; text: L; image: string; alt: L }[];
     cta: L;
   };
   projects: {
@@ -266,6 +266,8 @@ export const home: HomeContent = {
     points: [
       {
         num: '01',
+        image: '/images/why-01-weiterbildung.webp',
+        alt: { de: 'Fortbildung im Testmanagement', en: 'Test-management training', tr: 'Test yönetimi eğitimi' },
         text: {
           de: 'Unsere IT-Experten bleiben durch regelmäßige Fortbildungen im Testmanagement immer auf dem neuesten Stand.',
           en: 'Our IT experts always stay up to date through regular training in test management.',
@@ -274,6 +276,8 @@ export const home: HomeContent = {
       },
       {
         num: '02',
+        image: '/images/why-02-ergebnisse.webp',
+        alt: { de: 'Workshop bei WAMOCON', en: 'Workshop at WAMOCON', tr: 'WAMOCON’da atölye çalışması' },
         text: {
           de: 'Wir liefern schnelle Ergebnisse, präzise Ausführung und einen praxisnahen Ansatz für Ihren Projekterfolg.',
           en: 'We deliver fast results, precise execution and a practical approach for your project success.',
@@ -282,6 +286,8 @@ export const home: HomeContent = {
       },
       {
         num: '03',
+        image: '/images/why-03-automatisierung.webp',
+        alt: { de: 'Entwicklung und Testautomatisierung', en: 'Development and test automation', tr: 'Geliştirme ve test otomasyonu' },
         text: {
           de: 'Mit Automatisierung, künstlicher Intelligenz und maschinellem Lernen gestalten wir Ihre Prozesse effizienter und zukunftssicher.',
           en: 'With automation, artificial intelligence and machine learning we make your processes more efficient and future-proof.',
@@ -290,6 +296,8 @@ export const home: HomeContent = {
       },
       {
         num: '04',
+        image: '/images/why-04-qualitaet.webp',
+        alt: { de: 'Konzentrierte Arbeit am Testfall', en: 'Focused work on a test case', tr: 'Test senaryosu üzerinde odaklı çalışma' },
         text: {
           de: 'Ständige Weiterbildung für Qualität, die Ihre Erwartungen übertrifft und Maßstäbe setzt.',
           en: 'Continuous training for quality that exceeds your expectations and sets standards.',
@@ -324,6 +332,8 @@ export const home: HomeContent = {
     items: [
       {
         title: { de: 'Klare Kommunikation', en: 'Clear communication', tr: 'Net iletişim' },
+        image: '/images/benefit-kommunikation.webp',
+        alt: { de: 'Zusammenarbeit im Team', en: 'Working together as a team', tr: 'Ekip içinde iş birliği' },
         text: {
           de: 'Unsere Kunden profitieren von ständiger Transparenz zwischen den Anforderungen und Erwartungen beider Parteien. So werden Unstimmigkeiten vermieden.',
           en: 'Our clients benefit from constant transparency between the requirements and expectations of both parties, avoiding misunderstandings.',
@@ -332,6 +342,8 @@ export const home: HomeContent = {
       },
       {
         title: { de: 'Fachwissen', en: 'Expertise', tr: 'Uzmanlık bilgisi' },
+        image: '/images/benefit-fachwissen.webp',
+        alt: { de: 'Fachvortrag zum Testmanagement', en: 'Specialist talk on test management', tr: 'Test yönetimi üzerine uzman sunumu' },
         text: {
           de: 'Unsere Kundinnen und Kunden erhalten umfassende Expertise in den Bereichen Testing und Qualitätsmanagement mit qualitativ hochwertigen Dienstleistungen.',
           en: 'Our clients receive comprehensive expertise in testing and quality management with high-quality services.',
@@ -340,6 +352,8 @@ export const home: HomeContent = {
       },
       {
         title: { de: 'Partnerschaft', en: 'Partnership', tr: 'Ortaklık' },
+        image: '/images/benefit-partnerschaft.webp',
+        alt: { de: 'Gemeinsame Projektarbeit', en: 'Collaborative project work', tr: 'Ortak proje çalışması' },
         text: {
           de: 'Unsere Kunden gewinnen mit WAMOCON ein Vertrauensverhältnis für eine erfolgreiche Zusammenarbeit.',
           en: 'With WAMOCON, our clients gain a relationship of trust for successful collaboration.',
@@ -352,6 +366,8 @@ export const home: HomeContent = {
           en: 'Flexibility and adaptability',
           tr: 'Esneklik ve uyum yeteneği',
         },
+        image: '/images/benefit-flexibilitaet.webp',
+        alt: { de: 'Das WAMOCON-Team beim Tough Mudder', en: 'The WAMOCON team at Tough Mudder', tr: 'Tough Mudder’da WAMOCON ekibi' },
         text: {
           de: 'Um auf veränderte Anforderungen und Bedürfnisse reagieren zu können, erhalten unsere Kunden absolute Flexibilität.',
           en: 'To respond to changing requirements and needs, our clients receive absolute flexibility.',
@@ -360,6 +376,8 @@ export const home: HomeContent = {
       },
       {
         title: { de: 'Bildung und Schulung', en: 'Education and training', tr: 'Eğitim ve öğretim' },
+        image: '/images/benefit-bildung.webp',
+        alt: { de: 'Schulung und Wissenstransfer', en: 'Training and knowledge transfer', tr: 'Eğitim ve bilgi aktarımı' },
         text: {
           de: 'Wir teilen unser Wissen und schulen Teams, damit Qualität nachhaltig im Unternehmen verankert wird.',
           en: 'We share our knowledge and train teams so that quality is sustainably anchored in your company.',
@@ -368,6 +386,8 @@ export const home: HomeContent = {
       },
       {
         title: { de: 'Verbesserung des Werts', en: 'Increasing value', tr: 'Değerin artırılması' },
+        image: '/images/benefit-wert.webp',
+        alt: { de: 'Ergebnisse gemeinsam erarbeiten', en: 'Working out results together', tr: 'Sonuçları birlikte ortaya koymak' },
         text: {
           de: 'Durch höhere Effizienz, geringere Kosten oder verbesserte Qualität erhalten unsere Kunden einen Mehrwert.',
           en: 'Through greater efficiency, lower costs or improved quality, our clients gain added value.',
