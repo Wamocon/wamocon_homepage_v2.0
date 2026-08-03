@@ -29,3 +29,5 @@ email-preview-*.html
 
 # high-res source photos (not deployed)
 _originals/
+
+.vercel
