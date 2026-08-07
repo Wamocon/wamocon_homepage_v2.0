@@ -1146,8 +1146,9 @@ const videoPrivacy = { label: form.privacyLabel, href: legalNav.privacy[lang].hr
     display: flex;
     flex-direction: column;
   }
+  /* Square box: the portraits are square masters, so nothing is cropped away. */
   .voice__img {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
     background: #1a1a1a;
   }
