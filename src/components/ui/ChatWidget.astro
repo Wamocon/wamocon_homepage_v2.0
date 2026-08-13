@@ -25,7 +25,10 @@ const t = {
     title: 'WAMOCON Assistent',
     status: 'Antwortet in Sekunden',
     badge: 'KI',
-    disclosure: 'Sie chatten mit einem KI-Assistenten, nicht mit einem Menschen. Er antwortet nur auf Basis dieser Website und kann Fehler machen.',
+    discLead: 'Sie sprechen mit einem KI-System, nicht mit einem Menschen.',
+    discBody: 'Antworten können falsch sein. Der Assistent bewertet keine Abgaben und entscheidet nichts über Sie.',
+    discMore: 'Was das bedeutet',
+    discAnchor: 'ki-assistent',
     intro: 'Hallo! Ich beantworte Fragen zu WAMOCON auf Basis dieser Website. Was möchten Sie wissen?',
     placeholder: 'Ihre Frage zu WAMOCON …',
     send: 'Senden',
@@ -42,7 +45,10 @@ const t = {
     title: 'WAMOCON Assistant',
     status: 'Replies in seconds',
     badge: 'AI',
-    disclosure: 'You are chatting with an AI assistant, not a human. It answers only from this website and can make mistakes.',
+    discLead: 'You are talking to an AI system, not a human.',
+    discBody: 'Answers can be wrong. The assistant grades no submissions and decides nothing about you.',
+    discMore: 'What this means',
+    discAnchor: 'ai-assistant',
     intro: 'Hi! I answer questions about WAMOCON based on this website. What would you like to know?',
     placeholder: 'Your question about WAMOCON …',
     send: 'Send',
@@ -59,7 +65,10 @@ const t = {
     title: 'WAMOCON Asistanı',
     status: 'Saniyeler içinde yanıtlar',
     badge: 'YZ',
-    disclosure: 'Bir insanla değil, yapay zekâ asistanıyla sohbet ediyorsunuz. Yalnızca bu web sitesine dayanarak yanıt verir ve hata yapabilir.',
+    discLead: 'Bir insanla değil, bir yapay zekâ sistemiyle konuşuyorsunuz.',
+    discBody: 'Yanıtlar yanlış olabilir. Asistan hiçbir ödevi değerlendirmez ve sizin hakkınızda karar vermez.',
+    discMore: 'Bu ne anlama geliyor',
+    discAnchor: 'yapay-zeka-asistani',
     intro: 'Merhaba! WAMOCON hakkındaki soruları bu web sitesine dayanarak yanıtlıyorum. Ne öğrenmek istersiniz?',
     placeholder: 'WAMOCON hakkındaki sorunuz …',
     send: 'Gönder',
@@ -113,8 +122,22 @@ const privacyHref = legalNav.privacy[lang].href;
       </button>
     </header>
 
-    {/* EU AI Act Art. 50 transparency — always visible, never behind a link. */}
-    <p class="cw__note">{t.disclosure} <a href={privacyHref}>{t.privacy}</a></p>
+    {/* EU AI Act Art. 50(1): the disclosure must reach the visitor clearly and
+        distinguishably at the first interaction, so it sits in the panel above
+        the conversation, not behind a link. */}
+    <aside class="cw__note" role="note">
+      <svg class="cw__note-ic" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"
+           fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3.5" y="8" width="17" height="12" rx="3.2" />
+        <path d="M12 4.2V8M8.6 4.2h6.8" />
+        <path d="M8.6 13h.01M15.4 13h.01" stroke-width="2.4" />
+        <path d="M9.6 16.6h4.8" />
+      </svg>
+      <span>
+        <strong>{t.discLead}</strong> {t.discBody}
+        <a href={`${privacyHref}#${t.discAnchor}`}>{t.discMore}</a>
+      </span>
+    </aside>
 
     <div class="cw__log" data-chat-log role="log" aria-live="polite" aria-atomic="false"></div>
 
@@ -376,6 +399,10 @@ const privacyHref = legalNav.privacy[lang].href;
     --cw-bg-2: #212329;
     --cw-line: rgba(255, 255, 255, 0.1);
     --cw-grad: linear-gradient(140deg, #ff4d2d, var(--color-accent) 60%, #c00d0d);
+    /* The brand red reaches only 3.7:1 on the panel, below the 4.5:1 AA floor
+       for body text. Art. 50(5) requires the disclosure to be accessible, so
+       links inside it use a lightened red that measures 4.9:1. */
+    --cw-accent-link: #ff4d4d;
     position: fixed;
     right: clamp(0.85rem, 2vw, 1.6rem);
     bottom: clamp(0.85rem, 2vw, 1.6rem);
@@ -508,16 +535,25 @@ const privacyHref = legalNav.privacy[lang].href;
   }
   .cw__x:hover { background: rgba(255, 255, 255, 0.09); color: #fff; }
 
+  /* The Art. 50 notice must be distinguishable from the conversation, so it
+     gets its own tinted band, the accent rule and a higher-contrast lead than
+     ordinary muted text. */
   .cw__note {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
     margin: 0;
-    padding: 0.6rem 0.95rem;
-    background: rgba(255, 255, 255, 0.03);
+    padding: 0.7rem 0.95rem;
+    background: rgba(255, 255, 255, 0.045);
     border-bottom: 1px solid var(--cw-line);
-    color: rgba(255, 255, 255, 0.55);
-    font-size: 0.71rem;
-    line-height: 1.5;
+    border-left: 3px solid var(--color-accent);
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.72rem;
+    line-height: 1.55;
   }
-  .cw__note a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 0.2em; }
+  .cw__note-ic { flex: 0 0 auto; margin-top: 1px; color: var(--color-accent); }
+  .cw__note strong { display: block; color: rgba(255, 255, 255, 0.94); font-weight: var(--fw-semibold); }
+  .cw__note a { color: var(--cw-accent-link); text-decoration: underline; text-underline-offset: 0.2em; }
 
   /* ---------- transcript ---------- */
   .cw__log {
