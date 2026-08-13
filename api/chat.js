@@ -46,9 +46,11 @@ function upstreamHeaders() {
   return h;
 }
 
-// Vercel Hobby terminates a function at 10s. Give up at 8.5s so we can return a
-// friendly message instead of the platform's raw gateway error.
-const UPSTREAM_TIMEOUT_MS = 8500;
+// A warm answer measures 5.7-7.7s upstream, so the old 8.5s budget (sized for
+// the platform's former 10s cap) turned normal variance into gateway errors.
+// vercel.json raises this function to maxDuration 60; stop at 45s so we can
+// still return a friendly message instead of the platform's raw error page.
+const UPSTREAM_TIMEOUT_MS = 45000;
 const MAX_QUESTION_CHARS = 500;
 const MAX_ANSWER_TOKENS = 320;
 const MAX_CONTEXT_CHUNKS = 6;
