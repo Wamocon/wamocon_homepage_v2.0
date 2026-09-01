@@ -13,6 +13,11 @@ const heroTitle = {
   en: "What do our employees say?",
   tr: "Çalışanlarımız ne diyor?",
 }[lang];
+const portraitAlt = {
+  de: 'Porträtfoto von',
+  en: 'Portrait photo of',
+  tr: 'Portre fotoğrafı:',
+}[lang];
 const heroLead = {
   de: "Unsere Mitarbeiter teilen ihre Geschichte und die gesammelte Erfahrung bei der WAMOCON.",
   en: "Our employees share their story and the experience they have gained at WAMOCON.",
@@ -303,7 +308,7 @@ const members: Member[] = {
   {members.map((m, mi) => (
     <div class="wrap member">
       <div class="member-head">
-        <img src={m.img} alt={m.name} class="avatar" loading="lazy" />
+        <img src={m.img} alt={`${portraitAlt} ${m.name}`} class="avatar" loading="lazy" />
         <div>
           <h2 class="t-white">{m.name}</h2>
           <ul class="bio">{m.bio.map((b) => <li>{b}</li>)}</ul>
@@ -338,7 +343,7 @@ const members: Member[] = {
     </div>
   ))}
 
-  <ContactBlock lang={lang} />
+  <ContactBlock lang={lang} address="du" />
 </section>
 
 <style>

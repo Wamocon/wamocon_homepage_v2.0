@@ -214,28 +214,133 @@ export const ui = {
 } as const;
 
 /**
+ * Editorial address form. German distinguishes the formal "Sie" from the
+ * informal "Du". Client-facing pages use `sie`; the applicant-facing pages
+ * (career, apprenticeship, employee voices, university cooperation) use `du`.
+ * English and Turkish have no grammatical distinction — the value only steers
+ * how formal the wording is, so both editions stay in step with the German one.
+ *
+ * Consent and cookie copy is deliberately NOT switched: the cookie banner and
+ * the external-media overlay are global chrome and stay formal on every page.
+ */
+export type Address = 'sie' | 'du';
+
+/**
  * Chrome shared by every lead form on the site: the thank-you redirect, the
- * privacy-policy link label and the named person accountable for the enquiry.
+ * privacy-policy link label, the named person accountable for the enquiry and
+ * the shared consent sentence.
  * Kept here so a new language only has to be added once.
  */
 export const formChrome = {
   de: {
     thankYou: '/danke/',
     privacyLabel: 'Datenschutz',
-    responsible:
-      'Ihre Anfrage wird bearbeitet von Dipl.-Ing. Waleri Moretz, Geschäftsführer der WAMOCON GmbH.',
+    responsible: {
+      sie: 'Ihre Anfrage wird bearbeitet von Dipl.-Ing. Waleri Moretz, Geschäftsführer der WAMOCON GmbH.',
+      du: 'Deine Anfrage wird bearbeitet von Dipl.-Ing. Waleri Moretz, Geschäftsführer der WAMOCON GmbH.',
+    },
+    /** First person on purpose: reads correctly under both address forms. */
+    consentPre: 'Hiermit bestätige ich, dass ich die ',
+    consentLink: 'Datenschutzerklärung',
+    consentPost: ' gelesen habe.',
+    contactHint: {
+      sie: 'Bitte geben Sie E-Mail oder Telefon an.',
+      du: 'Bitte gib E-Mail oder Telefon an.',
+    },
   },
   en: {
     thankYou: '/en/thank-you/',
     privacyLabel: 'Privacy policy',
-    responsible:
-      'Your enquiry is handled by Dipl.-Ing. Waleri Moretz, Managing Director of WAMOCON GmbH.',
+    responsible: {
+      sie: 'Your enquiry is handled by Dipl.-Ing. Waleri Moretz, Managing Director of WAMOCON GmbH.',
+      du: 'Your enquiry is handled by Dipl.-Ing. Waleri Moretz, Managing Director of WAMOCON GmbH.',
+    },
+    consentPre: 'I hereby confirm that I have read the ',
+    consentLink: 'privacy policy',
+    consentPost: '.',
+    contactHint: {
+      sie: 'Please provide an email address or phone number.',
+      du: 'Please provide an email address or phone number.',
+    },
   },
   tr: {
     thankYou: '/tr/tesekkurler/',
     privacyLabel: 'Gizlilik politikası',
-    responsible:
-      'Talebiniz, WAMOCON GmbH Genel Müdürü Dipl.-Ing. Waleri Moretz tarafından ele alınmaktadır.',
+    responsible: {
+      sie: 'Talebiniz, WAMOCON GmbH Genel Müdürü Dipl.-Ing. Waleri Moretz tarafından ele alınmaktadır.',
+      du: 'Talebin, WAMOCON GmbH Genel Müdürü Dipl.-Ing. Waleri Moretz tarafından ele alınmaktadır.',
+    },
+    consentPre: 'Şunu okuduğumu beyan ederim: ',
+    consentLink: 'Gizlilik politikası',
+    consentPost: '.',
+    contactHint: {
+      sie: 'Lütfen e-posta veya telefon bilgisi girin.',
+      du: 'Lütfen e-posta veya telefon bilgini gir.',
+    },
+  },
+} as const;
+
+/**
+ * "How did you hear about us?" — the only origin signal that survives ad
+ * blockers and a declined cookie banner, and the one that cannot be collected
+ * retroactively. Optional on purpose: a required field costs more completed
+ * enquiries than the answer is worth.
+ *
+ * `value` is what reaches the inbox and stays language-neutral so submissions
+ * from all three editions can be counted together; `label` is what the visitor
+ * reads. Picking "other" reveals a free-text field.
+ */
+export const leadSource = {
+  de: {
+    question: {
+      sie: 'Wie sind Sie auf uns aufmerksam geworden?',
+      du: 'Wie bist du auf uns aufmerksam geworden?',
+    },
+    optional: 'freiwillig',
+    placeholder: 'Bitte auswählen',
+    otherLabel: 'Bitte kurz beschreiben',
+    options: [
+      { value: 'google', label: 'Google-Suche' },
+      { value: 'referral', label: 'Empfehlung' },
+      { value: 'linkedin', label: 'LinkedIn' },
+      { value: 'event', label: 'Veranstaltung oder Vortrag' },
+      { value: 'known', label: 'Wir kennen uns bereits' },
+      { value: 'other', label: 'Sonstiges' },
+    ],
+  },
+  en: {
+    question: {
+      sie: 'How did you hear about us?',
+      du: 'How did you hear about us?',
+    },
+    optional: 'optional',
+    placeholder: 'Please select',
+    otherLabel: 'Please describe briefly',
+    options: [
+      { value: 'google', label: 'Google search' },
+      { value: 'referral', label: 'Recommendation' },
+      { value: 'linkedin', label: 'LinkedIn' },
+      { value: 'event', label: 'Event or talk' },
+      { value: 'known', label: 'We already know each other' },
+      { value: 'other', label: 'Other' },
+    ],
+  },
+  tr: {
+    question: {
+      sie: 'Bizi nereden duydunuz?',
+      du: 'Bizi nereden duydun?',
+    },
+    optional: 'isteğe bağlı',
+    placeholder: 'Lütfen seçin',
+    otherLabel: 'Kısaca açıklayın',
+    options: [
+      { value: 'google', label: 'Google araması' },
+      { value: 'referral', label: 'Tavsiye' },
+      { value: 'linkedin', label: 'LinkedIn' },
+      { value: 'event', label: 'Etkinlik veya sunum' },
+      { value: 'known', label: 'Zaten tanışıyoruz' },
+      { value: 'other', label: 'Diğer' },
+    ],
   },
 } as const;
 

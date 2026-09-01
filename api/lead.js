@@ -194,6 +194,33 @@ function typeLabel(type, lang) {
   return (labels[lang] || labels.de)[type] || type;
 }
 
+// Keys as they arrive from the forms (see src/i18n/config.ts leadSource).
+const SOURCE_LABELS = {
+  de: {
+    google: 'Google-Suche',
+    referral: 'Empfehlung',
+    linkedin: 'LinkedIn',
+    event: 'Veranstaltung oder Vortrag',
+    known: 'Wir kennen uns bereits',
+    other: 'Sonstiges',
+  },
+  en: {
+    google: 'Google search',
+    referral: 'Recommendation',
+    linkedin: 'LinkedIn',
+    event: 'Event or talk',
+    known: 'We already know each other',
+    other: 'Other',
+  },
+};
+
+function sourceLabel(submission, isDe) {
+  if (!submission.source) return '';
+  const labels = isDe ? SOURCE_LABELS.de : SOURCE_LABELS.en;
+  const base = labels[submission.source] || submission.source;
+  return submission.sourceOther ? `${base}: ${submission.sourceOther}` : base;
+}
+
 function emailLayout({ title, lang, body }) {
   const footerLine =
     lang === 'de'
@@ -298,6 +325,12 @@ function internalEmail(submission) {
       : '',
     submission.testimonialConsent
       ? `<p style="margin:0 0 10px;"><strong style="color:#ffffff;">${isDe ? 'Referenz-Einwilligung' : 'Testimonial consent'}:</strong> ${isDe ? 'Ja — darf als Kundenstimme veröffentlicht werden' : 'Yes — may be published as a testimonial'}</p>`
+      : '',
+    sourceLabel(submission, isDe)
+      ? `<p style="margin:0 0 10px;"><strong style="color:#ffffff;">${isDe ? 'Aufmerksam geworden über' : 'Heard about us via'}:</strong> ${escapeHtml(sourceLabel(submission, isDe))}</p>`
+      : '',
+    submission.comment
+      ? `<p style="margin:14px 0 0;"><strong style="color:#ffffff;">${isDe ? 'Nachricht' : 'Message'}:</strong><br>${escapeHtml(submission.comment).replace(/\n/g, '<br>')}</p>`
       : '',
   ].join('');
 
@@ -432,6 +465,10 @@ export default async function handler(req, res) {
   const email = cap(body.email || '', 320);
   const comment = cap(body.comment || '', 5000);
   const type = cap(body.type || 'lead', 40);
+  // Optional self-reported origin ("How did you hear about us?"). Never gates
+  // submission — an empty answer is a perfectly valid answer.
+  const source = cap(body.source || '', 40);
+  const sourceOther = cap(body.sourceOther || '', 120);
   const lang = cap(body.lang || 'de', 5);
   const shopName = cap(body.shopName || '', 200);
   const packageChoice = cap(body.packageChoice || '', 60);
@@ -471,6 +508,8 @@ export default async function handler(req, res) {
     comment,
     shopName,
     packageChoice,
+    source,
+    sourceOther,
     testimonialConsent,
     receivedAt: new Date().toISOString(),
   };

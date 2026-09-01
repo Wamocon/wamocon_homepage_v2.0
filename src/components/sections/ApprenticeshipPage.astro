@@ -20,21 +20,21 @@ const careerHref = flatNav.find((n) => n.key === 'career')![lang].href;
 /** Alt text and link labels that sit outside the copy blocks below. */
 const alts = {
   de: {
-    training: 'Ausbildung bei WAMOCON',
-    perspectives: 'Perspektiven nach der Ausbildung',
-    application: 'Bewerbung bei WAMOCON',
+    training: 'Auszubildender von WAMOCON am Schreibtisch vor zwei Monitoren',
+    perspectives: 'Zwei Kollegen besprechen gemeinsam Code am Bildschirm',
+    application: 'Entwicklerinnen und Entwickler im WAMOCON-Büro in Eschborn',
     careerLink: 'Alle Karrieremöglichkeiten bei WAMOCON',
   },
   en: {
-    training: 'Apprenticeship at WAMOCON',
-    perspectives: 'Perspectives after the apprenticeship',
-    application: 'Application at WAMOCON',
+    training: 'A WAMOCON apprentice at a desk in front of two monitors',
+    perspectives: 'Two colleagues discussing code together on screen',
+    application: 'Developers in the WAMOCON office in Eschborn',
     careerLink: 'All career opportunities at WAMOCON',
   },
   tr: {
-    training: 'WAMOCON’da mesleki eğitim',
-    perspectives: 'Eğitim sonrası kariyer olanakları',
-    application: 'WAMOCON’a başvuru',
+    training: 'İki monitör önünde masasında çalışan bir WAMOCON çırağı',
+    perspectives: 'Ekranda birlikte kod inceleyen iki meslektaş',
+    application: 'Eschborn’daki WAMOCON ofisinde yazılım geliştiriciler',
     careerLink: 'WAMOCON’daki tüm kariyer fırsatları',
   },
 }[lang];
@@ -545,10 +545,8 @@ const apply = {
 <section class="azhero">
   <div class="container azhero__inner">
     <div class="azhero__text" data-reveal="right">
-      <h1 class="azhero__title">
-        <span class="azhero__title-white">{hero.titleWhite}</span>
-        <span class="azhero__title-red">{hero.titleRed}</span>
-      </h1>
+      <h1 class="azhero__title">{hero.titleWhite}</h1>
+      <p class="azhero__tagline">{hero.titleRed}</p>
       <p class="azhero__p">{hero.p1}</p>
       <p class="azhero__p">{hero.p2}</p>
       <a class="az-btn" href={eignungstestUrl} target="_blank" rel="noopener">{hero.cta}</a>
@@ -750,7 +748,7 @@ const apply = {
   </div>
 </section>
 
-<ContactBlock lang={lang} />
+<ContactBlock lang={lang} address="du" />
 
 <style>
   /* ---- shared headings ---- */
@@ -830,17 +828,18 @@ const apply = {
     font-weight: var(--fw-bold);
     line-height: 1.05;
     letter-spacing: -0.02em;
-    margin: 0 0 2rem;
-  }
-  .azhero__title-white,
-  .azhero__title-red {
-    display: block;
-  }
-  .azhero__title-white {
     color: var(--color-text);
+    margin: 0;
   }
-  .azhero__title-red {
+  /* Used to be the second line of the h1. Same look, but a separate statement
+     so the heading reads as one sentence when it is announced or indexed. */
+  .azhero__tagline {
+    font-size: var(--fs-h1);
+    font-weight: var(--fw-bold);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
     color: var(--color-accent);
+    margin: 0 0 2rem;
   }
   .azhero__p {
     max-width: 56ch;

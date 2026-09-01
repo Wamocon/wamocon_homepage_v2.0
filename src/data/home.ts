@@ -71,7 +71,7 @@ export const home: HomeContent = {
       tr: 'WAMOCON | Yapay Zekâ Destekli BT Test Yönetimi ve Kalite Yönetimi',
     },
     description: {
-      de: 'WAMOCON ist dein Partner für IT-Testmanagement, Testautomatisierung & Qualitätsmanagement: effizient, zertifiziert und KI-gestützt.',
+      de: 'WAMOCON ist Ihr Partner für IT-Testmanagement, Testautomatisierung & Qualitätsmanagement: effizient, zertifiziert und KI-gestützt.',
       en: 'WAMOCON is your partner for IT test management, test automation & quality management: efficient, certified and AI-powered.',
       tr: 'WAMOCON; BT test yönetimi, test otomasyonu ve kalite yönetiminde ortağınız: verimli, sertifikalı ve yapay zekâ destekli.',
     },
@@ -515,26 +515,26 @@ export const home: HomeContent = {
     pairs: [
       {
         title: {
-          de: 'Deine Weiterentwicklung ist unser Antrieb!',
+          de: 'Ihre Weiterentwicklung ist unser Antrieb!',
           en: 'Your development is our drive!',
-          tr: 'Senin gelişimin bizim motivasyonumuz!',
+          tr: 'Gelişiminiz bizim motivasyonumuz!',
         },
         text: {
-          de: 'Ob Einsteiger, Quereinsteiger oder Profi: Mit unseren ISTQB®-Programmen bringen wir deine Testmanagement-Karriere auf das nächste Level.',
+          de: 'Ob Einsteiger, Quereinsteiger oder Profi: Mit unseren ISTQB®-Programmen bringen wir Ihre Testmanagement-Karriere auf das nächste Level.',
           en: 'Whether beginner, career changer or pro: with our ISTQB® programs we take your test management career to the next level.',
-          tr: 'İster yeni başlayan, ister kariyer değiştiren, ister profesyonel ol: ISTQB® programlarımızla test yönetimi kariyerini bir üst seviyeye taşıyoruz.',
+          tr: 'İster yeni başlayın, ister kariyer değiştirin, ister profesyonel olun: ISTQB® programlarımızla test yönetimi kariyerinizi bir üst seviyeye taşıyoruz.',
         },
       },
       {
         title: {
-          de: 'Praxis, Mentoring, Erfolg, dein Karriere-Turbo!',
+          de: 'Praxis, Mentoring, Erfolg: Ihr Karriere-Turbo!',
           en: 'Practice, mentoring, success, your career turbo!',
-          tr: 'Uygulama, mentorluk, başarı: kariyer turbon!',
+          tr: 'Uygulama, mentorluk, başarı: kariyer turbonuz!',
         },
         text: {
-          de: 'Mit unseren Programmen nach internationalen Standards wirst du zur gefragten IT-Fachkraft. Gemeinsam gestalten wir deine Zukunft und die der IT-Branche.',
+          de: 'Mit unseren Programmen nach internationalen Standards werden Sie zur gefragten IT-Fachkraft. Gemeinsam gestalten wir Ihre Zukunft und die der IT-Branche.',
           en: 'With our programs based on international standards you become a sought-after IT professional. Together we shape your future and that of the IT industry.',
-          tr: 'Uluslararası standartlara dayanan programlarımızla aranan bir BT uzmanı olursun. Senin ve BT sektörünün geleceğini birlikte şekillendiriyoruz.',
+          tr: 'Uluslararası standartlara dayanan programlarımızla aranan bir BT uzmanı olursunuz. Sizin ve BT sektörünün geleceğini birlikte şekillendiriyoruz.',
         },
       },
       {
@@ -544,7 +544,7 @@ export const home: HomeContent = {
           tr: 'Müşteri memnuniyeti eğitimle başlar.',
         },
         text: {
-          de: 'Wir fördern IT-Talente, damit dein Kundenservice nicht nur Standards erfüllt, sondern übertrifft.',
+          de: 'Wir fördern IT-Talente, damit Ihr Kundenservice nicht nur Standards erfüllt, sondern übertrifft.',
           en: 'We nurture IT talent so that your customer service not only meets standards but exceeds them.',
           tr: 'BT yeteneklerini destekliyoruz; böylece müşteri hizmetiniz standartları yalnızca karşılamakla kalmaz, aşar.',
         },

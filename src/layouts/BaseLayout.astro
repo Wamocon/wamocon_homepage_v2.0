@@ -565,6 +565,8 @@ const structuredData = {
               phone,
               email,
               comment: (fd.get('comment') || '').toString(),
+              source: (fd.get('source') || '').toString(),
+              sourceOther: (fd.get('sourceOther') || '').toString(),
               testimonialConsent: fd.get('testimonialConsent') === 'on',
               'cf-turnstile-response': (fd.get('cf-turnstile-response') || '').toString(),
             };

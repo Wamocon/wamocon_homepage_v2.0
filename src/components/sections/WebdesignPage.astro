@@ -15,6 +15,18 @@ const { lang } = Astro.props;
 const marquee = [...projects, ...projects];
 const industryLabel = (key: string) =>
   industries.find((i) => i.key === key)?.label[lang] ?? key;
+
+/**
+ * Portfolio screenshots. The hero mock-ups and the marquee repeat these very
+ * images inside aria-hidden containers, which is why only the cards below
+ * carry a description — announcing the same site three times helps nobody.
+ */
+const screenshotAlt = (name: string, category: string, location: string) => {
+  const industry = industryLabel(category).toLowerCase();
+  if (lang === 'en') return `Screenshot of the ${name} website, ${industry} in ${location}`;
+  if (lang === 'tr') return `${location} şehrindeki ${industry} işletmesi ${name} web sitesinin ekran görüntüsü`;
+  return `Screenshot der Website von ${name}, ${industry} in ${location}`;
+};
 ---
 
 <!-- ============ HERO / HOOK ============ -->
@@ -116,7 +128,7 @@ const industryLabel = (key: string) =>
           data-category={p.category}
         >
           <a class="wd-card__media" href={p.url} target="_blank" rel="noopener noreferrer">
-            <img src={p.image} alt={`${p.name} – Website`} loading="lazy" width="1440" height="900" />
+            <img src={p.image} alt={screenshotAlt(p.name, p.category, p.location)} loading="lazy" width="1440" height="900" />
             {p.featured && <span class="wd-card__badge">{w.portfolio.featuredLabel[lang]}</span>}
             <span class="wd-card__open">{w.portfolio.live[lang]} ↗</span>
           </a>

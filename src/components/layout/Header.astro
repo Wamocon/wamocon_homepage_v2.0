@@ -30,12 +30,15 @@ const langOptions = langCodes.map((code) => ({
 }));
 
 const navAriaLabel = { de: 'Hauptnavigation', en: 'Main navigation', tr: 'Ana navigasyon' }[lang];
+const logoLinkLabel = { de: 'WAMOCON GmbH, zur Startseite', en: 'WAMOCON GmbH, back to the home page', tr: 'WAMOCON GmbH, ana sayfaya dön' }[lang];
 ---
 
 <header class="header" id="site-header">
   <div class="header__inner container">
-    <a class="header__logo" href={homeHref} aria-label="WAMOCON">
-      <img src="/images/logo-wamocon.png" alt="WAMOCON" width="150" height="150" />
+    <a class="header__logo" href={homeHref} aria-label={logoLinkLabel}>
+      {/* The link carries the accessible name; a second one on the image
+          would make screen readers announce "WAMOCON WAMOCON". */}
+      <img src="/images/logo-wamocon.png" alt="" width="150" height="150" />
     </a>
 
     <nav class="header__nav" aria-label={navAriaLabel} id="primary-nav">

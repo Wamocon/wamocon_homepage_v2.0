@@ -6,6 +6,7 @@
 import Button from '../../ui/Button.astro';
 import ExternalEmbed from '../../ui/ExternalEmbed.astro';
 import ContactBlock from '../ContactBlock.astro';
+import LeadSourceField from '../../ui/LeadSourceField.astro';
 import { home } from '../../../data/home';
 import { nav, ui, legalNav, type Lang } from '../../../i18n/config';
 
@@ -65,6 +66,9 @@ const page = {
       'Unser strukturierter Weg vom ersten Kontakt bis zum erfolgreichen IT-Projekt: sechs aufeinander aufbauende Schritte, die Testerinnen und Tester sicher durch jedes Projekt führen und ihre Karriere gezielt weiterentwickeln.',
     boosterCta: 'Zum 360° Booster System',
     boosterAlt: 'Das 360° Booster System mit sechs Schritten',
+    badgeAiAlt: 'KI-Siegel: WAMOCON als KI-Innovator ausgezeichnet',
+    badgeFutureAlt: 'Auszeichnung „Unternehmen der Zukunft“, nominiert',
+    skylineAlt: 'Skyline von Frankfurt am Main bei Nacht',
     aboutCta: 'Mehr über uns',
     magazine: 'Magazin herunterladen',
     reviewsLink: 'Was unsere Kunden sagen',
@@ -77,7 +81,7 @@ const page = {
     quizCount: 'Frage 1 von 300+',
     quizQuestion: 'Was ist der Hauptzweck des Softwaretestens?',
     quizHint:
-      'Das ist Übung 1 von 45+ in DiTeLe. Mit DiTeLe lernst du nicht nur über Softwaretesten – du machst es.',
+      'Das ist Übung 1 von 45+ in DiTeLe. Mit DiTeLe lernen Sie nicht nur über Softwaretesten – Sie machen es.',
     quizCta: 'Alle Übungen in DiTeLe freischalten',
     contactHint: ' Bitte geben Sie E-Mail oder Telefon an.',
     responsible:
@@ -90,6 +94,9 @@ const page = {
       'Our structured path from first contact to a successful IT project: six sequential steps that guide testers safely through every project and develop their careers in a targeted way.',
     boosterCta: 'Explore the 360° Booster System',
     boosterAlt: 'The 360° Booster System with six steps',
+    badgeAiAlt: 'AI seal: WAMOCON recognised as an AI innovator',
+    badgeFutureAlt: 'Nominee badge for the “Company of the Future” award',
+    skylineAlt: 'The Frankfurt am Main skyline at night',
     aboutCta: 'More about us',
     magazine: 'Download magazine',
     reviewsLink: 'What our clients say',
@@ -115,6 +122,9 @@ const page = {
       'İlk temastan başarılı BT projesine uzanan yapılandırılmış yolumuz: test uzmanlarını her projede güvenle yönlendiren ve kariyerlerini hedefe yönelik geliştiren, birbirini izleyen altı adım.',
     boosterCta: '360° Booster Sistemine git',
     boosterAlt: 'Altı adımdan oluşan 360° Booster Sistemi',
+    badgeAiAlt: 'Yapay zekâ mührü: WAMOCON yapay zekâ inovatörü olarak ödüllendirildi',
+    badgeFutureAlt: '“Geleceğin Şirketi” ödülü aday rozeti',
+    skylineAlt: 'Gece Frankfurt am Main silueti',
     aboutCta: 'Hakkımızda daha fazlası',
     magazine: 'Dergiyi indir',
     reviewsLink: 'Müşterilerimiz ne diyor',
@@ -127,7 +137,7 @@ const page = {
     quizCount: '300+ sorudan 1.’si',
     quizQuestion: 'Yazılım testinin temel amacı nedir?',
     quizHint:
-      'Bu, DiTeLe’deki 45+ alıştırmadan birincisi. DiTeLe ile yazılım testini yalnızca öğrenmezsin – bizzat yaparsın.',
+      'Bu, DiTeLe’deki 45+ alıştırmadan birincisi. DiTeLe ile yazılım testini yalnızca öğrenmezsiniz – bizzat yaparsınız.',
     quizCta: 'DiTeLe’deki tüm alıştırmaların kilidini aç',
     contactHint: ' Lütfen e-posta veya telefon bilgisi girin.',
     responsible:
@@ -262,8 +272,8 @@ const modal = {
       <p class="text-muted">{home.goal.highlightText[lang]}</p>
       <p class="goal__signoff">{home.goal.signoff[lang]}</p>
       <div class="goal__badges">
-        <img src="/images/badge-ki-siegel.png" alt="KI-Siegel WAMOCON" width="120" height="120" loading="lazy" />
-        <img class="goal__badge--zukunft" src="/images/badge-zukunft.webp" alt="Unternehmen der Zukunft, nominiert" width="135" height="120" loading="lazy" />
+        <img src="/images/badge-ki-siegel.png" alt={page.badgeAiAlt} width="120" height="120" loading="lazy" />
+        <img class="goal__badge--zukunft" src="/images/badge-zukunft.webp" alt={page.badgeFutureAlt} width="135" height="120" loading="lazy" />
       </div>
     </div>
   </div>
@@ -350,6 +360,7 @@ const modal = {
         <span>{modal.comment}</span>
         <textarea name="comment" rows="3"></textarea>
       </label>
+      <LeadSourceField lang={lang} />
       <p class="lead-modal__privacy-note">
         {modal.consentPre}<a href={privacyHref}>{modal.consentLink}</a>{modal.consentPost}
         {page.contactHint}
@@ -419,7 +430,7 @@ const modal = {
       <figure class="about__media">
         <img
           src="/images/about-skyline.jpg"
-          alt="Frankfurt Skyline"
+          alt={page.skylineAlt}
           width="720"
           height="540"
           loading="lazy"

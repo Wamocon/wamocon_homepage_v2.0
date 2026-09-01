@@ -429,7 +429,7 @@ export const appCategories: AppCategory[] = [
         name: 'Daily Echo',
         url: 'https://wamocon.github.io/dailyecho_lp/',
         description: {
-          de: 'Dein täglicher Moment der Klarheit mit Reflexionsfragen und Stimmungs-Tracking.',
+          de: 'Ihr täglicher Moment der Klarheit mit Reflexionsfragen und Stimmungs-Tracking.',
           en: 'Your daily moment of clarity with reflection questions and mood tracking.',
           tr: 'Yansıtma soruları ve ruh hâli takibiyle günlük berraklık anınız.',
         },

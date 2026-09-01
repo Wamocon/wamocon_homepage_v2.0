@@ -10,7 +10,7 @@ const { lang } = Astro.props;
 
 const c = {
   de: {
-      heroEyebrowLead: 'Dein Erfolgsweg zum ',
+      heroEyebrowLead: 'Ihr Erfolgsweg zum ',
       heroEyebrowAccent: 'Experten im IT-Bereich',
       heroParas: [
         'WAMOCON hat einen umfassenden Ansatz entwickelt, der alle Aspekte des IT-Testens abdeckt. Dieses 360-Grad-System zum Aufbau einer erfolgreichen Karriere umfasst eine Reihe von Schritten und befähigt Sie, Herausforderungen zu meistern, indem es Ihnen den Weg zum Erfolg auf die effektivste Weise zeigt.',
@@ -21,14 +21,16 @@ const c = {
       stepsLead: 'Erfolgreich im IT-Projekt: Das 360°-System',
       stepsRest: ' für alle Karrierestufen',
       steps: [
-        { h: 'Der erste Schritt zu deinem Traumprojekt', p: 'Überzeuge potenzielle Auftraggeber mit zielgerichteten Inhalten. Unsere bewährte Blueprint-Strategie zeigt dir, wie du den Weg zu deinem Wunschprojekt ebnest.' },
-        { h: 'Erfolgreiches Onboarding leicht gemacht', p: 'Starte optimal mit deinem Projektteam. Effektive Kommunikation und klare Prozesse sorgen für einen reibungslosen Ablauf, wir zeigen dir, wie es geht.' },
-        { h: 'Effiziente Planung für deinen Erfolg', p: 'Gestalte deine Projektarbeit stressfrei und strukturiert. Mit gezielten Kontrollfragen behältst du jedes Detail im Blick und sicherst dir eine optimale Planung.' },
-        { h: 'Erfolgreich starten: Deine erste Aufgabe', p: 'Lerne, wie du effizient die richtigen Projektinformationen sammelst. Mit klaren Methoden meisterst du jede Aufgabe problemlos.' },
-        { h: 'Ausführung mit Präzision', p: 'Stelle sicher, dass du jeden Testfall im Detail verstehst. Unsere bewährten Methoden helfen dir, dich abzuheben und jede Herausforderung souverän zu meistern.' },
-        { h: 'Sicherer Projektabschluss', p: 'Keine Panik, wenn die Zeit drängt! Mit unserer über 50-jährigen Erfahrung und einer bewährten Schritt-für-Schritt-Anleitung meisterst du jede Herausforderung und bringst dein Projekt erfolgreich ins Ziel.' },
+        { h: 'Der erste Schritt zu Ihrem Traumprojekt', p: 'Überzeugen Sie potenzielle Auftraggeber mit zielgerichteten Inhalten. Unsere bewährte Blueprint-Strategie zeigt Ihnen, wie Sie den Weg zu Ihrem Wunschprojekt ebnen.' },
+        { h: 'Erfolgreiches Onboarding leicht gemacht', p: 'Starten Sie optimal mit Ihrem Projektteam. Effektive Kommunikation und klare Prozesse sorgen für einen reibungslosen Ablauf, wir zeigen Ihnen, wie es geht.' },
+        { h: 'Effiziente Planung für Ihren Erfolg', p: 'Gestalten Sie Ihre Projektarbeit stressfrei und strukturiert. Mit gezielten Kontrollfragen behalten Sie jedes Detail im Blick und sichern sich eine optimale Planung.' },
+        { h: 'Erfolgreich starten: Ihre erste Aufgabe', p: 'Lernen Sie, wie Sie effizient die richtigen Projektinformationen sammeln. Mit klaren Methoden meistern Sie jede Aufgabe problemlos.' },
+        { h: 'Ausführung mit Präzision', p: 'Stellen Sie sicher, dass Sie jeden Testfall im Detail verstehen. Unsere bewährten Methoden helfen Ihnen, sich abzuheben und jede Herausforderung souverän zu meistern.' },
+        { h: 'Sicherer Projektabschluss', p: 'Keine Panik, wenn die Zeit drängt! Mit unserer über 50-jährigen Erfahrung und einer bewährten Schritt-für-Schritt-Anleitung meistern Sie jede Herausforderung und bringen Ihr Projekt erfolgreich ins Ziel.' },
       ],
       academyTitle: 'Entdecken Sie Ihre Weiterbildungsmöglichkeiten mit IT-Testmanagement Kursen auf unserer Academy-Webseite!',
+      heroImgAlt: 'Diagramm des 360° Booster Systems mit seinen sechs aufeinander aufbauenden Schritten',
+      academyImgAlt: 'Trainerin der WAMOCON Academy vor einer Kurspräsentation',
       academyBlocks: [
         { s: 'Ihre Unterstützung auf dem Weg zur Karriere', p: 'Unsere Academy hilft Ihnen, die Schlüsselmechanismen des Testmanagements zu meistern. Mit unserem umfassenden Ansatz begleiten wir Sie sicher auf Ihrem Karriereweg und unterstützen Sie dabei, Ihre beruflichen Ziele zu erreichen.' },
         { s: 'Für alle, die weiterkommen wollen', p: 'Ob Student, junger Berater oder Quereinsteiger, unsere Trainings geben Ihnen die richtigen Werkzeuge an die Hand, um erfolgreich zu sein. Auch Projektleiter und Manager profitieren von praxisnahen Lösungen und fundierten Strategien, die Projekte auf das nächste Level heben.' },
@@ -56,6 +58,8 @@ const c = {
         { h: 'Secure project completion', p: 'No panic when time is short! With over 50 years of combined practical experience within our team and a proven step-by-step guide, you master every challenge and bring your project to a successful conclusion.' },
       ],
       academyTitle: 'Discover your further training opportunities with IT test management courses on our Academy website!',
+      heroImgAlt: 'Diagram of the 360° Booster System and its six sequential steps',
+      academyImgAlt: 'A WAMOCON Academy trainer in front of a course presentation',
       academyBlocks: [
         { s: 'Your support on the path to a career', p: 'Our Academy helps you to master the key mechanisms of test management. With our comprehensive approach, we accompany you safely on your career path and support you in achieving your professional goals.' },
         { s: 'For all those who want to get ahead', p: 'Whether student, young consultant or career changer, our training courses give you the right tools to succeed. Project managers and managers also benefit from practical solutions and well-founded strategies that take projects to the next level.' },
@@ -75,14 +79,16 @@ const c = {
       stepsLead: 'BT projesinde başarı: 360° sistemi',
       stepsRest: ' her kariyer seviyesi için',
       steps: [
-        { h: 'Hayalindeki projeye ilk adım', p: 'Potansiyel müşterileri hedefe yönelik içerikle ikna et. Kanıtlanmış blueprint stratejimiz, hayalindeki projeye giden yolu nasıl açacağını gösterir.' },
-        { h: 'Başarılı bir işe başlangıç, artık çok kolay', p: 'Proje ekibinle en iyi şekilde başla. Etkili iletişim ve net süreçler sorunsuz bir akış sağlar; nasıl olduğunu sana gösteriyoruz.' },
-        { h: 'Başarın için verimli planlama', p: 'Proje çalışmanı stressiz ve yapılandırılmış biçimde kurgula. Hedefe yönelik kontrol sorularıyla her ayrıntıyı gözden kaçırmaz ve en iyi planlamayı güvence altına alırsın.' },
-        { h: 'Başarılı bir başlangıç: ilk görevin', p: 'Doğru proje bilgilerini nasıl verimli topladığını öğren. Net yöntemlerle her görevin altından kolayca kalkarsın.' },
-        { h: 'Kusursuz uygulama', p: 'Her test senaryosunu ayrıntısıyla anladığından emin ol. Kanıtlanmış yöntemlerimiz fark yaratmana ve her zorluğu güvenle aşmana yardımcı olur.' },
-        { h: 'Güvenli proje kapanışı', p: 'Zaman daralınca paniğe kapılma! 50 yılı aşkın birikmiş deneyimimiz ve kanıtlanmış adım adım kılavuzumuzla her zorluğun üstesinden gelir, projeni başarıyla tamamlarsın.' },
+        { h: 'Hayalinizdeki projeye ilk adım', p: 'Potansiyel müşterileri hedefe yönelik içerikle ikna edin. Kanıtlanmış blueprint stratejimiz, hayalinizdeki projeye giden yolu nasıl açacağınızı gösterir.' },
+        { h: 'Başarılı bir işe başlangıç, artık çok kolay', p: 'Proje ekibinizle en iyi şekilde başlayın. Etkili iletişim ve net süreçler sorunsuz bir akış sağlar; nasıl olduğunu size gösteriyoruz.' },
+        { h: 'Başarınız için verimli planlama', p: 'Proje çalışmanızı stressiz ve yapılandırılmış biçimde kurgulayın. Hedefe yönelik kontrol sorularıyla hiçbir ayrıntıyı gözden kaçırmaz ve en iyi planlamayı güvence altına alırsınız.' },
+        { h: 'Başarılı bir başlangıç: ilk göreviniz', p: 'Doğru proje bilgilerini nasıl verimli topladığınızı öğrenin. Net yöntemlerle her görevin altından kolayca kalkarsınız.' },
+        { h: 'Kusursuz uygulama', p: 'Her test senaryosunu ayrıntısıyla anladığınızdan emin olun. Kanıtlanmış yöntemlerimiz fark yaratmanıza ve her zorluğu güvenle aşmanıza yardımcı olur.' },
+        { h: 'Güvenli proje kapanışı', p: 'Zaman daralınca paniğe kapılmayın! 50 yılı aşkın birikmiş deneyimimiz ve kanıtlanmış adım adım kılavuzumuzla her zorluğun üstesinden gelir, projenizi başarıyla tamamlarsınız.' },
       ],
       academyTitle: 'Akademi web sitemizdeki BT test yönetimi kurslarıyla gelişim fırsatlarınızı keşfedin!',
+      heroImgAlt: '360° Booster Sisteminin birbirini izleyen altı adımını gösteren şema',
+      academyImgAlt: 'Kurs sunumunun önünde duran bir WAMOCON Academy eğitmeni',
       academyBlocks: [
         { s: 'Kariyer yolunuzda desteğiniz', p: 'Akademimiz, test yönetiminin temel mekanizmalarında ustalaşmanıza yardımcı olur. Bütünsel yaklaşımımızla kariyer yolculuğunuzda size güvenle eşlik eder ve mesleki hedeflerinize ulaşmanızı destekleriz.' },
         { s: 'İlerlemek isteyen herkes için', p: 'İster öğrenci, ister genç danışman, ister kariyer değiştiren olun; eğitimlerimiz başarılı olmanız için doğru araçları elinize verir. Proje yöneticileri ve yöneticiler de projeleri bir üst seviyeye taşıyan uygulanabilir çözümlerden ve sağlam stratejilerden yararlanır.' },
@@ -91,9 +97,6 @@ const c = {
       academyBtn: 'Akademiyi hemen keşfedin',
     },
 }[lang];
-
-/** Plain-text title for the diagram's alt attribute. */
-const heroTitleFull = `${c.heroTitleLead}${c.heroTitleAccent}`;
 
 const aiBadge = {
   de: { label: 'Diese Grafik wurde mit künstlicher Intelligenz erstellt', text: 'KI-generiert' },
@@ -112,7 +115,7 @@ const academyUrl = 'https://test-it-academy.com/';
       {c.heroParas.map((p) => <p>{p}</p>)}
     </div>
     <h1 class="sys-hero__title"><span class="t-white">{c.heroTitleLead}</span><span class="t-red">{c.heroTitleAccent}</span></h1>
-    <img class="sys-hero__img" src="/images/system-360.svg" alt={heroTitleFull} loading="lazy" />
+    <img class="sys-hero__img" src="/images/system-360.svg" alt={c.heroImgAlt} loading="lazy" />
   </div>
 </section>
 
@@ -139,7 +142,7 @@ const academyUrl = 'https://test-it-academy.com/';
   <div class="container">
     <div class="sys-academy">
       <div class="sys-academy__figure">
-        <img class="sys-academy__img" src="/images/academy-person.png" alt={c.academyTitle} loading="lazy" />
+        <img class="sys-academy__img" src="/images/academy-person.png" alt={c.academyImgAlt} loading="lazy" />
         <span class="ai-badge" aria-label={aiBadge.label}>{aiBadge.text}</span>
       </div>
       <div class="sys-academy__body">

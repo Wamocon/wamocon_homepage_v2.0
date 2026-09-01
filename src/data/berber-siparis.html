@@ -134,6 +134,29 @@ footer .ai-notice{display:block;max-width:760px;margin:14px auto 0;line-height:1
       <label data-lang-block="de">Anmerkung <span class="opt">(Instagram-Konto, vorhandene Fotos, Sonderwünsche)</span></label>
       <textarea name="comment" maxlength="5000"></textarea>
     </div>
+    <div class="field">
+      <label data-lang-block="tr" class="active">Bizi nereden duydunuz? <span class="opt">(isteğe bağlı)</span></label>
+      <label data-lang-block="de">Wie sind Sie auf uns aufmerksam geworden? <span class="opt">(freiwillig)</span></label>
+      <select name="source" id="sourceSelect">
+        <option value="" data-lang="tr">Lütfen seçin</option>
+        <option value="" data-lang="de" style="display:none">Bitte auswählen</option>
+        <option value="google" data-lang="tr">Google araması</option>
+        <option value="google" data-lang="de" style="display:none">Google-Suche</option>
+        <option value="referral" data-lang="tr">Tavsiye</option>
+        <option value="referral" data-lang="de" style="display:none">Empfehlung</option>
+        <option value="instagram" data-lang="tr">Instagram</option>
+        <option value="instagram" data-lang="de" style="display:none">Instagram</option>
+        <option value="linkedin">LinkedIn</option>
+        <option value="event" data-lang="tr">Etkinlik veya sunum</option>
+        <option value="event" data-lang="de" style="display:none">Veranstaltung oder Vortrag</option>
+        <option value="known" data-lang="tr">Zaten tanışıyoruz</option>
+        <option value="known" data-lang="de" style="display:none">Wir kennen uns bereits</option>
+        <option value="other" data-lang="tr">Diğer</option>
+        <option value="other" data-lang="de" style="display:none">Sonstiges</option>
+      </select>
+      <input type="text" name="sourceOther" id="sourceOther" maxlength="120" hidden
+             placeholder="Kısaca açıklayın / Bitte kurz beschreiben">
+    </div>
 
     <div class="consent privacy-note">
       <p>
@@ -236,6 +259,13 @@ footer .ai-notice{display:block;max-width:760px;margin:14px auto 0;line-height:1
     });
   }
 
+  var sourceSelect = document.getElementById('sourceSelect');
+  var sourceOther = document.getElementById('sourceOther');
+  sourceSelect.addEventListener('change', function(){
+    sourceOther.hidden = sourceSelect.value !== 'other';
+    if (sourceOther.hidden) sourceOther.value = '';
+  });
+
   form.addEventListener('focusin', function(){ ensureTurnstile().catch(function(){}); }, {once:true});
   form.addEventListener('pointerenter', function(){ ensureTurnstile().catch(function(){}); }, {once:true});
 
@@ -277,6 +307,8 @@ footer .ai-notice{display:block;max-width:760px;margin:14px auto 0;line-height:1
       email: email,
       shopName: (fd.get('shopName')||'').toString(),
       packageChoice: (fd.get('packageChoice')||'').toString(),
+      source: (fd.get('source')||'').toString(),
+      sourceOther: (fd.get('sourceOther')||'').toString(),
       comment: (fd.get('comment')||'').toString(),
       testimonialConsent: fd.has('testimonialConsent') ? 'true' : 'false',
       'cf-turnstile-response': (fd.get('cf-turnstile-response')||'').toString()

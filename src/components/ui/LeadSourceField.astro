@@ -1,0 +1,106 @@
+---
+/**
+ * "How did you hear about us?" — the self-report origin field that every
+ * contact and enquiry form carries.
+ *
+ * Deliberately optional: a required field costs more completed enquiries than
+ * the answer is worth. The answer travels with the submission as `source`
+ * (a language-neutral key, so all three editions can be counted together) plus
+ * an optional `sourceOther` free text, and both are printed in the internal
+ * notification mail.
+ *
+ * The field styles itself from the design tokens rather than inheriting each
+ * form's own rules, so it looks the same in all five forms.
+ */
+import { leadSource, type Address, type Lang } from '../../i18n/config';
+
+interface Props {
+  lang: Lang;
+  /** Editorial address form of the surrounding page. */
+  address?: Address;
+}
+const { lang, address = 'sie' } = Astro.props;
+const s = leadSource[lang];
+---
+
+<div class="lead-source">
+  <label class="lead-source__label">
+    <span class="lead-source__q">
+      {s.question[address]}
+      <em class="lead-source__opt">({s.optional})</em>
+    </span>
+    <select name="source" class="lead-source__select" data-lead-source>
+      <option value="">{s.placeholder}</option>
+      {s.options.map((o) => <option value={o.value}>{o.label}</option>)}
+    </select>
+  </label>
+  <input
+    type="text"
+    name="sourceOther"
+    class="lead-source__other"
+    placeholder={s.otherLabel}
+    aria-label={s.otherLabel}
+    maxlength="120"
+    data-lead-source-other
+    hidden
+  />
+</div>
+
+<style>
+  .lead-source {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .lead-source__label {
+    display: grid;
+    gap: 0.4rem;
+    color: var(--color-text);
+    font-size: 0.88rem;
+    font-weight: var(--fw-semibold);
+  }
+  .lead-source__opt {
+    font-style: normal;
+    font-weight: var(--fw-regular);
+    color: var(--color-text-subtle);
+  }
+  .lead-source__select,
+  .lead-source__other {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    color: #fff;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: var(--fw-regular);
+  }
+  .lead-source__select:focus-visible,
+  .lead-source__other:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+  /* The native list renders on the OS surface, which is light on Windows —
+     force readable colours instead of white-on-white. */
+  .lead-source__select option {
+    background: var(--color-bg-elevated);
+    color: #fff;
+  }
+  .lead-source__other[hidden] {
+    display: none;
+  }
+</style>
+
+<script>
+  // One delegated listener for every instance on the page: Astro bundles this
+  // block once no matter how often the component is used.
+  document.addEventListener('change', (event) => {
+    const select = event.target;
+    if (!(select instanceof HTMLSelectElement) || !select.hasAttribute('data-lead-source')) return;
+    const other = select.closest('.lead-source')?.querySelector('[data-lead-source-other]');
+    if (!(other instanceof HTMLInputElement)) return;
+    other.hidden = select.value !== 'other';
+    if (other.hidden) other.value = '';
+    else other.focus();
+  });
+</script>

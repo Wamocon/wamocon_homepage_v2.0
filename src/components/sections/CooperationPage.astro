@@ -1,6 +1,11 @@
 ---
 import ContactBlock from "./ContactBlock.astro";
+import LeadSourceField from "../ui/LeadSourceField.astro";
 import { formChrome, legalNav, type Lang } from "../../i18n/config";
+
+// Applicant-facing page: it addresses students, young consultants and career
+// changers, the same audience as /karriere/ and /azubi-fae/. Informal throughout.
+const address = "du" as const;
 
 interface Props {
   lang: Lang;
@@ -11,7 +16,7 @@ const c = {
   de: {
       heroTitle: "Willkommen in der Zukunft der IT-Bildung",
       heroLead:
-        "Gemeinsam mit Universitäten weltweit gestalten wir Innovation und Exzellenz. Werden Sie Teil unserer dynamischen Community und bringen Sie Ihre Vision voran.",
+        "Gemeinsam mit Universitäten weltweit gestalten wir Innovation und Exzellenz. Werde Teil unserer dynamischen Community und bring deine Vision voran.",
       heroBtn: "Jetzt informieren!",
       heroSub:
         "Werde Teil der IT-Elite und erlebe praxisnahe Ausbildung gepaart mit erstklassigem Testmanagement.",
@@ -29,16 +34,16 @@ const c = {
       provadisHead: "Mit WAMOCON & Provadis zum IT-Erfolg: Praxis. Karriere. Zukunft.",
       provadisCards: [
         {
-          t: "Praxis trifft Theorie, Ihre Ausbildung für die IT-Welt von morgen",
-          d: "Die Provadis Hochschule bietet Ihnen eine praxisnahe Ausbildung, die Theorie und Praxis nahtlos verbindet. Lernen Sie von Top-Experten der Branche und sammeln Sie wertvolle Erfahrung in realen Projekten. So starten Sie perfekt vorbereitet in Ihre IT-Karriere.",
+          t: "Praxis trifft Theorie: deine Ausbildung für die IT-Welt von morgen",
+          d: "Die Provadis Hochschule bietet dir eine praxisnahe Ausbildung, die Theorie und Praxis nahtlos verbindet. Lerne von Top-Experten der Branche und sammle wertvolle Erfahrung in realen Projekten. So startest du perfekt vorbereitet in deine IT-Karriere.",
         },
         {
-          t: "Karrierechancen, die zählen, über 100 starke Partner",
-          d: "Nutzen Sie unser starkes Partnernetzwerk und starten Sie durch: WAMOCON öffnet Ihnen die Tür zu einer erfolgreichen IT-Karriere.",
+          t: "Karrierechancen, die zählen: über 100 starke Partner",
+          d: "Nutze unser starkes Partnernetzwerk und starte durch: WAMOCON öffnet dir die Tür zu einer erfolgreichen IT-Karriere.",
         },
         {
-          t: "Innovativ, digital, nachhaltig, Ihr Weg zum Erfolg",
-          d: "Unsere innovativen Programme bereiten Sie perfekt auf die digitale Zukunft vor. Mit einem klaren Fokus auf Digitalisierung und Nachhaltigkeit geben wir Ihnen die Werkzeuge für eine erfolgreiche IT-Karriere in der Industrie 4.0.",
+          t: "Innovativ, digital, nachhaltig: dein Weg zum Erfolg",
+          d: "Unsere innovativen Programme bereiten dich perfekt auf die digitale Zukunft vor. Mit einem klaren Fokus auf Digitalisierung und Nachhaltigkeit geben wir dir die Werkzeuge für eine erfolgreiche IT-Karriere in der Industrie 4.0.",
         },
       ],
       qualityHead: "WAMOCON: Qualität erleben",
@@ -62,7 +67,7 @@ const c = {
           name: "Provadis School of International Management and Technology AG",
           img: "/images/partner-provadis.jpg",
           addr: "Industriepark Höchst, Geb. B845, 65926 Frankfurt am Main",
-          contactLabel: "Ihre Ansprechpartnerin ist Frau Kirsten Löw, Leiterin Hochschulvertrieb",
+          contactLabel: "Deine Ansprechpartnerin ist Frau Kirsten Löw, Leiterin Hochschulvertrieb",
           phone: "+49 69 305-7349",
           phoneHref: "tel:+49693057349",
           email: "kirsten.loew@provadis-hochschule.de",
@@ -71,7 +76,7 @@ const c = {
           name: "WAMOCON GmbH",
           img: "/images/partner-wamocon.png",
           addr: "Mergenthalerallee 79–81, 65760 Eschborn",
-          contactLabel: "Ihr Ansprechpartner ist Herr Waleri Moretz",
+          contactLabel: "Dein Ansprechpartner ist Herr Waleri Moretz",
           phone: "+49-6196-58-38-311",
           phoneHref: "tel:+4961965838311",
           email: "waleri.moretz@wamocon.com",
@@ -82,7 +87,6 @@ const c = {
       fName: "Name/Organisation",
       fPhone: "Telefon",
       fEmail: "E-Mail",
-      fConsent: "Mit dem Absenden bestätigst du, dass du die Datenschutzerklärung gelesen hast. Bitte gib E-Mail oder Telefon an.",
       fBtn: "Anfrage senden",
     },
   en: {
@@ -159,7 +163,6 @@ const c = {
       fName: "Name/Organization",
       fPhone: "Telephone",
       fEmail: "E-Mail",
-      fConsent: "By submitting, you confirm that you have read the privacy policy. Please provide an email address or phone number.",
       fBtn: "Send request",
     },
   tr: {
@@ -236,7 +239,6 @@ const c = {
       fName: "Ad / Kurum",
       fPhone: "Telefon",
       fEmail: "E-posta",
-      fConsent: "Göndererek gizlilik politikasını okuduğunuzu onaylamış olursunuz. Lütfen e-posta veya telefon bilgisi girin.",
       fBtn: "Talebi gönder",
     },
 }[lang];
@@ -305,7 +307,7 @@ const privacyHref = legalNav.privacy[lang].href;
       <p class="lead">{c.contactSub}</p>
       {c.partners.slice(0, 1).map((p) => (
         <div class="partner">
-          <img class="partner-img" src={p.img} alt={p.name} loading="lazy" />
+          <img class="partner-img" src={p.img} alt={`${p.name} Logo`} loading="lazy" />
           <h3>{p.name}</h3>
           <p class="addr">{p.addr}</p>
           <p class="contact-label">{p.contactLabel}</p>
@@ -323,14 +325,18 @@ const privacyHref = legalNav.privacy[lang].href;
         <label><span>{c.fName}</span><input type="text" name="name" autocomplete="name" required /></label>
         <label><span>{c.fPhone}</span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" /></label>
         <label><span>{c.fEmail}</span><input type="email" name="email" autocomplete="email" /></label>
-        <p class="consent">{c.fConsent} <a href={privacyHref}>{form.privacyLabel}</a></p>
-      <p class="form-responsible">{form.responsible}</p>
+        <LeadSourceField lang={lang} address={address} />
+        <p class="consent">
+          {form.consentPre}<a href={privacyHref}>{form.consentLink}</a>{form.consentPost}
+          {' '}{form.contactHint[address]}
+        </p>
+      <p class="form-responsible">{form.responsible[address]}</p>
         <button type="submit" class="btn">{c.fBtn}</button>
       </form>
     </div>
   </div>
 
-  <ContactBlock lang={lang} />
+  <ContactBlock lang={lang} address="du" />
 </section>
 
 <style>

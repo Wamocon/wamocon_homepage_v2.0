@@ -1,6 +1,10 @@
 ---
 import ContactBlock from "./ContactBlock.astro";
+import LeadSourceField from "../ui/LeadSourceField.astro";
 import { formChrome, legalNav, nav, type Lang } from "../../i18n/config";
+
+// Applicant-facing page: informal address throughout (see i18n/config Address).
+const address = "du" as const;
 
 interface Props {
   lang: Lang;
@@ -17,9 +21,10 @@ const form = formChrome[lang];
 /** Link labels and small UI strings outside the main copy block. */
 const ui = {
   de: {
-    meetTeam: "Lernen Sie das ganze Team kennen",
+    meetTeam: "Lerne das ganze Team kennen",
     seeVoices: "Mitarbeiter-Stimmen ansehen",
     apprenticeship: "Ausbildung: Azubi FIAE",
+    portraitAlt: "Porträtfoto von",
     readMore: "Mehr lesen",
     close: "Schließen",
   },
@@ -27,6 +32,7 @@ const ui = {
     meetTeam: "Meet the whole team",
     seeVoices: "See employee voices",
     apprenticeship: "Apprenticeship: FIAE trainee",
+    portraitAlt: "Portrait photo of",
     readMore: "Read more",
     close: "Close",
   },
@@ -34,6 +40,7 @@ const ui = {
     meetTeam: "Tüm ekiple tanışın",
     seeVoices: "Çalışan görüşlerini inceleyin",
     apprenticeship: "Mesleki eğitim: FIAE çıraklığı",
+    portraitAlt: "Portre fotoğrafı:",
     readMore: "Devamını oku",
     close: "Kapat",
   },
@@ -44,11 +51,11 @@ const VIDEO_BASE =
 
 const c = {
   de: {
-      heroTitleRed: "Karriere bei WAMOCON,",
-      heroTitleWhite: "Ihre Zukunft im IT-Testmanagement beginnt hier",
+      heroTitleRed: "Karriere bei WAMOCON:",
+      heroTitleWhite: "Deine Zukunft im IT-Testmanagement beginnt hier",
       heroText: [
-        "Erleben Sie eine Karriere, die Ihre Leidenschaft für Technologie mit echten Entwicklungsmöglichkeiten verbindet. Bei WAMOCON werden Sie Teil eines dynamischen Teams, das Innovation, Qualität und persönliches Wachstum lebt.",
-        "Entfalten Sie Ihr Potenzial in spannenden IT-Projekten, mit individueller Betreuung, modernster Ausstattung und einem familiären Umfeld, das Sie auf jedem Schritt Ihres Weges unterstützt.",
+        "Erlebe eine Karriere, die deine Leidenschaft für Technologie mit echten Entwicklungsmöglichkeiten verbindet. Bei WAMOCON wirst du Teil eines dynamischen Teams, das Innovation, Qualität und persönliches Wachstum lebt.",
+        "Entfalte dein Potenzial in spannenden IT-Projekten, mit individueller Betreuung, modernster Ausstattung und einem familiären Umfeld, das dich auf jedem Schritt deines Weges unterstützt.",
       ],
       heroBtn: "Stellenangebote anzeigen",
       systemHeadRed: "Erfolg mit System:",
@@ -71,7 +78,7 @@ const c = {
       ],
       systemClose:
         "Der Ansatz von WAMOCON in Bezug auf Flexibilität und Work-Life-Balance macht es zu einem idealen Ort für diejenigen, die sich beruflich weiterentwickeln möchten, ohne ihr Privatleben zu gefährden.",
-      benefitsHeadRed: "Starte deine Erfolgsgeschichte,",
+      benefitsHeadRed: "Starte deine Erfolgsgeschichte:",
       benefitsHeadWhite: "Werde Teil des WAMOCON-Teams!",
       benefits: [
         {
@@ -203,15 +210,13 @@ const c = {
       formName: "Vor- und Nachname",
       formPhone: "Telefon",
       formEmail: "E-Mail",
-      formConsent: "Mit dem Absenden bestätigst du, dass du die",
-      formConsentLink: "Datenschutzerklärung",
-      formConsentHref: "/datenschutz",
-      formConsentPost: " gelesen hast. Bitte gib E-Mail oder Telefon an.",
-      formBtn: "Hinterlassen Sie eine Anfrage",
+      formBtn: "Bewerbungsanfrage senden",
+      heroImgAlt: "Das WAMOCON-Team im Gespräch am Arbeitsplatz",
+      formImgAlt: "Teammitglied von WAMOCON bei der Arbeit am Notebook",
       formClose: "Lerne von Experten, um selbst einer zu werden.",
     },
   en: {
-      heroTitleRed: "Career at WAMOCON,",
+      heroTitleRed: "Career at WAMOCON:",
       heroTitleWhite: "your future in IT test management starts here",
       heroText: [
         "Experience a career that balances work and private life! WAMOCON supports you in realizing your professional dreams without compromising your quality of life.",
@@ -238,7 +243,7 @@ const c = {
       ],
       systemClose:
         "WAMOCON's approach to flexibility and work-life balance makes it an ideal place for those who want to develop professionally without compromising their personal life.",
-      benefitsHeadRed: "Start your success story,",
+      benefitsHeadRed: "Start your success story:",
       benefitsHeadWhite: "Become part of the WAMOCON team!",
       benefits: [
         {
@@ -370,16 +375,14 @@ const c = {
       formName: "First and last name",
       formPhone: "Phone",
       formEmail: "Email",
-      formConsent: "By submitting, you confirm that you have read the",
-      formConsentLink: "privacy policy",
-      formConsentHref: "/en/privacy",
-      formConsentPost: ". Please provide an email address or phone number.",
-      formBtn: "Leave a request",
+      formBtn: "Send application enquiry",
+      heroImgAlt: "The WAMOCON team in conversation at their workplace",
+      formImgAlt: "A WAMOCON team member working at a laptop",
       formClose: "Learn from experts to become one yourself.",
     },
   tr: {
-      heroTitleRed: "WAMOCON’da kariyer,",
-      heroTitleWhite: "BT test yönetimindeki geleceğiniz burada başlıyor",
+      heroTitleRed: "WAMOCON’da kariyer:",
+      heroTitleWhite: "BT test yönetimindeki geleceğin burada başlıyor",
       heroText: [
         "Teknolojiye olan tutkunuzu gerçek gelişim fırsatlarıyla birleştiren bir kariyer yaşayın. WAMOCON’da yeniliği, kaliteyi ve kişisel gelişimi yaşayan dinamik bir ekibin parçası olursunuz.",
         "Bireysel destek, en modern donanım ve yolun her adımında sizi destekleyen aile sıcaklığında bir ortamla, heyecan verici BT projelerinde potansiyelinizi ortaya çıkarın.",
@@ -405,7 +408,7 @@ const c = {
       ],
       systemClose:
         "WAMOCON’un esneklik ve iş-yaşam dengesi yaklaşımı, burayı özel hayatını riske atmadan mesleki olarak gelişmek isteyenler için ideal bir yer hâline getiriyor.",
-      benefitsHeadRed: "Başarı hikâyeni başlat,",
+      benefitsHeadRed: "Başarı hikâyeni başlat:",
       benefitsHeadWhite: "WAMOCON ekibinin parçası ol!",
       benefits: [
         {
@@ -537,11 +540,9 @@ const c = {
       formName: "Ad ve soyad",
       formPhone: "Telefon",
       formEmail: "E-posta",
-      formConsent: "Göndererek şunu okuduğunu onaylamış olursun:",
-      formConsentLink: "gizlilik politikası",
-      formConsentHref: "/tr/gizlilik",
-      formConsentPost: ". Lütfen e-posta veya telefon bilgisi gir.",
-      formBtn: "Talep bırakın",
+      formBtn: "Başvuru talebi gönder",
+      heroImgAlt: "Çalışma alanında sohbet eden WAMOCON ekibi",
+      formImgAlt: "Dizüstü bilgisayarında çalışan bir WAMOCON ekip üyesi",
       formClose: "Uzmanlardan öğren, kendin de uzman ol.",
     },
 }[lang];
@@ -829,7 +830,7 @@ const videoPrivacy = { label: form.privacyLabel, href: legalNav.privacy[lang].hr
       <a href="#stellenangebote" class="btn">{c.heroBtn}</a>
     </div>
     <div class="hero-img">
-      <img src="/images/career-hero.png" alt="WAMOCON Team" width="1680" height="945" loading="lazy" />
+      <img src="/images/career-hero.png" alt={c.heroImgAlt} width="1680" height="945" loading="lazy" />
     </div>
   </div>
 
@@ -922,7 +923,7 @@ const videoPrivacy = { label: form.privacyLabel, href: legalNav.privacy[lang].hr
       {c.voices.map((v, vi) => (
         <article class="voice">
           <div class="voice__img">
-            <img src={v.img} alt={v.author} loading="lazy" />
+            <img src={v.img} alt={`${ui.portraitAlt} ${v.author}, ${v.role}`} loading="lazy" />
           </div>
           <div class="voice__body">
             <h3>{v.t}</h3>
@@ -943,7 +944,7 @@ const videoPrivacy = { label: form.privacyLabel, href: legalNav.privacy[lang].hr
       <div class="vpopup__box" role="dialog" aria-modal="true" aria-labelledby={`vpopup-title-${vi}`}>
         <button type="button" class="vpopup__close" data-voice-close aria-label={ui.close}>×</button>
         <div class="vpopup__head">
-          <img class="vpopup__avatar" src={v.img} alt={v.author} loading="lazy" />
+          <img class="vpopup__avatar" src={v.img} alt={`${ui.portraitAlt} ${v.author}, ${v.role}`} loading="lazy" />
           <div>
             <strong class="vpopup__author">{v.author}</strong>
             <span class="vpopup__role">{v.role}</span>
@@ -999,7 +1000,7 @@ const videoPrivacy = { label: form.privacyLabel, href: legalNav.privacy[lang].hr
   <!-- BEWERBUNGSFORMULAR -->
   <div class="wrap form-wrap" id="bewerbung">
     <div class="form-img">
-      <img src="/images/career-member.jpg" alt="WAMOCON" loading="lazy" />
+      <img src="/images/career-member.jpg" alt={c.formImgAlt} loading="lazy" />
     </div>
     <div class="form-box">
       <h2 class="head"><span class="t-red">{c.formHeadRed}</span> <span class="t-white">{c.formHeadWhite}</span></h2>
@@ -1010,15 +1011,19 @@ const videoPrivacy = { label: form.privacyLabel, href: legalNav.privacy[lang].hr
         <label><span>{c.formName}</span><input type="text" name="name" autocomplete="name" required /></label>
         <label><span>{c.formPhone}</span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" /></label>
         <label><span>{c.formEmail}</span><input type="email" name="email" autocomplete="email" /></label>
-        <p class="consent">{c.formConsent} <a href={c.formConsentHref}>{c.formConsentLink}</a>{c.formConsentPost}</p>
-      <p class="form-responsible">{form.responsible}</p>
+        <LeadSourceField lang={lang} address={address} />
+        <p class="consent">
+          {form.consentPre}<a href={legalNav.privacy[lang].href}>{form.consentLink}</a>{form.consentPost}
+          {' '}{form.contactHint[address]}
+        </p>
+      <p class="form-responsible">{form.responsible[address]}</p>
         <button type="submit" class="btn">{c.formBtn}</button>
       </form>
       <p class="form-close">{c.formClose}</p>
     </div>
   </div>
 
-  <ContactBlock lang={lang} />
+  <ContactBlock lang={lang} address={address} />
 </section>
 
 <style>
