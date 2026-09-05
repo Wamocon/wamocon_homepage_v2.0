@@ -290,6 +290,18 @@ const structuredData = {
     </main>
     <Footer lang={lang} />
     <CookieBanner lang={lang} />
+    <style>
+      body {
+        overflow-x: hidden;
+      }
+    </style>
+    <style>
+      .cookie-banner {
+        width: 100%;
+        max-width: 100vw;
+        overflow-x: hidden;
+      }
+    </style>
     {chatEnabled && <ChatWidget lang={lang} />}
 
     <style>
