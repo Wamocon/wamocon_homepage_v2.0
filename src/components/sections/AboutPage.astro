@@ -694,7 +694,7 @@ const magazinUrl = lang === 'de'
     {team.map((m) => (
       <div class="ab-bio" data-bio-content={m.slug} hidden>
         <img class="ab-bio__photo" src={m.img} alt={`${c.portraitAlt} ${m.name}, ${m.role}`} loading="lazy" />
-        <h3 class="ab-bio__name" id="ab-bio-name">{m.name}</h3>
+        <h3 class="ab-bio__name">{m.name}</h3>
         <p class="ab-bio__title">{m.bioTitle}</p>
         {m.bio.map((para) => <p class="ab-bio__para">{para}</p>)}
       </div>
