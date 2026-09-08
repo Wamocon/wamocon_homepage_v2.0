@@ -4,6 +4,11 @@
  *
  * To add or edit an app: update the relevant category below.
  *  - `soon: true` renders a "coming soon" card with no outbound link.
+ *  - `url` is where the card itself leads — normally the landing page, which
+ *    explains the product before someone signs up.
+ *  - `productUrl` adds a second button that opens the running application.
+ *    Only set it where the deployment is actually live; several products are
+ *    currently reachable through their landing page alone.
  */
 import type { Lang } from '../i18n/config';
 
@@ -12,6 +17,8 @@ type L = Record<Lang, string>;
 export interface AppItem {
   name: string;
   url?: string;
+  /** Live application behind the landing page, if it is reachable. */
+  productUrl?: string;
   soon?: boolean;
   description: L;
 }
@@ -104,6 +111,7 @@ export const appCategories: AppCategory[] = [
       {
         name: 'WedBudget',
         url: 'https://wamocon.github.io/hochzeitsrechner_lp/',
+        productUrl: 'https://wedbudget.vercel.app',
         description: {
           de: 'Dynamischer Hochzeits-Budgetrechner: Gästezahl und Budget erfassen, Kosten schätzen und als PDF teilen.',
           en: 'Dynamic wedding budget calculator: enter guest count and budget, estimate costs and share as PDF.',
@@ -121,7 +129,10 @@ export const appCategories: AppCategory[] = [
       },
       {
         name: 'GrundsteuerPrüfer',
-        soon: true,
+        // The product runs at baseguard.eu, but the page there is branded
+        // "Grundwächter". Until the naming is settled the card points at the
+        // landing page, which carries the same name as the card.
+        url: 'https://wamocon.github.io/grundsteuerpruefer_lp/',
         description: {
           de: 'Einfache Berechnung und Prüfung der Grundsteuer für Immobilienbesitzer.',
           en: 'Easy calculation and verification of property tax for real estate owners.',
@@ -155,6 +166,26 @@ export const appCategories: AppCategory[] = [
       tr: 'Yapay Zekâ, Analiz ve Büyüme',
     },
     apps: [
+      {
+        // plan-IT plans software landscapes, not buildings — it belongs with the
+        // analysis tools, not under "Immobilien & Handwerk" where it used to sit.
+        name: 'Plan-it',
+        url: 'https://wamocon.github.io/plan-it_lp/',
+        description: {
+          de: 'Architekturplaner für Software-Landschaften: Ist-Zustand analysieren, Architektur-Score ermitteln und Umsetzungsplan exportieren.',
+          en: 'Architecture planner for software landscapes: analyse current state, determine architecture score and export implementation plan.',
+          tr: 'Yazılım mimarileri için planlayıcı: mevcut durumu analiz edin, mimari puanı belirleyin ve uygulama planını dışa aktarın.',
+        },
+      },
+      {
+        name: 'DiTeLe',
+        url: 'https://ditele-gamma.vercel.app',
+        description: {
+          de: 'Lernplattform für praktisches Softwaretesten: an laufenden Anwendungen testen, professionelle Fehlerberichte schreiben und Rückmeldung von Trainerinnen und Trainern erhalten.',
+          en: 'A learning platform for hands-on software testing: test running applications, write professional defect reports and get feedback from trainers.',
+          tr: 'Uygulamalı yazılım testi için öğrenme platformu: çalışan uygulamaları test edin, profesyonel hata raporları yazın ve eğitmenlerden geri bildirim alın.',
+        },
+      },
       {
         name: 'KI Manager LMS',
         url: 'https://ki-manager-lms.vercel.app/lp',
@@ -219,15 +250,6 @@ export const appCategories: AppCategory[] = [
     },
     apps: [
       {
-        name: 'Plan-it',
-        url: 'https://wamocon.github.io/plan-it_lp/',
-        description: {
-          de: 'Architekturplaner für Software-Landschaften: Ist-Zustand analysieren, Architektur-Score ermitteln und Umsetzungsplan exportieren.',
-          en: 'Architecture planner for software landscapes: analyse current state, determine architecture score and export implementation plan.',
-          tr: 'Yazılım mimarileri için planlayıcı: mevcut durumu analiz edin, mimari puanı belirleyin ve uygulama planını dışa aktarın.',
-        },
-      },
-      {
         name: 'Ustafix',
         url: 'https://www.ustafix.app/',
         description: {
@@ -236,15 +258,26 @@ export const appCategories: AppCategory[] = [
           tr: 'Şantiyeler için eksiklik yönetimi: kusurları kaydedin, fotoğrafla belgeleyin, takip edin ve PDF rapor olarak dışa aktarın.',
         },
       },
-      // {
-      //   name: 'Meine Wohnung',
-      //   url: 'https://wamocon.github.io/meine_wohnung',
-      //   description: {
-      //     de: 'Zentrale Plattform zur Verwaltung von Mietobjekten und Mieterkommunikation.',
-      //     en: 'Central platform for managing rental properties and tenant communication.',
-      //     tr: 'Kiralık mülklerin ve kiracı iletişiminin yönetimi için merkezî platform.',
-      //   },
-      // },
+      {
+        name: 'Meine Wohnung',
+        url: 'https://wamocon.github.io/meine_wohnung_lp_1/',
+        productUrl: 'https://meine-wohnung.vercel.app',
+        description: {
+          de: 'Digitaler Arbeitsplatz für Gebäude: Wohnungen in 3D erfassen, Material und Ressourcen verfolgen und Etagen gemeinsam durchgehen.',
+          en: 'A digital workspace for buildings: capture flats in 3D, track materials and resources, and walk through floors together.',
+          tr: 'Binalar için dijital çalışma alanı: daireleri 3B olarak kaydedin, malzeme ve kaynakları takip edin ve katları birlikte gezin.',
+        },
+      },
+      {
+        name: 'NebenkostenCheck',
+        url: 'https://wamocon.github.io/nebenkostencheck_lp/',
+        productUrl: 'https://nebenkostencheck.eu',
+        description: {
+          de: 'Nebenkostenabrechnung prüfen: Positionen und Umlageschlüssel nachrechnen, Auffälligkeiten dokumentieren und den Widerspruch vorbereiten.',
+          en: 'Check your service-charge statement: recalculate items and allocation keys, document irregularities and prepare an objection.',
+          tr: 'Yan gider hesabınızı kontrol edin: kalemleri ve dağıtım anahtarlarını yeniden hesaplayın, aykırılıkları belgeleyin ve itirazı hazırlayın.',
+        },
+      },
       {
         name: 'WG-Planer',
         url: 'https://wamocon.github.io/wg-planer_lp/',
@@ -256,7 +289,9 @@ export const appCategories: AppCategory[] = [
       },
       {
         name: 'Parzella',
-        url: 'https://wamocon.github.io/parzella_lp/',
+        // The landing-page repo is private, so GitHub Pages does not serve it.
+        // The product itself is live, so the card links straight to it.
+        url: 'https://parzella.eu',
         description: {
           de: 'Kleingarten-Platzfinder: Vereine auf der Karte finden, Bewerbungen mit KI generieren und Fortschritte tracken.',
           en: 'Allotment-garden finder: locate clubs on a map, generate applications with AI and track progress.',
@@ -274,7 +309,9 @@ export const appCategories: AppCategory[] = [
       },
       {
         name: 'BalkonBonus',
-        url: 'https://balkonbonus.eu',
+        // Deployment offline: balkonbonus.eu returns 404 and the landing page is
+        // still an unfilled template. Restore the URL once the app is back up.
+        soon: true,
         description: {
           de: 'Fördermittel-Suche und Antragsunterlagen für Balkonkraftwerke in wenigen Minuten erstellen.',
           en: 'Search for subsidies and create application documents for balcony power plants in minutes.',
@@ -365,6 +402,7 @@ export const appCategories: AppCategory[] = [
       {
         name: 'blitzersafe',
         url: 'https://wamocon.github.io/blitzersafe_lp/',
+        productUrl: 'https://blitzersafe.eu',
         description: {
           de: 'KI-Assistent für Bußgeldbescheide: Daten extrahieren, Einspruchspotenzial prüfen und Widerspruchs-Schreiben generieren.',
           en: 'AI assistant for traffic-fine notices: extract data, check objection potential and generate appeal letters.',
@@ -374,6 +412,7 @@ export const appCategories: AppCategory[] = [
       {
         name: 'Geburtstagspilot',
         url: 'https://wamocon.github.io/geburtstagspilot_lp/',
+        productUrl: 'https://geburtstagspilot.de',
         description: {
           de: 'Planer für Kindergeburtstage: Ablauf, Spiele, Essen, Einkaufsliste, Einladung und Mitgebsel organisieren.',
           en: 'Planner for children\'s birthdays: schedule, games, food, shopping list, invitations and goody bags.',
@@ -401,6 +440,7 @@ export const appCategories: AppCategory[] = [
       {
         name: 'regiosync',
         url: 'https://wamocon.github.io/regiosync_lp/',
+        productUrl: 'https://regiosync.eu',
         description: {
           de: 'Regionaler Marktplatz für lokale Erzeuger, Handwerker und Händler mit interaktiver Karte und direktem Kontakt.',
           en: 'Regional marketplace for local producers, craftsmen and traders with an interactive map and direct contact.',
@@ -445,7 +485,8 @@ export const appCategories: AppCategory[] = [
       },
       {
         name: 'ARIA',
-        url: 'https://aria-ten-kohl.vercel.app/',
+        // Deployment offline: the Vercel project behind aria-ten-kohl was removed.
+        soon: true,
         description: {
           de: 'KI-Schreibassistent für Arztpraxen: Arztbriefe, Überweisungen und Befunde aus Stichpunkten oder Diktat generieren.',
           en: 'AI writing assistant for medical practices: generate letters, referrals and findings from bullet points or dictation.',
@@ -454,8 +495,7 @@ export const appCategories: AppCategory[] = [
       },
       {
         name: 'Vereinsping',
-        // url: 'https://wamocon.github.io/vereinsping_lp/',
-        soon: true,
+        url: 'https://wamocon.github.io/vereinsping_lp/',
         description: {
           de: 'Zentrale Kommunikationsplattform und Mitgliederverwaltung für Vereine.',
           en: 'Central communication platform and member management for clubs and associations.',
@@ -490,15 +530,6 @@ export const appCategories: AppCategory[] = [
         },
       },
       {
-        name: 'makeartalanya',
-        url: 'https://www.makeartalanya.com/',
-        description: {
-          de: 'Lokales Kunst- und Kreativstudio in Alanya mit Kursen in Malen, Zeichnen, Schach und Handwerk.',
-          en: 'Local art and creative studio in Alanya offering courses in painting, drawing, chess and crafts.',
-          tr: 'Alanya’da resim, çizim, satranç ve el sanatları kursları sunan yerel sanat ve yaratıcılık stüdyosu.',
-        },
-      },
-      {
         name: 'cardscan',
         url: 'https://wamocon.github.io/cardscan_lp/',
         description: {
@@ -519,6 +550,7 @@ export const appCategories: AppCategory[] = [
       {
         name: 'football-connect',
         url: 'https://wamocon.github.io/footballconnect_lp/',
+        productUrl: 'https://footballconnect.eu',
         description: {
           de: 'Plattform für Amateurfußball: Vereinssuche, Spieler-Bewerbungen, Probetraining und Team-Verwaltung.',
           en: 'Platform for amateur football: club search, player applications, trial training and team management.',
@@ -545,7 +577,9 @@ export const appCategories: AppCategory[] = [
       },
       {
         name: 'AngelSpot',
-        url: 'https://angelspot.eu/de',
+        // Deployment offline: angelspot.eu points at a Vercel project that no
+        // longer exists. The repo carries a finished landing page under docs/.
+        soon: true,
         description: {
           de: 'Community und Standortermittlung für Angler und Naturfreunde.',
           en: 'Community and location finder for anglers and nature lovers.',

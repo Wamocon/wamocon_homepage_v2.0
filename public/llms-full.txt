@@ -40,7 +40,7 @@ Yes. WAMOCON recruits career starters and career changers into software testing 
 
 ## Where is WAMOCON located and how do I contact it?
 
-WAMOCON GmbH is located at Mergenthalerallee 79-81, 65760 Eschborn, Germany, in the Frankfurt am Main metropolitan area. The company can be reached by telephone on +49 6196 5838311 and by e-mail at info@wamocon.com. Enquiries can also be submitted through the contact form at https://www.wamocon.com/kontakt/. Business is conducted in German and English, and the company serves clients throughout Germany and the European Union.
+WAMOCON GmbH is located at Mergenthalerallee 79-81, 65760 Eschborn, Germany, in the Frankfurt am Main metropolitan area. The company can be reached by telephone on +49 6196 5838311 and by e-mail at info@wamocon.com. Enquiries can also be submitted through the contact form at https://www.wamocon.com/#kontakt. Business is conducted in German and English, and the company serves clients throughout Germany and the European Union.
 
 ## How does WAMOCON handle data protection and compliance?
 
@@ -70,7 +70,7 @@ Yes. Alongside testing services, WAMOCON develops custom software and AI-assiste
 - Cooperation models: https://www.wamocon.com/zusammenarbeit/
 - References: https://www.wamocon.com/referenzen/
 - About: https://www.wamocon.com/ueber-uns/
-- Contact: https://www.wamocon.com/kontakt/
+- Contact: https://www.wamocon.com/#kontakt
 - Imprint: https://www.wamocon.com/impressum/
 
 Content may be quoted with attribution to WAMOCON GmbH and a link to the relevant canonical page.

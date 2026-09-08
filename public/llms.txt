@@ -36,7 +36,7 @@
 - [Employee voices](https://www.wamocon.com/mitarbeiter-stimmen/): First-hand accounts from WAMOCON employees.
 - [IT apprenticeship](https://www.wamocon.com/azubi-fae/): The Fachinformatiker apprenticeship for application development.
 - [Web design services](https://www.wamocon.com/webdesign/): Website and web-application design work.
-- [Contact](https://www.wamocon.com/kontakt/): Phone, e-mail and enquiry form.
+- [Contact](https://www.wamocon.com/#kontakt): Phone, e-mail and enquiry form on the home page. There is no separate contact page.
 
 ## English pages
 
@@ -46,7 +46,7 @@
 - [Cooperation (EN)](https://www.wamocon.com/en/cooperation/): Engagement models in English.
 - [References (EN)](https://www.wamocon.com/en/references/): Client references in English.
 - [Careers (EN)](https://www.wamocon.com/en/career/): Open roles in English.
-- [Contact (EN)](https://www.wamocon.com/en/contact/): English contact details and enquiry form.
+- [Contact (EN)](https://www.wamocon.com/en/#kontakt): English contact details and enquiry form on the English home page.
 - [Apps (EN)](https://www.wamocon.com/en/apps/): Software and AI application portfolio in English.
 - [Employee voices (EN)](https://www.wamocon.com/en/employee-voices/): First-hand employee accounts in English.
 - [Testimonials (EN)](https://www.wamocon.com/en/testimonials/): Client testimonials in English.

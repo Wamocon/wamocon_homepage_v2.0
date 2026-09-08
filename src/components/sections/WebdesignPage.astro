@@ -17,6 +17,26 @@ const industryLabel = (key: string) =>
   industries.find((i) => i.key === key)?.label[lang] ?? key;
 
 /**
+ * The first hero figure counts the industries we actually have a live project
+ * in. Derived rather than written down, so it cannot drift when the portfolio
+ * grows — `industries` also carries the "all" filter, which is not an industry.
+ */
+const liveIndustries = new Set(projects.map((p) => p.category)).size;
+const num = (n: number) => ({ de: String(n), en: String(n), tr: String(n) });
+const heroStats = w.hero.stats.map((s, i) => (i === 0 ? { ...s, value: num(liveIndustries) } : s));
+
+/**
+ * The first two trust figures count the portfolio itself, so they stay true as
+ * projects are added. Everything the block asserts is therefore something a
+ * visitor can verify by scrolling up and counting the cards.
+ */
+const trustStats = w.trust.stats.map((s, i) => {
+  if (i === 0) return { ...s, value: num(projects.length) };
+  if (i === 1) return { ...s, value: num(liveIndustries) };
+  return s;
+});
+
+/**
  * Portfolio screenshots. The hero mock-ups and the marquee repeat these very
  * images inside aria-hidden containers, which is why only the cards below
  * carry a description — announcing the same site three times helps nobody.
@@ -42,7 +62,7 @@ const screenshotAlt = (name: string, category: string, location: string) => {
         <Button href="#referenzen" variant="outline" size="lg">{w.hero.ctaSecondary[lang]}</Button>
       </div>
       <ul class="wd-hero__stats">
-        {w.hero.stats.map((s) => (
+        {heroStats.map((s) => (
           <li>
             <span class="wd-hero__stat-value">{s.value[lang]}</span>
             <span class="wd-hero__stat-label">{s.label[lang]}</span>
@@ -158,7 +178,7 @@ const screenshotAlt = (name: string, category: string, location: string) => {
       <p class="text-muted">{w.trust.text[lang]}</p>
     </div>
     <ul class="wd-trust__stats">
-      {w.trust.stats.map((s) => (
+      {trustStats.map((s) => (
         <li data-reveal="up">
           <span class="wd-trust__value">{s.value[lang]}</span>
           <span class="wd-trust__label">{s.label[lang]}</span>
