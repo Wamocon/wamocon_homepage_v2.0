@@ -178,6 +178,15 @@ export const appCategories: AppCategory[] = [
         },
       },
       {
+        name: 'DiTeLe',
+        url: 'https://ditele-gamma.vercel.app',
+        description: {
+          de: 'Lernplattform für praktisches Softwaretesten: an laufenden Anwendungen testen, professionelle Fehlerberichte schreiben und Rückmeldung von Trainerinnen und Trainern erhalten.',
+          en: 'A learning platform for hands-on software testing: test running applications, write professional defect reports and get feedback from trainers.',
+          tr: 'Uygulamalı yazılım testi için öğrenme platformu: çalışan uygulamaları test edin, profesyonel hata raporları yazın ve eğitmenlerden geri bildirim alın.',
+        },
+      },
+      {
         name: 'KI Manager LMS',
         url: 'https://ki-manager-lms.vercel.app/lp',
         description: {

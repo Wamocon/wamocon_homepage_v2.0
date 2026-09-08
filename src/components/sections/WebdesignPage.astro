@@ -22,11 +22,19 @@ const industryLabel = (key: string) =>
  * grows — `industries` also carries the "all" filter, which is not an industry.
  */
 const liveIndustries = new Set(projects.map((p) => p.category)).size;
-const heroStats = w.hero.stats.map((s, i) =>
-  i === 0
-    ? { ...s, value: { de: String(liveIndustries), en: String(liveIndustries), tr: String(liveIndustries) } }
-    : s,
-);
+const num = (n: number) => ({ de: String(n), en: String(n), tr: String(n) });
+const heroStats = w.hero.stats.map((s, i) => (i === 0 ? { ...s, value: num(liveIndustries) } : s));
+
+/**
+ * The first two trust figures count the portfolio itself, so they stay true as
+ * projects are added. Everything the block asserts is therefore something a
+ * visitor can verify by scrolling up and counting the cards.
+ */
+const trustStats = w.trust.stats.map((s, i) => {
+  if (i === 0) return { ...s, value: num(projects.length) };
+  if (i === 1) return { ...s, value: num(liveIndustries) };
+  return s;
+});
 
 /**
  * Portfolio screenshots. The hero mock-ups and the marquee repeat these very
@@ -170,7 +178,7 @@ const screenshotAlt = (name: string, category: string, location: string) => {
       <p class="text-muted">{w.trust.text[lang]}</p>
     </div>
     <ul class="wd-trust__stats">
-      {w.trust.stats.map((s) => (
+      {trustStats.map((s) => (
         <li data-reveal="up">
           <span class="wd-trust__value">{s.value[lang]}</span>
           <span class="wd-trust__label">{s.label[lang]}</span>

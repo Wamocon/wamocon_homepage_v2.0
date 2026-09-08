@@ -51,6 +51,10 @@ export const industries: { key: string; label: L }[] = [
     label: { de: 'Beratung & Dienstleistung', en: 'Consulting & services', tr: 'Danışmanlık ve hizmet' },
   },
   { key: 'kunst', label: { de: 'Kunst & Kultur', en: 'Art & culture', tr: 'Sanat ve kültür' } },
+  {
+    key: 'bildung',
+    label: { de: 'Bildung & Training', en: 'Education & training', tr: 'Eğitim ve öğretim' },
+  },
 ];
 
 export const projects: WebProject[] = [
@@ -80,9 +84,9 @@ export const projects: WebProject[] = [
     url: 'https://mikailhairsalon.vercel.app/',
     tagline: { de: 'Unisex Hair & Beauty', en: 'Unisex hair & beauty', tr: 'Unisex saç ve güzellik' },
     description: {
-      de: 'Eleganter Auftritt für einen Unisex-Salon mit zwei Filialen, viersprachig, mit WhatsApp-Buchung, Abhol-Service und über 1.800 Google-Bewertungen im Fokus.',
-      en: 'An elegant presence for a unisex salon with two branches, four languages, WhatsApp booking, pickup service and 1,800+ Google reviews in the spotlight.',
-      tr: 'İki şubeli bir unisex kuaför için zarif bir dijital görünüm: dört dil, WhatsApp üzerinden randevu, servis hizmeti ve öne çıkarılan 1.800’den fazla Google değerlendirmesi.',
+      de: 'Eleganter Auftritt für einen Unisex-Salon mit zwei Filialen, viersprachig, mit WhatsApp-Buchung, Abhol-Service und den Google-Bewertungen des Salons im Mittelpunkt.',
+      en: 'An elegant presence for a unisex salon with two branches, four languages, WhatsApp booking, pickup service and the salon’s Google reviews in the spotlight.',
+      tr: 'İki şubeli bir unisex kuaför için zarif bir dijital görünüm: dört dil, WhatsApp üzerinden randevu, servis hizmeti ve salonun Google değerlendirmeleri ön planda.',
     },
   },
   {
@@ -232,6 +236,23 @@ export const projects: WebProject[] = [
       de: 'Dreisprachiger Auftritt mit Buchungssystem für ein Kunst- und Kreativstudio in Alanya: Kurse in Malen, Zeichnen, Schach und Handwerk, direkt online belegbar.',
       en: 'A three-language presence with booking system for an art and creative studio in Alanya: courses in painting, drawing, chess and crafts, bookable online.',
       tr: 'Alanya’daki bir sanat ve yaratıcılık stüdyosu için rezervasyon sistemli üç dilli görünüm: resim, çizim, satranç ve el sanatları kursları çevrim içi ayrılabilir.',
+    },
+  },
+  {
+    name: 'DiTeLe',
+    category: 'bildung',
+    location: 'WAMOCON Academy GmbH',
+    image: '/images/webdesign/ditele.webp',
+    url: 'https://ditele-gamma.vercel.app',
+    tagline: {
+      de: 'Softwaretesten lernt man durch Testen',
+      en: 'You learn software testing by testing',
+      tr: 'Yazılım testi test ederek öğrenilir',
+    },
+    description: {
+      de: 'Lernplattform für die WAMOCON Academy: Kursbetrieb mit getrennten Rollen für Lernende, Trainer und Verwaltung, Fehlerberichte an laufenden Anwendungen und ein KI-Assistent. Dreisprachig, mit eigenem Designsystem und heller wie dunkler Ansicht.',
+      en: 'A learning platform for WAMOCON Academy: course operations with separate roles for learners, trainers and administration, defect reports against running applications and an AI assistant. Three languages, its own design system, light and dark.',
+      tr: 'WAMOCON Academy için öğrenme platformu: öğrenci, eğitmen ve yönetim için ayrı rollerle kurs işletimi, çalışan uygulamalar üzerinde hata raporları ve bir yapay zekâ asistanı. Üç dil, kendi tasarım sistemi, açık ve koyu görünüm.',
     },
   },
   // Bäuerle Steuerberater — Premium-Website plus KI-Kanzlei-Cockpit mit sechs
@@ -385,9 +406,9 @@ export const webdesign = {
       tr: 'Sektörlere göre referanslar',
     },
     intro: {
-      de: 'Ein Ausschnitt der Websites, die wir für externe Kunden gebaut haben. Filtern Sie nach Branche und öffnen Sie jede Seite live.',
-      en: 'A selection of the websites we have built for external clients. Filter by industry and open each site live.',
-      tr: 'Dış müşterilerimiz için geliştirdiğimiz web sitelerinden bir seçki. Sektöre göre filtreleyin ve her siteyi canlı olarak açın.',
+      de: 'Ein Ausschnitt der Websites, die wir gebaut haben, überwiegend für externe Kunden. Filtern Sie nach Branche und öffnen Sie jede Seite live.',
+      en: 'A selection of the websites we have built, most of them for external clients. Filter by industry and open each site live.',
+      tr: 'Geliştirdiğimiz web sitelerinden bir seçki; büyük bölümü dış müşteriler için. Sektöre göre filtreleyin ve her siteyi canlı olarak açın.',
     },
     live: { de: 'Live ansehen', en: 'View live', tr: 'Canlı görüntüle' },
     featuredLabel: { de: 'Referenzprojekt', en: 'Reference project', tr: 'Referans proje' },
@@ -471,21 +492,30 @@ export const webdesign = {
       en: 'Click through the websites above, check our clients’ Google reviews and compare at your own pace. Research is expressly encouraged, because what we build holds up to outside scrutiny.',
       tr: 'Yukarıdaki web sitelerini tek tek gezin, müşterilerimizin Google değerlendirmelerini inceleyin ve acele etmeden karşılaştırın. Araştırmanızı açıkça teşvik ediyoruz; çünkü yaptığımız iş dışarıdan bakışa dayanır.',
     },
+    /**
+     * These four figures describe our own work, which we can evidence at any
+     * time. The first two used to quote our clients' Google ratings; those are
+     * other companies' numbers, they move without us noticing, and asserting
+     * them as a headline figure is a claim we would have to defend. The block's
+     * text still invites visitors to look those ratings up themselves, which is
+     * where such numbers belong.
+     * The first two values are filled in from `projects` at render time.
+     */
     stats: [
       {
-        value: { de: '5,0', en: '5.0', tr: '5,0' },
+        value: { de: '11', en: '11', tr: '11' },
         label: {
-          de: 'Google-Bewertung unserer Kunden',
-          en: 'Google rating of our clients',
-          tr: 'müşterilerimizin Google puanı',
+          de: 'Websites live im Portfolio',
+          en: 'websites live in the portfolio',
+          tr: 'portföyde yayında site',
         },
       },
       {
-        value: { de: '1.800+', en: '1,800+', tr: '1.800+' },
+        value: { de: '9', en: '9', tr: '9' },
         label: {
-          de: 'Bewertungen bei einem Salon allein',
-          en: 'reviews at a single salon',
-          tr: 'tek bir salonda değerlendirme',
+          de: 'Branchen, von Barbier bis Steuerprüfung',
+          en: 'industries, from barber to safety testing',
+          tr: 'sektör: berberden denetime',
         },
       },
       {
