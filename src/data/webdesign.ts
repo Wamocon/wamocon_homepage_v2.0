@@ -8,16 +8,35 @@ import type { Lang } from '../i18n/config';
 type L = Record<Lang, string>;
 
 /**
- * The premium package is sold for 25.000 ₺. Each language edition shows the
- * figure in the currency its readers actually budget in.
- * Conversion base (mid-market, 28 July 2026): 1 € = 53,84 ₺ · 1 $ = 47,34 ₺.
- * 25.000 ₺ ÷ 53,84 = 464 € → 465 € · 25.000 ₺ ÷ 47,34 = 528 $ → 530 $.
- * When the lira moves noticeably, update the three figures here together.
+ * Two markets, two prices — no longer one number converted three ways.
+ *
+ * The Turkish edition keeps the local price of 25.000 ₺, which is what that
+ * market budgets and where the "European quality, Turkish price" argument
+ * actually holds. The German and English editions carry a corridor derived
+ * from German market rates, because 465 € — the old converted figure — sits
+ * two orders of magnitude below what the same scope costs here and reads as a
+ * warning sign rather than a bargain.
+ *
+ * Derivation: the package is 100–160 hours of work. Against the only German
+ * rate data with disclosed methodology (freelancermap Freelancer-Kompass 2026:
+ * Ø 103 €/h, creatives Ø 89 €/h; agencies 100–150 €/h) that is 10.000–20.000 €
+ * net. The corridor below sits inside it.
+ *
+ * PROPOSAL — these figures come from the analysis in
+ * `docs/webdesign-preis-und-marketingpsychologie.md` and need WAMOCON's
+ * sign-off before this goes live.
  */
 export const premiumPrice: L = {
-  de: '465 €',
-  en: '$530',
+  de: '12.400 – 18.600 €',
+  en: '€12,400 – €18,600',
   tr: '25.000 ₺',
+};
+
+/** Ongoing operation, quoted separately because B2B buyers budget total cost. */
+export const premiumMonthly: L = {
+  de: '390 – 890 € / Monat',
+  en: '€390 – €890 / month',
+  tr: '2.500 ₺ / ay',
 };
 
 export interface WebProject {
@@ -51,10 +70,6 @@ export const industries: { key: string; label: L }[] = [
     label: { de: 'Beratung & Dienstleistung', en: 'Consulting & services', tr: 'Danışmanlık ve hizmet' },
   },
   { key: 'kunst', label: { de: 'Kunst & Kultur', en: 'Art & culture', tr: 'Sanat ve kültür' } },
-  {
-    key: 'bildung',
-    label: { de: 'Bildung & Training', en: 'Education & training', tr: 'Eğitim ve öğretim' },
-  },
 ];
 
 export const projects: WebProject[] = [
@@ -238,40 +253,6 @@ export const projects: WebProject[] = [
       tr: 'Alanya’daki bir sanat ve yaratıcılık stüdyosu için rezervasyon sistemli üç dilli görünüm: resim, çizim, satranç ve el sanatları kursları çevrim içi ayrılabilir.',
     },
   },
-  {
-    name: '1Çatı ERP',
-    category: 'immobilien',
-    location: 'Ataberk Estate · Alanya',
-    image: '/images/webdesign/cati-erp.webp',
-    url: 'https://cati-blond.vercel.app',
-    tagline: {
-      de: 'Der Immobilienbetrieb aus einem Zentrum',
-      en: 'Running a property business from one place',
-      tr: 'Gayrimenkul işletmesi tek merkezden',
-    },
-    description: {
-      de: 'Nicht nur die Website, sondern das System dahinter: 1Çatı führt Vertrieb, Portfolio, Eigentümer, Mieter, Beiträge, Service, Dokumente und Reporting in einem rollenbasierten Arbeitsbereich zusammen. Für denselben Kunden wie der Webauftritt, mehrsprachig und mit eigenem Kundenportal.',
-      en: 'Not just the website but the system behind it: 1Çatı brings sales, portfolio, owners, tenants, dues, service, documents and reporting into one role-based workspace. Built for the same client as the website, multilingual and with its own customer portal.',
-      tr: 'Yalnızca web sitesi değil, arkasındaki sistem: 1Çatı satış, portföy, malik, kiracı, aidat, servis, doküman ve raporlamayı rol tabanlı tek bir çalışma alanında birleştirir. Web sitesiyle aynı müşteri için; çok dilli ve kendi müşteri portalıyla.',
-    },
-  },
-  {
-    name: 'DiTeLe',
-    category: 'bildung',
-    location: 'WAMOCON Academy GmbH',
-    image: '/images/webdesign/ditele.webp',
-    url: 'https://ditele-gamma.vercel.app',
-    tagline: {
-      de: 'Softwaretesten lernt man durch Testen',
-      en: 'You learn software testing by testing',
-      tr: 'Yazılım testi test ederek öğrenilir',
-    },
-    description: {
-      de: 'Lernplattform für die WAMOCON Academy: Kursbetrieb mit getrennten Rollen für Lernende, Trainer und Verwaltung, Fehlerberichte an laufenden Anwendungen und ein KI-Assistent. Dreisprachig, mit eigenem Designsystem und heller wie dunkler Ansicht.',
-      en: 'A learning platform for WAMOCON Academy: course operations with separate roles for learners, trainers and administration, defect reports against running applications and an AI assistant. Three languages, its own design system, light and dark.',
-      tr: 'WAMOCON Academy için öğrenme platformu: öğrenci, eğitmen ve yönetim için ayrı rollerle kurs işletimi, çalışan uygulamalar üzerinde hata raporları ve bir yapay zekâ asistanı. Üç dil, kendi tasarım sistemi, açık ve koyu görünüm.',
-    },
-  },
   // Bäuerle Steuerberater — Premium-Website plus KI-Kanzlei-Cockpit mit sechs
   // Fachmodulen. Wartet auf ein Deployment; sobald die Adresse steht, `url`
   // eintragen, Screenshot unter /images/webdesign/baeuerle-steuerberater.webp
@@ -331,7 +312,19 @@ export const webdesign = {
         value: { de: '4', en: '4', tr: '4' },
         label: { de: 'Sprachen pro Website', en: 'languages per site', tr: 'her sitede dil' },
       },
-      { value: premiumPrice, label: { de: 'Premium-Paket', en: 'premium package', tr: 'premium paket' } },
+      /**
+       * The price used to sit here, as the first number on the page — before
+       * the portfolio, before the capabilities, before any value was built.
+       * It now lives in the offer section, after the reader has seen the work.
+       */
+      {
+        value: { de: 'BFSG', en: 'BFSG', tr: 'BFSG' },
+        label: {
+          de: 'barrierefrei auf Wunsch',
+          en: 'accessible on request',
+          tr: 'talep hâlinde erişilebilir',
+        },
+      },
     ],
   },
   department: {
@@ -404,6 +397,18 @@ export const webdesign = {
       },
       {
         title: {
+          de: 'Barrierefreiheit nach BFSG',
+          en: 'Accessibility under the German BFSG',
+          tr: 'BFSG kapsamında erişilebilirlik',
+        },
+        text: {
+          de: 'Beim Neubau eingeplant statt später nachgerüstet — das ist der Unterschied zwischen einem Aufschlag und einem Projekt.',
+          en: 'Planned into the build rather than retrofitted later — the difference between a surcharge and a project.',
+          tr: 'Sonradan eklenmek yerine yapım sırasında planlanır; bu, bir ek ücretle bir proje arasındaki farktır.',
+        },
+      },
+      {
+        title: {
           de: 'Hosting, Wartung & VIP-Support',
           en: 'Hosting, maintenance & VIP support',
           tr: 'Barındırma, bakım ve VIP destek',
@@ -432,27 +437,67 @@ export const webdesign = {
   },
   offer: {
     eyebrow: {
-      de: 'Herbstkampagne 2026 · Premium',
-      en: 'Autumn campaign 2026 · Premium',
-      tr: '2026 Sonbahar kampanyası · Premium',
+      de: 'Das Premium-Paket',
+      en: 'The premium package',
+      tr: 'Premium paket',
     },
-    heading: { de: 'Das Premium-Paket', en: 'The premium package', tr: 'Premium paket' },
+    heading: {
+      de: 'Was eine Website bei uns kostet',
+      en: 'What a website costs with us',
+      tr: 'Bizde bir web sitesinin maliyeti',
+    },
     anchor: {
-      de: 'Europäische Qualität, türkischer Preis',
-      en: 'European quality, Turkish price',
-      tr: 'Avrupa kalitesi, Türkiye fiyatı',
+      de: 'Ein Preis, den wir vorrechnen können',
+      en: 'A price we can show our working for',
+      tr: 'Hesabını gösterebildiğimiz bir fiyat',
     },
     price: premiumPrice,
     priceNote: {
-      de: '≈ 25.000 ₺ · Premium-Paket',
-      en: '≈ 25,000 ₺ · premium package',
-      tr: 'Premium paket · tek seferlik',
+      de: 'Premium-Paket · netto zzgl. USt.',
+      en: 'Premium package · net, plus VAT',
+      tr: 'Premium paket · net, KDV hariç',
     },
+    /**
+     * Replaces the old "a German agency charges around 25,000 €" comparison.
+     * That sentence was comparative advertising under § 6 UWG without a
+     * verifiable basis, and the 54-fold gap it opened invited readers to look
+     * for the catch rather than the value. What follows is the one remedy with
+     * experimental support: explain the number instead of shouting it.
+     * See `docs/webdesign-preis-und-marketingpsychologie.md`.
+     */
     compare: {
-      de: 'Eine deutsche Agentur berechnet für ein vergleichbares Premium-Paket rund 25.000 €. Diesen Herbst erhalten Sie dieselbe Ingenieursarbeit für 25.000 ₺, gleiche Zahl, nur in Lira statt Euro. Für Sie sind das rund 465 €.',
-      en: 'A German agency charges around €25,000 for a comparable premium package. This autumn you get the same engineering for 25,000 ₺, the same number, just in lira instead of euros. That works out at roughly $530 for you.',
-      tr: 'Bir Alman ajans, benzer bir premium paket için yaklaşık 25.000 € talep ediyor. Bu sonbahar aynı mühendislik işini 25.000 ₺’ye alıyorsunuz: aynı rakam, sadece Euro yerine Lira.',
+      de: 'Der Preis ergibt sich aus dem Umfang, nicht aus dem Verkaufsgespräch: Seitenzahl, Sprachen, Buchungslogik, angebundene Systeme und ob Barrierefreiheit nach BFSG gefordert ist. Wir rechnen ihn vor, bevor Sie sich entscheiden.',
+      en: 'The price follows the scope, not the sales conversation: number of pages, languages, booking logic, connected systems and whether accessibility under the German BFSG is required. We show the calculation before you decide.',
+      tr: 'Fiyat, satış görüşmesinden değil kapsamdan doğar: sayfa sayısı, diller, randevu mantığı, bağlanan sistemler ve BFSG kapsamında erişilebilirliğin gerekip gerekmediği. Siz karar vermeden önce hesabı gösteriyoruz.',
     },
+    /** Cost transparency: the mechanism that neutralises the "what's the catch" reflex. */
+    whyHeading: {
+      de: 'Warum wir unter einer Agentur liegen',
+      en: 'Why we come in below an agency',
+      tr: 'Neden bir ajansın altında kalıyoruz',
+    },
+    why: [
+      {
+        de: 'Wir bauen auf einer eigenen, wiederverwendeten Komponentenbasis statt jede Seite von null.',
+        en: 'We build on our own reused component base instead of starting every site from zero.',
+        tr: 'Her siteye sıfırdan başlamak yerine kendi yeniden kullanılan bileşen tabanımız üzerine inşa ediyoruz.',
+      },
+      {
+        de: 'Kein Außendienst, keine Vermittlungsprovision, keine Zwischenagentur.',
+        en: 'No field sales, no referral commission, no agency in the middle.',
+        tr: 'Saha satışı yok, aracılık komisyonu yok, arada ajans yok.',
+      },
+      {
+        de: 'Der Leistungsumfang ist klar abgegrenzt. Was nicht enthalten ist, steht im Angebot.',
+        en: 'The scope is clearly bounded. What is not included is written into the quote.',
+        tr: 'Kapsam net biçimde sınırlıdır. Dahil olmayanlar teklifte yazar.',
+      },
+      {
+        de: 'Texte und Bilder kommen von Ihnen, oder wir kalkulieren sie getrennt aus.',
+        en: 'Copy and images come from you, or we quote them separately.',
+        tr: 'Metin ve görseller sizden gelir ya da ayrıca fiyatlandırılır.',
+      },
+    ],
     features: [
       {
         de: 'Mehrsprachige Premium-Website (4 Sprachen)',
@@ -481,15 +526,45 @@ export const webdesign = {
         tr: 'Aylık SEO raporu + VIP destek',
       },
     ],
+    monthly: premiumMonthly,
+    monthlyNote: {
+      de: 'Betrieb: Hosting, Wartung, Sicherung, SEO-Report. Monatlich kündbar nach Abnahme.',
+      en: 'Operation: hosting, maintenance, backups, SEO report. Cancellable monthly after acceptance.',
+      tr: 'İşletim: barındırma, bakım, yedekleme, SEO raporu. Kabulden sonra aylık feshedilebilir.',
+    },
+    /**
+     * One concrete promise instead of four. A stack of reassurances makes a
+     * buyer doubt whether the guarantor could honour any of them, which is the
+     * opposite of the intended effect (Boulding & Kirmani 1993).
+     */
     guarantee: {
-      de: 'Null Risiko: Zahlung erst nach Auslieferung, 100 % nach Abnahme, keine Anzahlung. 30 Tage Geld-zurück-Garantie, keine versteckten Kosten.',
-      en: 'Zero risk: pay only after delivery, 100% on completion, no deposit. 30-day money-back guarantee, no hidden fees.',
-      tr: 'Sıfır risk: ödeme yalnızca teslimattan sonra, kabulden sonra %100, kapora yok. 30 gün para iade garantisi, gizli maliyet yok.',
+      de: 'Zahlung je Meilenstein nach Abnahme, keine Anzahlung. Abnahmekriterien stehen vorher schriftlich fest. Deutscher Vertragspartner, deutscher Gerichtsstand.',
+      en: 'Payment per milestone after acceptance, no deposit. Acceptance criteria are agreed in writing beforehand. German contracting party, German place of jurisdiction.',
+      tr: 'Kabul sonrası kilometre taşı başına ödeme, kapora yok. Kabul kriterleri önceden yazılı olarak belirlenir. Alman sözleşme tarafı, Alman yetkili mahkemesi.',
     },
     cta: {
-      de: 'Premium-Paket anfragen',
-      en: 'Request the premium package',
-      tr: 'Premium paketi talep edin',
+      de: 'Angebot anfragen',
+      en: 'Request a quote',
+      tr: 'Teklif isteyin',
+    },
+  },
+
+  /** Cross-link to the sibling department, framed as guidance not navigation. */
+  crosslink: {
+    heading: {
+      de: 'Wenn eine Website nicht reicht',
+      en: 'When a website is not enough',
+      tr: 'Web sitesi yetmediğinde',
+    },
+    text: {
+      de: 'Sobald mehrere Personen am selben Vorgang weiterarbeiten, nicht jeder alles sehen darf und Sie später nachweisen müssen, wer wann was entschieden hat, brauchen Sie kein Webdesign, sondern ein System. Für Ataberk Estate haben wir beides gebaut.',
+      en: 'As soon as several people work on the same case in sequence, not everyone may see everything, and you have to prove later who decided what and when, you do not need web design — you need a system. For Ataberk Estate we built both.',
+      tr: 'Aynı işlemi birden çok kişi sırayla sürdürüyorsa, herkes her şeyi göremiyorsa ve kimin ne zaman neye karar verdiğini sonradan kanıtlamanız gerekiyorsa, web tasarımına değil bir sisteme ihtiyacınız var. Ataberk Estate için ikisini de geliştirdik.',
+    },
+    cta: {
+      de: 'Zu den Unternehmenssystemen',
+      en: 'To the business systems',
+      tr: 'Kurumsal sistemlere',
     },
   },
 

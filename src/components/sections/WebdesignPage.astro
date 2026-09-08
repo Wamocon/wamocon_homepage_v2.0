@@ -22,6 +22,13 @@ const industryLabel = (key: string) =>
  * grows — `industries` also carries the "all" filter, which is not an industry.
  */
 const liveIndustries = new Set(projects.map((p) => p.category)).size;
+
+/** Where the sibling department lives, per language. */
+const systemeHref = {
+  de: '/unternehmenssysteme/',
+  en: '/en/business-systems/',
+  tr: '/tr/kurumsal-sistemler/',
+}[lang];
 const num = (n: number) => ({ de: String(n), en: String(n), tr: String(n) });
 const heroStats = w.hero.stats.map((s, i) => (i === 0 ? { ...s, value: num(liveIndustries) } : s));
 
@@ -217,11 +224,20 @@ const screenshotAlt = (name: string, category: string, location: string) => {
       <h2>{w.offer.heading[lang]}</h2>
       <p class="wd-offer__anchor">{w.offer.anchor[lang]}</p>
       <p class="text-muted">{w.offer.compare[lang]}</p>
+
+      <h3 class="wd-offer__why-title">{w.offer.whyHeading[lang]}</h3>
+      <ul class="wd-offer__why">
+        {w.offer.why.map((r) => <li>{r[lang]}</li>)}
+      </ul>
     </div>
     <div class="wd-offer__card" data-reveal="up" data-reveal-delay="80">
       <div class="wd-offer__price">
         <span class="wd-offer__amount">{w.offer.price[lang]}</span>
         <span class="wd-offer__note">{w.offer.priceNote[lang]}</span>
+      </div>
+      <div class="wd-offer__monthly">
+        <span class="wd-offer__monthly-amount">{w.offer.monthly[lang]}</span>
+        <span class="wd-offer__note">{w.offer.monthlyNote[lang]}</span>
       </div>
       <ul class="wd-offer__features">
         {w.offer.features.map((f) => (
@@ -263,6 +279,17 @@ const screenshotAlt = (name: string, category: string, location: string) => {
       <p class="text-muted">{w.love.text[lang]}</p>
     </div>
     <Button href="#kontakt" variant="primary" size="lg">{w.love.cta[lang]}</Button>
+  </div>
+</section>
+
+<!-- ============ QUERVERWEIS: Unternehmenssysteme ============ -->
+<section class="section wd-cross">
+  <div class="container wd-cross__inner" data-reveal="up">
+    <div>
+      <h2 class="wd-cross__heading">{w.crosslink.heading[lang]}</h2>
+      <p class="text-muted">{w.crosslink.text[lang]}</p>
+    </div>
+    <Button href={systemeHref} variant="outline" size="lg">{w.crosslink.cta[lang]}</Button>
   </div>
 </section>
 
@@ -531,6 +558,28 @@ const screenshotAlt = (name: string, category: string, location: string) => {
     align-items: center;
   }
   .wd-offer__anchor { color: var(--color-accent); font-weight: var(--fw-semibold); font-size: 1.2rem; margin: 0.4rem 0 1rem; }
+  .wd-cross__inner {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 1.5rem;
+    padding: clamp(1.6rem, 3vw, 2.4rem);
+    border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);
+    background: var(--surface-card);
+  }
+  .wd-cross__inner > div { max-width: 46rem; }
+  .wd-cross__heading { font-size: var(--fs-h3); font-weight: var(--fw-bold); line-height: var(--lh-snug); margin-bottom: 0.6rem; text-wrap: balance; }
+  .wd-offer__why-title { font-size: 1rem; font-weight: var(--fw-bold); margin: 1.6rem 0 0.8rem; }
+  .wd-offer__why { display: grid; gap: 0.55rem; }
+  .wd-offer__why li {
+    position: relative; padding-left: 1.5rem;
+    color: var(--color-text-muted); line-height: var(--lh-body); font-size: 0.95rem;
+  }
+  .wd-offer__why li::before { content: '—'; position: absolute; left: 0; color: var(--color-accent); }
+  .wd-offer__monthly {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 1rem;
+    margin: -0.9rem 0 1.5rem; padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+  .wd-offer__monthly-amount { font-size: 1.15rem; font-weight: var(--fw-semibold); color: var(--color-text); }
   .wd-offer__card {
     padding: clamp(1.8rem, 4vw, 2.75rem);
     background: var(--surface-card);

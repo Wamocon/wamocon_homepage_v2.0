@@ -120,6 +120,15 @@ export const nav: NavLink[] = [
     en: { label: 'Webdesign', href: '/en/webdesign/' },
     tr: { label: 'Webdesign', href: '/tr/webdesign/' },
   },
+  {
+    // Sibling of Webdesign, not a child: a visitor looking for software that
+    // runs their operation is not looking for a website, and burying it in a
+    // dropdown under "Webdesign" would tell them the opposite.
+    key: 'systeme',
+    de: { label: 'Unternehmenssysteme', href: '/unternehmenssysteme/' },
+    en: { label: 'Business Systems', href: '/en/business-systems/' },
+    tr: { label: 'Kurumsal Sistemler', href: '/tr/kurumsal-sistemler/' },
+  },
 ];
 
 /** Footer-only legal links. */
