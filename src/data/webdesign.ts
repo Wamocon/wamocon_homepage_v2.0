@@ -42,6 +42,15 @@ export const industries: { key: string; label: L }[] = [
   { key: 'klima', label: { de: 'Klima & Technik', en: 'Climate & technology', tr: 'İklimlendirme ve teknik' } },
   { key: 'auto', label: { de: 'Fahrzeugpflege', en: 'Car care', tr: 'Araç bakımı' } },
   { key: 'wohnen', label: { de: 'Wohnen & Einrichtung', en: 'Home & living', tr: 'Ev ve dekorasyon' } },
+  {
+    key: 'immobilien',
+    label: { de: 'Immobilien & Bau', en: 'Real estate & construction', tr: 'Gayrimenkul ve inşaat' },
+  },
+  {
+    key: 'dienstleistung',
+    label: { de: 'Beratung & Dienstleistung', en: 'Consulting & services', tr: 'Danışmanlık ve hizmet' },
+  },
+  { key: 'kunst', label: { de: 'Kunst & Kultur', en: 'Art & culture', tr: 'Sanat ve kültür' } },
 ];
 
 export const projects: WebProject[] = [
@@ -140,6 +149,112 @@ export const projects: WebProject[] = [
       tr: '20 yılı aşkın deneyime sahip bir ev ve dekorasyon dünyası için üst segment marka sitesi: koleksiyonlar, marka listesi ve şube bulucu.',
     },
   },
+  {
+    name: 'CarWAX Antalya',
+    category: 'auto',
+    location: 'Antalya',
+    image: '/images/webdesign/carwax-antalya.webp',
+    url: 'https://car-wax-two.vercel.app',
+    tagline: {
+      de: 'Fahrzeugpflege auf Studio-Niveau',
+      en: 'Car care at studio level',
+      tr: 'Stüdyo seviyesinde araç bakımı',
+    },
+    description: {
+      de: 'Dreisprachiger Auftritt für ein Car-Care-Studio in Antalya, mit hellem und dunklem Modus und einem KI-Concierge, der Fragen zu Keramikversiegelung, PPF und Detailing rund um die Uhr beantwortet.',
+      en: 'A three-language presence for a car-care studio in Antalya, with a light and a dark mode and an AI concierge answering questions on ceramic coating, PPF and detailing around the clock.',
+      tr: 'Antalya’daki bir araç bakım stüdyosu için üç dilli bir görünüm: açık ve koyu mod ile seramik kaplama, PPF ve detaylı bakım sorularını günün her saati yanıtlayan bir yapay zekâ asistanı.',
+    },
+  },
+  {
+    name: 'Beta Prüfservice',
+    category: 'dienstleistung',
+    location: 'Bad Vilbel · Rhein-Main',
+    image: '/images/webdesign/beta-pruefservice.webp',
+    url: 'https://beta-pruefservice.vercel.app',
+    tagline: {
+      de: 'Elektroprüfung mit belastbarem Nachweis',
+      en: 'Electrical testing with evidence that holds',
+      tr: 'Sağlam belgeli elektrik denetimi',
+    },
+    description: {
+      de: 'Auftritt für einen Prüfdienstleister im Rhein-Main-Gebiet: die DGUV-Vorschrift 3 als Argument statt als Kleingedrucktes, mit erklärter Messreihe, transparenten Kosten und direktem Draht per Telefon und WhatsApp.',
+      en: 'A presence for an electrical-testing provider in the Rhine-Main region: German DGUV rule 3 used as the argument rather than the small print, with an explained measurement series, transparent pricing and a direct line by phone and WhatsApp.',
+      tr: 'Rhein-Main bölgesindeki bir denetim hizmeti sağlayıcısı için dijital görünüm: DGUV 3 yönetmeliği küçük yazı yerine argüman olarak; açıklanan ölçüm serisi, şeffaf maliyetler ve telefon ile WhatsApp üzerinden doğrudan iletişim.',
+    },
+  },
+  {
+    name: 'Ataberk Estate',
+    category: 'immobilien',
+    location: 'Alanya · Antalya · Mersin',
+    image: '/images/webdesign/ataberk-estate.webp',
+    url: 'https://ataberg-homepage.vercel.app',
+    tagline: {
+      de: 'Immobilien an der türkischen Riviera',
+      en: 'Property on the Turkish Riviera',
+      tr: 'Türk Rivierası’nda gayrimenkul',
+    },
+    description: {
+      de: 'Neuaufbau des Auftritts eines seit 2005 lizenzierten Maklerhauses: Portfoliosuche mit Filtern und Karte, saubere Sprachfassungen und ein Assistent, der ausschließlich aus den eigenen Inhalten des Hauses antwortet.',
+      en: 'A ground-up rebuild for an estate agency licensed since 2005: portfolio search with filters and map, clean language versions and an assistant that answers only from the agency’s own content.',
+      tr: '2005’ten beri lisanslı bir emlak ofisinin dijital görünümünün yeniden inşası: filtreli ve haritalı portföy araması, temiz dil sürümleri ve yalnızca ofisin kendi içeriğinden yanıt veren bir asistan.',
+    },
+  },
+  {
+    name: 'New Level Group',
+    category: 'immobilien',
+    location: 'Alanya',
+    image: '/images/webdesign/new-level-group.webp',
+    url: 'https://new-level-premium.vercel.app',
+    tagline: {
+      de: 'Küstenimmobilien mit Anspruch',
+      en: 'Coastal property with ambition',
+      tr: 'İddialı kıyı gayrimenkulleri',
+    },
+    description: {
+      de: 'Dreisprachiger Premium-Auftritt für ein Immobilien- und Bauunternehmen in Alanya, mit 3D-Szenen, choreografierter Bewegung und einem KI-Concierge mit festen Leitplanken.',
+      en: 'A three-language premium presence for a real-estate and construction company in Alanya, with 3D scenes, choreographed motion and a guardrailed AI concierge.',
+      tr: 'Alanya’daki bir gayrimenkul ve inşaat şirketi için üç dilli premium görünüm: 3B sahneler, koreografili hareket ve sınırları belirlenmiş bir yapay zekâ asistanı.',
+    },
+  },
+  {
+    name: 'Make Art Alanya',
+    category: 'kunst',
+    location: 'Alanya',
+    image: '/images/webdesign/makeartalanya.webp',
+    url: 'https://www.makeartalanya.com/',
+    tagline: {
+      de: 'Kunststudio mit offener Tür',
+      en: 'An art studio with an open door',
+      tr: 'Kapısı açık bir sanat stüdyosu',
+    },
+    description: {
+      de: 'Dreisprachiger Auftritt mit Buchungssystem für ein Kunst- und Kreativstudio in Alanya: Kurse in Malen, Zeichnen, Schach und Handwerk, direkt online belegbar.',
+      en: 'A three-language presence with booking system for an art and creative studio in Alanya: courses in painting, drawing, chess and crafts, bookable online.',
+      tr: 'Alanya’daki bir sanat ve yaratıcılık stüdyosu için rezervasyon sistemli üç dilli görünüm: resim, çizim, satranç ve el sanatları kursları çevrim içi ayrılabilir.',
+    },
+  },
+  // Bäuerle Steuerberater — Premium-Website plus KI-Kanzlei-Cockpit mit sechs
+  // Fachmodulen. Wartet auf ein Deployment; sobald die Adresse steht, `url`
+  // eintragen, Screenshot unter /images/webdesign/baeuerle-steuerberater.webp
+  // ablegen und diesen Block aktivieren.
+  // {
+  //   name: 'Bäuerle Steuerberater',
+  //   category: 'dienstleistung',
+  //   location: 'Deutschland',
+  //   image: '/images/webdesign/baeuerle-steuerberater.webp',
+  //   url: '',
+  //   tagline: {
+  //     de: 'Kanzlei mit KI-Cockpit',
+  //     en: 'A tax firm with an AI cockpit',
+  //     tr: 'Yapay zekâ kokpitli mali müşavirlik',
+  //   },
+  //   description: {
+  //     de: 'Auftritt einer Steuerkanzlei mit zwei KI-Ebenen: ein öffentlicher Assistent für Erstinformationen und ein geschütztes Kanzlei-Cockpit für Fachauskunft, Bescheidprüfung, Behördenpost und Auswertungen.',
+  //     en: 'A tax firm’s presence with two AI layers: a public assistant for first enquiries and a protected firm cockpit for professional advice, assessment review, official correspondence and reporting.',
+  //     tr: 'İki yapay zekâ katmanlı bir mali müşavirlik görünümü: ilk bilgilendirme için açık bir asistan ve mesleki danışma, tarhiyat kontrolü, resmî yazışma ve raporlama için korumalı bir kokpit.',
+  //   },
+  // },
 ];
 
 export const webdesign = {
@@ -279,9 +394,9 @@ export const webdesign = {
   },
   offer: {
     eyebrow: {
-      de: 'Sommerkampagne 2026 · Premium',
-      en: 'Summer campaign 2026 · Premium',
-      tr: '2026 Yaz kampanyası · Premium',
+      de: 'Herbstkampagne 2026 · Premium',
+      en: 'Autumn campaign 2026 · Premium',
+      tr: '2026 Sonbahar kampanyası · Premium',
     },
     heading: { de: 'Das Premium-Paket', en: 'The premium package', tr: 'Premium paket' },
     anchor: {
@@ -296,9 +411,9 @@ export const webdesign = {
       tr: 'Premium paket · tek seferlik',
     },
     compare: {
-      de: 'Eine deutsche Agentur berechnet für ein vergleichbares Premium-Paket rund 25.000 €. Diesen Sommer erhalten Sie dieselbe Ingenieursarbeit für 25.000 ₺, gleiche Zahl, nur in Lira statt Euro. Für Sie sind das rund 465 €.',
-      en: 'A German agency charges around €25,000 for a comparable premium package. This summer you get the same engineering for 25,000 ₺, the same number, just in lira instead of euros. That works out at roughly $530 for you.',
-      tr: 'Bir Alman ajans, benzer bir premium paket için yaklaşık 25.000 € talep ediyor. Bu yaz aynı mühendislik işini 25.000 ₺’ye alıyorsunuz: aynı rakam, sadece Euro yerine Lira.',
+      de: 'Eine deutsche Agentur berechnet für ein vergleichbares Premium-Paket rund 25.000 €. Diesen Herbst erhalten Sie dieselbe Ingenieursarbeit für 25.000 ₺, gleiche Zahl, nur in Lira statt Euro. Für Sie sind das rund 465 €.',
+      en: 'A German agency charges around €25,000 for a comparable premium package. This autumn you get the same engineering for 25,000 ₺, the same number, just in lira instead of euros. That works out at roughly $530 for you.',
+      tr: 'Bir Alman ajans, benzer bir premium paket için yaklaşık 25.000 € talep ediyor. Bu sonbahar aynı mühendislik işini 25.000 ₺’ye alıyorsunuz: aynı rakam, sadece Euro yerine Lira.',
     },
     features: [
       {
