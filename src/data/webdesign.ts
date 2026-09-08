@@ -239,6 +239,23 @@ export const projects: WebProject[] = [
     },
   },
   {
+    name: '1Çatı ERP',
+    category: 'immobilien',
+    location: 'Ataberk Estate · Alanya',
+    image: '/images/webdesign/cati-erp.webp',
+    url: 'https://cati-blond.vercel.app',
+    tagline: {
+      de: 'Der Immobilienbetrieb aus einem Zentrum',
+      en: 'Running a property business from one place',
+      tr: 'Gayrimenkul işletmesi tek merkezden',
+    },
+    description: {
+      de: 'Nicht nur die Website, sondern das System dahinter: 1Çatı führt Vertrieb, Portfolio, Eigentümer, Mieter, Beiträge, Service, Dokumente und Reporting in einem rollenbasierten Arbeitsbereich zusammen. Für denselben Kunden wie der Webauftritt, mehrsprachig und mit eigenem Kundenportal.',
+      en: 'Not just the website but the system behind it: 1Çatı brings sales, portfolio, owners, tenants, dues, service, documents and reporting into one role-based workspace. Built for the same client as the website, multilingual and with its own customer portal.',
+      tr: 'Yalnızca web sitesi değil, arkasındaki sistem: 1Çatı satış, portföy, malik, kiracı, aidat, servis, doküman ve raporlamayı rol tabanlı tek bir çalışma alanında birleştirir. Web sitesiyle aynı müşteri için; çok dilli ve kendi müşteri portalıyla.',
+    },
+  },
+  {
     name: 'DiTeLe',
     category: 'bildung',
     location: 'WAMOCON Academy GmbH',
