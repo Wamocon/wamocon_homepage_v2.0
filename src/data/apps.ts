@@ -195,7 +195,9 @@ export const appCategories: AppCategory[] = [
       },
       {
         name: 'DiTeLe',
-        url: 'https://ditele-gamma.vercel.app',
+        // Same platform as on /unternehmenssysteme/ — keep both pointing at the
+        // real domain rather than the deployment preview.
+        url: 'https://www.ditele.de/',
         description: {
           de: 'Lernplattform für praktisches Softwaretesten: an laufenden Anwendungen testen, professionelle Fehlerberichte schreiben und Rückmeldung von Trainerinnen und Trainern erhalten.',
           en: 'A learning platform for hands-on software testing: test running applications, write professional defect reports and get feedback from trainers.',

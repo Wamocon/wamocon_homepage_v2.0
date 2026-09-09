@@ -1,11 +1,17 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import WebdesignPage from '../../components/sections/WebdesignPage.astro';
-import { webdesign } from '../../data/webdesign';
+import { webdesign, webdesignServiceSchema } from '../../data/webdesign';
 
 const lang = 'kk' as const;
+const serviceSchema = webdesignServiceSchema(lang, 'https://www.wamocon.com/kk/veb-dizain/');
 ---
 
-<BaseLayout title={webdesign.seo.title[lang]} description={webdesign.seo.description[lang]} lang={lang}>
+<BaseLayout
+  title={webdesign.seo.title[lang]}
+  description={webdesign.seo.description[lang]}
+  lang={lang}
+  schema={[serviceSchema]}
+  breadcrumbs={[{ name: 'Веб-дизайн', path: '/kk/veb-dizain/' }]}>
   <WebdesignPage lang={lang} />
 </BaseLayout>

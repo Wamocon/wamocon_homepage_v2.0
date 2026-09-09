@@ -1,19 +1,38 @@
 ---
 /**
- * Business-systems page. Shared by /unternehmenssysteme/, /en/business-systems/
- * and /tr/kurumsal-sistemler/.
+ * Business-systems page. Shared by /unternehmenssysteme/, /en/business-systems/,
+ * /tr/kurumsal-sistemler/ and /kk/kasiporyn-juieleri/.
  *
  * The order follows how somebody decides rather than how we like to present:
- * a scene they recognise, then self-selection (website or system?), then proof
- * they can click, then the six phases of the work, then who we are, then what
- * binds us, then one small first step.
+ * a scene they recognise, then self-selection (website or system?), then the
+ * layers a system is made of, then proof they can click, then what it plugs
+ * into, then the six phases of the work, then who we are, then what binds us,
+ * then the objections, then one small first step.
+ *
+ * Two rules govern every picture on this page.
+ *
+ * 1. Nothing is a fake screenshot. The two systems further down carry client
+ *    data behind a login, and a mocked-up "screenshot" of data that never
+ *    existed would be the single dishonest element on a page whose entire
+ *    argument is evidence. Every illustration here is therefore an obvious
+ *    schematic, labelled as one, drawn in markup so it translates like copy.
+ * 2. No figures. Not a conversion rate, not a saving, not a client's operating
+ *    numbers. A number without a source invites the reader to hunt for the
+ *    catch, and it is the one thing on a page like this that a competitor can
+ *    attack under § 6 UWG. Where the web-design page shows counters, this page
+ *    shows capability.
+ *
+ * Both pages must feel like the same house. The web-design page uses depth,
+ * float and a warm glow; this one uses the same devices in the CI red only,
+ * over a hairline data grid, because the department it sells is engineering.
  *
  * No prices. A system's price follows its scope, and the six phases are what
- * a price is made of — see `docs/webdesign-preis-und-marketingpsychologie.md`.
+ * a price is made of — the FAQ says exactly that when somebody asks.
  */
 import Button from '../ui/Button.astro';
 import ContactBlock from './ContactBlock.astro';
-import { systeme as s, systems, domains } from '../../data/systeme';
+import FaqSection from '../ui/FaqSection.astro';
+import { systeme as s, systems, domains, modules, systemeFaq } from '../../data/systeme';
 import type { Lang } from '../../i18n/config';
 
 interface Props { lang: Lang; }
@@ -30,21 +49,118 @@ const screenshotAlt = (name: string, client: string) =>
     ? `Screenshot of the ${name} system, built for ${client}`
     : lang === 'tr'
       ? `${client} için geliştirilen ${name} sisteminin ekran görüntüsü`
-      : `Screenshot des Systems ${name}, gebaut für ${client}`;
+      : lang === 'kk'
+        ? `${client} үшін жасалған ${name} жүйесінің скриншоты`
+        : `Screenshot des Systems ${name}, gebaut für ${client}`;
+
+/** The keyword strip runs twice so the loop has no seam. */
+const marquee = [...s.marquee, ...s.marquee];
+
+/**
+ * The workspace schematic beside the headline. Five rows, four states, one
+ * row per state plus a repeat — enough to read as a list of work without
+ * pretending to be a list of anything real. `w` is the width of the skeleton
+ * bar, varied so the rows do not look generated.
+ */
+const consoleRows = [
+  { state: s.hero.console.states.open, tone: 'open', w: [78, 54] },
+  { state: s.hero.console.states.review, tone: 'review', w: [62, 70] },
+  { state: s.hero.console.states.approved, tone: 'approved', w: [88, 46] },
+  { state: s.hero.console.states.billed, tone: 'billed', w: [70, 62] },
+  { state: s.hero.console.states.open, tone: 'open', w: [56, 74] },
+];
+
+const faq = systemeFaq[lang];
 ---
 
 <!-- ============ HERO ============ -->
 <section class="sy-hero">
+  <div class="sy-hero__grid" aria-hidden="true"></div>
   <div class="sy-hero__glow" aria-hidden="true"></div>
   <div class="container sy-hero__inner">
     <div class="sy-hero__copy" data-reveal="up">
       <span class="sy-hero__badge">{s.hero.eyebrow[lang]}</span>
-      <h1 class="sy-hero__title">{s.hero.title[lang]}</h1>
+      <h1 class="sy-hero__title">
+        <span class="sy-hero__title-a">{s.hero.title[lang]}</span>
+        <span class="sy-hero__title-b">{s.hero.titleAccent[lang]}</span>
+      </h1>
       <p class="sy-hero__lead">{s.hero.lead[lang]}</p>
       <div class="sy-hero__actions">
         <Button href="#kontakt" variant="primary" size="lg">{s.hero.ctaPrimary[lang]}</Button>
+        <!-- "How we work" is the six phases, not the module explorer. The
+             explorer is reached from the self-selection block below, where
+             somebody who has just decided they need a system is standing. -->
         <Button href="#ablauf" variant="outline" size="lg">{s.hero.ctaSecondary[lang]}</Button>
       </div>
+      <ul class="sy-hero__chips">
+        {s.hero.chips.map((c) => (
+          <li>
+            <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M3 8.5l3 3 7-7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            <span>{c[lang]}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- Schematic workspace. Decorative: everything it says is said in words
+         beside it, so it is hidden from assistive technology rather than
+         narrated as a table that does not exist. -->
+    <div class="sy-hero__stage" data-reveal="zoom" aria-hidden="true">
+      <!-- The frame is exactly the size of the workspace, so the two callout
+           cards can be anchored to its edges instead of to a stage whose
+           height changes with the copy column beside it. -->
+      <div class="sy-hero__frame">
+      <figure class="sy-console">
+        <span class="sy-console__bar">
+          <i></i><i></i><i></i>
+          <span class="sy-console__name">{s.hero.console.window[lang]}</span>
+          <span class="sy-console__role">{s.hero.console.role[lang]}</span>
+        </span>
+        <div class="sy-console__body">
+          <nav class="sy-console__nav">
+            {s.hero.console.nav.map((n, i) => (
+              <span class:list={['sy-console__navitem', { 'is-active': i === 1 }]}>
+                <i></i>{n[lang]}
+              </span>
+            ))}
+          </nav>
+          <div class="sy-console__main">
+            <div class="sy-console__head">
+              <span>{s.hero.console.columns.case[lang]}</span>
+              <span>{s.hero.console.columns.owner[lang]}</span>
+              <span>{s.hero.console.columns.state[lang]}</span>
+            </div>
+            {consoleRows.map((r, i) => (
+              <div class="sy-console__row" style={`--row: ${i}`}>
+                <span class="sy-bar" style={`--w: ${r.w[0]}%`}></span>
+                <span class="sy-bar sy-bar--dim" style={`--w: ${r.w[1]}%`}></span>
+                <span class:list={['sy-state', `sy-state--${r.tone}`]}>{r.state[lang]}</span>
+              </div>
+            ))}
+            <span class="sy-console__scan"></span>
+          </div>
+        </div>
+      </figure>
+
+      <figure class="sy-float sy-float--audit">
+        <span class="sy-float__label">{s.hero.console.auditTitle[lang]}</span>
+        <span class="sy-float__text">{s.hero.console.auditLine[lang]}</span>
+      </figure>
+
+      <figure class="sy-float sy-float--rights">
+        <span class="sy-float__label">{s.hero.console.rightsTitle[lang]}</span>
+        <span class="sy-float__text">{s.hero.console.rightsLine[lang]}</span>
+      </figure>
+      </div>
+    </div>
+  </div>
+
+  <!-- The web-design page scrolls client sites past the reader because it
+       sells appearance. This page sells substance, so it scrolls the
+       vocabulary of the trade — every term of which a section below earns. -->
+  <div class="sy-marquee" aria-hidden="true">
+    <div class="sy-marquee__track">
+      {marquee.map((t) => <span class="sy-marquee__item">{t[lang]}</span>)}
     </div>
   </div>
 </section>
@@ -59,8 +175,8 @@ const screenshotAlt = (name: string, client: string) =>
     <ul class="sy-symptoms__list">
       {s.symptoms.items.map((item, i) => (
         <li data-reveal="up" data-reveal-delay={(i % 3) * 70}>
-          <span class="sy-symptoms__mark" aria-hidden="true"></span>
-          <span>{item[lang]}</span>
+          <span class="sy-symptoms__source">{item.source[lang]}</span>
+          <span class="sy-symptoms__text">{item.text[lang]}</span>
         </li>
       ))}
     </ul>
@@ -78,6 +194,17 @@ const screenshotAlt = (name: string, client: string) =>
 
     <div class="sy-split__grid">
       <article class="sy-choice" data-reveal="up">
+        <!-- One page, many identical visitors. -->
+        <svg class="sy-choice__fig" viewBox="0 0 200 88" aria-hidden="true">
+          <rect x="70" y="14" width="60" height="60" rx="6" class="sy-fig-plate" />
+          <line x1="78" y1="26" x2="122" y2="26" class="sy-fig-line" />
+          <line x1="78" y1="36" x2="110" y2="36" class="sy-fig-line" />
+          <line x1="78" y1="46" x2="118" y2="46" class="sy-fig-line" />
+          <circle cx="24" cy="26" r="7" class="sy-fig-dot" />
+          <circle cx="24" cy="44" r="7" class="sy-fig-dot" />
+          <circle cx="24" cy="62" r="7" class="sy-fig-dot" />
+          <path d="M33 26H66M33 44H66M33 62H66" class="sy-fig-arrow" />
+        </svg>
         <h3 class="sy-choice__title">{s.split.website.title[lang]}</h3>
         <ul class="sy-choice__list">
           {s.split.website.points.map((p) => <li>{p[lang]}</li>)}
@@ -88,11 +215,25 @@ const screenshotAlt = (name: string, client: string) =>
       </article>
 
       <article class="sy-choice sy-choice--accent" data-reveal="up" data-reveal-delay="80">
+        <!-- Several roles, one record, a chain of states. -->
+        <svg class="sy-choice__fig" viewBox="0 0 200 88" aria-hidden="true">
+          <circle cx="20" cy="22" r="7" class="sy-fig-dot sy-fig-dot--a" />
+          <circle cx="20" cy="44" r="7" class="sy-fig-dot sy-fig-dot--b" />
+          <circle cx="20" cy="66" r="7" class="sy-fig-dot sy-fig-dot--c" />
+          <path d="M29 22H60M29 44H60M29 66H60" class="sy-fig-arrow" />
+          <rect x="64" y="30" width="34" height="28" rx="5" class="sy-fig-plate sy-fig-plate--hot" />
+          <path d="M100 44h16" class="sy-fig-arrow" />
+          <rect x="118" y="34" width="18" height="20" rx="4" class="sy-fig-step" />
+          <path d="M138 44h8" class="sy-fig-arrow" />
+          <rect x="148" y="34" width="18" height="20" rx="4" class="sy-fig-step" />
+          <path d="M168 44h6" class="sy-fig-arrow" />
+          <rect x="176" y="34" width="18" height="20" rx="4" class="sy-fig-step sy-fig-step--hot" />
+        </svg>
         <h3 class="sy-choice__title">{s.split.system.title[lang]}</h3>
         <ul class="sy-choice__list">
           {s.split.system.points.map((p) => <li>{p[lang]}</li>)}
         </ul>
-        <a class="sy-choice__link" href="#systeme">
+        <a class="sy-choice__link" href="#module">
           {s.split.system.cta[lang]} <span aria-hidden="true">↓</span>
         </a>
       </article>
@@ -102,8 +243,182 @@ const screenshotAlt = (name: string, client: string) =>
   </div>
 </section>
 
+<!-- ============ MODUL-EXPLORER ============ -->
+<section class="section sy-explorer" id="module">
+  <div class="container">
+    <div class="sy-head" data-reveal="up">
+      <h2>{s.explorer.heading[lang]}</h2>
+      <p class="text-muted">{s.explorer.intro[lang]}</p>
+    </div>
+
+    <div class="sy-explorer__shell" data-reveal="up">
+      <div class="sy-tabs" role="tablist" aria-label={s.explorer.heading[lang]}>
+        {modules.map((m, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`tab-${m.key}`}
+            class:list={['sy-tab', { 'is-active': i === 0 }]}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            aria-controls={`panel-${m.key}`}
+            tabindex={i === 0 ? 0 : -1}
+          >
+            <span class="sy-tab__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <span>{m.label[lang]}</span>
+          </button>
+        ))}
+      </div>
+
+      {modules.map((m, i) => (
+        <div
+          class="sy-panel"
+          role="tabpanel"
+          id={`panel-${m.key}`}
+          aria-labelledby={`tab-${m.key}`}
+          tabindex="0"
+          hidden={i !== 0}
+        >
+          <div class="sy-panel__copy">
+            <h3>{m.headline[lang]}</h3>
+            <p class="text-muted">{m.text[lang]}</p>
+            <ul class="sy-panel__points">
+              {m.points.map((p) => (
+                <li>
+                  <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path d="M3 8.5l3 3 7-7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  <span>{p[lang]}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <figure class="sy-diagram" aria-hidden="true">
+            <figcaption class="sy-diagram__hint">{s.explorer.hint[lang]}</figcaption>
+
+            {m.diagram === 'records' && (
+              <div class="sy-dg sy-dg--records">
+                <div class="sy-dg__head">
+                  <span>{m.labels[0][lang]}</span><span>{m.labels[1][lang]}</span><span>{m.labels[2][lang]}</span>
+                </div>
+                <div class="sy-dg__row is-hot">
+                  <span class="sy-bar" style="--w: 76%"></span>
+                  <span class="sy-bar sy-bar--dim" style="--w: 58%"></span>
+                  <span class="sy-tagpill">{m.labels[3][lang]}</span>
+                </div>
+                <div class="sy-dg__row"><span class="sy-bar" style="--w: 62%"></span><span class="sy-bar sy-bar--dim" style="--w: 70%"></span><span class="sy-bar sy-bar--dim" style="--w: 40%"></span></div>
+                <div class="sy-dg__row"><span class="sy-bar" style="--w: 84%"></span><span class="sy-bar sy-bar--dim" style="--w: 48%"></span><span class="sy-bar sy-bar--dim" style="--w: 52%"></span></div>
+                <div class="sy-dg__ghost">
+                  <span class="sy-bar sy-bar--ghost" style="--w: 76%"></span>
+                  <span class="sy-dg__reject">
+                    <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8" /></svg>
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {m.diagram === 'workflow' && (
+              <div class="sy-dg sy-dg--workflow">
+                <ol class="sy-flow">
+                  {m.labels.map((l, li) => (
+                    <li class:list={['sy-flow__step', { 'is-hot': li === 2 }]}>
+                      <span class="sy-flow__dot"></span>
+                      <span class="sy-flow__label">{l[lang]}</span>
+                    </li>
+                  ))}
+                </ol>
+                <svg class="sy-flow__skip" viewBox="0 0 240 44" aria-hidden="true">
+                  <path d="M28 34C70 4 170 4 212 34" class="sy-fig-arc" />
+                  <path d="M112 12l16 16M128 12l-16 16" class="sy-fig-cross" />
+                </svg>
+              </div>
+            )}
+
+            {m.diagram === 'rights' && (
+              <div class="sy-dg sy-dg--rights">
+                <div class="sy-matrix">
+                  <span></span>
+                  <span class="sy-matrix__col">{m.labels[3][lang]}</span>
+                  <span class="sy-matrix__col">{m.labels[4][lang]}</span>
+                  <span class="sy-matrix__col">{m.labels[5][lang]}</span>
+
+                  <span class="sy-matrix__row">{m.labels[0][lang]}</span>
+                  <span class="sy-cell is-yes"></span><span class="sy-cell is-yes"></span><span class="sy-cell is-no"></span>
+
+                  <span class="sy-matrix__row">{m.labels[1][lang]}</span>
+                  <span class="sy-cell is-yes"></span><span class="sy-cell is-yes"></span><span class="sy-cell is-yes"></span>
+
+                  <span class="sy-matrix__row">{m.labels[2][lang]}</span>
+                  <span class="sy-cell is-yes"></span><span class="sy-cell is-no"></span><span class="sy-cell is-no"></span>
+                </div>
+              </div>
+            )}
+
+            {m.diagram === 'documents' && (
+              <div class="sy-dg sy-dg--documents">
+                <ol class="sy-trail">
+                  {m.labels.map((l) => (
+                    <li>
+                      <span class="sy-trail__dot"></span>
+                      <span class="sy-trail__doc">
+                        <span class="sy-bar" style="--w: 68%"></span>
+                        <span class="sy-bar sy-bar--dim" style="--w: 44%"></span>
+                      </span>
+                      <span class="sy-trail__label">{l[lang]}</span>
+                      <span class="sy-bar sy-bar--dim" style="--w: 52%"></span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            )}
+
+            {m.diagram === 'finance' && (
+              <div class="sy-dg sy-dg--finance">
+                <div class="sy-ledger">
+                  <div class="sy-ledger__row"><span class="sy-ledger__key">{m.labels[0][lang]}</span><span class="sy-bar" style="--w: 82%"></span></div>
+                  <div class="sy-ledger__row"><span class="sy-ledger__key">{m.labels[1][lang]}</span><span class="sy-bar sy-bar--dim" style="--w: 58%"></span></div>
+                  <div class="sy-ledger__row is-hot"><span class="sy-ledger__key">{m.labels[2][lang]}</span><span class="sy-bar sy-bar--hot" style="--w: 24%"></span></div>
+                </div>
+                <p class="sy-dg__note">{m.labels[3][lang]}</p>
+              </div>
+            )}
+
+            {m.diagram === 'api' && (
+              <div class="sy-dg sy-dg--api">
+                <div class="sy-endpoint"><span class="sy-verb">GET</span><span>{m.labels[0][lang]}</span></div>
+                <div class="sy-endpoint"><span class="sy-verb">POST</span><span>{m.labels[1][lang]}</span></div>
+                <div class="sy-endpoint"><span class="sy-verb sy-verb--event">EVENT</span><span>{m.labels[2][lang]}</span></div>
+                <div class="sy-endpoint sy-endpoint--key">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="12" r="4" /><path d="M12 12h9M18 12v4" /></svg>
+                  <span>{m.labels[3][lang]}</span>
+                </div>
+              </div>
+            )}
+
+            {m.diagram === 'insights' && (
+              <div class="sy-dg sy-dg--insights">
+                <div class="sy-tile">
+                  <span class="sy-spark"><i style="--h: 42%"></i><i style="--h: 66%"></i><i style="--h: 50%"></i><i style="--h: 84%"></i><i style="--h: 72%"></i></span>
+                  <span class="sy-tile__label">{m.labels[0][lang]}</span>
+                </div>
+                <div class="sy-tile sy-tile--empty">
+                  <span class="sy-tile__dash">—</span>
+                  <span class="sy-tile__label">{m.labels[1][lang]}</span>
+                </div>
+                <div class="sy-tile sy-tile--wide">
+                  <span class="sy-bar" style="--w: 70%"></span>
+                  <span class="sy-bar sy-bar--dim" style="--w: 52%"></span>
+                  <span class="sy-tile__label">{m.labels[2][lang]}</span>
+                </div>
+              </div>
+            )}
+          </figure>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
 <!-- ============ SYSTEME IM EINSATZ ============ -->
-<section class="section sy-portfolio" id="systeme">
+<section class="section section--alt sy-portfolio" id="systeme">
   <div class="container">
     <div class="sy-head" data-reveal="up">
       <h2>{s.portfolio.heading[lang]}</h2>
@@ -111,11 +426,13 @@ const screenshotAlt = (name: string, client: string) =>
     </div>
 
     <div class="sy-grid">
-      {systems.map((sys) => (
-        <article class:list={['sy-card', { 'sy-card--featured': sys.featured }]} data-reveal="up">
+      {systems.map((sys, i) => (
+        <article class:list={['sy-card', { 'sy-card--featured': sys.featured }]} data-reveal="up" data-reveal-delay={i * 80}>
           <a class="sy-card__media" href={sys.url} target="_blank" rel="noopener noreferrer">
+            <span class="sy-card__chrome" aria-hidden="true"><i></i><i></i><i></i></span>
             <img src={sys.image} alt={screenshotAlt(sys.name, sys.client[lang])} loading="lazy" width="1440" height="900" />
             {sys.featured && <span class="sy-card__badge">{s.portfolio.featuredLabel[lang]}</span>}
+            <span class="sy-card__open" aria-hidden="true">{s.portfolio.live[lang]} ↗</span>
           </a>
           <div class="sy-card__body">
             <div class="sy-card__meta">
@@ -138,6 +455,40 @@ const screenshotAlt = (name: string, client: string) =>
   </div>
 </section>
 
+<!-- ============ SCHNITTSTELLEN ============ -->
+<section class="section sy-orbit-sec">
+  <div class="container sy-orbit-sec__inner">
+    <div class="sy-orbit-sec__copy" data-reveal="up">
+      <h2>{s.integrations.heading[lang]}</h2>
+      <p class="text-muted">{s.integrations.intro[lang]}</p>
+      <p class="sy-orbit-sec__note">{s.integrations.note[lang]}</p>
+    </div>
+
+    <div class="sy-orbit" data-reveal="zoom">
+      <svg class="sy-orbit__rings" viewBox="0 0 400 400" aria-hidden="true">
+        <circle cx="200" cy="200" r="118" class="sy-orbit__ring" />
+        <circle cx="200" cy="200" r="168" class="sy-orbit__ring sy-orbit__ring--outer" />
+        {[0, 1, 2, 3, 4, 5, 6, 7].map((n) => (
+          <line
+            x1="200"
+            y1="200"
+            x2={200 + 150 * Math.cos((n * 45 - 90) * Math.PI / 180)}
+            y2={200 + 150 * Math.sin((n * 45 - 90) * Math.PI / 180)}
+            class="sy-orbit__spoke"
+            style={`--d: ${n * 0.35}s`}
+          />
+        ))}
+      </svg>
+      <span class="sy-orbit__core">{s.integrations.coreLabel[lang]}</span>
+      <ul class="sy-orbit__list">
+        {s.integrations.nodes.map((n, i) => (
+          <li style={`--i: ${i}`}>{n[lang]}</li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
 <!-- ============ ABLAUF ============ -->
 <section class="section section--alt sy-process" id="ablauf">
   <div class="container">
@@ -146,6 +497,7 @@ const screenshotAlt = (name: string, client: string) =>
       <p class="text-muted">{s.process.intro[lang]}</p>
     </div>
     <ol class="sy-steps">
+      <span class="sy-steps__rail" aria-hidden="true"><span class="sy-steps__fill"></span></span>
       {s.process.steps.map((step, i) => (
         <li class="sy-step" data-reveal="up" data-reveal-delay={(i % 3) * 70}>
           <span class="sy-step__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
@@ -174,6 +526,7 @@ const screenshotAlt = (name: string, client: string) =>
     <div class="sy-caps__grid">
       {s.capabilities.items.map((c, i) => (
         <article class="sy-cap" data-reveal="up" data-reveal-delay={(i % 3) * 80}>
+          <span class="sy-cap__mark" aria-hidden="true"></span>
           <h3>{c.title[lang]}</h3>
           <p class="text-muted">{c.text[lang]}</p>
         </article>
@@ -182,15 +535,19 @@ const screenshotAlt = (name: string, client: string) =>
   </div>
 </section>
 
-<!-- ============ WARUM WIR ============ -->
-<section class="section section--alt sy-why">
+<!-- ============ SICHERHEIT UND BETRIEB ============ -->
+<section class="section section--alt sy-sec">
   <div class="container">
     <div class="sy-head" data-reveal="up">
-      <h2>{s.why.heading[lang]}</h2>
+      <h2>{s.security.heading[lang]}</h2>
+      <p class="text-muted">{s.security.intro[lang]}</p>
     </div>
-    <div class="sy-why__grid">
-      {s.why.items.map((item, i) => (
-        <article class="sy-why__item" data-reveal="up" data-reveal-delay={(i % 2) * 80}>
+    <div class="sy-sec__grid">
+      {s.security.items.map((item, i) => (
+        <article class="sy-sec__item" data-reveal="up" data-reveal-delay={(i % 3) * 70}>
+          <span class="sy-sec__ring" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.2-2.9 7.7-7 9-4.1-1.3-7-4.8-7-9V6l7-3z" /></svg>
+          </span>
           <h3>{item.title[lang]}</h3>
           <p class="text-muted">{item.text[lang]}</p>
         </article>
@@ -199,8 +556,42 @@ const screenshotAlt = (name: string, client: string) =>
   </div>
 </section>
 
+<!-- ============ WARUM WIR ============ -->
+<section class="section sy-why">
+  <div class="container">
+    <div class="sy-head" data-reveal="up">
+      <h2>{s.why.heading[lang]}</h2>
+    </div>
+    <div class="sy-why__layout">
+      <div class="sy-why__grid">
+        {s.why.items.map((item, i) => (
+          <article class="sy-why__item" data-reveal="up" data-reveal-delay={(i % 2) * 80}>
+            <h3>{item.title[lang]}</h3>
+            <p class="text-muted">{item.text[lang]}</p>
+          </article>
+        ))}
+      </div>
+      <figure class="sy-why__media" data-reveal="left">
+        <img
+          src="/images/office-developers.jpg"
+          alt={lang === 'en'
+            ? 'The WAMOCON development team at work in the Eschborn office'
+            : lang === 'tr'
+              ? 'WAMOCON geliştirme ekibi Eschborn ofisinde çalışırken'
+              : lang === 'kk'
+                ? 'WAMOCON әзірлеу командасы Эшборн кеңсесінде жұмыс үстінде'
+                : 'Das WAMOCON-Entwicklungsteam bei der Arbeit im Büro in Eschborn'}
+          loading="lazy"
+          width="1200"
+          height="800"
+        />
+      </figure>
+    </div>
+  </div>
+</section>
+
 <!-- ============ VERBINDLICHKEIT ============ -->
-<section class="section sy-commit">
+<section class="section section--alt sy-commit">
   <div class="container">
     <div class="sy-head" data-reveal="up">
       <h2>{s.commitment.heading[lang]}</h2>
@@ -219,8 +610,19 @@ const screenshotAlt = (name: string, client: string) =>
   </div>
 </section>
 
+<!-- ============ FAQ ============ -->
+<FaqSection
+  heading={faq.heading}
+  intro={faq.intro}
+  items={faq.items}
+  lang={lang}
+  bylineName="Dipl.-Ing. Waleri Moretz"
+  bylineRole={{ de: 'Geschäftsführer, WAMOCON GmbH', en: 'Managing Director, WAMOCON GmbH', tr: 'Genel Müdür, WAMOCON GmbH', kk: 'Басқарушы директор, WAMOCON GmbH' }[lang]}
+  lastReviewed="2026-09-09"
+/>
+
 <!-- ============ ERSTER SCHRITT ============ -->
-<section class="section section--alt sy-first">
+<section class="section sy-first">
   <div class="container sy-first__inner" data-reveal="up">
     <div>
       <h2 class="sy-first__heading">{s.firstStep.heading[lang]}</h2>
@@ -251,34 +653,189 @@ const screenshotAlt = (name: string, client: string) =>
   .sy-head h2 { font-size: var(--fs-h2); font-weight: var(--fw-bold); line-height: var(--lh-tight); margin-bottom: 1rem; text-wrap: balance; }
   .sy-head p { font-size: 1.03rem; line-height: var(--lh-body); max-width: 62ch; }
 
+  /* Skeleton bar used by every schematic. A width variable rather than a
+     class per size, so a diagram row reads as data in the markup. */
+  .sy-bar { display: block; height: 7px; width: var(--w, 60%); border-radius: 4px; background: rgba(255, 255, 255, 0.34); }
+  .sy-bar--dim { background: rgba(255, 255, 255, 0.16); }
+  .sy-bar--hot { background: var(--color-accent); }
+  .sy-bar--ghost { background: rgba(255, 255, 255, 0.09); }
+
   /* ---------- hero ---------- */
-  .sy-hero { position: relative; padding: clamp(4rem, 10vw, 7.5rem) 0 clamp(3rem, 6vw, 4.5rem); overflow: hidden; }
-  .sy-hero__glow { position: absolute; inset: -20% -10% auto -10%; height: 70%; background: var(--glow-top); pointer-events: none; }
-  .sy-hero__inner { position: relative; }
-  .sy-hero__copy { max-width: 46rem; }
+  .sy-hero { position: relative; padding: clamp(3rem, 8vw, 6rem) 0 0; overflow: hidden; }
+  /* Hairline data grid. The web-design hero uses a warm gradient because it
+     sells appearance; this one uses a measured grid because it sells
+     engineering, and both stay inside the single CI red. */
+  .sy-hero__grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 68px 68px;
+    -webkit-mask-image: radial-gradient(80% 70% at 60% 25%, #000 0%, transparent 78%);
+    mask-image: radial-gradient(80% 70% at 60% 25%, #000 0%, transparent 78%);
+    pointer-events: none;
+  }
+  .sy-hero__glow {
+    position: absolute; inset: -25% -10% auto -15%; height: 135%;
+    background:
+      radial-gradient(48% 58% at 74% 22%, rgba(244, 14, 14, 0.3), transparent 70%),
+      radial-gradient(42% 48% at 96% 52%, rgba(244, 14, 14, 0.16), transparent 72%),
+      radial-gradient(58% 52% at 8% 6%, rgba(244, 14, 14, 0.12), transparent 70%);
+    pointer-events: none;
+  }
+  .sy-hero__inner {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 1.02fr 0.98fr;
+    gap: clamp(2rem, 5vw, 4.5rem); align-items: center;
+    min-height: clamp(420px, 50vw, 620px);
+  }
+  .sy-hero__copy { max-width: 640px; }
   .sy-hero__badge {
-    display: inline-block; font-size: 0.7rem; font-weight: var(--fw-semibold);
-    letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent);
-    border: 1px solid rgba(244, 14, 14, 0.45); background: rgba(244, 14, 14, 0.08);
-    border-radius: var(--radius-pill); padding: 0.35rem 0.85rem; margin-bottom: 1.25rem;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.72rem; font-weight: var(--fw-semibold);
+    letter-spacing: 0.12em; text-transform: uppercase; color: #fff;
+    border: 1px solid rgba(244, 14, 14, 0.5); background: rgba(244, 14, 14, 0.1);
+    border-radius: var(--radius-pill); padding: 0.4rem 0.95rem; margin-bottom: 1.25rem;
   }
+  .sy-hero__badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--color-accent); box-shadow: 0 0 10px 2px rgba(244, 14, 14, 0.7); }
   .sy-hero__title {
-    font-size: var(--fs-h1); font-weight: var(--fw-bold); line-height: var(--lh-tight);
-    letter-spacing: -0.02em; margin-bottom: 1.1rem; text-wrap: balance;
+    font-size: clamp(2.5rem, 5.6vw, 4.6rem); font-weight: var(--fw-bold);
+    line-height: 1.02; letter-spacing: -0.02em; margin-bottom: 1.2rem; text-wrap: balance;
   }
-  .sy-hero__lead { font-size: 1.12rem; line-height: var(--lh-body); color: var(--color-text-muted); max-width: 60ch; }
+  .sy-hero__title-a, .sy-hero__title-b { display: block; }
+  /* The second sentence is the one that stings, so it carries the colour. */
+  .sy-hero__title-b { color: var(--color-accent); }
+  .sy-hero__lead { font-size: clamp(1.02rem, 1.6vw, 1.22rem); line-height: var(--lh-body); color: var(--color-text-muted); max-width: 56ch; }
   .sy-hero__actions { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2rem; }
+  .sy-hero__chips { display: flex; flex-wrap: wrap; gap: 0.5rem 0.7rem; margin-top: clamp(1.6rem, 3vw, 2.4rem); list-style: none; }
+  .sy-hero__chips li {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.4rem 0.85rem; font-size: 0.8rem;
+    color: var(--color-text-muted);
+    border: 1px solid var(--border-subtle); border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.03);
+  }
+  .sy-hero__chips svg { color: var(--color-accent); flex: 0 0 auto; }
+
+  /* ---------- hero workspace schematic ---------- */
+  /* The two callout cards hang off the bottom of the workspace, so the stage
+     reserves that overhang as padding rather than letting it collide with the
+     keyword strip below. */
+  .sy-hero__stage { position: relative; padding-bottom: 5.5rem; }
+  .sy-hero__frame { position: relative; }
+  .sy-console {
+    position: relative; margin: 0; border-radius: 14px; overflow: hidden;
+    background: linear-gradient(165deg, #191919, #101010);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 46px 100px rgba(0, 0, 0, 0.65), 0 30px 80px -40px rgba(244, 14, 14, 0.35);
+    animation: sy-float 9s ease-in-out infinite;
+  }
+  .sy-console__bar {
+    display: flex; align-items: center; gap: 6px;
+    height: 34px; padding: 0 12px;
+    background: #151515; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .sy-console__bar i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); }
+  .sy-console__bar i:first-child { background: var(--color-accent); }
+  .sy-console__name { margin-left: 0.6rem; font-size: 0.72rem; color: rgba(255, 255, 255, 0.6); }
+  .sy-console__role {
+    margin-left: auto; font-size: 0.64rem; letter-spacing: 0.05em;
+    padding: 0.2rem 0.6rem; border-radius: var(--radius-pill);
+    color: var(--color-accent-text); border: 1px solid rgba(244, 14, 14, 0.4); background: rgba(244, 14, 14, 0.1);
+  }
+  .sy-console__body { display: grid; grid-template-columns: minmax(96px, 0.3fr) 1fr; min-height: 210px; }
+  .sy-console__nav { display: flex; flex-direction: column; gap: 0.15rem; padding: 0.8rem 0.5rem; border-right: 1px solid rgba(255, 255, 255, 0.07); background: rgba(255, 255, 255, 0.015); }
+  .sy-console__navitem {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.42rem 0.55rem; border-radius: 7px;
+    font-size: 0.68rem; color: rgba(255, 255, 255, 0.45); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .sy-console__navitem i { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex: 0 0 auto; }
+  .sy-console__navitem.is-active { color: #fff; background: rgba(244, 14, 14, 0.14); box-shadow: inset 2px 0 0 var(--color-accent); }
+  .sy-console__main { position: relative; padding: 0.85rem 1rem 1rem; overflow: hidden; }
+  .sy-console__head, .sy-console__row {
+    display: grid; grid-template-columns: 1fr 0.72fr 0.62fr; gap: 0.7rem; align-items: center;
+  }
+  .sy-console__head { padding-bottom: 0.55rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 0.6rem; letter-spacing: 0.09em; text-transform: uppercase; color: rgba(255, 255, 255, 0.35); }
+  .sy-console__row { padding: 0.58rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+  .sy-state {
+    justify-self: start; font-size: 0.6rem; letter-spacing: 0.03em;
+    padding: 0.22rem 0.55rem; border-radius: var(--radius-pill);
+    border: 1px solid currentColor; opacity: 0.9; white-space: nowrap;
+  }
+  .sy-state--open { color: rgba(255, 255, 255, 0.5); }
+  .sy-state--review { color: rgba(255, 255, 255, 0.72); }
+  .sy-state--approved { color: var(--color-accent-text); background: rgba(244, 14, 14, 0.12); }
+  .sy-state--billed { color: rgba(255, 255, 255, 0.4); }
+  /* A single band travelling down the rows: enough motion to read as "live"
+     without animating anything that looks like changing data. */
+  .sy-console__scan {
+    position: absolute; left: 0; right: 0; top: 0; height: 46px;
+    background: linear-gradient(180deg, transparent, rgba(244, 14, 14, 0.09), transparent);
+    animation: sy-scan 5.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .sy-float {
+    position: absolute; margin: 0;
+    display: flex; flex-direction: column; gap: 0.25rem;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    background: rgba(20, 20, 20, 0.92);
+    border: 1px solid rgba(244, 14, 14, 0.32);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+    max-width: 15rem;
+  }
+  .sy-float__label { font-size: 0.64rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-text); font-weight: var(--fw-semibold); }
+  .sy-float__text { font-size: 0.76rem; color: rgba(255, 255, 255, 0.72); line-height: 1.45; }
+  /* Both cards hang off the lower edge, at different depths so the group still
+     reads as a diagonal. Anywhere higher and they cover the window title or
+     the column headings, which reads as a rendering fault rather than depth. */
+  .sy-float--audit { right: -4%; bottom: -1.6rem; animation: sy-float 7.5s ease-in-out infinite reverse; }
+  .sy-float--rights { left: -4%; bottom: -3.6rem; animation: sy-float 8.5s ease-in-out infinite; }
+
+  @keyframes sy-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -12px; } }
+  @keyframes sy-scan { 0% { transform: translateY(-60px); } 55%, 100% { transform: translateY(240px); } }
+
+  /* ---------- keyword marquee ---------- */
+  .sy-marquee {
+    margin-top: clamp(2.5rem, 6vw, 4.5rem);
+    padding-block: 0.9rem;
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    overflow: hidden;
+  }
+  .sy-marquee__track { display: flex; align-items: center; gap: 2.4rem; width: max-content; animation: sy-scroll 46s linear infinite; }
+  .sy-marquee:hover .sy-marquee__track { animation-play-state: paused; }
+  .sy-marquee__item {
+    display: inline-flex; align-items: center; gap: 0.7rem;
+    font-size: 0.86rem; letter-spacing: 0.04em; color: var(--color-text-muted); white-space: nowrap;
+  }
+  .sy-marquee__item::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--color-accent); }
+  @keyframes sy-scroll { from { transform: translateX(0); } to { transform: translateX(calc(-50% - 1.2rem)); } }
 
   /* ---------- wiedererkennung ---------- */
-  .sy-symptoms__list { list-style: none; display: grid; gap: 0.85rem; max-width: 62rem; }
+  .sy-symptoms__list { list-style: none; display: grid; gap: 0.85rem; max-width: 64rem; }
   .sy-symptoms__list li {
-    display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: baseline;
+    display: grid; grid-template-columns: minmax(8.5rem, auto) 1fr; gap: 1.2rem; align-items: center;
     padding: clamp(1rem, 2vw, 1.35rem) clamp(1.1rem, 2.5vw, 1.6rem);
     border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
     background: var(--surface-card);
     font-size: 1.04rem; line-height: var(--lh-body);
+    transition: border-color var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
   }
-  .sy-symptoms__mark { width: 1.6rem; height: 2px; background: var(--color-accent); transform: translateY(-0.35em); }
+  .sy-symptoms__list li:hover { border-color: rgba(244, 14, 14, 0.4); transform: translateX(4px); }
+  /* Where the knowledge actually lives today. Naming the place turns an
+     abstract complaint into something the reader can picture. */
+  .sy-symptoms__source {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.7rem; letter-spacing: 0.09em; text-transform: uppercase;
+    color: var(--color-accent-text); font-weight: var(--fw-semibold);
+  }
+  .sy-symptoms__source::before { content: ''; width: 1.4rem; height: 2px; background: currentColor; flex: 0 0 auto; }
   .sy-symptoms__close { margin-top: 1.6rem; max-width: 60ch; color: var(--color-text-muted); font-size: 1.02rem; }
 
   /* ---------- website oder system ---------- */
@@ -292,6 +849,17 @@ const screenshotAlt = (name: string, client: string) =>
   /* Only the system side is lifted — this page is about systems, and one
      accented card reads as an answer while two read as a menu. */
   .sy-choice--accent { border-color: var(--color-accent); box-shadow: var(--shadow-accent); }
+  .sy-choice__fig { width: 100%; max-width: 20rem; height: auto; }
+  .sy-fig-plate { fill: rgba(255, 255, 255, 0.05); stroke: rgba(255, 255, 255, 0.28); stroke-width: 1.4; }
+  .sy-fig-plate--hot { fill: rgba(244, 14, 14, 0.12); stroke: var(--color-accent); }
+  .sy-fig-line { stroke: rgba(255, 255, 255, 0.22); stroke-width: 3; stroke-linecap: round; }
+  .sy-fig-dot { fill: rgba(255, 255, 255, 0.16); stroke: rgba(255, 255, 255, 0.4); stroke-width: 1.2; }
+  .sy-fig-dot--a { fill: rgba(244, 14, 14, 0.35); stroke: var(--color-accent); }
+  .sy-fig-dot--b { fill: rgba(244, 14, 14, 0.2); stroke: var(--color-accent); }
+  .sy-fig-dot--c { fill: rgba(244, 14, 14, 0.08); stroke: var(--color-accent); }
+  .sy-fig-arrow { stroke: rgba(255, 255, 255, 0.3); stroke-width: 1.4; stroke-dasharray: 4 4; }
+  .sy-fig-step { fill: rgba(255, 255, 255, 0.05); stroke: rgba(255, 255, 255, 0.28); stroke-width: 1.3; }
+  .sy-fig-step--hot { fill: rgba(244, 14, 14, 0.16); stroke: var(--color-accent); }
   .sy-choice__title { font-size: var(--fs-h4); font-weight: var(--fw-bold); line-height: var(--lh-snug); }
   .sy-choice__list { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; margin-top: auto; }
   .sy-choice__list li { position: relative; padding-left: 1.6rem; color: var(--color-text-muted); line-height: var(--lh-body); }
@@ -300,11 +868,144 @@ const screenshotAlt = (name: string, client: string) =>
     width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--color-accent);
   }
   .sy-choice__link {
-    align-self: flex-start; font-weight: var(--fw-semibold); color: var(--color-accent);
+    align-self: flex-start; font-weight: var(--fw-semibold); color: var(--color-accent-text);
     text-decoration: none; border-bottom: 1px solid transparent; transition: border-color var(--dur-fast) var(--ease-out);
   }
   .sy-choice__link:hover, .sy-choice__link:focus-visible { border-bottom-color: currentColor; }
   .sy-split__both { margin-top: 1.75rem; max-width: 66ch; }
+
+  /* ---------- modul-explorer ---------- */
+  .sy-explorer__shell {
+    border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);
+    background: var(--surface-card); overflow: hidden;
+  }
+  .sy-tabs {
+    display: flex; gap: 0.35rem; padding: 0.6rem;
+    border-bottom: 1px solid var(--border-subtle);
+    background: rgba(255, 255, 255, 0.015);
+    overflow-x: auto; scroll-snap-type: x proximity;
+  }
+  .sy-tab {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    flex: 0 0 auto; scroll-snap-align: start;
+    padding: 0.7rem 1.05rem; border-radius: var(--radius-pill);
+    border: 1px solid transparent; background: transparent;
+    color: var(--color-text-muted); font: inherit; font-size: 0.88rem; font-weight: var(--fw-semibold);
+    cursor: pointer; white-space: nowrap;
+    transition: color var(--dur-fast), background var(--dur-fast), border-color var(--dur-fast);
+  }
+  .sy-tab__num { font-size: 0.66rem; letter-spacing: 0.06em; color: var(--color-accent-text); font-variant-numeric: tabular-nums; }
+  .sy-tab:hover { color: var(--color-text); border-color: var(--border-subtle); }
+  .sy-tab.is-active { color: #fff; background: rgba(244, 14, 14, 0.14); border-color: rgba(244, 14, 14, 0.5); }
+  .sy-tab.is-active .sy-tab__num { color: #fff; }
+
+  .sy-panel {
+    display: grid; grid-template-columns: 0.92fr 1.08fr;
+    gap: clamp(1.5rem, 4vw, 3rem); align-items: center;
+    padding: clamp(1.6rem, 4vw, 3rem);
+  }
+  /* A class selector outranks the user-agent rule for [hidden], so without
+     this line every panel stays on screen and the tablist does nothing. */
+  .sy-panel[hidden] { display: none; }
+  .sy-panel:focus-visible { outline-offset: -4px; }
+  .sy-panel__copy h3 { font-size: var(--fs-h3); font-weight: var(--fw-bold); line-height: var(--lh-snug); margin-bottom: 0.9rem; text-wrap: balance; }
+  .sy-panel__copy p { line-height: var(--lh-body); max-width: 52ch; }
+  .sy-panel__points { list-style: none; display: grid; gap: 0.7rem; margin-top: 1.5rem; }
+  .sy-panel__points li { display: flex; gap: 0.7rem; align-items: flex-start; line-height: 1.5; font-size: 0.95rem; }
+  .sy-panel__points svg { flex: 0 0 auto; margin-top: 0.15rem; color: var(--color-accent); }
+
+  /* ---------- schematics ---------- */
+  .sy-diagram {
+    position: relative; margin: 0; padding: clamp(1.2rem, 2.5vw, 1.9rem);
+    border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+    background: linear-gradient(165deg, #151515, #0e0e0e);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    min-height: 15rem; display: flex; flex-direction: column; justify-content: center;
+  }
+  /* Says out loud what the picture is. A page that argues from evidence
+     cannot afford an illustration somebody could mistake for a screenshot. */
+  .sy-diagram__hint {
+    position: absolute; top: 0.75rem; right: 0.9rem;
+    font-size: 0.6rem; letter-spacing: 0.09em; text-transform: uppercase;
+    color: var(--color-text-subtle);
+    padding: 0.2rem 0.55rem; border: 1px dashed var(--border-strong); border-radius: var(--radius-pill);
+  }
+  .sy-dg { display: grid; gap: 0.55rem; margin-top: 1.4rem; }
+  .sy-dg__head, .sy-dg__row { display: grid; grid-template-columns: 1fr 0.8fr 0.8fr; gap: 0.8rem; align-items: center; }
+  .sy-dg__head { font-size: 0.6rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-text-subtle); padding-bottom: 0.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+  .sy-dg__row { padding: 0.6rem 0.5rem; border-radius: 8px; }
+  .sy-dg__row.is-hot { background: rgba(244, 14, 14, 0.09); box-shadow: inset 2px 0 0 var(--color-accent); }
+  .sy-tagpill { justify-self: start; font-size: 0.62rem; padding: 0.2rem 0.55rem; border-radius: var(--radius-pill); color: var(--color-accent-text); border: 1px solid rgba(244, 14, 14, 0.45); background: rgba(244, 14, 14, 0.1); white-space: nowrap; }
+  /* The rejected duplicate. A strike-through over a 7px bar just repainted
+     part of it; a cross beside a dimmed row says "caught and refused" at a
+     glance. */
+  .sy-dg__ghost { display: grid; grid-template-columns: 1fr auto; gap: 0.8rem; align-items: center; padding: 0.6rem 0.5rem; opacity: 0.75; }
+  .sy-dg__reject {
+    display: grid; place-items: center; width: 20px; height: 20px;
+    border-radius: 50%; color: var(--color-accent-text);
+    border: 1px solid rgba(244, 14, 14, 0.5); background: rgba(244, 14, 14, 0.12);
+  }
+  .sy-dg__note { margin-top: 0.9rem; font-size: 0.78rem; color: var(--color-text-subtle); }
+
+  .sy-flow { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; }
+  .sy-flow__step { display: flex; flex-direction: column; align-items: center; gap: 0.55rem; position: relative; }
+  .sy-flow__step:not(:last-child)::after {
+    content: ''; position: absolute; top: 6px; left: calc(50% + 12px); right: calc(-50% + 12px);
+    height: 1px; background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0 4px, transparent 4px 8px);
+  }
+  .sy-flow__dot { width: 13px; height: 13px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.35); background: #101010; }
+  .sy-flow__step.is-hot .sy-flow__dot { border-color: var(--color-accent); background: var(--color-accent); box-shadow: 0 0 0 5px rgba(244, 14, 14, 0.16); }
+  .sy-flow__label { font-size: 0.72rem; color: var(--color-text-muted); text-align: center; line-height: 1.3; }
+  .sy-flow__step.is-hot .sy-flow__label { color: #fff; }
+  .sy-flow__skip { width: 100%; height: auto; margin-top: 0.1rem; }
+  .sy-fig-arc { fill: none; stroke: rgba(255, 255, 255, 0.2); stroke-width: 1.4; stroke-dasharray: 5 5; }
+  .sy-fig-cross { stroke: var(--color-accent); stroke-width: 2.2; stroke-linecap: round; }
+
+  .sy-matrix { display: grid; grid-template-columns: minmax(6.5rem, 1.2fr) repeat(3, 1fr); gap: 0.55rem 0.8rem; align-items: center; }
+  .sy-matrix__col { font-size: 0.62rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--color-text-subtle); text-align: center; }
+  .sy-matrix__row { font-size: 0.8rem; color: var(--color-text-muted); }
+  .sy-cell { justify-self: center; width: 20px; height: 20px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.16); position: relative; }
+  .sy-cell.is-yes { border-color: rgba(244, 14, 14, 0.6); background: rgba(244, 14, 14, 0.16); }
+  /* A wider-than-tall corner rotated 45° reads as a tick; a square one reads
+     as a downward chevron, which is not the same symbol. */
+  .sy-cell.is-yes::after {
+    content: ''; position: absolute; left: 50%; top: 45%;
+    width: 9px; height: 5px;
+    border-left: 2px solid var(--color-accent-text);
+    border-bottom: 2px solid var(--color-accent-text);
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+  .sy-cell.is-no::after { content: ''; position: absolute; left: 4px; right: 4px; top: 50%; height: 1px; background: rgba(255, 255, 255, 0.22); }
+
+  .sy-trail { list-style: none; display: grid; gap: 0.9rem; }
+  /* The trailing bar stands for the person and timestamp every entry carries;
+     it also stops the row from ending in dead space halfway across the panel. */
+  .sy-trail li { display: grid; grid-template-columns: auto auto auto 1fr; gap: 0.9rem; align-items: center; position: relative; }
+  .sy-trail li:not(:last-child)::before { content: ''; position: absolute; left: 5px; top: 18px; bottom: -16px; width: 1px; background: repeating-linear-gradient(180deg, rgba(244, 14, 14, 0.5) 0 4px, transparent 4px 8px); }
+  .sy-trail__dot { width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--color-accent); background: #101010; }
+  .sy-trail__doc { display: grid; gap: 5px; width: 54px; padding: 8px 7px; border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.03); }
+  .sy-trail__label { font-size: 0.78rem; color: var(--color-text-muted); }
+
+  .sy-ledger { display: grid; gap: 0.75rem; }
+  .sy-ledger__row { display: grid; grid-template-columns: minmax(6rem, 0.55fr) 1fr; gap: 1rem; align-items: center; padding: 0.55rem 0.6rem; border-radius: 8px; }
+  .sy-ledger__row.is-hot { background: rgba(244, 14, 14, 0.09); box-shadow: inset 2px 0 0 var(--color-accent); }
+  .sy-ledger__key { font-size: 0.8rem; color: var(--color-text-muted); }
+  .sy-ledger__row.is-hot .sy-ledger__key { color: #fff; }
+
+  .sy-dg--api { gap: 0.5rem; }
+  .sy-endpoint { display: flex; align-items: center; gap: 0.8rem; padding: 0.65rem 0.8rem; border: 1px solid var(--border-subtle); border-radius: 9px; font-size: 0.82rem; color: var(--color-text-muted); background: rgba(255, 255, 255, 0.02); }
+  .sy-verb { font-size: 0.62rem; font-weight: var(--fw-bold); letter-spacing: 0.08em; padding: 0.2rem 0.5rem; border-radius: 5px; color: var(--color-accent-text); background: rgba(244, 14, 14, 0.12); border: 1px solid rgba(244, 14, 14, 0.4); min-width: 3.4rem; text-align: center; }
+  .sy-verb--event { color: #fff; background: var(--color-accent-surface); border-color: var(--color-accent-surface); }
+  .sy-endpoint--key { border-style: dashed; color: var(--color-accent-text); }
+
+  .sy-dg--insights { grid-template-columns: 1fr 1fr; }
+  .sy-tile { display: flex; flex-direction: column; justify-content: flex-end; gap: 0.6rem; min-height: 6.2rem; padding: 0.9rem; border: 1px solid var(--border-subtle); border-radius: 10px; background: rgba(255, 255, 255, 0.02); }
+  .sy-tile--wide { grid-column: 1 / -1; }
+  .sy-tile--empty { border-style: dashed; }
+  .sy-tile__label { font-size: 0.72rem; color: var(--color-text-subtle); line-height: 1.35; }
+  .sy-tile__dash { font-size: 1.6rem; color: var(--color-text-subtle); line-height: 1; }
+  .sy-spark { display: flex; align-items: flex-end; gap: 5px; height: 46px; }
+  .sy-spark i { width: 9px; height: var(--h); border-radius: 3px 3px 0 0; background: linear-gradient(180deg, var(--color-accent), rgba(244, 14, 14, 0.25)); }
 
   /* ---------- systeme ---------- */
   .sy-grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr)); }
@@ -312,22 +1013,37 @@ const screenshotAlt = (name: string, client: string) =>
     display: flex; flex-direction: column;
     background: var(--surface-card); border: 1px solid var(--border-subtle);
     border-radius: var(--radius-md); overflow: hidden;
-    transition: border-color var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
+    transition: border-color var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
   }
-  .sy-card:hover { border-color: var(--color-accent); transform: translateY(-4px); }
+  .sy-card:hover { border-color: rgba(244, 14, 14, 0.45); transform: translateY(-6px); box-shadow: 0 30px 70px -34px rgba(0, 0, 0, 0.9), 0 20px 60px -36px rgba(244, 14, 14, 0.5); }
   .sy-card:focus-within { border-color: var(--color-accent); }
   .sy-card--featured { border-color: var(--color-accent); }
   .sy-card__media { position: relative; display: block; aspect-ratio: 16 / 10; overflow: hidden; background: var(--color-bg-elevated); }
-  .sy-card__media img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+  /* Application chrome rather than browser chrome: the systems are software
+     somebody logs into, and the frame should say so before the copy does. */
+  .sy-card__chrome { position: absolute; inset: 0 0 auto 0; z-index: 2; display: flex; align-items: center; gap: 5px; height: 24px; padding: 0 10px; background: rgba(10, 10, 10, 0.92); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+  .sy-card__chrome i { width: 7px; height: 7px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); }
+  .sy-card__chrome i:first-child { background: var(--color-accent); }
+  .sy-card__media img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform var(--dur-med) var(--ease-out); }
+  .sy-card:hover .sy-card__media img { transform: scale(1.04); }
   .sy-card__badge {
-    position: absolute; top: 0.9rem; left: 0.9rem;
+    position: absolute; top: 2.2rem; left: 0.9rem; z-index: 2;
     font-size: 0.64rem; font-weight: var(--fw-semibold); letter-spacing: 0.1em; text-transform: uppercase;
     padding: 0.3rem 0.7rem; border-radius: var(--radius-pill);
     background: var(--color-accent-surface); color: #fff;
   }
+  .sy-card__open {
+    position: absolute; right: 0.9rem; bottom: 0.9rem; z-index: 2;
+    padding: 0.4rem 0.8rem; font-size: 0.78rem; font-weight: var(--fw-semibold);
+    color: #fff; background: rgba(0, 0, 0, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.25); border-radius: var(--radius-pill);
+    opacity: 0; transform: translateY(6px);
+    transition: opacity var(--dur-fast), transform var(--dur-fast);
+  }
+  .sy-card__media:hover .sy-card__open, .sy-card__media:focus-visible .sy-card__open { opacity: 1; transform: none; }
   .sy-card__body { display: flex; flex-direction: column; gap: 0.75rem; padding: clamp(1.3rem, 2.5vw, 1.8rem); }
   .sy-card__meta { display: flex; flex-wrap: wrap; gap: 0.4rem 0.9rem; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; }
-  .sy-card__domain { color: var(--color-accent); font-weight: var(--fw-semibold); }
+  .sy-card__domain { color: var(--color-accent-text); font-weight: var(--fw-semibold); }
   .sy-card__client { color: var(--color-text-subtle); }
   .sy-card__name { font-size: var(--fs-h4); font-weight: var(--fw-bold); line-height: var(--lh-snug); }
   .sy-card__tagline { font-weight: var(--fw-semibold); color: var(--color-text); }
@@ -339,29 +1055,94 @@ const screenshotAlt = (name: string, client: string) =>
     color: var(--color-text-muted);
   }
   .sy-card__link {
-    align-self: flex-start; margin-top: 0.4rem; font-weight: var(--fw-semibold);
-    color: var(--color-accent); text-decoration: none;
+    align-self: flex-start; margin-top: auto; padding-top: 0.4rem; font-weight: var(--fw-semibold);
+    color: var(--color-accent-text); text-decoration: none;
     border-bottom: 1px solid transparent; transition: border-color var(--dur-fast) var(--ease-out);
   }
   .sy-card__link:hover, .sy-card__link:focus-visible { border-bottom-color: currentColor; }
 
+  /* ---------- schnittstellen ---------- */
+  .sy-orbit-sec__inner { display: grid; grid-template-columns: 1fr 0.95fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  .sy-orbit-sec__copy h2 { font-size: var(--fs-h2); font-weight: var(--fw-bold); line-height: var(--lh-tight); margin-bottom: 1rem; text-wrap: balance; }
+  .sy-orbit-sec__copy p { line-height: var(--lh-body); max-width: 56ch; }
+  .sy-orbit-sec__note { margin-top: 1.2rem; padding-left: 1rem; border-left: 2px solid var(--color-accent); font-size: 0.92rem; color: var(--color-text-muted); }
+
+  /* A container so the ring radius can be expressed as a share of the circle
+     (`cqi`). A percentage in `translate` would resolve against the label's own
+     box instead and pile all eight nodes on the centre. */
+  .sy-orbit { position: relative; aspect-ratio: 1; width: 100%; max-width: 30rem; margin-inline: auto; container-type: inline-size; }
+  .sy-orbit__rings { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .sy-orbit__ring { fill: none; stroke: rgba(255, 255, 255, 0.09); stroke-width: 1; }
+  .sy-orbit__ring--outer { stroke-dasharray: 3 7; stroke: rgba(244, 14, 14, 0.22); }
+  /* The dash travels inwards: data arriving at the system, not leaving it. */
+  .sy-orbit__spoke { stroke: rgba(244, 14, 14, 0.4); stroke-width: 1.2; stroke-dasharray: 5 9; animation: sy-spoke 2.4s linear infinite; animation-delay: var(--d); }
+  @keyframes sy-spoke { to { stroke-dashoffset: -28; } }
+  .sy-orbit__core {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    display: grid; place-items: center; text-align: center;
+    width: 42%; aspect-ratio: 1; border-radius: 50%;
+    padding: 1rem;
+    font-size: 0.92rem; font-weight: var(--fw-bold); line-height: 1.25;
+    color: #fff;
+    background: radial-gradient(circle at 50% 35%, rgba(244, 14, 14, 0.3), rgba(20, 20, 20, 0.95) 70%);
+    border: 1px solid rgba(244, 14, 14, 0.55);
+    box-shadow: 0 0 60px -10px rgba(244, 14, 14, 0.5);
+  }
+  .sy-orbit__list { list-style: none; position: absolute; inset: 0; margin: 0; }
+  .sy-orbit__list li {
+    /* Fallback radius for engines without container query units; the ring is
+       37.5% of the circle, matching where the spokes in the SVG end. */
+    --r: 10rem;
+    position: absolute; left: 50%; top: 50%;
+    /* Origin at the circle's centre, so the rotation swings the label out to
+       the ring: turn, step outwards, turn back upright, then centre the chip
+       on the point it landed on. */
+    transform-origin: 0 0;
+    transform:
+      rotate(calc(var(--i) * 45deg))
+      translate(0, calc(var(--r) * -1))
+      rotate(calc(var(--i) * -45deg))
+      translate(-50%, -50%);
+    padding: 0.4rem 0.75rem;
+    font-size: 0.74rem; white-space: nowrap;
+    color: var(--color-text-muted);
+    background: rgba(16, 16, 16, 0.95);
+    border: 1px solid var(--border-subtle); border-radius: var(--radius-pill);
+  }
+  @supports (width: 1cqi) {
+    .sy-orbit__list li { --r: 37.5cqi; }
+  }
+
   /* ---------- ablauf ---------- */
-  .sy-steps { list-style: none; display: grid; gap: 1.1rem; }
+  .sy-steps { list-style: none; display: grid; gap: 1.1rem; position: relative; padding-left: 2.6rem; }
+  /* A rail that fills as the section scrolls past. Six phases read as a
+     sequence rather than six cards once the line joins them. */
+  .sy-steps__rail { position: absolute; left: 0.95rem; top: 0.5rem; bottom: 0.5rem; width: 2px; background: rgba(255, 255, 255, 0.1); border-radius: 2px; }
+  .sy-steps__fill { display: block; width: 100%; height: var(--progress, 0%); background: linear-gradient(180deg, var(--color-accent), rgba(244, 14, 14, 0.35)); border-radius: 2px; box-shadow: 0 0 14px rgba(244, 14, 14, 0.5); transition: height 0.15s linear; }
   .sy-step {
     display: grid; grid-template-columns: auto 1fr; gap: 1.3rem;
     padding: clamp(1.3rem, 2.5vw, 1.8rem);
     border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
     background: var(--surface-card);
+    position: relative;
+    transition: border-color var(--dur-med) var(--ease-out);
   }
+  .sy-step::before {
+    content: ''; position: absolute; left: -1.72rem; top: 1.9rem;
+    width: 11px; height: 11px; border-radius: 50%;
+    background: #101010; border: 2px solid rgba(255, 255, 255, 0.28);
+  }
+  .sy-step:hover { border-color: rgba(244, 14, 14, 0.4); }
+  .sy-step:hover::before { border-color: var(--color-accent); background: var(--color-accent); }
   .sy-step__num {
-    font-size: 1.6rem; font-weight: var(--fw-bold); color: var(--color-accent);
-    line-height: 1; font-variant-numeric: tabular-nums;
+    font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: var(--fw-bold); color: var(--color-accent);
+    line-height: 1; font-variant-numeric: tabular-nums; opacity: 0.85;
   }
   .sy-step__body { display: flex; flex-direction: column; gap: 0.5rem; }
   .sy-step__title { font-size: 1.12rem; font-weight: var(--fw-bold); line-height: var(--lh-snug); }
   .sy-step__disciplines {
     font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase;
-    color: var(--color-accent); font-weight: var(--fw-semibold);
+    color: var(--color-accent-text); font-weight: var(--fw-semibold);
   }
   .sy-step__text { line-height: var(--lh-body); max-width: 68ch; }
   .sy-step__result {
@@ -377,16 +1158,41 @@ const screenshotAlt = (name: string, client: string) =>
 
   /* ---------- bausteine ---------- */
   .sy-caps__grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); }
+  /* Six items across a 1680px container land as 4 + 2, which reads as a row
+     that ran out. Three columns give two full rows instead. */
+  @media (min-width: 1100px) { .sy-caps__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   .sy-cap {
+    position: relative; overflow: hidden;
     padding: clamp(1.3rem, 2.5vw, 1.7rem);
     border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
     background: var(--surface-card);
+    transition: border-color var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
   }
+  .sy-cap:hover { border-color: rgba(244, 14, 14, 0.4); transform: translateY(-4px); }
+  .sy-cap__mark { position: absolute; inset: 0 auto 0 0; width: 3px; background: linear-gradient(180deg, var(--color-accent), transparent); }
   .sy-cap h3 { font-size: 1.02rem; font-weight: var(--fw-bold); margin-bottom: 0.5rem; line-height: var(--lh-snug); }
   .sy-cap p { line-height: var(--lh-body); font-size: 0.94rem; }
 
+  /* ---------- sicherheit ---------- */
+  .sy-sec__grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); }
+  .sy-sec__item {
+    padding: clamp(1.3rem, 2.5vw, 1.8rem);
+    border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+    background: var(--surface-card);
+    transition: border-color var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
+  }
+  .sy-sec__item:hover { border-color: rgba(244, 14, 14, 0.4); transform: translateY(-4px); }
+  .sy-sec__ring {
+    display: inline-grid; place-items: center; width: 34px; height: 34px;
+    margin-bottom: 0.9rem; border-radius: 10px;
+    color: var(--color-accent); background: rgba(244, 14, 14, 0.12); border: 1px solid rgba(244, 14, 14, 0.35);
+  }
+  .sy-sec__item h3 { font-size: 1.02rem; font-weight: var(--fw-bold); margin-bottom: 0.5rem; line-height: var(--lh-snug); }
+  .sy-sec__item p { line-height: var(--lh-body); font-size: 0.93rem; }
+
   /* ---------- warum wir ---------- */
-  .sy-why__grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr)); }
+  .sy-why__layout { display: grid; grid-template-columns: 1.25fr 0.75fr; gap: clamp(1.5rem, 3.5vw, 2.5rem); align-items: start; }
+  .sy-why__grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); }
   .sy-why__item {
     padding: clamp(1.4rem, 2.5vw, 1.9rem);
     border: 1px solid var(--border-subtle); border-left: 3px solid var(--color-accent);
@@ -394,6 +1200,9 @@ const screenshotAlt = (name: string, client: string) =>
   }
   .sy-why__item h3 { font-size: 1.05rem; font-weight: var(--fw-bold); margin-bottom: 0.55rem; line-height: var(--lh-snug); }
   .sy-why__item p { line-height: var(--lh-body); font-size: 0.96rem; }
+  .sy-why__media { margin: 0; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); position: relative; }
+  .sy-why__media img { width: 100%; height: 100%; min-height: 18rem; object-fit: cover; }
+  .sy-why__media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(244, 14, 14, 0.12), transparent 45%, rgba(0, 0, 0, 0.35)); pointer-events: none; }
 
   /* ---------- verbindlichkeit ---------- */
   .sy-commit__list { list-style: none; display: grid; gap: 0.9rem; grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr)); }
@@ -413,16 +1222,141 @@ const screenshotAlt = (name: string, client: string) =>
     border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);
     background: var(--surface-card);
   }
-  .sy-first__inner { border-color: var(--color-accent); box-shadow: var(--shadow-accent); }
+  .sy-first__inner {
+    border-color: rgba(244, 14, 14, 0.45);
+    background: linear-gradient(120deg, rgba(244, 14, 14, 0.14), transparent 68%), var(--surface-card);
+    box-shadow: var(--shadow-accent);
+  }
   .sy-first__inner > div, .sy-cross__inner > div { max-width: 46rem; }
   .sy-first__heading, .sy-cross__heading {
     font-size: var(--fs-h3); font-weight: var(--fw-bold); line-height: var(--lh-snug);
     margin-bottom: 0.6rem; text-wrap: balance;
   }
 
+  /* ---------- responsive ---------- */
+  @media (max-width: 1080px) {
+    .sy-panel { grid-template-columns: 1fr; }
+    .sy-why__layout { grid-template-columns: 1fr; }
+    .sy-why__media img { min-height: 14rem; }
+  }
+  @media (max-width: 980px) {
+    .sy-hero__inner { grid-template-columns: 1fr; min-height: 0; }
+    .sy-hero__stage { margin-top: 1.5rem; }
+    /* Full-width stage: the cards no longer have a margin to hang into, and
+       the section's `overflow: hidden` would clip them instead. */
+    .sy-float--audit { right: 0; }
+    .sy-float--rights { left: 0; }
+    .sy-orbit-sec__inner { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    /* The floating cards need room the phone does not have; the workspace on
+       its own still carries the idea. With them gone the stage no longer has
+       an overhang to reserve space for. */
+    .sy-float { display: none; }
+    .sy-hero__stage { padding-bottom: 0; }
+    .sy-console__body { grid-template-columns: 1fr; }
+    /* The module list becomes a horizontal strip that runs past the edge; a
+       fade says "there is more" instead of guillotining the last word. */
+    .sy-console__nav {
+      flex-direction: row; overflow: hidden; border-right: 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      -webkit-mask-image: linear-gradient(90deg, #000 78%, transparent);
+      mask-image: linear-gradient(90deg, #000 78%, transparent);
+    }
+    .sy-orbit { max-width: 22rem; }
+    .sy-orbit__list li { font-size: 0.66rem; padding: 0.32rem 0.55rem; }
+    .sy-orbit__core { font-size: 0.78rem; }
+    .sy-dg--insights { grid-template-columns: 1fr; }
+    .sy-flow { grid-template-columns: repeat(2, 1fr); gap: 1rem 0.4rem; }
+    .sy-flow__step:not(:last-child)::after { display: none; }
+    .sy-flow__skip { display: none; }
+  }
   @media (max-width: 640px) {
     .sy-step { grid-template-columns: 1fr; gap: 0.7rem; }
-    .sy-symptoms__list li { grid-template-columns: 1fr; gap: 0.5rem; }
-    .sy-symptoms__mark { transform: none; }
+    .sy-steps { padding-left: 1.9rem; }
+    .sy-steps__rail { left: 0.6rem; }
+    .sy-step::before { left: -1.36rem; top: 1.6rem; }
+    .sy-symptoms__list li { grid-template-columns: 1fr; gap: 0.5rem; align-items: start; }
+    .sy-matrix { grid-template-columns: minmax(5rem, 1fr) repeat(3, auto); gap: 0.5rem; }
+    .sy-orbit { max-width: 18rem; }
+    .sy-orbit__list li { font-size: 0.6rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sy-console, .sy-float, .sy-marquee__track, .sy-console__scan, .sy-orbit__spoke { animation: none !important; }
+    .sy-console__scan { display: none; }
+    .sy-steps__fill { transition: none; }
   }
 </style>
+
+<script>
+  // ---- Module explorer -------------------------------------------------
+  // A tablist rather than a set of links: the panels are alternative views of
+  // one subject, so arrow keys move between tabs and only the selected tab
+  // stays in the tab order (WAI-ARIA authoring practice).
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('.sy-tab'));
+  const panels = Array.from(document.querySelectorAll<HTMLElement>('.sy-panel'));
+
+  function selectTab(index: number, focus = true) {
+    tabs.forEach((tab, i) => {
+      const active = i === index;
+      tab.classList.toggle('is-active', active);
+      tab.setAttribute('aria-selected', String(active));
+      tab.tabIndex = active ? 0 : -1;
+      if (active && focus) tab.focus();
+    });
+    panels.forEach((panel, i) => {
+      panel.hidden = i !== index;
+    });
+  }
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => selectTab(i, false));
+    tab.addEventListener('keydown', (event) => {
+      const keys: Record<string, number> = {
+        ArrowRight: i + 1,
+        ArrowLeft: i - 1,
+        Home: 0,
+        End: tabs.length - 1,
+      };
+      const next = keys[event.key];
+      if (next === undefined) return;
+      event.preventDefault();
+      selectTab((next + tabs.length) % tabs.length);
+    });
+  });
+
+  // ---- Process rail ----------------------------------------------------
+  // Fills as the phase list travels through the viewport. Purely decorative:
+  // the six phases read the same with the rail empty, which is what a reader
+  // with reduced motion or without JavaScript gets.
+  const steps = document.querySelector<HTMLElement>('.sy-steps');
+  const fill = document.querySelector<HTMLElement>('.sy-steps__fill');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  if (steps && fill) {
+    if (reduced.matches) {
+      fill.style.setProperty('--progress', '100%');
+    } else {
+      let ticking = false;
+      const update = () => {
+        ticking = false;
+        const rect = steps.getBoundingClientRect();
+        // 0 when the list's top reaches the middle of the viewport,
+        // 1 when its bottom does.
+        const mid = window.innerHeight * 0.55;
+        const travelled = mid - rect.top;
+        const ratio = Math.min(1, Math.max(0, travelled / Math.max(rect.height, 1)));
+        fill.style.setProperty('--progress', `${(ratio * 100).toFixed(1)}%`);
+      };
+      const onScroll = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(update);
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      update();
+    }
+  }
+</script>

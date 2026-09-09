@@ -5,7 +5,8 @@
  */
 import Button from '../ui/Button.astro';
 import ContactBlock from './ContactBlock.astro';
-import { webdesign as w, industries, projects } from '../../data/webdesign';
+import FaqSection from '../ui/FaqSection.astro';
+import { webdesign as w, industries, projects, webdesignFaq } from '../../data/webdesign';
 import type { Lang } from '../../i18n/config';
 
 interface Props { lang: Lang; }
@@ -56,6 +57,8 @@ const screenshotAlt = (name: string, category: string, location: string) => {
   if (lang === 'kk') return `${location} қаласындағы ${industry} саласының ${name} сайтының скриншоты`;
   return `Screenshot der Website von ${name}, ${industry} in ${location}`;
 };
+
+const faq = webdesignFaq[lang];
 ---
 
 <!-- ============ HERO / HOOK ============ -->
@@ -84,15 +87,15 @@ const screenshotAlt = (name: string, category: string, location: string) => {
     <div class="wd-hero__showcase" data-reveal="zoom" aria-hidden="true">
       <figure class="wd-frame wd-frame--back">
         <span class="wd-frame__bar"><i></i><i></i><i></i></span>
-        <img src="/images/webdesign/sabas-home.png" alt="" loading="eager" width="1440" height="900" />
+        <img src="/images/webdesign/sabas-home.webp" alt="" loading="eager" width="1440" height="900" />
       </figure>
       <figure class="wd-frame wd-frame--mid">
         <span class="wd-frame__bar"><i></i><i></i><i></i></span>
-        <img src="/images/webdesign/mikail-hair-salon.png" alt="" loading="eager" width="1440" height="900" />
+        <img src="/images/webdesign/mikail-hair-salon.webp" alt="" loading="eager" width="1440" height="900" />
       </figure>
       <figure class="wd-frame wd-frame--front">
         <span class="wd-frame__bar"><i></i><i></i><i></i></span>
-        <img src="/images/webdesign/maryam-barbershop.png" alt="" loading="eager" width="1440" height="900" />
+        <img src="/images/webdesign/maryam-barbershop.webp" alt="" loading="eager" width="1440" height="900" />
       </figure>
     </div>
   </div>
@@ -272,6 +275,21 @@ const screenshotAlt = (name: string, category: string, location: string) => {
   </div>
 </section>
 
+<!-- ============ EINWÄNDE ============ -->
+<!-- Placed after the offer and the risk reversal, before the cross-link: by
+     this point the reader knows what they would be buying, so what is left is
+     the four things that stop them. The last answer routes the ones who need a
+     system rather than a website, which is exactly what the next block is. -->
+<FaqSection
+  heading={faq.heading}
+  intro={faq.intro}
+  items={faq.items}
+  lang={lang}
+  bylineName="Dipl.-Ing. Waleri Moretz"
+  bylineRole={{ de: 'Geschäftsführer, WAMOCON GmbH', en: 'Managing Director, WAMOCON GmbH', tr: 'Genel Müdür, WAMOCON GmbH', kk: 'Басқарушы директор, WAMOCON GmbH' }[lang]}
+  lastReviewed="2026-09-09"
+/>
+
 <!-- ============ QUERVERWEIS: Unternehmenssysteme ============ -->
 <section class="section wd-cross">
   <div class="container wd-cross__inner" data-reveal="up">
@@ -291,7 +309,7 @@ const screenshotAlt = (name: string, category: string, location: string) => {
   .wd-eyebrow {
     display: inline-block;
     margin-bottom: 0.9rem;
-    color: var(--color-accent);
+    color: var(--color-accent-text);
     font-weight: var(--fw-semibold);
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -526,13 +544,13 @@ const screenshotAlt = (name: string, category: string, location: string) => {
 
   .wd-card__body { display: flex; flex-direction: column; gap: 0.5rem; padding: 1.5rem; }
   .wd-card__meta { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; }
-  .wd-card__industry { color: var(--color-accent); font-weight: var(--fw-semibold); font-size: 0.82rem; }
+  .wd-card__industry { color: var(--color-accent-text); font-weight: var(--fw-semibold); font-size: 0.82rem; }
   .wd-card__location { color: var(--color-text-muted); font-size: 0.82rem; }
   .wd-card__name { font-size: 1.35rem; margin: 0.1rem 0 0; }
   .wd-card__tagline { font-weight: var(--fw-semibold); color: var(--color-text); margin: 0; }
   .wd-card__desc { line-height: 1.6; margin: 0.2rem 0 0.4rem; }
   .wd-card--featured .wd-card__body { max-width: 60ch; }
-  .wd-card__link { margin-top: auto; color: var(--color-accent); font-weight: var(--fw-semibold); }
+  .wd-card__link { margin-top: auto; color: var(--color-accent-text); font-weight: var(--fw-semibold); }
   .wd-card__link:hover { text-decoration: underline; text-underline-offset: 0.2em; }
 
   @media (min-width: 900px) {
@@ -548,7 +566,7 @@ const screenshotAlt = (name: string, category: string, location: string) => {
     align-items: center;
   }
   .wd-offer__anchor { color: var(--color-accent); font-weight: var(--fw-semibold); font-size: 1.2rem; margin: 0.4rem 0 1rem; }
-  .wd-offer__features-head { font-size: 0.76rem; font-weight: var(--fw-semibold); letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 1.2rem; }
+  .wd-offer__features-head { font-size: 0.76rem; font-weight: var(--fw-semibold); letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-text); margin-bottom: 1.2rem; }
   .wd-cross__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; padding: clamp(1.6rem, 3vw, 2.4rem); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--surface-card); }
   .wd-cross__inner > div { max-width: 46rem; }
   .wd-cross__heading { font-size: var(--fs-h3); font-weight: var(--fw-bold); line-height: var(--lh-snug); margin-bottom: 0.6rem; text-wrap: balance; }
