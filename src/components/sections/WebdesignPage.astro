@@ -22,7 +22,15 @@ const industryLabel = (key: string) =>
  * grows — `industries` also carries the "all" filter, which is not an industry.
  */
 const liveIndustries = new Set(projects.map((p) => p.category)).size;
-const num = (n: number) => ({ de: String(n), en: String(n), tr: String(n) });
+
+/** Where the sibling department lives, per language. */
+const systemeHref = {
+  de: '/unternehmenssysteme/',
+  en: '/en/business-systems/',
+  tr: '/tr/kurumsal-sistemler/',
+  kk: '/kk/kasiporyn-juieleri/',
+}[lang];
+const num = (n: number) => ({ de: String(n), en: String(n), tr: String(n), kk: String(n) });
 const heroStats = w.hero.stats.map((s, i) => (i === 0 ? { ...s, value: num(liveIndustries) } : s));
 
 /**
@@ -45,6 +53,7 @@ const screenshotAlt = (name: string, category: string, location: string) => {
   const industry = industryLabel(category).toLowerCase();
   if (lang === 'en') return `Screenshot of the ${name} website, ${industry} in ${location}`;
   if (lang === 'tr') return `${location} şehrindeki ${industry} işletmesi ${name} web sitesinin ekran görüntüsü`;
+  if (lang === 'kk') return `${location} қаласындағы ${industry} саласының ${name} сайтының скриншоты`;
   return `Screenshot der Website von ${name}, ${industry} in ${location}`;
 };
 ---
@@ -219,10 +228,7 @@ const screenshotAlt = (name: string, category: string, location: string) => {
       <p class="text-muted">{w.offer.compare[lang]}</p>
     </div>
     <div class="wd-offer__card" data-reveal="up" data-reveal-delay="80">
-      <div class="wd-offer__price">
-        <span class="wd-offer__amount">{w.offer.price[lang]}</span>
-        <span class="wd-offer__note">{w.offer.priceNote[lang]}</span>
-      </div>
+      <p class="wd-offer__features-head">{w.offer.featuresHeading[lang]}</p>
       <ul class="wd-offer__features">
         {w.offer.features.map((f) => (
           <li>
@@ -263,6 +269,17 @@ const screenshotAlt = (name: string, category: string, location: string) => {
       <p class="text-muted">{w.love.text[lang]}</p>
     </div>
     <Button href="#kontakt" variant="primary" size="lg">{w.love.cta[lang]}</Button>
+  </div>
+</section>
+
+<!-- ============ QUERVERWEIS: Unternehmenssysteme ============ -->
+<section class="section wd-cross">
+  <div class="container wd-cross__inner" data-reveal="up">
+    <div>
+      <h2 class="wd-cross__heading">{w.crosslink.heading[lang]}</h2>
+      <p class="text-muted">{w.crosslink.text[lang]}</p>
+    </div>
+    <Button href={systemeHref} variant="outline" size="lg">{w.crosslink.cta[lang]}</Button>
   </div>
 </section>
 
@@ -531,6 +548,10 @@ const screenshotAlt = (name: string, category: string, location: string) => {
     align-items: center;
   }
   .wd-offer__anchor { color: var(--color-accent); font-weight: var(--fw-semibold); font-size: 1.2rem; margin: 0.4rem 0 1rem; }
+  .wd-offer__features-head { font-size: 0.76rem; font-weight: var(--fw-semibold); letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 1.2rem; }
+  .wd-cross__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; padding: clamp(1.6rem, 3vw, 2.4rem); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--surface-card); }
+  .wd-cross__inner > div { max-width: 46rem; }
+  .wd-cross__heading { font-size: var(--fs-h3); font-weight: var(--fw-bold); line-height: var(--lh-snug); margin-bottom: 0.6rem; text-wrap: balance; }
   .wd-offer__card {
     padding: clamp(1.8rem, 4vw, 2.75rem);
     background: var(--surface-card);

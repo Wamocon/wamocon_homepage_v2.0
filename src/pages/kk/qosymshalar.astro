@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AppsPage from '../../components/sections/AppsPage.astro';
+
+const lang = 'kk' as const;
+---
+
+<BaseLayout
+  title="Эшборндағы бағдарлама және жасанды интеллект қосымшаларын әзірлеу | WAMOCON"
+  description="WAMOCON жұмыс пен күнделікті тұрмысқа пайдалы бағдарламалық қосымшалар жасайды. Қосымшаларымызды қарап шығыңыз немесе жеке шешім үшін идеяңызбен бөлісіңіз."
+  lang={lang}
+>
+  <AppsPage lang={lang} />
+</BaseLayout>

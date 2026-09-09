@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ReferenzenPage from '../../components/sections/ReferenzenPage.astro';
+
+const lang = 'kk' as const;
+---
+
+<BaseLayout
+  title="Клиенттеріміз | WAMOCON GmbH"
+  description="Клиенттеріміз WAMOCON GmbH сараптамасына сенім артады: энергетика, банк ісі, телекоммуникация, өнеркәсіп және логистика саласындағы референстер."
+  lang={lang}
+>
+  <ReferenzenPage lang={lang} />
+</BaseLayout>

@@ -1,0 +1,428 @@
+---
+/**
+ * Business-systems page. Shared by /unternehmenssysteme/, /en/business-systems/
+ * and /tr/kurumsal-sistemler/.
+ *
+ * The order follows how somebody decides rather than how we like to present:
+ * a scene they recognise, then self-selection (website or system?), then proof
+ * they can click, then the six phases of the work, then who we are, then what
+ * binds us, then one small first step.
+ *
+ * No prices. A system's price follows its scope, and the six phases are what
+ * a price is made of — see `docs/webdesign-preis-und-marketingpsychologie.md`.
+ */
+import Button from '../ui/Button.astro';
+import ContactBlock from './ContactBlock.astro';
+import { systeme as s, systems, domains } from '../../data/systeme';
+import type { Lang } from '../../i18n/config';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+
+const domainLabel = (key: string) =>
+  domains.find((d) => d.key === key)?.label[lang] ?? key;
+
+/** Where the sibling department lives, per language. */
+const webdesignHref = { de: '/webdesign/', en: '/en/webdesign/', tr: '/tr/webdesign/', kk: '/kk/veb-dizain/' }[lang];
+
+const screenshotAlt = (name: string, client: string) =>
+  lang === 'en'
+    ? `Screenshot of the ${name} system, built for ${client}`
+    : lang === 'tr'
+      ? `${client} için geliştirilen ${name} sisteminin ekran görüntüsü`
+      : `Screenshot des Systems ${name}, gebaut für ${client}`;
+---
+
+<!-- ============ HERO ============ -->
+<section class="sy-hero">
+  <div class="sy-hero__glow" aria-hidden="true"></div>
+  <div class="container sy-hero__inner">
+    <div class="sy-hero__copy" data-reveal="up">
+      <span class="sy-hero__badge">{s.hero.eyebrow[lang]}</span>
+      <h1 class="sy-hero__title">{s.hero.title[lang]}</h1>
+      <p class="sy-hero__lead">{s.hero.lead[lang]}</p>
+      <div class="sy-hero__actions">
+        <Button href="#kontakt" variant="primary" size="lg">{s.hero.ctaPrimary[lang]}</Button>
+        <Button href="#ablauf" variant="outline" size="lg">{s.hero.ctaSecondary[lang]}</Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WIEDERERKENNUNG ============ -->
+<section class="section sy-symptoms">
+  <div class="container">
+    <div class="sy-head" data-reveal="up">
+      <h2>{s.symptoms.heading[lang]}</h2>
+      <p class="text-muted">{s.symptoms.intro[lang]}</p>
+    </div>
+    <ul class="sy-symptoms__list">
+      {s.symptoms.items.map((item, i) => (
+        <li data-reveal="up" data-reveal-delay={(i % 3) * 70}>
+          <span class="sy-symptoms__mark" aria-hidden="true"></span>
+          <span>{item[lang]}</span>
+        </li>
+      ))}
+    </ul>
+    <p class="sy-symptoms__close" data-reveal="up">{s.symptoms.close[lang]}</p>
+  </div>
+</section>
+
+<!-- ============ WEBSITE ODER SYSTEM ============ -->
+<section class="section section--alt sy-split">
+  <div class="container">
+    <div class="sy-head" data-reveal="up">
+      <h2>{s.split.heading[lang]}</h2>
+      <p class="text-muted">{s.split.intro[lang]}</p>
+    </div>
+
+    <div class="sy-split__grid">
+      <article class="sy-choice" data-reveal="up">
+        <h3 class="sy-choice__title">{s.split.website.title[lang]}</h3>
+        <ul class="sy-choice__list">
+          {s.split.website.points.map((p) => <li>{p[lang]}</li>)}
+        </ul>
+        <a class="sy-choice__link" href={webdesignHref}>
+          {s.split.website.cta[lang]} <span aria-hidden="true">→</span>
+        </a>
+      </article>
+
+      <article class="sy-choice sy-choice--accent" data-reveal="up" data-reveal-delay="80">
+        <h3 class="sy-choice__title">{s.split.system.title[lang]}</h3>
+        <ul class="sy-choice__list">
+          {s.split.system.points.map((p) => <li>{p[lang]}</li>)}
+        </ul>
+        <a class="sy-choice__link" href="#systeme">
+          {s.split.system.cta[lang]} <span aria-hidden="true">↓</span>
+        </a>
+      </article>
+    </div>
+
+    <p class="sy-split__both text-muted" data-reveal="up">{s.split.both[lang]}</p>
+  </div>
+</section>
+
+<!-- ============ SYSTEME IM EINSATZ ============ -->
+<section class="section sy-portfolio" id="systeme">
+  <div class="container">
+    <div class="sy-head" data-reveal="up">
+      <h2>{s.portfolio.heading[lang]}</h2>
+      <p class="text-muted">{s.portfolio.intro[lang]}</p>
+    </div>
+
+    <div class="sy-grid">
+      {systems.map((sys) => (
+        <article class:list={['sy-card', { 'sy-card--featured': sys.featured }]} data-reveal="up">
+          <a class="sy-card__media" href={sys.url} target="_blank" rel="noopener noreferrer">
+            <img src={sys.image} alt={screenshotAlt(sys.name, sys.client[lang])} loading="lazy" width="1440" height="900" />
+            {sys.featured && <span class="sy-card__badge">{s.portfolio.featuredLabel[lang]}</span>}
+          </a>
+          <div class="sy-card__body">
+            <div class="sy-card__meta">
+              <span class="sy-card__domain">{domainLabel(sys.domain)}</span>
+              <span class="sy-card__client">{s.portfolio.clientLabel[lang]}: {sys.client[lang]}</span>
+            </div>
+            <h3 class="sy-card__name">{sys.name}</h3>
+            <p class="sy-card__tagline">{sys.tagline[lang]}</p>
+            <p class="sy-card__desc text-muted">{sys.description[lang]}</p>
+            <ul class="sy-card__caps">
+              {sys.capabilities.map((c) => <li>{c[lang]}</li>)}
+            </ul>
+            <a class="sy-card__link" href={sys.url} target="_blank" rel="noopener noreferrer">
+              {s.portfolio.live[lang]} <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABLAUF ============ -->
+<section class="section section--alt sy-process" id="ablauf">
+  <div class="container">
+    <div class="sy-head" data-reveal="up">
+      <h2>{s.process.heading[lang]}</h2>
+      <p class="text-muted">{s.process.intro[lang]}</p>
+    </div>
+    <ol class="sy-steps">
+      {s.process.steps.map((step, i) => (
+        <li class="sy-step" data-reveal="up" data-reveal-delay={(i % 3) * 70}>
+          <span class="sy-step__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <div class="sy-step__body">
+            <h3 class="sy-step__title">{step.title[lang]}</h3>
+            <p class="sy-step__disciplines">{step.disciplines[lang]}</p>
+            <p class="sy-step__text text-muted">{step.text[lang]}</p>
+            <p class="sy-step__result">
+              <span class="sy-step__result-label">{s.process.resultLabel[lang]}</span>
+              {step.result[lang]}
+            </p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<!-- ============ BAUSTEINE ============ -->
+<section class="section sy-caps">
+  <div class="container">
+    <div class="sy-head" data-reveal="up">
+      <h2>{s.capabilities.heading[lang]}</h2>
+      <p class="text-muted">{s.capabilities.intro[lang]}</p>
+    </div>
+    <div class="sy-caps__grid">
+      {s.capabilities.items.map((c, i) => (
+        <article class="sy-cap" data-reveal="up" data-reveal-delay={(i % 3) * 80}>
+          <h3>{c.title[lang]}</h3>
+          <p class="text-muted">{c.text[lang]}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ============ WARUM WIR ============ -->
+<section class="section section--alt sy-why">
+  <div class="container">
+    <div class="sy-head" data-reveal="up">
+      <h2>{s.why.heading[lang]}</h2>
+    </div>
+    <div class="sy-why__grid">
+      {s.why.items.map((item, i) => (
+        <article class="sy-why__item" data-reveal="up" data-reveal-delay={(i % 2) * 80}>
+          <h3>{item.title[lang]}</h3>
+          <p class="text-muted">{item.text[lang]}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ============ VERBINDLICHKEIT ============ -->
+<section class="section sy-commit">
+  <div class="container">
+    <div class="sy-head" data-reveal="up">
+      <h2>{s.commitment.heading[lang]}</h2>
+      <p class="text-muted">{s.commitment.intro[lang]}</p>
+    </div>
+    <ul class="sy-commit__list">
+      {s.commitment.points.map((p, i) => (
+        <li data-reveal="up" data-reveal-delay={(i % 3) * 70}>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          <span>{p[lang]}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<!-- ============ ERSTER SCHRITT ============ -->
+<section class="section section--alt sy-first">
+  <div class="container sy-first__inner" data-reveal="up">
+    <div>
+      <h2 class="sy-first__heading">{s.firstStep.heading[lang]}</h2>
+      <p class="text-muted">{s.firstStep.text[lang]}</p>
+    </div>
+    <Button href="#kontakt" variant="primary" size="lg">{s.firstStep.cta[lang]}</Button>
+  </div>
+</section>
+
+<!-- ============ QUERVERWEIS ============ -->
+<section class="section sy-cross">
+  <div class="container sy-cross__inner" data-reveal="up">
+    <div>
+      <h2 class="sy-cross__heading">{s.crosslink.heading[lang]}</h2>
+      <p class="text-muted">{s.crosslink.text[lang]}</p>
+    </div>
+    <Button href={webdesignHref} variant="outline" size="lg">{s.crosslink.cta[lang]}</Button>
+  </div>
+</section>
+
+<div id="kontakt"><ContactBlock lang={lang} /></div>
+
+<style>
+  /* ---------- shared ---------- */
+  /* 760px, matching the web-design page — `ch` here would resolve against the
+     body font and wrap the far larger headings after a handful of words. */
+  .sy-head { max-width: 760px; margin-bottom: clamp(2rem, 5vw, 3.5rem); }
+  .sy-head h2 { font-size: var(--fs-h2); font-weight: var(--fw-bold); line-height: var(--lh-tight); margin-bottom: 1rem; text-wrap: balance; }
+  .sy-head p { font-size: 1.03rem; line-height: var(--lh-body); max-width: 62ch; }
+
+  /* ---------- hero ---------- */
+  .sy-hero { position: relative; padding: clamp(4rem, 10vw, 7.5rem) 0 clamp(3rem, 6vw, 4.5rem); overflow: hidden; }
+  .sy-hero__glow { position: absolute; inset: -20% -10% auto -10%; height: 70%; background: var(--glow-top); pointer-events: none; }
+  .sy-hero__inner { position: relative; }
+  .sy-hero__copy { max-width: 46rem; }
+  .sy-hero__badge {
+    display: inline-block; font-size: 0.7rem; font-weight: var(--fw-semibold);
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent);
+    border: 1px solid rgba(244, 14, 14, 0.45); background: rgba(244, 14, 14, 0.08);
+    border-radius: var(--radius-pill); padding: 0.35rem 0.85rem; margin-bottom: 1.25rem;
+  }
+  .sy-hero__title {
+    font-size: var(--fs-h1); font-weight: var(--fw-bold); line-height: var(--lh-tight);
+    letter-spacing: -0.02em; margin-bottom: 1.1rem; text-wrap: balance;
+  }
+  .sy-hero__lead { font-size: 1.12rem; line-height: var(--lh-body); color: var(--color-text-muted); max-width: 60ch; }
+  .sy-hero__actions { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2rem; }
+
+  /* ---------- wiedererkennung ---------- */
+  .sy-symptoms__list { list-style: none; display: grid; gap: 0.85rem; max-width: 62rem; }
+  .sy-symptoms__list li {
+    display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: baseline;
+    padding: clamp(1rem, 2vw, 1.35rem) clamp(1.1rem, 2.5vw, 1.6rem);
+    border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+    background: var(--surface-card);
+    font-size: 1.04rem; line-height: var(--lh-body);
+  }
+  .sy-symptoms__mark { width: 1.6rem; height: 2px; background: var(--color-accent); transform: translateY(-0.35em); }
+  .sy-symptoms__close { margin-top: 1.6rem; max-width: 60ch; color: var(--color-text-muted); font-size: 1.02rem; }
+
+  /* ---------- website oder system ---------- */
+  .sy-split__grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); }
+  .sy-choice {
+    display: flex; flex-direction: column; gap: 1.1rem;
+    padding: clamp(1.5rem, 3vw, 2.1rem);
+    background: var(--surface-card); border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+  }
+  /* Only the system side is lifted — this page is about systems, and one
+     accented card reads as an answer while two read as a menu. */
+  .sy-choice--accent { border-color: var(--color-accent); box-shadow: var(--shadow-accent); }
+  .sy-choice__title { font-size: var(--fs-h4); font-weight: var(--fw-bold); line-height: var(--lh-snug); }
+  .sy-choice__list { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; margin-top: auto; }
+  .sy-choice__list li { position: relative; padding-left: 1.6rem; color: var(--color-text-muted); line-height: var(--lh-body); }
+  .sy-choice__list li::before {
+    content: ''; position: absolute; left: 0; top: 0.55em;
+    width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--color-accent);
+  }
+  .sy-choice__link {
+    align-self: flex-start; font-weight: var(--fw-semibold); color: var(--color-accent);
+    text-decoration: none; border-bottom: 1px solid transparent; transition: border-color var(--dur-fast) var(--ease-out);
+  }
+  .sy-choice__link:hover, .sy-choice__link:focus-visible { border-bottom-color: currentColor; }
+  .sy-split__both { margin-top: 1.75rem; max-width: 66ch; }
+
+  /* ---------- systeme ---------- */
+  .sy-grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr)); }
+  .sy-card {
+    display: flex; flex-direction: column;
+    background: var(--surface-card); border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md); overflow: hidden;
+    transition: border-color var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
+  }
+  .sy-card:hover { border-color: var(--color-accent); transform: translateY(-4px); }
+  .sy-card:focus-within { border-color: var(--color-accent); }
+  .sy-card--featured { border-color: var(--color-accent); }
+  .sy-card__media { position: relative; display: block; aspect-ratio: 16 / 10; overflow: hidden; background: var(--color-bg-elevated); }
+  .sy-card__media img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+  .sy-card__badge {
+    position: absolute; top: 0.9rem; left: 0.9rem;
+    font-size: 0.64rem; font-weight: var(--fw-semibold); letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.3rem 0.7rem; border-radius: var(--radius-pill);
+    background: var(--color-accent-surface); color: #fff;
+  }
+  .sy-card__body { display: flex; flex-direction: column; gap: 0.75rem; padding: clamp(1.3rem, 2.5vw, 1.8rem); }
+  .sy-card__meta { display: flex; flex-wrap: wrap; gap: 0.4rem 0.9rem; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .sy-card__domain { color: var(--color-accent); font-weight: var(--fw-semibold); }
+  .sy-card__client { color: var(--color-text-subtle); }
+  .sy-card__name { font-size: var(--fs-h4); font-weight: var(--fw-bold); line-height: var(--lh-snug); }
+  .sy-card__tagline { font-weight: var(--fw-semibold); color: var(--color-text); }
+  .sy-card__desc { line-height: var(--lh-body); }
+  .sy-card__caps { list-style: none; display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.2rem; }
+  .sy-card__caps li {
+    font-size: 0.76rem; padding: 0.28rem 0.65rem;
+    border: 1px solid var(--border-strong); border-radius: var(--radius-pill);
+    color: var(--color-text-muted);
+  }
+  .sy-card__link {
+    align-self: flex-start; margin-top: 0.4rem; font-weight: var(--fw-semibold);
+    color: var(--color-accent); text-decoration: none;
+    border-bottom: 1px solid transparent; transition: border-color var(--dur-fast) var(--ease-out);
+  }
+  .sy-card__link:hover, .sy-card__link:focus-visible { border-bottom-color: currentColor; }
+
+  /* ---------- ablauf ---------- */
+  .sy-steps { list-style: none; display: grid; gap: 1.1rem; }
+  .sy-step {
+    display: grid; grid-template-columns: auto 1fr; gap: 1.3rem;
+    padding: clamp(1.3rem, 2.5vw, 1.8rem);
+    border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+    background: var(--surface-card);
+  }
+  .sy-step__num {
+    font-size: 1.6rem; font-weight: var(--fw-bold); color: var(--color-accent);
+    line-height: 1; font-variant-numeric: tabular-nums;
+  }
+  .sy-step__body { display: flex; flex-direction: column; gap: 0.5rem; }
+  .sy-step__title { font-size: 1.12rem; font-weight: var(--fw-bold); line-height: var(--lh-snug); }
+  .sy-step__disciplines {
+    font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--color-accent); font-weight: var(--fw-semibold);
+  }
+  .sy-step__text { line-height: var(--lh-body); max-width: 68ch; }
+  .sy-step__result {
+    margin-top: 0.3rem; padding-top: 0.75rem;
+    border-top: 1px dashed var(--border-strong);
+    font-size: 0.93rem; color: var(--color-text);
+  }
+  .sy-step__result-label {
+    display: inline-block; margin-right: 0.55rem;
+    font-size: 0.7rem; letter-spacing: 0.09em; text-transform: uppercase;
+    color: var(--color-text-subtle);
+  }
+
+  /* ---------- bausteine ---------- */
+  .sy-caps__grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); }
+  .sy-cap {
+    padding: clamp(1.3rem, 2.5vw, 1.7rem);
+    border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+    background: var(--surface-card);
+  }
+  .sy-cap h3 { font-size: 1.02rem; font-weight: var(--fw-bold); margin-bottom: 0.5rem; line-height: var(--lh-snug); }
+  .sy-cap p { line-height: var(--lh-body); font-size: 0.94rem; }
+
+  /* ---------- warum wir ---------- */
+  .sy-why__grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr)); }
+  .sy-why__item {
+    padding: clamp(1.4rem, 2.5vw, 1.9rem);
+    border: 1px solid var(--border-subtle); border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-md); background: var(--surface-card);
+  }
+  .sy-why__item h3 { font-size: 1.05rem; font-weight: var(--fw-bold); margin-bottom: 0.55rem; line-height: var(--lh-snug); }
+  .sy-why__item p { line-height: var(--lh-body); font-size: 0.96rem; }
+
+  /* ---------- verbindlichkeit ---------- */
+  .sy-commit__list { list-style: none; display: grid; gap: 0.9rem; grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr)); }
+  .sy-commit__list li {
+    display: grid; grid-template-columns: auto 1fr; gap: 0.8rem; align-items: start;
+    padding: clamp(1.1rem, 2vw, 1.4rem);
+    border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+    background: var(--surface-card); line-height: var(--lh-body);
+  }
+  .sy-commit__list svg { color: var(--color-accent); margin-top: 0.2em; }
+
+  /* ---------- erster schritt + querverweis ---------- */
+  .sy-first__inner, .sy-cross__inner {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 1.5rem;
+    padding: clamp(1.6rem, 3vw, 2.4rem);
+    border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);
+    background: var(--surface-card);
+  }
+  .sy-first__inner { border-color: var(--color-accent); box-shadow: var(--shadow-accent); }
+  .sy-first__inner > div, .sy-cross__inner > div { max-width: 46rem; }
+  .sy-first__heading, .sy-cross__heading {
+    font-size: var(--fs-h3); font-weight: var(--fw-bold); line-height: var(--lh-snug);
+    margin-bottom: 0.6rem; text-wrap: balance;
+  }
+
+  @media (max-width: 640px) {
+    .sy-step { grid-template-columns: 1fr; gap: 0.7rem; }
+    .sy-symptoms__list li { grid-template-columns: 1fr; gap: 0.5rem; }
+    .sy-symptoms__mark { transform: none; }
+  }
+</style>

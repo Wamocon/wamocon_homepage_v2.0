@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CareerPage from '../../components/sections/CareerPage.astro';
+
+const lang = 'kk' as const;
+---
+
+<BaseLayout
+  title="WAMOCON-дағы мансап | Эшборндағы IT бос жұмыс орындары"
+  description="IT тестілеуді басқарудағы мансап: WAMOCON-дағы ашық лауазымдар, артықшылықтар, қызметкер пікірлері және өтініш беру тәртібі."
+  lang={lang}
+>
+  <CareerPage lang={lang} />
+</BaseLayout>

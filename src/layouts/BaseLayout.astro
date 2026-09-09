@@ -6,7 +6,7 @@
  *
  * Props:
  *  - title, description: per-page SEO
- *  - lang: 'de' | 'en'
+ *  - lang: 'de' | 'en' | 'tr' | 'kk'
  *  - image: optional OG image path
  */
 import '../styles/global.css';
@@ -73,12 +73,19 @@ const formMessages = {
       'Talebiniz gönderilemedi. Lütfen tekrar deneyin veya bize e-posta ile ulaşın.',
     thankYou: '/tr/tesekkurler/',
   },
+  kk: {
+    contactRequired: 'Электрондық пошта мекенжайын не телефон нөмірін жазыңыз.',
+    captcha: 'Қауіпсіздік тексерісінен өтіңіз.',
+    failed:
+      'Сұрауыңыз жіберілмеді. Қайталап көріңіз немесе бізге электрондық поштамен жазыңыз.',
+    thankYou: '/kk/raqmet/',
+  },
 };
 
 // Every language variant of the current page, for hreflang + og:locale:alternate.
 const langUrls = getLangUrls(Astro.url.pathname, lang);
-const ogLocales = { de: 'de_DE', en: 'en_GB', tr: 'tr_TR' } as const;
-const htmlLocales = { de: 'de-DE', en: 'en-GB', tr: 'tr-TR' } as const;
+const ogLocales = { de: 'de_DE', en: 'en_GB', tr: 'tr_TR', kk: 'kk_KZ' } as const;
+const htmlLocales = { de: 'de-DE', en: 'en-GB', tr: 'tr-TR', kk: 'kk-KZ' } as const;
 const alternates = langCodes.map((code) => ({
   code,
   href: new URL(langUrls[code], Astro.site).href,
@@ -115,6 +122,13 @@ const layoutCopy = {
     jobTitle: 'Genel Müdür',
     personDescription:
       'Diplomalı mühendis ve WAMOCON GmbH’nin genel müdürü. 2015’ten bu yana Almanya ve AB genelinde büyük şirketler için test yönetimi ve kalite güvence projelerinden sorumludur.',
+  },
+  kk: {
+    skip: 'Мазмұнға өту',
+    home: 'Басты бет',
+    jobTitle: 'Басқарушы директор',
+    personDescription:
+      'Дипломды инженер, WAMOCON GmbH компаниясының басқарушы директоры. 2015 жылдан бері Германия мен ЕО-дағы ірі компаниялар үшін тестілеуді басқару және сапаны қамтамасыз ету жобаларына жауап береді.',
   },
 }[lang];
 const structuredData = {

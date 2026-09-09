@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ApprenticeshipPage from '../../components/sections/ApprenticeshipPage.astro';
+
+const lang = 'kk' as const;
+---
+
+<BaseLayout
+  title="Қолданбалы бағдарламалау бағытындағы IT маманын даярлау | WAMOCON"
+  description="Эшборндағы қолданбалы бағдарламалау бағытындағы IT маманын даярлау (IHK): алғашқы күннен нақты жобалар, жеке тәлімгер және жақсы нәтижеде жұмысқа алу кепілдігі."
+  lang={lang}
+>
+  <ApprenticeshipPage lang={lang} />
+</BaseLayout>

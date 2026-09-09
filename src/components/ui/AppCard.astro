@@ -18,12 +18,13 @@ interface Props {
   lang: Lang;
 }
 const { app, category, lang } = Astro.props;
-const soonLabel = { de: 'Bald verfügbar', en: 'Coming soon', tr: 'Yakında' }[lang];
-const openLabel = { de: 'App öffnen', en: 'Open app', tr: 'Uygulamayı aç' }[lang];
+const soonLabel = { de: 'Bald verfügbar', en: 'Coming soon', tr: 'Yakında', kk: 'Жақында' }[lang];
+const openLabel = { de: 'App öffnen', en: 'Open app', tr: 'Uygulamayı aç', kk: 'Қосымшаны ашу' }[lang];
 const openAria = {
   de: `${app.name} öffnen`,
   en: `Open ${app.name}`,
   tr: `${app.name} uygulamasını aç`,
+  kk: `${app.name} қосымшасын ашу`,
 }[lang];
 const isLink = !app.soon && !!app.url;
 const hasProduct = isLink && !!app.productUrl;

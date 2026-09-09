@@ -15,7 +15,7 @@ const t = (k: keyof (typeof ui)['de']) => ui[lang][k];
 // inline correction below the year would keep showing the year of the last
 // deploy after New Year's Eve.
 const year = new Date().getFullYear();
-const logoAlt = { de: 'WAMOCON GmbH Logo', en: 'WAMOCON GmbH logo', tr: 'WAMOCON GmbH logosu' }[lang];
+const logoAlt = { de: 'WAMOCON GmbH Logo', en: 'WAMOCON GmbH logo', tr: 'WAMOCON GmbH logosu', kk: 'WAMOCON GmbH логотипі' }[lang];
 
 // Flatten nav (dropdown groups + children) so footer keys resolve either way.
 const flat: NavLink[] = nav.flatMap((n) => (n.children ? n.children : [n]));
@@ -29,6 +29,7 @@ const privacySettings = {
   de: 'Cookie-Einstellungen',
   en: 'Cookie settings',
   tr: 'Çerez ayarları',
+  kk: 'Cookie параметрлері',
 }[lang];
 
 // Art. 50 EU AI Act transparency notice. Must be shown in the language of the
@@ -37,6 +38,7 @@ const aiNotice = {
   de: 'Einzelne grafische Elemente dieser Website (abstrakte Illustrationen und 3D-Renderings) wurden mit Hilfe künstlicher Intelligenz erstellt. Alle Fotografien von Personen, Räumen und Veranstaltungen sind echte Aufnahmen und nicht KI-generiert. Sämtliche Texte werden redaktionell von einem Menschen geprüft und verantwortet.',
   en: 'Some graphical elements on this website (abstract illustrations and 3D renderings) were created with the help of artificial intelligence. All photographs of people, places and events are genuine and not AI-generated. All texts are editorially reviewed and approved by a human.',
   tr: 'Bu web sitesindeki bazı grafik öğeler (soyut illüstrasyonlar ve 3D görseller) yapay zekâ yardımıyla oluşturulmuştur. Kişilere, mekânlara ve etkinliklere ait tüm fotoğraflar gerçek çekimlerdir ve yapay zekâ ile üretilmemiştir. Tüm metinler bir insan tarafından editoryal olarak kontrol edilir ve sorumluluğu üstlenilir.',
+  kk: 'Бұл сайттағы кейбір графикалық элементтер (абстрактілі суреттер мен 3D бейнелер) жасанды интеллект көмегімен жасалды. Адамдар, орындар мен іс-шаралар түсірілген фотосуреттердің барлығы нағыз түсірілім, олар жасанды интеллектпен жасалмаған. Барлық мәтінді редакция қызметкері тексереді және оған жауапкершілік алады.',
 }[lang];
 ---
 

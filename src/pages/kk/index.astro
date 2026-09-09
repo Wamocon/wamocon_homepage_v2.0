@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HomePage from '../../components/sections/home/HomePage.astro';
+import { home } from '../../data/home';
+import { wamoconFaq } from '../../data/faq';
+import FaqSection from '../../components/ui/FaqSection.astro';
+
+const lang = 'kk' as const;
+
+const faq = wamoconFaq[lang];
+// `availableLanguage` follows the German and English editions on purpose: the
+// site now speaks Kazakh, the project work still runs in German and English.
+const serviceSchema = [
+  {
+    '@type': 'Service',
+    '@id': 'https://www.wamocon.com/#service-testmanagement',
+    name: 'IT тестілеуді басқару',
+    serviceType: 'IT test management',
+    description:
+      'Бағдарлама жобаларындағы тестілеу үдерісінің толық барысын жоспарлау, бағыттау және ол бойынша есеп беру: талаптарды талдаудан релиз есебіне дейін.',
+    provider: { '@id': 'https://www.wamocon.com/#organization' },
+    areaServed: ['Germany', 'European Union'],
+    availableLanguage: ['German', 'English'],
+  },
+  {
+    '@type': 'Service',
+    '@id': 'https://www.wamocon.com/#service-qa',
+    name: 'Бағдарлама сапасын қамтамасыз ету',
+    serviceType: 'Software quality assurance',
+    description:
+      'Қателерді өнеркәсіптік пайдалануға шықпай тұрып көрінетін ететін стандарттарды, шолуларды және өлшемдерді орнату.',
+    provider: { '@id': 'https://www.wamocon.com/#organization' },
+    areaServed: ['Germany', 'European Union'],
+  },
+  {
+    '@type': 'Service',
+    '@id': 'https://www.wamocon.com/#service-automation',
+    name: 'Тестілеуді автоматтандыру',
+    serviceType: 'Test automation',
+    description:
+      'Релиздерді жылдамырақ әрі қайталанатын түрде шығару үшін автоматты регрессиялық тестілеуді құру және қолдау.',
+    provider: { '@id': 'https://www.wamocon.com/#organization' },
+    areaServed: ['Germany', 'European Union'],
+  },
+  {
+    '@type': 'Service',
+    '@id': 'https://www.wamocon.com/#service-sap',
+    name: 'SAP және кәсіпорын бағдарламаларын тестілеу',
+    serviceType: 'SAP testing',
+    description:
+      'SAP және банктік өзекті жүйелер сияқты ірі стандартты бағдарлама орталарына арналған тестілеуді басқару.',
+    provider: { '@id': 'https://www.wamocon.com/#organization' },
+    areaServed: ['Germany', 'European Union'],
+  },
+];
+---
+
+<BaseLayout title={home.seo.title[lang]} description={home.seo.description[lang]} lang={lang} schema={serviceSchema}>
+  <HomePage lang={lang} />
+  <FaqSection
+    heading={faq.heading}
+    intro={faq.intro}
+    items={faq.items}
+    lang={lang}
+    bylineName="Dipl.-Ing. Waleri Moretz"
+    bylineRole="WAMOCON GmbH басқарушы директоры, 2015 жылдан бері IT тестілеуді басқаруда"
+    lastReviewed="2026-07-22"
+  />
+</BaseLayout>
