@@ -385,7 +385,13 @@ const logoLinkLabel = { de: 'WAMOCON GmbH, zur Startseite', en: 'WAMOCON GmbH, b
       align-items: flex-start;
       justify-content: flex-start;
       gap: 0;
-      padding: var(--space-sm) var(--container-pad) var(--space-md);
+      /* The list is taller than the drawer on most phones, so the last entries
+         ("Webdesign", "Unternehmenssysteme") are only reachable by scrolling.
+         The extra bottom padding keeps them clear of the home indicator and
+         leaves a visible gap after the final row, so the end of the list reads
+         as the end rather than as a cut-off edge. */
+      padding: var(--space-sm) var(--container-pad)
+        calc(var(--space-lg) + env(safe-area-inset-bottom, 0px));
     }
     .header__list li {
       width: 100%;
