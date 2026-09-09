@@ -86,7 +86,10 @@ export const systems: SystemProject[] = [
     domain: 'bildung',
     client: { de: 'WAMOCON Academy GmbH', en: 'WAMOCON Academy GmbH', tr: 'WAMOCON Academy GmbH', kk: 'WAMOCON Academy GmbH' },
     image: '/images/webdesign/ditele.webp',
-    url: 'https://ditele-gamma.vercel.app',
+    // The platform's own domain, not the deployment preview it used to point
+    // at. No language path: DiTeLe picks the language itself, and hard-coding
+    // /de would hand a Turkish or Kazakh reader the wrong one.
+    url: 'https://www.ditele.de/',
     tagline: {
       de: 'Eine Lernplattform, auf der wirklich gearbeitet wird',
       en: 'A learning platform where people actually work',
