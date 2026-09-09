@@ -1,11 +1,17 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import WebdesignPage from '../../components/sections/WebdesignPage.astro';
-import { webdesign } from '../../data/webdesign';
+import { webdesign, webdesignServiceSchema } from '../../data/webdesign';
 
 const lang = 'en' as const;
+const serviceSchema = webdesignServiceSchema(lang, 'https://www.wamocon.com/en/webdesign/');
 ---
 
-<BaseLayout title={webdesign.seo.title[lang]} description={webdesign.seo.description[lang]} lang={lang}>
+<BaseLayout
+  title={webdesign.seo.title[lang]}
+  description={webdesign.seo.description[lang]}
+  lang={lang}
+  schema={[serviceSchema]}
+  breadcrumbs={[{ name: 'Webdesign', path: '/en/webdesign/' }]}>
   <WebdesignPage lang={lang} />
 </BaseLayout>

@@ -1,15 +1,17 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SystemePage from '../../components/sections/SystemePage.astro';
-import { systeme } from '../../data/systeme';
+import { systeme, systemeServiceSchema } from '../../data/systeme';
 
 const lang = 'en' as const;
+const serviceSchema = systemeServiceSchema(lang, 'https://www.wamocon.com/en/business-systems/');
 ---
 
 <BaseLayout
   title={systeme.seo.title[lang]}
   description={systeme.seo.description[lang]}
   lang={lang}
+  schema={[serviceSchema]}
   breadcrumbs={[{ name: 'Business systems', path: '/en/business-systems/' }]}>
   <SystemePage lang={lang} />
 </BaseLayout>

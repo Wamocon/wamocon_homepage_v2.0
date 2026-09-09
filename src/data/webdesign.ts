@@ -15,7 +15,10 @@ type L = Record<Lang, string>;
  * Two problems: the comparison is comparative advertising under § 6 UWG with
  * no verifiable basis, and the gap it opened made the reader hunt for the catch
  * instead of reading the offer. The scope now carries the section, and a price
- * follows a conversation — see `docs/webdesign-preis-und-marketingpsychologie.md`.
+ * follows a conversation — which the first FAQ answer at the bottom of the page
+ * states outright, so a reader hunting for the number finds the reason instead.
+ * (The longer market analysis behind this lives on the unmerged branch
+ * `webdesign_marketing_0926`, not on main.)
  */
 
 export interface WebProject {
@@ -56,7 +59,7 @@ export const projects: WebProject[] = [
     name: 'MARYAM Barber Atölyesi',
     category: 'beauty',
     location: 'Avsallar · Alanya',
-    image: '/images/webdesign/maryam-barbershop.png',
+    image: '/images/webdesign/maryam-barbershop.webp',
     url: 'https://wamocon.github.io/Barber-Shop/maryam-barbershop/',
     featured: true,
     tagline: {
@@ -76,7 +79,7 @@ export const projects: WebProject[] = [
     name: 'Mikail Hair Salon',
     category: 'beauty',
     location: 'Alanya · Antalya',
-    image: '/images/webdesign/mikail-hair-salon.png',
+    image: '/images/webdesign/mikail-hair-salon.webp',
     url: 'https://mikailhairsalon.vercel.app/',
     tagline: { de: 'Unisex Hair & Beauty', en: 'Unisex hair & beauty', tr: 'Unisex saç ve güzellik', kk: 'Унисекс шаш және сұлулық' },
     description: {
@@ -90,7 +93,7 @@ export const projects: WebProject[] = [
     name: 'HAS Teknoloji',
     category: 'smarthome',
     location: 'Alanya',
-    image: '/images/webdesign/has-teknoloji.png',
+    image: '/images/webdesign/has-teknoloji.webp',
     url: 'https://hastekgroup.vercel.app/de',
     tagline: {
       de: 'Smart-Home & Sicherheitssysteme',
@@ -109,7 +112,7 @@ export const projects: WebProject[] = [
     name: 'Global Teknik Klima',
     category: 'klima',
     location: 'Alanya',
-    image: '/images/webdesign/global-teknik-klima.png',
+    image: '/images/webdesign/global-teknik-klima.webp',
     url: 'https://global-technik-klima.vercel.app/',
     tagline: {
       de: 'Gree Klima · Bayi & Servis',
@@ -128,7 +131,7 @@ export const projects: WebProject[] = [
     name: 'Alanyum Car Wash',
     category: 'auto',
     location: 'Alanya',
-    image: '/images/webdesign/alanyum-car-wash.png',
+    image: '/images/webdesign/alanyum-car-wash.webp',
     url: 'https://alanyum-car-wash.vercel.app/',
     tagline: {
       de: 'Car Wash & Pro Detailing',
@@ -147,7 +150,7 @@ export const projects: WebProject[] = [
     name: 'Sabaş Home',
     category: 'wohnen',
     location: 'Alanya',
-    image: '/images/webdesign/sabas-home.png',
+    image: '/images/webdesign/sabas-home.webp',
     url: 'https://sabas-home.vercel.app/',
     tagline: { de: 'Möbel & Wohnwelt', en: 'Furniture & living', tr: 'Mobilya ve yaşam alanı', kk: 'Жиһаз және тұрғын үй әлемі' },
     description: {
@@ -741,3 +744,219 @@ export const webdesign = {
     },
   },
 } as const;
+
+/**
+ * `Service` node for the web-design page's JSON-LD graph, mirroring the one on
+ * the business-systems page. The catalogue is generated from the department's
+ * own capability list, so it stays in step with what the page shows.
+ */
+export const webdesignServiceSchema = (lang: Lang, url: string) => ({
+  '@type': 'Service',
+  '@id': `${url}#service`,
+  name: {
+    de: 'Webdesign und mehrsprachige Websites',
+    en: 'Web design and multilingual websites',
+    tr: 'Web tasarımı ve çok dilli web siteleri',
+    kk: 'Веб-дизайн және көп тілді сайттар',
+  }[lang],
+  serviceType: {
+    de: 'Webdesign und Suchmaschinenoptimierung',
+    en: 'Web design and search engine optimisation',
+    tr: 'Web tasarımı ve arama motoru optimizasyonu',
+    kk: 'Веб-дизайн және іздеу жүйесіне оңтайландыру',
+  }[lang],
+  description: webdesign.seo.description[lang],
+  provider: { '@id': 'https://www.wamocon.com/#organization' },
+  areaServed: ['Germany', 'European Union', 'Türkiye'],
+  availableLanguage: ['de', 'en', 'tr', 'kk'],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: {
+      de: 'Leistungen der Webdesign-Abteilung',
+      en: 'What the web-design department delivers',
+      tr: 'Web tasarım biriminin hizmetleri',
+      kk: 'Веб-дизайн бөлімінің қызметтері',
+    }[lang],
+    itemListElement: webdesign.department.capabilities.map((c) => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name: c.title[lang], description: c.text[lang] },
+    })),
+  },
+});
+
+/**
+ * FAQ for the web-design page.
+ *
+ * The page had none, which cost it twice: a buyer's four standing objections —
+ * price, ownership, duration and "what happens after launch" — were answered
+ * nowhere, and generative engines had no self-contained passage to quote when
+ * somebody asks them what a multilingual website costs. Answers stay in the
+ * 40–160 word band those engines quote most reliably, and every figure in them
+ * is one this page already states out loud.
+ */
+export const webdesignFaq: Record<Lang, { heading: string; intro: string; items: { question: string; answer: string }[] }> = {
+  de: {
+    heading: 'Häufige Fragen zu Websites von WAMOCON',
+    intro: 'Was Kundinnen und Kunden fragen, bevor sie sich entscheiden — beantwortet, bevor Sie fragen müssen.',
+    items: [
+      {
+        question: 'Was kostet eine Website bei WAMOCON?',
+        answer:
+          'Der Preis folgt dem Umfang, deshalb steht auf dieser Seite keiner. Was ihn bestimmt: Seitenzahl, Anzahl der Sprachen, ob eine Buchungslogik dazugehört, welche Systeme angebunden werden und ob Barrierefreiheit nach BFSG gefordert ist. Sagen Sie uns, was Sie brauchen, und Sie bekommen die Rechnung dazu, bevor Sie sich entscheiden. Bezahlt wird nach Abnahme, ohne Anzahlung. Und wenn zwei Seiten für Ihr Vorhaben reichen, sagen wir Ihnen das, statt Ihnen ein Premium-Paket zu verkaufen.',
+      },
+      {
+        question: 'Wie lange dauert es, bis meine Website online ist?',
+        answer:
+          'Ein Einstiegsauftritt steht in etwa einer Woche. Voraussetzung dafür sind Inhalte: Texte, Bilder, Öffnungszeiten und Leistungen. Wo die fehlen, dauert nicht die Entwicklung länger, sondern das Sammeln — deshalb liefern wir eine Vorlage mit, die genau abfragt, was gebraucht wird. Ein mehrsprachiger Auftritt mit Buchung, KI-Assistent und Bewertungsanbindung braucht länger, weil jede Sprache übersetzt, geprüft und für Suchmaschinen ausgezeichnet werden will.',
+      },
+      {
+        question: 'Gehören mir Domain, Inhalte und Website?',
+        answer:
+          'Ja, alle drei. Die Domain läuft auf Sie, nicht auf uns. Texte und Bilder bleiben Ihr Eigentum, und die fertige Website bekommen Sie ausgehändigt, wenn Sie den Anbieter wechseln wollen. Hosting, Wartung und Support bieten wir an, weil die meisten Kunden sie wollen — nicht, weil Sie ohne uns nicht weiterkämen. Vertragspartner ist die WAMOCON GmbH in Eschborn bei Frankfurt, mit deutschem Gerichtsstand.',
+      },
+      {
+        question: 'Wird meine Website auch von KI-Assistenten gefunden?',
+        answer:
+          'Darauf ist jede Seite ausgelegt, die wir bauen. Klassisches SEO sorgt dafür, dass Google Sie findet und einordnet; GEO — generative Suchmaschinenoptimierung — sorgt dafür, dass ChatGPT, Perplexity und die KI-Antworten in der Google-Suche Sie zitieren können. Praktisch heißt das: eindeutige Überschriften, in sich abgeschlossene Antwortabsätze, saubere strukturierte Daten und ein gepflegtes Google-Unternehmensprofil. Der Unterschied zeigt sich vor allem bei lokalen Fragen wie „bester Barbier in Alanya".',
+      },
+      {
+        question: 'Muss meine Website barrierefrei sein?',
+        answer:
+          'Möglicherweise ja. Das Barrierefreiheitsstärkungsgesetz verpflichtet seit Juni 2025 viele Anbieter digitaler Dienstleistungen gegenüber Verbrauchern, darunter Onlineshops und Buchungsstrecken; Kleinstunternehmen sind unter bestimmten Voraussetzungen ausgenommen. Wir bauen Tastaturbedienbarkeit, Screenreader-Tauglichkeit und ausreichende Kontraste von Anfang an ein, weil dasselbe Ergebnis später nachzurüsten deutlich teurer ist. Ob die Pflicht für Sie gilt, klären wir im Erstgespräch — verbindlich beurteilen kann das nur eine Rechtsberatung.',
+      },
+      {
+        question: 'Was passiert nach dem Livegang?',
+        answer:
+          'Die Zusammenarbeit endet dort nicht. Hosting und Wartung halten die Seite schnell und aktuell, Updates schließen Sicherheitslücken, ein monatlicher SEO-Report zeigt, worüber Menschen Sie finden, und der VIP-Support nimmt Änderungswünsche direkt entgegen. Wer das nicht möchte, bekommt die Seite ausgehändigt und betreibt sie selbst weiter. Beides ist vorgesehen, keines von beiden ist eine Falle.',
+      },
+      {
+        question: 'Brauche ich eine Website oder ein System?',
+        answer:
+          'Eine Website zeigt Ihr Unternehmen nach außen: Fremde finden Sie, machen sich ein Bild und fragen an. Ein System führt Ihren Betrieb nach innen: mehrere Personen arbeiten nacheinander am selben Vorgang, nicht jeder darf alles sehen, und später muss nachweisbar sein, wer wann was entschieden hat. Oft ist es beides — für Ataberk Estate haben wir zuerst die Website gebaut und später das ERP dahinter. Wenn Ihre Beschreibung eher nach dem zweiten Fall klingt, führt der Weg zu unseren Unternehmenssystemen.',
+      },
+    ],
+  },
+  en: {
+    heading: 'Frequently asked questions about WAMOCON websites',
+    intro: 'What clients ask before they decide — answered before you have to ask.',
+    items: [
+      {
+        question: 'What does a website from WAMOCON cost?',
+        answer:
+          'The price follows the scope, which is why there is none on this page. What sets it: the number of pages, the number of languages, whether booking logic is involved, which systems get connected, and whether accessibility under the German BFSG is required. Tell us what you need and you get the calculation before you decide. Payment falls due after acceptance, with no deposit. And if two pages will do for what you have in mind, we say so rather than selling you a premium package.',
+      },
+      {
+        question: 'How long until my website is live?',
+        answer:
+          'An entry-level presence takes about a week. That assumes content: text, photos, opening hours and services. Where those are missing, it is not the build that takes longer but the gathering — which is why we supply a template that asks for exactly what is needed. A multilingual presence with booking, an AI assistant and review integration takes longer, because every language has to be translated, checked and marked up for search.',
+      },
+      {
+        question: 'Do I own the domain, the content and the website?',
+        answer:
+          'Yes, all three. The domain is registered to you, not to us. Text and images stay your property, and you are handed the finished website if you ever want to change provider. We offer hosting, maintenance and support because most clients want them — not because you would be stuck without us. Your contracting party is WAMOCON GmbH in Eschborn near Frankfurt, under German jurisdiction.',
+      },
+      {
+        question: 'Will AI assistants find my website?',
+        answer:
+          'Every site we build is designed for it. Classic SEO gets you found and categorised by Google; GEO — generative engine optimisation — lets ChatGPT, Perplexity and Google’s AI answers cite you. In practice that means unambiguous headings, self-contained answer paragraphs, clean structured data and a maintained Google Business Profile. The difference shows up most on local questions such as “best barber in Alanya”.',
+      },
+      {
+        question: 'Does my website have to be accessible?',
+        answer:
+          'Possibly. Germany’s Barrierefreiheitsstärkungsgesetz has obliged many providers of digital services to consumers since June 2025, online shops and booking flows among them; micro-enterprises are exempt under certain conditions. We build keyboard operability, screen-reader support and sufficient contrast in from the start, because retrofitting the same result costs considerably more. Whether the duty applies to you is something we go through in the first conversation — only legal advice can settle it bindingly.',
+      },
+      {
+        question: 'What happens after launch?',
+        answer:
+          'The collaboration does not end there. Hosting and maintenance keep the site fast and current, updates close security holes, a monthly SEO report shows what people find you through, and VIP support takes change requests directly. Anyone who would rather not have that is handed the site and runs it themselves. Both are provided for; neither is a trap.',
+      },
+      {
+        question: 'Do I need a website or a system?',
+        answer:
+          'A website presents your company to the outside: strangers find you, form an impression and get in touch. A system runs your operation on the inside: several people work on the same case one after another, not everyone may see everything, and later you must be able to prove who decided what and when. Often it is both — for Ataberk Estate we built the website first and the ERP behind it afterwards. If your description sounds more like the second case, the way leads to our business systems.',
+      },
+    ],
+  },
+  tr: {
+    heading: 'WAMOCON web siteleri hakkında sık sorulan sorular',
+    intro: 'Müşterilerin karar vermeden önce sorduğu şeyler — siz sormak zorunda kalmadan yanıtlanmış hâlde.',
+    items: [
+      {
+        question: 'WAMOCON’da bir web sitesi ne kadara mal olur?',
+        answer:
+          'Fiyat kapsamı izler; bu yüzden bu sayfada fiyat yok. Fiyatı belirleyenler: sayfa sayısı, dil sayısı, randevu mantığının olup olmadığı, hangi sistemlerin bağlanacağı ve BFSG kapsamında erişilebilirliğin istenip istenmediği. Neye ihtiyacınız olduğunu söyleyin, karar vermeden önce hesabı alın. Ödeme kabulden sonra yapılır, kapora yoktur. Aklınızdaki iş için iki sayfa yetiyorsa, size premium paket satmak yerine bunu söyleriz.',
+      },
+      {
+        question: 'Sitem ne kadar sürede yayına girer?',
+        answer:
+          'Giriş seviyesinde bir site yaklaşık bir haftada hazır olur. Bunun koşulu içeriktir: metinler, fotoğraflar, çalışma saatleri ve hizmetler. Bunlar eksikse uzayan geliştirme değil, toplama sürecidir — bu yüzden neye ihtiyaç duyulduğunu tam olarak soran bir şablonu birlikte veriyoruz. Randevu, yapay zekâ asistanı ve değerlendirme entegrasyonu içeren çok dilli bir site daha uzun sürer; çünkü her dilin çevrilmesi, kontrol edilmesi ve arama motorları için işaretlenmesi gerekir.',
+      },
+      {
+        question: 'Alan adı, içerik ve site bana mı ait?',
+        answer:
+          'Evet, üçü de. Alan adı bizim değil, sizin adınıza kayıtlıdır. Metin ve görseller mülkiyetinizde kalır; sağlayıcı değiştirmek isterseniz bitmiş site size teslim edilir. Barındırma, bakım ve desteği sunuyoruz çünkü müşterilerin çoğu bunu istiyor — bizsiz devam edemeyeceğiniz için değil. Sözleşme tarafınız, Frankfurt yakınlarındaki Eschborn’da bulunan WAMOCON GmbH’dir ve Alman yargı yetkisi geçerlidir.',
+      },
+      {
+        question: 'Sitemi yapay zekâ asistanları bulacak mı?',
+        answer:
+          'Yaptığımız her site bunun için tasarlanır. Klasik SEO, Google’ın sizi bulup sınıflandırmasını sağlar; GEO — üretken arama motoru optimizasyonu — ChatGPT, Perplexity ve Google’ın yapay zekâ yanıtlarının sizi kaynak göstermesini sağlar. Pratikte bu şu demek: net başlıklar, kendi içinde tam yanıt paragrafları, temiz yapılandırılmış veri ve özenle tutulmuş bir Google İşletme Profili. Fark en çok “Alanya’nın en iyi berberi” gibi yerel sorularda görülür.',
+      },
+      {
+        question: 'Sitemin erişilebilir olması zorunlu mu?',
+        answer:
+          'Muhtemelen evet. Almanya’daki Erişilebilirliği Güçlendirme Yasası, Haziran 2025’ten bu yana tüketicilere dijital hizmet sunan pek çok sağlayıcıyı — çevrim içi mağazalar ve randevu akışları dâhil — yükümlü kılıyor; mikro işletmeler belirli koşullarda muaf. Klavyeyle kullanımı, ekran okuyucu uyumunu ve yeterli kontrastı en baştan kuruyoruz, çünkü aynı sonucu sonradan eklemek belirgin biçimde pahalı. Yükümlülüğün sizin için geçerli olup olmadığını ilk görüşmede ele alırız; bağlayıcı değerlendirmeyi yalnızca hukuki danışmanlık yapabilir.',
+      },
+      {
+        question: 'Yayına aldıktan sonra ne oluyor?',
+        answer:
+          'İş birliği orada bitmez. Barındırma ve bakım siteyi hızlı ve güncel tutar, güncellemeler güvenlik açıklarını kapatır, aylık SEO raporu insanların sizi neyle bulduğunu gösterir ve VIP destek değişiklik taleplerini doğrudan alır. Bunu istemeyenlere site teslim edilir, kendileri işletir. İkisi de öngörülmüştür; hiçbiri tuzak değildir.',
+      },
+      {
+        question: 'Bana web sitesi mi lazım, sistem mi?',
+        answer:
+          'Web sitesi şirketinizi dışarıya gösterir: sizi tanımayanlar bulur, bir izlenim edinir ve iletişime geçer. Sistem ise işletmenizi içeriden yürütür: aynı işlemi birden çok kişi sırayla sürdürür, herkes her şeyi göremez ve sonradan kimin ne zaman neye karar verdiği kanıtlanabilmelidir. Çoğu zaman ikisi birden gerekir — Ataberk Estate için önce web sitesini, sonra arkasındaki ERP’yi yaptık. Anlattığınız daha çok ikinci duruma benziyorsa, yol kurumsal sistemlerimize çıkar.',
+      },
+    ],
+  },
+  kk: {
+    heading: 'WAMOCON сайттары туралы жиі қойылатын сұрақтар',
+    intro: 'Клиенттер шешім қабылдамай тұрып не сұрайды — сіз сұрауға мәжбүр болмай тұрып жауап берілген.',
+    items: [
+      {
+        question: 'WAMOCON-дағы сайт қанша тұрады?',
+        answer:
+          'Баға ауқымға сүйенеді, сондықтан бұл бетте баға жоқ. Оны айқындайтындар: бет саны, тіл саны, жазылу логикасының бар-жоғы, қандай жүйелер жалғанатыны және BFSG бойынша қолжетімділік талап етіле ме. Не керегін айтыңыз, шешім қабылдамай тұрып есебін аласыз. Төлем қабылдаудан кейін жасалады, алдын ала төлемсіз. Ал ойыңыздағы іске екі бет жетсе, сізге премиум пакет сатудың орнына соны айтамыз.',
+      },
+      {
+        question: 'Сайтым қанша уақытта жұмыс істей бастайды?',
+        answer:
+          'Бастапқы деңгейдегі сайт шамамен бір аптада дайын болады. Оның шарты — мазмұн: мәтін, фото, жұмыс уақыты және қызметтер. Олар жоқ болса, ұзаққа созылатын әзірлеу емес, жинау болады, сондықтан не керегін нақты сұрайтын үлгіні қоса береміз. Жазылу, ЖИ көмекшісі және пікір интеграциясы бар көп тілді сайт ұзағырақ уақыт алады, өйткені әр тілді аударып, тексеріп, іздеу жүйелеріне таңбалау керек.',
+      },
+      {
+        question: 'Домен, мазмұн және сайт маған тиесілі ме?',
+        answer:
+          'Иә, үшеуі де. Домен бізге емес, сізге тіркеледі. Мәтін мен суреттер сіздің меншігіңізде қалады, ал жеткізушіні ауыстырғыңыз келсе, дайын сайт сізге тапсырылады. Хостинг, техқызмет және қолдауды ұсынамыз, өйткені клиенттердің көбі соны қалайды, бізсіз жалғастыра алмайтындықтан емес. Шарт тарабыңыз — Франкфурт маңындағы Эшборнда орналасқан WAMOCON GmbH, соттылық орны Германия.',
+      },
+      {
+        question: 'Сайтымды ЖИ көмекшілері таба ма?',
+        answer:
+          'Біз жасайтын әр сайт соған бағдарланған. Классикалық SEO Google сізді тауып, санатқа қосуын қамтамасыз етеді; GEO, яғни генеративті іздеуге оңтайландыру, ChatGPT, Perplexity және Google-дің ЖИ жауаптарының сізге сілтеме жасай алуын қамтамасыз етеді. Іс жүзінде бұл: анық тақырыптар, өз алдына толық жауап абзацтары, таза құрылымдық дерек және ұқыпты жүргізілген Google бизнес-профилі. Айырма әсіресе «Аланиядағы ең жақсы шаштараз» тәрізді жергілікті сұрақтарда байқалады.',
+      },
+      {
+        question: 'Сайтым қолжетімді болуға тиіс пе?',
+        answer:
+          'Мүмкін, иә. Германияның қолжетімділікті күшейту туралы заңы 2025 жылдың маусымынан бері тұтынушыға цифрлық қызмет көрсететін көптеген жеткізушіні, оның ішінде онлайн дүкендер мен жазылу ағындарын міндеттейді; шағын кәсіпорындар белгілі бір шарттармен босатылады. Пернетақтамен басқаруды, скринридерге жарамдылықты және жеткілікті контрастты басынан бастап саламыз, өйткені дәл сол нәтижені кейін қосу әлдеқайда қымбат. Міндет сізге қатысты ма, соны алғашқы әңгімеде талқылаймыз; түпкілікті бағаны тек заң кеңесі бере алады.',
+      },
+      {
+        question: 'Сайт іске қосылғаннан кейін не болады?',
+        answer:
+          'Ынтымақтастық сонымен бітпейді. Хостинг пен техқызмет сайтты жылдам әрі өзекті ұстайды, жаңартулар қауіпсіздік олқылықтарын жабады, айлық SEO есебі адамдардың сізді немен тапқанын көрсетеді, ал VIP қолдау өзгеріс сұрауларын тікелей қабылдайды. Мұны қаламағанға сайт тапсырылады, өзі жүргізе береді. Екеуі де қарастырылған, ешқайсысы тұзақ емес.',
+      },
+      {
+        question: 'Маған сайт керек пе, әлде жүйе ме?',
+        answer:
+          'Сайт компанияңызды сыртқа көрсетеді: сізді танымайтындар тауып, ой қалыптастырып, хабарласады. Жүйе кәсібіңізді іштен жүргізеді: бір істі бірнеше адам кезекпен алып жүреді, әркім бәрін көрмейді, әрі кейін кімнің қашан не шешкені дәлелденуі керек. Көбіне екеуі де керек: Ataberk Estate үшін алдымен сайтты, содан кейін оның артындағы ERP-ті жасадық. Айтқаныңыз екінші жағдайға көбірек ұқсаса, жол кәсіпорын жүйелерімізге апарады.',
+      },
+    ],
+  },
+};
