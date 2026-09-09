@@ -8,17 +8,15 @@ import type { Lang } from '../i18n/config';
 type L = Record<Lang, string>;
 
 /**
- * The premium package is sold for 25.000 ₺. Each language edition shows the
- * figure in the currency its readers actually budget in.
- * Conversion base (mid-market, 28 July 2026): 1 € = 53,84 ₺ · 1 $ = 47,34 ₺.
- * 25.000 ₺ ÷ 53,84 = 464 € → 465 € · 25.000 ₺ ÷ 47,34 = 528 $ → 530 $.
- * When the lira moves noticeably, update the three figures here together.
+ * No price on this page for now.
+ *
+ * What used to stand here was one figure (25.000 ₺) converted into three
+ * currencies, next to the claim that "a German agency charges around 25.000 €".
+ * Two problems: the comparison is comparative advertising under § 6 UWG with
+ * no verifiable basis, and the gap it opened made the reader hunt for the catch
+ * instead of reading the offer. The scope now carries the section, and a price
+ * follows a conversation — see `docs/webdesign-preis-und-marketingpsychologie.md`.
  */
-export const premiumPrice: L = {
-  de: '465 €',
-  en: '$530',
-  tr: '25.000 ₺',
-};
 
 export interface WebProject {
   name: string;
@@ -51,10 +49,6 @@ export const industries: { key: string; label: L }[] = [
     label: { de: 'Beratung & Dienstleistung', en: 'Consulting & services', tr: 'Danışmanlık ve hizmet' },
   },
   { key: 'kunst', label: { de: 'Kunst & Kultur', en: 'Art & culture', tr: 'Sanat ve kültür' } },
-  {
-    key: 'bildung',
-    label: { de: 'Bildung & Training', en: 'Education & training', tr: 'Eğitim ve öğretim' },
-  },
 ];
 
 export const projects: WebProject[] = [
@@ -238,40 +232,6 @@ export const projects: WebProject[] = [
       tr: 'Alanya’daki bir sanat ve yaratıcılık stüdyosu için rezervasyon sistemli üç dilli görünüm: resim, çizim, satranç ve el sanatları kursları çevrim içi ayrılabilir.',
     },
   },
-  {
-    name: '1Çatı ERP',
-    category: 'immobilien',
-    location: 'Ataberk Estate · Alanya',
-    image: '/images/webdesign/cati-erp.webp',
-    url: 'https://cati-blond.vercel.app',
-    tagline: {
-      de: 'Der Immobilienbetrieb aus einem Zentrum',
-      en: 'Running a property business from one place',
-      tr: 'Gayrimenkul işletmesi tek merkezden',
-    },
-    description: {
-      de: 'Nicht nur die Website, sondern das System dahinter: 1Çatı führt Vertrieb, Portfolio, Eigentümer, Mieter, Beiträge, Service, Dokumente und Reporting in einem rollenbasierten Arbeitsbereich zusammen. Für denselben Kunden wie der Webauftritt, mehrsprachig und mit eigenem Kundenportal.',
-      en: 'Not just the website but the system behind it: 1Çatı brings sales, portfolio, owners, tenants, dues, service, documents and reporting into one role-based workspace. Built for the same client as the website, multilingual and with its own customer portal.',
-      tr: 'Yalnızca web sitesi değil, arkasındaki sistem: 1Çatı satış, portföy, malik, kiracı, aidat, servis, doküman ve raporlamayı rol tabanlı tek bir çalışma alanında birleştirir. Web sitesiyle aynı müşteri için; çok dilli ve kendi müşteri portalıyla.',
-    },
-  },
-  {
-    name: 'DiTeLe',
-    category: 'bildung',
-    location: 'WAMOCON Academy GmbH',
-    image: '/images/webdesign/ditele.webp',
-    url: 'https://ditele-gamma.vercel.app',
-    tagline: {
-      de: 'Softwaretesten lernt man durch Testen',
-      en: 'You learn software testing by testing',
-      tr: 'Yazılım testi test ederek öğrenilir',
-    },
-    description: {
-      de: 'Lernplattform für die WAMOCON Academy: Kursbetrieb mit getrennten Rollen für Lernende, Trainer und Verwaltung, Fehlerberichte an laufenden Anwendungen und ein KI-Assistent. Dreisprachig, mit eigenem Designsystem und heller wie dunkler Ansicht.',
-      en: 'A learning platform for WAMOCON Academy: course operations with separate roles for learners, trainers and administration, defect reports against running applications and an AI assistant. Three languages, its own design system, light and dark.',
-      tr: 'WAMOCON Academy için öğrenme platformu: öğrenci, eğitmen ve yönetim için ayrı rollerle kurs işletimi, çalışan uygulamalar üzerinde hata raporları ve bir yapay zekâ asistanı. Üç dil, kendi tasarım sistemi, açık ve koyu görünüm.',
-    },
-  },
   // Bäuerle Steuerberater — Premium-Website plus KI-Kanzlei-Cockpit mit sechs
   // Fachmodulen. Wartet auf ein Deployment; sobald die Adresse steht, `url`
   // eintragen, Screenshot unter /images/webdesign/baeuerle-steuerberater.webp
@@ -331,7 +291,19 @@ export const webdesign = {
         value: { de: '4', en: '4', tr: '4' },
         label: { de: 'Sprachen pro Website', en: 'languages per site', tr: 'her sitede dil' },
       },
-      { value: premiumPrice, label: { de: 'Premium-Paket', en: 'premium package', tr: 'premium paket' } },
+      /**
+       * The price used to stand here, as the first number on the page — before
+       * the portfolio, before the capabilities, before any value was built.
+       * It has left the page entirely for now.
+       */
+      {
+        value: { de: 'BFSG', en: 'BFSG', tr: 'BFSG' },
+        label: {
+          de: 'barrierefrei auf Wunsch',
+          en: 'accessible on request',
+          tr: 'talep hâlinde erişilebilir',
+        },
+      },
     ],
   },
   department: {
@@ -432,26 +404,29 @@ export const webdesign = {
   },
   offer: {
     eyebrow: {
-      de: 'Herbstkampagne 2026 · Premium',
-      en: 'Autumn campaign 2026 · Premium',
-      tr: '2026 Sonbahar kampanyası · Premium',
+      de: 'Das Premium-Paket',
+      en: 'The premium package',
+      tr: 'Premium paket',
     },
-    heading: { de: 'Das Premium-Paket', en: 'The premium package', tr: 'Premium paket' },
+    heading: {
+      de: 'Was drin ist, bevor über Geld gesprochen wird',
+      en: 'What is included, before we talk money',
+      tr: 'Para konuşulmadan önce neler dahil',
+    },
     anchor: {
-      de: 'Europäische Qualität, türkischer Preis',
-      en: 'European quality, Turkish price',
-      tr: 'Avrupa kalitesi, Türkiye fiyatı',
-    },
-    price: premiumPrice,
-    priceNote: {
-      de: '≈ 25.000 ₺ · Premium-Paket',
-      en: '≈ 25,000 ₺ · premium package',
-      tr: 'Premium paket · tek seferlik',
+      de: 'Ein Auftritt, der Termine bringt — nicht nur gut aussieht',
+      en: 'A presence that books appointments, not just one that looks good',
+      tr: 'Yalnızca güzel görünen değil, randevu getiren bir görünüm',
     },
     compare: {
-      de: 'Eine deutsche Agentur berechnet für ein vergleichbares Premium-Paket rund 25.000 €. Diesen Herbst erhalten Sie dieselbe Ingenieursarbeit für 25.000 ₺, gleiche Zahl, nur in Lira statt Euro. Für Sie sind das rund 465 €.',
-      en: 'A German agency charges around €25,000 for a comparable premium package. This autumn you get the same engineering for 25,000 ₺, the same number, just in lira instead of euros. That works out at roughly $530 for you.',
-      tr: 'Bir Alman ajans, benzer bir premium paket için yaklaşık 25.000 € talep ediyor. Bu sonbahar aynı mühendislik işini 25.000 ₺’ye alıyorsunuz: aynı rakam, sadece Euro yerine Lira.',
+      de: 'Der Preis hängt am Umfang: Seitenzahl, Sprachen, Buchungslogik, angebundene Systeme, Barrierefreiheit nach BFSG. Sagen Sie uns, was Sie brauchen — wir rechnen es Ihnen vor, bevor Sie sich entscheiden. Und wenn zwei Seiten reichen, sagen wir das auch.',
+      en: 'The price follows the scope: number of pages, languages, booking logic, connected systems, accessibility under the German BFSG. Tell us what you need and we will show you the calculation before you decide. And if two pages will do, we will say so.',
+      tr: 'Fiyat kapsama bağlıdır: sayfa sayısı, diller, randevu mantığı, bağlanan sistemler, BFSG kapsamında erişilebilirlik. Neye ihtiyacınız olduğunu söyleyin; karar vermeden önce hesabı gösterelim. İki sayfa yetiyorsa, bunu da söyleriz.',
+    },
+    featuresHeading: {
+      de: 'Im Premium-Paket enthalten',
+      en: 'Included in the premium package',
+      tr: 'Premium pakete dahil',
     },
     features: [
       {
@@ -481,15 +456,39 @@ export const webdesign = {
         tr: 'Aylık SEO raporu + VIP destek',
       },
     ],
+    /**
+     * One concrete promise instead of four. A stack of reassurances makes a
+     * buyer doubt whether the guarantor could honour any of them, which is the
+     * opposite of the intended effect.
+     */
     guarantee: {
-      de: 'Null Risiko: Zahlung erst nach Auslieferung, 100 % nach Abnahme, keine Anzahlung. 30 Tage Geld-zurück-Garantie, keine versteckten Kosten.',
-      en: 'Zero risk: pay only after delivery, 100% on completion, no deposit. 30-day money-back guarantee, no hidden fees.',
-      tr: 'Sıfır risk: ödeme yalnızca teslimattan sonra, kabulden sonra %100, kapora yok. 30 gün para iade garantisi, gizli maliyet yok.',
+      de: 'Sie zahlen nach Abnahme, nicht vorher. Was abgenommen wird, steht vorher schriftlich fest. Vertragspartner ist die WAMOCON GmbH in Eschborn.',
+      en: 'You pay after acceptance, not before. What gets accepted is agreed in writing beforehand. Your contracting party is WAMOCON GmbH in Eschborn.',
+      tr: 'Ödemeyi kabulden sonra yaparsınız, öncesinde değil. Neyin kabul edileceği önceden yazılı olarak bellidir. Sözleşme tarafınız Eschborn’daki WAMOCON GmbH’dir.',
     },
     cta: {
-      de: 'Premium-Paket anfragen',
-      en: 'Request the premium package',
-      tr: 'Premium paketi talep edin',
+      de: 'Umfang besprechen',
+      en: 'Talk through the scope',
+      tr: 'Kapsamı konuşalım',
+    },
+  },
+
+  /** Cross-link to the sibling department, written as guidance not navigation. */
+  crosslink: {
+    heading: {
+      de: 'Wenn eine Website nicht das Problem löst',
+      en: 'When a website is not what fixes it',
+      tr: 'Sorunu web sitesi çözmüyorsa',
+    },
+    text: {
+      de: 'Sobald mehrere Leute nacheinander am selben Vorgang arbeiten, nicht jeder alles sehen darf und später nachweisbar sein muss, wer wann was entschieden hat, hilft kein Webdesign mehr. Dann brauchen Sie ein System — für Ataberk Estate haben wir beides gebaut, erst die Website, dann das ERP dahinter.',
+      en: 'As soon as several people work on the same case in turn, not everyone may see everything, and you have to prove later who decided what and when, web design stops helping. Then you need a system — for Ataberk Estate we built both: the website first, the ERP behind it afterwards.',
+      tr: 'Aynı işlemi birden çok kişi sırayla yürütüyorsa, herkes her şeyi göremiyorsa ve sonradan kimin ne zaman neye karar verdiği kanıtlanabilmeliyse, web tasarımı artık yetmez. O zaman bir sisteme ihtiyacınız var — Ataberk Estate için ikisini de yaptık: önce web sitesi, sonra arkasındaki ERP.',
+    },
+    cta: {
+      de: 'Zu den Unternehmenssystemen',
+      en: 'To the business systems',
+      tr: 'Kurumsal sistemlere',
     },
   },
 

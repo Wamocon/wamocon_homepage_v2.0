@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SystemePage from '../../components/sections/SystemePage.astro';
+import { systeme } from '../../data/systeme';
+
+const lang = 'tr' as const;
+---
+
+<BaseLayout
+  title={systeme.seo.title[lang]}
+  description={systeme.seo.description[lang]}
+  lang={lang}
+  breadcrumbs={[{ name: 'Kurumsal sistemler', path: '/tr/kurumsal-sistemler/' }]}>
+  <SystemePage lang={lang} />
+</BaseLayout>
