@@ -7,24 +7,27 @@ export const languages = {
   de: 'Deutsch',
   en: 'English',
   tr: 'Türkçe',
+  kk: 'Қазақша',
 } as const;
 
 export type Lang = keyof typeof languages;
 
 /** Stable iteration order for the language switcher and hreflang tags. */
-export const langCodes = ['de', 'en', 'tr'] as const;
+export const langCodes = ['de', 'en', 'tr', 'kk'] as const;
 
 export const defaultLang: Lang = 'de';
 
 /**
  * Primary navigation. `key` is stable; `label` and `href` are per language.
- * German pages live at the site root, English under /en/, Turkish under /tr/.
+ * German pages live at the site root, English under /en/, Turkish under /tr/,
+ * Kazakh under /kk/.
  */
 export interface NavLink {
   key: string;
   de: { label: string; href: string };
   en: { label: string; href: string };
   tr: { label: string; href: string };
+  kk: { label: string; href: string };
   children?: NavLink[];
 }
 
@@ -34,6 +37,7 @@ export const nav: NavLink[] = [
     de: { label: 'Start', href: '/' },
     en: { label: 'Home', href: '/en/' },
     tr: { label: 'Ana Sayfa', href: '/tr/' },
+    kk: { label: 'Басты бет', href: '/kk/' },
   },
   {
     // Dropdown group. The parent links to the primary child (the 360° page).
@@ -41,24 +45,28 @@ export const nav: NavLink[] = [
     de: { label: 'Unser System', href: '/unser-system/' },
     en: { label: 'Our System', href: '/en/our-system/' },
     tr: { label: 'Sistemimiz', href: '/tr/sistemimiz/' },
+    kk: { label: 'Біздің жүйе', href: '/kk/juiemiz/' },
     children: [
       {
         key: 'system',
         de: { label: '360°', href: '/unser-system/' },
         en: { label: '360°', href: '/en/our-system/' },
         tr: { label: '360°', href: '/tr/sistemimiz/' },
+        kk: { label: '360°', href: '/kk/juiemiz/' },
       },
       {
         key: 'apps',
         de: { label: 'Apps', href: '/apps/' },
         en: { label: 'Apps', href: '/en/apps/' },
         tr: { label: 'Uygulamalar', href: '/tr/uygulamalar/' },
+        kk: { label: 'Қосымшалар', href: '/kk/qosymshalar/' },
       },
       {
         key: 'about',
         de: { label: 'Über uns', href: '/ueber-uns/' },
         en: { label: 'About us', href: '/en/about-us/' },
         tr: { label: 'Hakkımızda', href: '/tr/hakkimizda/' },
+        kk: { label: 'Біз туралы', href: '/kk/biz-turaly/' },
       },
     ],
   },
@@ -67,24 +75,28 @@ export const nav: NavLink[] = [
     de: { label: 'Zusammenarbeit', href: '/zusammenarbeit/' },
     en: { label: 'Cooperation', href: '/en/cooperation/' },
     tr: { label: 'İş Birliği', href: '/tr/is-birligi/' },
+    kk: { label: 'Ынтымақтастық', href: '/kk/yntymaqtastyq/' },
     children: [
       {
         key: 'cooperation',
         de: { label: 'Studium', href: '/zusammenarbeit/' },
         en: { label: 'Studies', href: '/en/cooperation/' },
         tr: { label: 'Öğrenim', href: '/tr/is-birligi/' },
+        kk: { label: 'Оқу', href: '/kk/yntymaqtastyq/' },
       },
       {
         key: 'career',
         de: { label: 'Karriere', href: '/karriere/' },
         en: { label: 'Career', href: '/en/career/' },
         tr: { label: 'Kariyer', href: '/tr/kariyer/' },
+        kk: { label: 'Мансап', href: '/kk/mansap/' },
       },
       {
         key: 'azubi',
         de: { label: 'Ausbildung', href: '/azubi-fae/' },
         en: { label: 'Apprenticeship', href: '/en/apprenticeship/' },
         tr: { label: 'Mesleki Eğitim', href: '/tr/mesleki-egitim/' },
+        kk: { label: 'Кәсіби білім', href: '/kk/kasibi-bilim/' },
       },
     ],
   },
@@ -93,24 +105,28 @@ export const nav: NavLink[] = [
     de: { label: 'Testimonials', href: '/bewertungen/' },
     en: { label: 'Testimonials', href: '/en/testimonials/' },
     tr: { label: 'Görüşler', href: '/tr/yorumlar/' },
+    kk: { label: 'Пікірлер', href: '/kk/pikirler/' },
     children: [
       {
         key: 'testimonials',
         de: { label: 'Was Kunden sagen', href: '/bewertungen/' },
         en: { label: 'What clients say', href: '/en/testimonials/' },
         tr: { label: 'Müşterilerimiz ne diyor', href: '/tr/yorumlar/' },
+        kk: { label: 'Клиенттер не дейді', href: '/kk/pikirler/' },
       },
       {
         key: 'employees',
         de: { label: 'Was Mitarbeiter sagen', href: '/mitarbeiter-stimmen/' },
         en: { label: 'What employees say', href: '/en/employee-voices/' },
         tr: { label: 'Çalışanlarımız ne diyor', href: '/tr/calisan-yorumlari/' },
+        kk: { label: 'Қызметкерлер не дейді', href: '/kk/qyzmetker-pikirleri/' },
       },
       {
         key: 'references',
         de: { label: 'Referenzen', href: '/referenzen/' },
         en: { label: 'References', href: '/en/references/' },
         tr: { label: 'Referanslar', href: '/tr/referanslar/' },
+        kk: { label: 'Клиенттеріміз', href: '/kk/klientterimiz/' },
       },
     ],
   },
@@ -119,6 +135,7 @@ export const nav: NavLink[] = [
     de: { label: 'Webdesign', href: '/webdesign/' },
     en: { label: 'Webdesign', href: '/en/webdesign/' },
     tr: { label: 'Webdesign', href: '/tr/webdesign/' },
+    kk: { label: 'Веб-дизайн', href: '/kk/veb-dizain/' },
   },
   {
     // Sibling of Webdesign, not a child: somebody looking for software that
@@ -128,6 +145,7 @@ export const nav: NavLink[] = [
     de: { label: 'Unternehmenssysteme', href: '/unternehmenssysteme/' },
     en: { label: 'Business Systems', href: '/en/business-systems/' },
     tr: { label: 'Kurumsal Sistemler', href: '/tr/kurumsal-sistemler/' },
+    kk: { label: 'Кәсіпорын жүйелері', href: '/kk/kasiporyn-juieleri/' },
   },
 ];
 
@@ -137,16 +155,19 @@ export const legalNav = {
     de: { label: 'Impressum', href: '/impressum/' },
     en: { label: 'Imprint', href: '/en/imprint/' },
     tr: { label: 'Künye', href: '/tr/kunye/' },
+    kk: { label: 'Заңды ақпарат', href: '/kk/zandy-aqparat/' },
   },
   privacy: {
     de: { label: 'Datenschutz', href: '/datenschutz/' },
     en: { label: 'Privacy Policy', href: '/en/privacy/' },
     tr: { label: 'Gizlilik Politikası', href: '/tr/gizlilik/' },
+    kk: { label: 'Құпиялылық саясаты', href: '/kk/qupiyalylyq/' },
   },
   accessibility: {
     de: { label: 'Barrierefreiheit', href: '/barrierefreiheit/' },
     en: { label: 'Accessibility', href: '/en/accessibility/' },
     tr: { label: 'Erişilebilirlik', href: '/tr/erisilebilirlik/' },
+    kk: { label: 'Қолжетімділік', href: '/kk/qoljetimdilik/' },
   },
 };
 
@@ -155,7 +176,7 @@ export const legalNav = {
  * language. Keeps the language switcher correct on the thank-you pages.
  */
 export const extraRoutes: Record<Lang, string>[] = [
-  { de: '/danke/', en: '/en/thank-you/', tr: '/tr/tesekkurler/' },
+  { de: '/danke/', en: '/en/thank-you/', tr: '/tr/tesekkurler/', kk: '/kk/raqmet/' },
 ];
 
 /** Shared, non-page-specific UI strings. */
@@ -220,6 +241,26 @@ export const ui = {
     'footer.follow': 'Bizi takip edin',
     'footer.hours': 'Çalışma saatleri',
   },
+  kk: {
+    'lang.switch': 'DE',
+    'lang.label': 'Тілді ауыстыру',
+    'nav.menu': 'Мәзір',
+    'nav.close': 'Жабу',
+    'cta.consultation': 'Тегін кеңес алу',
+    'cta.services': 'Қызметтер',
+    'cta.apply': 'Өтініш қалдыру',
+    'cta.more': 'Толығырақ',
+    'cta.contact': 'Хабарласу',
+    'cta.allReviews': 'Барлық пікірлер',
+    'cookie.text':
+      'Сайттың жұмысын және сіздің ыңғайлылығыңызды жақсарту үшін cookie файлдарын қолданамыз.',
+    'cookie.accept': 'Жарайды',
+    'footer.rights': 'Барлық құқық қорғалған.',
+    'footer.contact': 'Байланыс',
+    'footer.navigation': 'Навигация',
+    'footer.follow': 'Бізге жазылыңыз',
+    'footer.hours': 'Жұмыс уақыты',
+  },
 } as const;
 
 /**
@@ -228,6 +269,12 @@ export const ui = {
  * (career, apprenticeship, employee voices, university cooperation) use `du`.
  * English and Turkish have no grammatical distinction — the value only steers
  * how formal the wording is, so both editions stay in step with the German one.
+ *
+ * Kazakh does have the pair (formal "Сіз" against familiar "сен"), but the
+ * Kazakh edition stays on "Сіз" in both modes on purpose. Addressing a job
+ * applicant or a student with "сен" reads as talking down in Kazakhstan, even
+ * where the German page happily says "du", so the `du` value only warms the
+ * tone up: shorter sentences, a more direct invitation, same polite form.
  *
  * Consent and cookie copy is deliberately NOT switched: the cookie banner and
  * the external-media overlay are global chrome and stay formal on every page.
@@ -285,6 +332,21 @@ export const formChrome = {
     contactHint: {
       sie: 'Lütfen e-posta veya telefon bilgisi girin.',
       du: 'Lütfen e-posta veya telefon bilgini gir.',
+    },
+  },
+  kk: {
+    thankYou: '/kk/raqmet/',
+    privacyLabel: 'Құпиялылық саясаты',
+    responsible: {
+      sie: 'Сұрауыңызды WAMOCON GmbH компаниясының басқарушы директоры Dipl.-Ing. Waleri Moretz қарайды.',
+      du: 'Сұрауыңызды WAMOCON GmbH компаниясының басқарушы директоры Dipl.-Ing. Waleri Moretz қарайды.',
+    },
+    consentPre: 'Мен ',
+    consentLink: 'құпиялылық саясатымен',
+    consentPost: ' таныс болғанымды растаймын.',
+    contactHint: {
+      sie: 'Электрондық поштаңызды не телефон нөміріңізді жазыңыз.',
+      du: 'Электрондық поштаңызды не телефон нөміріңізді жазыңыз.',
     },
   },
 } as const;
@@ -351,6 +413,23 @@ export const leadSource = {
       { value: 'other', label: 'Diğer' },
     ],
   },
+  kk: {
+    question: {
+      sie: 'Біз туралы қайдан білдіңіз?',
+      du: 'Біз туралы қайдан білдіңіз?',
+    },
+    optional: 'міндетті емес',
+    placeholder: 'Таңдаңыз',
+    otherLabel: 'Қысқаша жазып беріңіз',
+    options: [
+      { value: 'google', label: 'Google іздеуі' },
+      { value: 'referral', label: 'Таныстардың кеңесі' },
+      { value: 'linkedin', label: 'LinkedIn' },
+      { value: 'event', label: 'Іс-шара немесе дәріс' },
+      { value: 'known', label: 'Біз бұрыннан таныспыз' },
+      { value: 'other', label: 'Басқасы' },
+    ],
+  },
 } as const;
 
 /** Company-wide contact details (shared across languages). */
@@ -366,6 +445,7 @@ export const company = {
     de: ['Mo bis Fr: 9:00 bis 18:00', 'Sa: 10:00 bis 14:00'],
     en: ['Mon to Fri: 9:00 to 18:00', 'Sat: 10:00 to 14:00'],
     tr: ['Pazartesi – Cuma: 9:00 – 18:00', 'Cumartesi: 10:00 – 14:00'],
+    kk: ['Дүйсенбі – Жұма: 9:00 – 18:00', 'Сенбі: 10:00 – 14:00'],
   },
   social: {
     youtube: 'https://www.youtube.com/@wamocon.testing',

@@ -15,18 +15,19 @@ type RouteMap = Record<Lang, string>;
 /** Flatten the nav (dropdown groups + their children) into a single list. */
 function flattenNav(items: NavLink[]): RouteMap[] {
   return items.flatMap((item) => [
-    { de: item.de.href, en: item.en.href, tr: item.tr.href },
+    { de: item.de.href, en: item.en.href, tr: item.tr.href, kk: item.kk.href },
     ...(item.children ? flattenNav(item.children) : []),
   ]);
 }
 
-/** Every known route, as a de/en/tr triple. */
+/** Every known route, as a de/en/tr/kk set. */
 const routes: RouteMap[] = [
   ...flattenNav(nav),
   ...Object.values(legalNav).map((item) => ({
     de: item.de.href,
     en: item.en.href,
     tr: item.tr.href,
+    kk: item.kk.href,
   })),
   ...extraRoutes,
 ];
@@ -36,6 +37,7 @@ export function getLangFromUrl(url: URL): Lang {
   const [, first] = url.pathname.split('/');
   if (first === 'en') return 'en';
   if (first === 'tr') return 'tr';
+  if (first === 'kk') return 'kk';
   return defaultLang;
 }
 
@@ -56,13 +58,14 @@ function normalize(path: string): string {
 export function homeHref(lang: Lang): string {
   if (lang === 'en') return '/en/';
   if (lang === 'tr') return '/tr/';
+  if (lang === 'kk') return '/kk/';
   return '/';
 }
 
 /**
  * Resolve the equivalent URL of the current page in every language.
  * Uses the nav/legal config so differing slugs map correctly
- * (e.g. /ueber-uns/ <-> /en/about-us/ <-> /tr/hakkimizda/).
+ * (e.g. /ueber-uns/ <-> /en/about-us/ <-> /tr/hakkimizda/ <-> /kk/biz-turaly/).
  * Falls back to the language home page when no mapping exists.
  */
 export function getLangUrls(currentPath: string, current: Lang): RouteMap {
@@ -70,7 +73,7 @@ export function getLangUrls(currentPath: string, current: Lang): RouteMap {
   const match = routes.find((entry) => normalize(entry[current]) === path);
   if (match) return match;
 
-  return { de: '/', en: '/en/', tr: '/tr/' };
+  return { de: '/', en: '/en/', tr: '/tr/', kk: '/kk/' };
 }
 
 /**

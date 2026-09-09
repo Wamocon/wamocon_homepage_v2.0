@@ -3,7 +3,7 @@
  *
  * The bot must answer only from wamocon.com, so the source of truth is the
  * rendered HTML in dist/ rather than the content modules — whatever a visitor
- * can read is exactly what the assistant can cite, in all three languages.
+ * can read is exactly what the assistant can cite, in all four languages.
  *
  * Output: api/_knowledge.json  (committed, so the serverless function has it at
  * deploy time without depending on build ordering on Vercel).
@@ -19,7 +19,15 @@ const DIST = join(ROOT, 'dist');
 const OUT = join(ROOT, 'api', '_knowledge.json');
 
 /** Pages that carry no useful answer material. */
-const SKIP = ['/404/', '/danke/', '/en/thank-you/', '/tr/tesekkurler/', '/berber-siparis/', '/berber-veri-koruma/'];
+const SKIP = [
+  '/404/',
+  '/danke/',
+  '/en/thank-you/',
+  '/tr/tesekkurler/',
+  '/kk/raqmet/',
+  '/berber-siparis/',
+  '/berber-veri-koruma/',
+];
 
 function walk(dir, acc = []) {
   for (const entry of readdirSync(dir)) {
@@ -79,6 +87,7 @@ function langOf(html, url) {
   if (m) return m[1];
   if (url.startsWith('/en/')) return 'en';
   if (url.startsWith('/tr/')) return 'tr';
+  if (url.startsWith('/kk/')) return 'kk';
   return 'de';
 }
 

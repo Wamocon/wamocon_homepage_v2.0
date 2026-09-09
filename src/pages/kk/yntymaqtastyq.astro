@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CooperationPage from '../../components/sections/CooperationPage.astro';
+
+const lang = 'kk' as const;
+---
+
+<BaseLayout
+  title="Университеттермен ынтымақтастық | WAMOCON"
+  description="WAMOCON және Provadis жоғары оқу орнымен тәжірибеге негізделген оқу: IT біліміндегі ынтымақтастық, мансап мүмкіндіктері және IHK сертификатты кәсіби білім."
+  lang={lang}
+>
+  <CooperationPage lang={lang} />
+</BaseLayout>

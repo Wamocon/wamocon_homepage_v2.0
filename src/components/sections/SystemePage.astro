@@ -23,7 +23,7 @@ const domainLabel = (key: string) =>
   domains.find((d) => d.key === key)?.label[lang] ?? key;
 
 /** Where the sibling department lives, per language. */
-const webdesignHref = { de: '/webdesign/', en: '/en/webdesign/', tr: '/tr/webdesign/' }[lang];
+const webdesignHref = { de: '/webdesign/', en: '/en/webdesign/', tr: '/tr/webdesign/', kk: '/kk/veb-dizain/' }[lang];
 
 const screenshotAlt = (name: string, client: string) =>
   lang === 'en'

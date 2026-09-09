@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AboutPage from '../../components/sections/AboutPage.astro';
+
+const lang = 'kk' as const;
+---
+
+<BaseLayout
+  title="WAMOCON: Эшборндағы IT тестілеуді басқару"
+  description="Командамызда 50 жылдан асатын жинақталған тәжірибе бар: WAMOCON GmbH-мен, көзқарасымызбен және басты белестерімізбен танысыңыз."
+  lang={lang}
+>
+  <AboutPage lang={lang} />
+</BaseLayout>

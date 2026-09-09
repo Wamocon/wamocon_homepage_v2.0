@@ -59,7 +59,7 @@ const MAX_CONTEXT_CHUNKS = 6;
 // additionally warm it when the user opens the chat panel (see `warm` below).
 const KEEP_ALIVE = process.env.AI_KEEP_ALIVE || '2h';
 
-const LANGS = ['de', 'en', 'tr'];
+const LANGS = ['de', 'en', 'tr', 'kk'];
 
 /* ------------------------------------------------------------------ *
  * Language handling
@@ -70,12 +70,13 @@ const LANGS = ['de', 'en', 'tr'];
 // the signal is weak we fall back to the language of the page.
 function detectLanguage(text) {
   const t = ' ' + text.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, ' ').replace(/\s+/g, ' ') + ' ';
-  const score = { de: 0, en: 0, tr: 0 };
+  const score = { de: 0, en: 0, tr: 0, kk: 0 };
 
   const words = {
     de: ['der','die','das','und','ist','wie','was','ihr','sie','wir','nicht','ein','eine','mit','für','auf','von','haben','kann','wer','wo','warum','welche','bitte','ich','mir','euch','uns','testmanagement','ausbildung','kosten','preis'],
     en: ['the','and','is','what','how','you','your','we','do','does','are','can','who','where','why','which','please','with','for','from','about','have','service','cost','price','training'],
     tr: ['ve','bir','ne','nasıl','siz','biz','mi','mı','için','ile','var','yok','nedir','hangi','lütfen','merhaba','fiyat','eğitim','hizmet','nerede','neden'],
+    kk: ['және','бір','не','қалай','сіз','біз','ме','ба','үшін','мен','бар','жоқ','қандай','өтінемін','сәлеметсіз','баға','оқыту','қызмет','қайда','неге','туралы','қанша','деген','тестілеу'],
   };
   for (const lang of LANGS) {
     for (const w of words[lang]) {
@@ -85,6 +86,9 @@ function detectLanguage(text) {
   // Characters unique to a language carry strong evidence.
   if (/[şğıçöü]/.test(t) && /[şğı]/.test(t)) score.tr += 5;
   if (/[äöüß]/.test(t)) score.de += 3;
+  // Letters that exist in Kazakh but not in Russian, so Cyrillic alone is not
+  // taken as Kazakh — a Russian question falls back to the page language.
+  if (/[әғқңөұүһі]/.test(t)) score.kk += 5;
 
   const best = LANGS.reduce((a, b) => (score[a] >= score[b] ? a : b));
   return score[best] >= 2 ? best : null;
@@ -94,7 +98,7 @@ function detectLanguage(text) {
  * Retrieval — website content only
  * ------------------------------------------------------------------ */
 
-const STOP = new Set(['der','die','das','und','ist','the','and','are','for','you','with','was','wie','ein','eine','von','mit','auf','ne','ve','bir','ile','için','what','how','does','can','your','our','who','where','why']);
+const STOP = new Set(['der','die','das','und','ist','the','and','are','for','you','with','was','wie','ein','eine','von','mit','auf','ne','ve','bir','ile','için','what','how','does','can','your','our','who','where','why','және','бір','үшін','мен','бұл','туралы']);
 
 function tokenize(s) {
   return s
@@ -106,7 +110,7 @@ function tokenize(s) {
 
 /**
  * Keyword retrieval over the site chunks. Prefers the reply language but falls
- * back to the other editions, because the same fact exists in all three and a
+ * back to the other editions, because the same fact exists in all four and a
  * German question must still find an answer sourced from the German pages.
  */
 function retrieve(question, replyLang) {
@@ -153,6 +157,7 @@ function refusalFor(lang) {
     de: 'Ich bin der Assistent von WAMOCON und beantworte ausschließlich Fragen zu WAMOCON und den Inhalten dieser Website. Für alles andere wenden Sie sich bitte an info@wamocon.com.',
     en: 'I am the WAMOCON assistant and only answer questions about WAMOCON and the content of this website. For anything else, please contact info@wamocon.com.',
     tr: 'Ben WAMOCON asistanıyım ve yalnızca WAMOCON ile bu web sitesinin içeriğine dair soruları yanıtlıyorum. Diğer konular için lütfen info@wamocon.com adresine yazın.',
+    kk: 'Мен WAMOCON көмекшісімін және тек WAMOCON мен осы сайттың мазмұнына қатысты сұрақтарға жауап беремін. Басқа мәселе бойынша info@wamocon.com мекенжайына жазыңыз.',
   }[lang];
 }
 
@@ -161,6 +166,7 @@ function noContextFor(lang) {
     de: 'Dazu steht auf der WAMOCON-Website nichts. Schreiben Sie uns gerne an info@wamocon.com oder rufen Sie an: +49 6196 5838311.',
     en: 'The WAMOCON website does not cover that. Please write to info@wamocon.com or call +49 6196 5838311.',
     tr: 'Bu konu WAMOCON web sitesinde yer almıyor. Lütfen info@wamocon.com adresine yazın veya +49 6196 5838311 numarasını arayın.',
+    kk: 'Бұл тақырып WAMOCON сайтында жоқ. info@wamocon.com мекенжайына жазыңыз немесе +49 6196 5838311 нөміріне қоңырау шалыңыз.',
   }[lang];
 }
 
@@ -169,10 +175,11 @@ function errorFor(lang) {
     de: 'Der Assistent ist gerade nicht erreichbar. Bitte versuchen Sie es später erneut oder schreiben Sie an info@wamocon.com.',
     en: 'The assistant is currently unavailable. Please try again later or write to info@wamocon.com.',
     tr: 'Asistan şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin veya info@wamocon.com adresine yazın.',
+    kk: 'Көмекші қазір қолжетімсіз. Кейінірек қайталап көріңіз немесе info@wamocon.com мекенжайына жазыңыз.',
   }[lang];
 }
 
-const LANG_NAME = { de: 'German (Deutsch)', en: 'English', tr: 'Turkish (Türkçe)' };
+const LANG_NAME = { de: 'German (Deutsch)', en: 'English', tr: 'Turkish (Türkçe)', kk: 'Kazakh (қазақша)' };
 
 function buildSystemPrompt(replyLang, context) {
   return [

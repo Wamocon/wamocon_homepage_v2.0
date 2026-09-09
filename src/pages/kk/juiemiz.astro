@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SystemPage from '../../components/sections/SystemPage.astro';
+
+const lang = 'kk' as const;
+---
+
+<BaseLayout
+  title="360° Booster жүйесі | WAMOCON"
+  description="IT саласындағы сарапшылыққа апарар табыс жолыңыз: WAMOCON-ның 360° Booster жүйесі IT тестілеуінің барлық қырын алты қадаммен қамтиды."
+  lang={lang}
+>
+  <SystemPage lang={lang} />
+</BaseLayout>

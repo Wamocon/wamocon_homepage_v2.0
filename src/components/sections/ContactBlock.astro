@@ -19,7 +19,7 @@ interface Props {
 const { lang, address = 'sie' } = Astro.props;
 const privacyHref = legalNav.privacy[lang].href;
 const chrome = formChrome[lang];
-const thankYouHref = { de: '/danke/', en: '/en/thank-you/', tr: '/tr/tesekkurler/' }[lang];
+const thankYouHref = { de: '/danke/', en: '/en/thank-you/', tr: '/tr/tesekkurler/', kk: '/kk/raqmet/' }[lang];
 
 const social = [
   { name: 'YouTube', href: company.social.youtube, icon: '/images/icon-youtube.svg' },
@@ -100,6 +100,28 @@ const labels = {
     message: { sie: 'Mesajınız', du: 'Mesajın' },
     submit: 'Mesajı gönder',
     close: 'Kapat',
+  },
+  kk: {
+    phone: 'Телефон',
+    contactPerson: 'Байланыс тұлғасы',
+    contactPersonName: 'Dipl.-Ing. Waleri Moretz, WAMOCON GmbH басқарушы директоры',
+    hours: 'Жұмыс уақыты',
+    location: 'Орналасқан жері',
+    follow: { sie: 'Бізді әлеуметтік желіде бақылаңыз', du: 'Бізге әлеуметтік желіде жазылыңыз' },
+    imgAlt: 'Эшборндағы кеңседе тұрған WAMOCON командасы',
+    ratingLabel: 'Google бағасы 5,0',
+    ctaTitle: 'Жазғанды жөн көресіз бе?',
+    ctaText: 'Хабарыңызды жіберіңіз, өзіңіз таңдаған байланыс арнасы арқылы жақын арада жауап қайтарамыз.',
+    ctaButton: 'Хабарласу',
+    modalTitle: 'Хабарласу',
+    modalSubtitle: {
+      sie: 'Сұрағыңыз немесе өтінішіңіз бар ма? Бізге жазыңыз, жақын арада жауап береміз.',
+      du: 'Сұрағыңыз бар ма? Бізге жазыңыз, көп ұзамай жауап береміз.',
+    },
+    name: { sie: 'Атыңыз', du: 'Атыңыз' },
+    message: { sie: 'Хабарыңыз', du: 'Хабарыңыз' },
+    submit: 'Хабарды жіберу',
+    close: 'Жабу',
   },
 }[lang];
 ---

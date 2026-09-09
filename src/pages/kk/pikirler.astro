@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TestimonialsPage from '../../components/sections/TestimonialsPage.astro';
+
+const lang = 'kk' as const;
+---
+
+<BaseLayout
+  title="WAMOCON туралы пікірлер және клиент тәжірибесі"
+  description="WAMOCON GmbH туралы нағыз клиент пікірлері мен тәжірибесі: жобалардан және WAMOCON Academy-ден."
+  lang={lang}
+>
+  <TestimonialsPage lang={lang} />
+</BaseLayout>

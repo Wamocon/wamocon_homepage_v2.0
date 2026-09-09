@@ -50,11 +50,13 @@ const projectCompanyLabel = {
   de: 'Über das Unternehmen',
   en: 'About the company',
   tr: 'Şirket hakkında',
+  kk: 'Компания туралы',
 }[lang];
 const projectProjectLabel = {
   de: 'Über das Projekt',
   en: 'About the project',
   tr: 'Proje hakkında',
+  kk: 'Жоба туралы',
 }[lang];
 const ceoCaption = home.goal.signoff[lang];
 
@@ -144,14 +146,42 @@ const page = {
       'Talebiniz, WAMOCON GmbH Genel Müdürü Dipl.-Ing. Waleri Moretz tarafından ele alınmaktadır.',
     thankYou: '/tr/tesekkurler/',
   },
+  kk: {
+    boosterTitle: '360° Booster жүйесі',
+    boosterText:
+      'Алғашқы байланыстан табысты IT жобасына дейінгі жүйелі жолымыз: тестілеушіні әр жобада сеніммен жетелейтін және мансабын мақсатты дамытатын, бірін-бірі жалғастыратын алты қадам.',
+    boosterCta: '360° Booster жүйесіне өту',
+    boosterAlt: 'Алты қадамнан тұратын 360° Booster жүйесі',
+    badgeAiAlt: 'Жасанды интеллект мөрі: WAMOCON ЖИ жаңашылы ретінде марапатталды',
+    badgeFutureAlt: '«Болашақ компаниясы» сыйлығына үміткер белгісі',
+    skylineAlt: 'Түнгі Майндағы Франкфурт панорамасы',
+    aboutCta: 'Біз туралы толығырақ',
+    magazine: 'Журналды жүктеу',
+    reviewsLink: 'Клиенттеріміз не дейді',
+    referencesLink: 'Барлық референсті көру',
+    ditelHeading: 'DiTeLe арқылы үйреніңіз',
+    ditelText:
+      'DiTeLe: WAMOCON Academy-дің цифрлық оқыту платформасы. Бейнелер, сценарийлер және жаттығулар арқылы бағдарлама тестілеу бойынша тәжірибеге негізделген курстар, кез келген уақытта, өз қарқыныңызбен.',
+    ditelCta: 'DiTeLe-мен танысыңыз',
+    quizLive: 'Тікелей демо: DiTeLe тәжірибелік жаттығуы',
+    quizCount: '300+ сұрақтың 1-шісі',
+    quizQuestion: 'Бағдарлама тестілеудің басты мақсаты неде?',
+    quizHint:
+      'Бұл DiTeLe-дегі 45+ жаттығудың біріншісі. DiTeLe-де бағдарлама тестілеуді үйреніп қана қоймайсыз, өз қолыңызбен жасайсыз.',
+    quizCta: 'DiTeLe-дегі барлық жаттығуды ашыңыз',
+    contactHint: ' Электрондық поштаңызды не телефон нөміріңізді жазыңыз.',
+    responsible:
+      'Сұрауыңызды WAMOCON GmbH компаниясының басқарушы директоры Dipl.-Ing. Waleri Moretz қарайды.',
+    thankYou: '/kk/raqmet/',
+  },
 }[lang];
 
 /** DiTeLe demo-quiz answer options. */
 const quizOptions = [
-  { k: 'A', label: { de: 'Fehler finden', en: 'Find defects', tr: 'Hata bulmak' }, c: false },
-  { k: 'B', label: { de: 'Qualität bewerten', en: 'Assess quality', tr: 'Kaliteyi değerlendirmek' }, c: false },
-  { k: 'C', label: { de: 'Anforderungen validieren', en: 'Validate requirements', tr: 'Gereksinimleri doğrulamak' }, c: false },
-  { k: 'D', label: { de: 'Alle oben genannten', en: 'All of the above', tr: 'Yukarıdakilerin tümü' }, c: true },
+  { k: 'A', label: { de: 'Fehler finden', en: 'Find defects', tr: 'Hata bulmak', kk: 'Қатені табу' }, c: false },
+  { k: 'B', label: { de: 'Qualität bewerten', en: 'Assess quality', tr: 'Kaliteyi değerlendirmek', kk: 'Сапаны бағалау' }, c: false },
+  { k: 'C', label: { de: 'Anforderungen validieren', en: 'Validate requirements', tr: 'Gereksinimleri doğrulamak', kk: 'Талаптарды растау' }, c: false },
+  { k: 'D', label: { de: 'Alle oben genannten', en: 'All of the above', tr: 'Yukarıdakilerin tümü', kk: 'Жоғарыдағының бәрі' }, c: true },
 ];
 
 /** Feedback strings for the quiz, passed into the client script below. */
@@ -167,6 +197,10 @@ const quizFeedback = {
   tr: {
     correct: 'Doğru! Her üç amaç da yazılım testinin parçasıdır.',
     wrong: 'Tam değil – doğru yanıt D: Yukarıdakilerin tümü.',
+  },
+  kk: {
+    correct: 'Дұрыс! Үш мақсаттың үшеуі де бағдарлама тестілеудің бөлігі.',
+    wrong: 'Толық емес. Дұрыс жауап D: жоғарыдағының бәрі.',
   },
 }[lang];
 
@@ -210,6 +244,19 @@ const modal = {
     consentPost: ' okuduğumu onaylıyorum.',
     submit: 'Talebi gönder',
     close: 'Kapat',
+  },
+  kk: {
+    title: 'IT тестілеушілерін таңдау туралы көбірек біліңіз',
+    subtitle: 'Бізге ешқандай міндеттемесіз сұрау жіберіңіз. Көрсеткен байланыс арнаңыз арқылы жауап қайтарамыз.',
+    name: 'Атыңыз',
+    phone: 'Телефон',
+    email: 'Электрондық пошта',
+    comment: 'Пікір немесе файлға сілтеме',
+    consentPre: 'Осы форманы жіберу арқылы ',
+    consentLink: 'құпиялылық саясатымен',
+    consentPost: ' таныс болғанымды растаймын.',
+    submit: 'Сұрауды жіберу',
+    close: 'Жабу',
   },
 }[lang];
 

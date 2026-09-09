@@ -154,7 +154,8 @@ function escapeHtml(value) {
 
 function formatReceived(iso, lang) {
   const date = new Date(iso);
-  const locale = lang === 'de' ? 'de-DE' : lang === 'tr' ? 'tr-TR' : 'en-GB';
+  const locale =
+    lang === 'de' ? 'de-DE' : lang === 'tr' ? 'tr-TR' : lang === 'kk' ? 'kk-KZ' : 'en-GB';
   return date.toLocaleString(locale, {
     day: '2-digit',
     month: '2-digit',
@@ -189,6 +190,14 @@ function typeLabel(type, lang) {
       testimonial: 'Referans',
       'it-tester': 'IT Test Uzmanı',
       'barber-inquiry': 'Berber Talebi',
+    },
+    kk: {
+      career: 'Мансап',
+      cooperation: 'Ынтымақтастық',
+      lead: 'Байланыс',
+      testimonial: 'Пікір',
+      'it-tester': 'IT тестілеуші',
+      'barber-inquiry': 'Шаштараз сұрауы',
     },
   };
   return (labels[lang] || labels.de)[type] || type;
@@ -227,7 +236,9 @@ function emailLayout({ title, lang, body }) {
       ? 'Diese E-Mail wurde automatisch versendet. Bei Fragen antworten Sie einfach auf diese Nachricht.'
       : lang === 'tr'
         ? 'Bu e-posta otomatik olarak gönderilmiştir. Sorularınız için bu mesajı yanıtlamanız yeterlidir.'
-        : 'This email was sent automatically. If you have any questions, simply reply to this message.';
+        : lang === 'kk'
+          ? 'Бұл хат автоматты түрде жіберілді. Сұрағыңыз болса, осы хатқа жауап жазсаңыз болғаны.'
+          : 'This email was sent automatically. If you have any questions, simply reply to this message.';
 
   return `<!DOCTYPE html>
 <html lang="${lang}">
@@ -276,12 +287,13 @@ function emailLayout({ title, lang, body }) {
 function detailTable(submission, lang) {
   const isDe = lang === 'de';
   const isTr = lang === 'tr';
+  const isKk = lang === 'kk';
   const t = {
-    heading: isDe ? 'Ihre angegebenen Daten' : isTr ? 'Verdiğiniz bilgiler' : 'Your details',
-    name: isDe ? 'Name' : isTr ? 'Ad Soyad' : 'Name',
-    phone: isDe ? 'Telefon' : isTr ? 'Telefon' : 'Phone',
-    company: isDe ? 'Unternehmen' : isTr ? 'İşletme' : 'Company',
-    packageChoice: isDe ? 'Paket' : isTr ? 'Paket' : 'Package',
+    heading: isDe ? 'Ihre angegebenen Daten' : isTr ? 'Verdiğiniz bilgiler' : isKk ? 'Көрсеткен деректеріңіз' : 'Your details',
+    name: isDe ? 'Name' : isTr ? 'Ad Soyad' : isKk ? 'Аты-жөні' : 'Name',
+    phone: isDe ? 'Telefon' : isTr ? 'Telefon' : isKk ? 'Телефон' : 'Phone',
+    company: isDe ? 'Unternehmen' : isTr ? 'İşletme' : isKk ? 'Компания' : 'Company',
+    packageChoice: isDe ? 'Paket' : isTr ? 'Paket' : isKk ? 'Пакет' : 'Package',
   };
   const extraRows = [
     submission.shopName
@@ -306,14 +318,14 @@ function detailTable(submission, lang) {
 function internalEmail(submission) {
   // The internal notification always renders in German or English (WAMOCON's
   // own working languages), regardless of the submitter's language — a 'tr'
-  // submission still needs to be quickly readable by the team.
+  // or 'kk' submission still needs to be quickly readable by the team.
   const isDe = submission.lang !== 'en';
   const label = typeLabel(submission.type, submission.lang);
   const subject = isDe
     ? `Neue ${label}-Anfrage von ${submission.name}`
     : `New ${label} inquiry from ${submission.name}`;
   const title = isDe ? `Neue Anfrage: ${label}` : `New inquiry: ${label}`;
-  const langNames = { de: 'Deutsch', en: 'English', tr: 'Türkçe' };
+  const langNames = { de: 'Deutsch', en: 'English', tr: 'Türkçe', kk: 'Қазақша' };
   const langName = langNames[submission.lang] || submission.lang;
 
   const extraRows = [
@@ -364,25 +376,38 @@ function internalEmail(submission) {
 function confirmationEmail(submission) {
   const isDe = submission.lang === 'de';
   const isTr = submission.lang === 'tr';
+  const isKk = submission.lang === 'kk';
   const subject = isDe
     ? 'Vielen Dank für Ihre Anfrage bei WAMOCON'
     : isTr
       ? 'WAMOCON\'a başvurunuz için teşekkürler'
-      : 'Thank you for your inquiry to WAMOCON';
-  const title = isDe ? 'Vielen Dank für Ihre Anfrage' : isTr ? 'Başvurunuz için teşekkürler' : 'Thank you for your inquiry';
-  const greeting = isDe ? 'Hallo' : isTr ? 'Merhaba' : 'Hi';
+      : isKk
+        ? 'WAMOCON-ға жолдаған сұрауыңыз үшін рақмет'
+        : 'Thank you for your inquiry to WAMOCON';
+  const title = isDe
+    ? 'Vielen Dank für Ihre Anfrage'
+    : isTr
+      ? 'Başvurunuz için teşekkürler'
+      : isKk
+        ? 'Сұрауыңыз үшін рақмет'
+        : 'Thank you for your inquiry';
+  const greeting = isDe ? 'Hallo' : isTr ? 'Merhaba' : isKk ? 'Сәлеметсіз бе' : 'Hi';
 
   const intro = isDe
     ? 'Vielen Dank für Ihre Anfrage bei <strong style="color:#ffffff;">WAMOCON</strong>. Wir haben Ihre Nachricht erhalten und freuen uns, von Ihnen zu hören!'
     : isTr
       ? '<strong style="color:#ffffff;">WAMOCON</strong>\'a başvurunuz için teşekkür ederiz. Mesajınızı aldık ve sizden haber almaktan mutluluk duyduk!'
-      : 'Thank you for reaching out to <strong style="color:#ffffff;">WAMOCON</strong>. We have received your message and are happy to hear from you!';
+      : isKk
+        ? '<strong style="color:#ffffff;">WAMOCON</strong>-ға хабарласқаныңыз үшін рақмет. Хабарыңызды алдық, сізден хабар келгеніне қуаныштымыз!'
+        : 'Thank you for reaching out to <strong style="color:#ffffff;">WAMOCON</strong>. We have received your message and are happy to hear from you!';
 
   const followUp = isDe
     ? 'Ein Mitglied unseres Teams wird sich innerhalb von <strong style="color:#ffffff;">48 Stunden</strong> bei Ihnen melden.'
     : isTr
       ? 'Ekibimizden biri <strong style="color:#ffffff;">48 saat içinde</strong> sizinle iletişime geçecek.'
-      : 'A member of our team will get back to you within <strong style="color:#ffffff;">48 hours</strong>.';
+      : isKk
+        ? 'Командамыздың бір мүшесі <strong style="color:#ffffff;">48 сағат ішінде</strong> сізбен байланысады.'
+        : 'A member of our team will get back to you within <strong style="color:#ffffff;">48 hours</strong>.';
 
   const testimonialNote = submission.testimonialConsent
     ? `<p style="margin:0 0 16px;">${
@@ -390,7 +415,9 @@ function confirmationEmail(submission) {
           ? 'Vielen Dank auch für Ihre Zustimmung, Ihr Feedback als Kundenstimme zu verwenden — wir melden uns dazu gesondert bei Ihnen.'
           : isTr
             ? 'Geri bildiriminizin referans olarak kullanılmasına verdiğiniz onay için de teşekkür ederiz — bu konuda ayrıca sizinle iletişime geçeceğiz.'
-            : 'Thank you also for agreeing to let us use your feedback as a testimonial — we will follow up with you separately about this.'
+            : isKk
+              ? 'Пікіріңізді клиент пікірі ретінде пайдалануға келісім бергеніңіз үшін де рақмет. Бұл жөнінде сізбен бөлек хабарласамыз.'
+              : 'Thank you also for agreeing to let us use your feedback as a testimonial — we will follow up with you separately about this.'
       }</p>`
     : '';
 
@@ -398,10 +425,18 @@ function confirmationEmail(submission) {
     ? 'Bei dringenden Anliegen antworten Sie einfach auf diese E-Mail oder schreiben Sie uns an <a href="mailto:info@wamocon.com" style="color:#f40e0e;text-decoration:none;">info@wamocon.com</a>.'
     : isTr
       ? 'Acil durumlar için bu e-postayı yanıtlayabilir veya <a href="mailto:info@wamocon.com" style="color:#f40e0e;text-decoration:none;">info@wamocon.com</a> adresine yazabilirsiniz.'
-      : 'If your matter is urgent, simply reply to this email or write to us at <a href="mailto:info@wamocon.com" style="color:#f40e0e;text-decoration:none;">info@wamocon.com</a>.';
+      : isKk
+        ? 'Мәселе шұғыл болса, осы хатқа жауап жазыңыз немесе <a href="mailto:info@wamocon.com" style="color:#f40e0e;text-decoration:none;">info@wamocon.com</a> мекенжайына жіберіңіз.'
+        : 'If your matter is urgent, simply reply to this email or write to us at <a href="mailto:info@wamocon.com" style="color:#f40e0e;text-decoration:none;">info@wamocon.com</a>.';
 
-  const signoff = isDe ? 'Mit freundlichen Grüßen' : isTr ? 'Saygılarımızla' : 'Best regards';
-  const teamName = isDe ? 'Ihr WAMOCON-Team' : isTr ? 'WAMOCON Ekibiniz' : 'Your WAMOCON Team';
+  const signoff = isDe ? 'Mit freundlichen Grüßen' : isTr ? 'Saygılarımızla' : isKk ? 'Ізгі тілекпен' : 'Best regards';
+  const teamName = isDe
+    ? 'Ihr WAMOCON-Team'
+    : isTr
+      ? 'WAMOCON Ekibiniz'
+      : isKk
+        ? 'WAMOCON командаңыз'
+        : 'Your WAMOCON Team';
 
   const body = `
 <p style="font-size:17px;color:#ffffff;margin:0 0 16px;font-weight:600;">${greeting} ${escapeHtml(submission.name)} 👋</p>

@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EmployeeVoicesPage from '../../components/sections/EmployeeVoicesPage.astro';
+
+const lang = 'kk' as const;
+---
+
+<BaseLayout
+  title="WAMOCON-да жұмыс істеу: командадан шыққан дауыстар"
+  description="Қызметкерлеріміз WAMOCON-дағы жолын бейнеде айтады: жұмысқа кірісу, қосарлы оқу, сертификаттау және IT тестілеуді басқарудағы күнделікті жұмыс."
+  lang={lang}
+>
+  <EmployeeVoicesPage lang={lang} />
+</BaseLayout>

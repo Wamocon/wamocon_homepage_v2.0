@@ -28,8 +28,9 @@ const systemeHref = {
   de: '/unternehmenssysteme/',
   en: '/en/business-systems/',
   tr: '/tr/kurumsal-sistemler/',
+  kk: '/kk/kasiporyn-juieleri/',
 }[lang];
-const num = (n: number) => ({ de: String(n), en: String(n), tr: String(n) });
+const num = (n: number) => ({ de: String(n), en: String(n), tr: String(n), kk: String(n) });
 const heroStats = w.hero.stats.map((s, i) => (i === 0 ? { ...s, value: num(liveIndustries) } : s));
 
 /**
@@ -52,6 +53,7 @@ const screenshotAlt = (name: string, category: string, location: string) => {
   const industry = industryLabel(category).toLowerCase();
   if (lang === 'en') return `Screenshot of the ${name} website, ${industry} in ${location}`;
   if (lang === 'tr') return `${location} şehrindeki ${industry} işletmesi ${name} web sitesinin ekran görüntüsü`;
+  if (lang === 'kk') return `${location} қаласындағы ${industry} саласының ${name} сайтының скриншоты`;
   return `Screenshot der Website von ${name}, ${industry} in ${location}`;
 };
 ---
