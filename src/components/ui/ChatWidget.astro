@@ -407,6 +407,26 @@ const privacyHref = legalNav.privacy[lang].href;
     right: clamp(0.85rem, 2vw, 1.6rem);
     bottom: clamp(0.85rem, 2vw, 1.6rem);
     z-index: calc(var(--z-modal, 1000) + 2);
+    /* The wrapper sets only `right`/`bottom`, so its `width: auto` stretches it
+       from the left viewport edge across to that inset — an invisible bar the
+       full width of the screen. It sits above everything (z ≈ 1002), so it was
+       swallowing every tap in the 60px strip it covers, including whichever
+       mobile nav row lands there. Only the launcher and the panel should be
+       hit-testable; the wrapper itself is pure positioning. */
+    pointer-events: none;
+  }
+  .cw__launcher,
+  .cw__panel {
+    pointer-events: auto;
+  }
+
+  /* Even hit-test-transparent, the launcher circle still floats over the open
+     mobile nav drawer and covers the entry at its bottom right. Step aside
+     while the drawer is open — the header sets `nav-open` on <html>. */
+  html.nav-open .cw {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
 
   /* ---------- launcher ---------- */
