@@ -193,20 +193,38 @@ export const systeme = {
         approved: { de: 'freigegeben', en: 'approved', tr: 'onaylandı', kk: 'бекітілген' },
         billed: { de: 'abgerechnet', en: 'invoiced', tr: 'faturalandı', kk: 'шот қойылған' },
       },
-      auditTitle: { de: 'Nachweiskette', en: 'Audit trail', tr: 'Kanıt zinciri', kk: 'Дәлел тізбегі' },
-      auditLine: {
-        de: 'Freigabe geändert · Rolle Leitung · mit Vorzustand',
-        en: 'Approval changed · role management · previous state kept',
-        tr: 'Onay değişti · yönetim rolü · önceki durum saklandı',
-        kk: 'Бекіту өзгерді · басшылық рөлі · алдыңғы күйі сақталды',
+      /**
+       * The other faces of the same system. A single window says "an
+       * application"; a workspace with a field view, a customer portal and a
+       * management board hanging off it says "an ecosystem", which is what a
+       * system actually is — one record set, several surfaces, each for a
+       * different person. The connecting lines are drawn, not decorative: they
+       * are the point of the picture.
+       */
+      satellites: {
+        field: {
+          title: { de: 'Einsatz vor Ort', en: 'On-site job', tr: 'Sahada iş', kk: 'Орындағы жұмыс' },
+          line: { de: 'Foto und Zeitpunkt als Nachweis', en: 'Photo and timestamp as evidence', tr: 'Kanıt olarak fotoğraf ve zaman', kk: 'Дәлел ретінде фото мен уақыт' },
+        },
+        portal: {
+          title: { de: 'Kundenportal', en: 'Customer portal', tr: 'Müşteri portalı', kk: 'Клиент порталы' },
+          line: { de: 'Selbstauskunft, mehrsprachig', en: 'Self-service, multilingual', tr: 'Kendi kendine bilgi, çok dilli', kk: 'Өзіне-өзі анықтама, көп тілде' },
+        },
+        board: {
+          title: { de: 'Auswertung', en: 'Reporting', tr: 'Analiz', kk: 'Талдау' },
+          line: { de: 'Aus demselben Bestand', en: 'From the same records', tr: 'Aynı veri kümesinden', kk: 'Сол дерек жиынынан' },
+        },
       },
-      rightsTitle: { de: 'Rechte greifen in der Datenbank', en: 'Rights enforced in the database', tr: 'Yetkiler veritabanında geçerli', kk: 'Құқықтар дерекқорда бекітілген' },
-      rightsLine: {
-        de: 'Zeilenebene · nicht in der Oberfläche',
-        en: 'Row level · not in the interface',
-        tr: 'Satır düzeyinde · arayüzde değil',
-        kk: 'Жол деңгейінде · интерфейсте емес',
+      /** Screen-reader description of the whole constellation. */
+      alt: {
+        de: 'Schematische Darstellung: ein Arbeitsbereich, verbunden mit einer Einsatzansicht für unterwegs, einem Kundenportal und einer Auswertung.',
+        en: 'Schematic: one workspace, connected to a field view, a customer portal and a reporting board.',
+        tr: 'Şema: bir çalışma alanı; saha görünümü, müşteri portalı ve analiz panosuna bağlı.',
+        kk: 'Схема: бір жұмыс кеңістігі, далалық көрініспен, клиент порталымен және талдау тақтасымен байланысқан.',
       },
+      /** Label of the control that stops the docking animation further down. */
+      pause: { de: 'Animation anhalten', en: 'Pause animation', tr: 'Animasyonu duraklat', kk: 'Анимацияны тоқтату' },
+      play: { de: 'Animation abspielen', en: 'Play animation', tr: 'Animasyonu oynat', kk: 'Анимацияны ойнату' },
     },
   },
 
@@ -288,6 +306,168 @@ export const systeme = {
     },
   },
 
+  /**
+   * The benefit, as a contrast rather than a claim.
+   *
+   * Placed straight after the five sentences, because that is where the reader
+   * has just recognised themselves and is asking "and?". Three things are at
+   * work. The contrast effect: an outcome is only visible against the state it
+   * replaces, so the right column means nothing without the left. Loss
+   * aversion: what somebody is losing today weighs about twice what an equal
+   * gain would, so the left column is written first and concretely. And status-
+   * quo bias, which is the real opponent here — the current mess is at least
+   * familiar, so the closing line names what a system does NOT fix. A boundary
+   * admitted is worth more than a sixth flawless promise, which is the same
+   * reason "Wir sagen auch ab" sits further down the page.
+   *
+   * The rows are the six moments a managing director actually feels, not six
+   * software features. No figures: the point is recognition, not arithmetic.
+   */
+  contrast: {
+    eyebrow: { de: 'Der Unterschied im Alltag', en: 'The difference day to day', tr: 'Günlük hayattaki fark', kk: 'Күнделікті жұмыстағы айырма' },
+    heading: {
+      de: 'Was sich ändert, wenn die Abläufe einen Ort haben',
+      en: 'What changes once the processes have a home',
+      tr: 'Süreçlerin bir yeri olduğunda ne değişir',
+      kk: 'Үдерістердің орны болғанда не өзгереді',
+    },
+    intro: {
+      de: 'Nicht die Software ist der Nutzen. Der Nutzen sind sechs Situationen, die heute Zeit und Nerven kosten und danach keine Frage mehr sind.',
+      en: 'The software is not the benefit. The benefit is six situations that cost time and nerves today and stop being a question afterwards.',
+      tr: 'Fayda yazılımın kendisi değil. Fayda, bugün zaman ve sinir kaybettiren, sonrasında ise soru olmaktan çıkan altı durum.',
+      kk: 'Пайда — бағдарламаның өзі емес. Пайда деген — бүгін уақыт пен жүйке шығындайтын, кейін сұрақ болудан қалатын алты жағдай.',
+    },
+    withoutLabel: { de: 'Ohne System', en: 'Without a system', tr: 'Sistem olmadan', kk: 'Жүйесіз' },
+    withLabel: { de: 'Mit Unternehmenssystem', en: 'With a business system', tr: 'Kurumsal sistemle', kk: 'Кәсіпорын жүйесімен' },
+    rows: [
+      {
+        topic: { de: 'Der Überblick', en: 'The overview', tr: 'Genel görünüm', kk: 'Жалпы көрініс' },
+        without: {
+          de: 'Drei Listen mit denselben Kunden, und keine stimmt ganz. Wer die Wahrheit braucht, ruft jemanden an.',
+          en: 'Three lists with the same customers, and none of them is quite right. Anybody who needs the truth phones somebody.',
+          tr: 'Aynı müşterileri içeren üç liste ve hiçbiri tam doğru değil. Gerçeği isteyen birini arıyor.',
+          kk: 'Сол бір клиенттер жазылған үш тізім бар, бірде-біреуі толық дұрыс емес. Шындық керек адам біреуге қоңырау шалады.',
+        },
+        system: {
+          de: 'Ein Bestand, eine Wahrheit. Wer sie braucht, sieht sie — im Rahmen dessen, was seine Rolle sehen darf.',
+          en: 'One record set, one truth. Whoever needs it sees it, within what their role is allowed to see.',
+          tr: 'Tek veri kümesi, tek gerçek. İhtiyacı olan görür — rolünün görmesine izin verilen ölçüde.',
+          kk: 'Бір дерек жиыны, бір шындық. Керек адам оны көреді, әрине рөлі көруге рұқсат еткен шамада.',
+        },
+      },
+      {
+        topic: { de: 'Wenn jemand ausfällt', en: 'When somebody is away', tr: 'Biri olmadığında', kk: 'Біреу болмай қалғанда' },
+        without: {
+          de: 'Der Vorgang wartet auf eine Person. „Das kann nur der Kollege" ist ein Betriebsrisiko mit Vornamen.',
+          en: 'The case waits for a person. “Only one colleague can do that” is an operational risk with a first name.',
+          tr: 'İşlem bir kişiyi bekler. “Bunu sadece o arkadaş yapabilir” cümlesi, adı olan bir işletme riskidir.',
+          kk: 'Іс бір адамды күтеді. «Мұны әріптес қана істей алады» деген сөз — аты бар кәсіптік тәуекел.',
+        },
+        system: {
+          de: 'Der Vorgang wartet auf eine Rolle. Vertretung ist vorgesehen, nicht improvisiert, und der Ablauf läuft weiter.',
+          en: 'The case waits for a role. Cover is designed in rather than improvised, and the process keeps moving.',
+          tr: 'İşlem bir rolü bekler. Vekâlet doğaçlama değil, önceden tasarlanmıştır ve akış devam eder.',
+          kk: 'Іс рөлді күтеді. Орынбасарлық суырыпсалма емес, алдын ала қарастырылған, ағын тоқтамайды.',
+        },
+      },
+      {
+        topic: { de: 'Wenn jemand nachfragt', en: 'When somebody asks', tr: 'Biri sorduğunda', kk: 'Біреу сұрағанда' },
+        without: {
+          de: 'Suche in Chats, Postfächern und Ordnern. Am Ende steht eine Erinnerung, kein Nachweis.',
+          en: 'A search through chats, inboxes and folders. What comes out is a recollection, not evidence.',
+          tr: 'Sohbetlerde, gelen kutularında ve klasörlerde arama. Sonunda kanıt değil, bir hatırlama çıkar.',
+          kk: 'Чаттарды, пошта жәшіктерін және қалталарды ақтару. Соңында дәлел емес, есте қалған нәрсе шығады.',
+        },
+        system: {
+          de: 'Person, Zeitpunkt und Vorzustand stehen am Vorgang. Sie brauchen das nicht im Alltag, sondern an dem einen Tag.',
+          en: 'Person, timestamp and previous state sit on the case. You do not need that day to day — you need it on the one day.',
+          tr: 'Kişi, zaman ve önceki durum işlemin üzerinde durur. Buna her gün değil, o bir günde ihtiyacınız olur.',
+          kk: 'Адам, уақыт және алдыңғы күй істің бойында тұрады. Бұл күнде емес, дәл сол бір күні керек болады.',
+        },
+      },
+      {
+        topic: { de: 'Neue Mitarbeitende', en: 'New hires', tr: 'Yeni çalışanlar', kk: 'Жаңа қызметкерлер' },
+        without: {
+          de: 'Wochen Einarbeitung über Zuruf, weil den Ablauf nie jemand aufgeschrieben hat. Jeder lernt eine leicht andere Version.',
+          en: 'Weeks of onboarding by word of mouth, because nobody ever wrote the process down. Everyone learns a slightly different version.',
+          tr: 'Süreç hiç yazılmadığı için haftalarca kulaktan dolma oryantasyon. Herkes biraz farklı bir sürüm öğrenir.',
+          kk: 'Үдеріс ешқашан жазылмағандықтан, апталар бойы ауызша үйрету. Әркім сәл өзгеше нұсқа үйренеді.',
+        },
+        system: {
+          de: 'Der Ablauf steht im System. Wer neu ist, folgt ihm — und lernt dabei genau die Version, die alle anderen auch benutzen.',
+          en: 'The process is in the system. A new person follows it, and learns exactly the version everybody else uses.',
+          tr: 'Akış sistemde durur. Yeni gelen onu izler ve herkesin kullandığı sürümün aynısını öğrenir.',
+          kk: 'Ағын жүйеде тұрады. Жаңа адам соны ұстанады әрі басқалардың бәрі қолданатын дәл сол нұсқаны үйренеді.',
+        },
+      },
+      {
+        topic: { de: 'Wenn das Volumen wächst', en: 'When volume grows', tr: 'Hacim büyüdüğünde', kk: 'Көлем өскенде' },
+        without: {
+          de: 'Mehr Aufträge heißt mehr Handarbeit und mehr Übertragungsfehler. Wachstum kostet zuerst Personal.',
+          en: 'More orders means more manual work and more transcription errors. Growth costs headcount first.',
+          tr: 'Daha çok sipariş, daha çok el emeği ve daha çok aktarma hatası demek. Büyüme önce personele mal olur.',
+          kk: 'Тапсырыс көбейсе, қол еңбегі мен көшіру қателері де көбейеді. Өсу алдымен қызметкерге түседі.',
+        },
+        system: {
+          de: 'Derselbe Ablauf, nur öfter. Was wächst, ist die Zahl der Vorgänge — nicht die Zahl der Sonderwege.',
+          en: 'The same process, just more often. What grows is the number of cases, not the number of workarounds.',
+          tr: 'Aynı akış, sadece daha sık. Büyüyen şey işlem sayısıdır, istisna sayısı değil.',
+          kk: 'Сол ағын, тек жиірек. Өсетіні — істер саны, айналып өту жолдарының саны емес.',
+        },
+      },
+      {
+        topic: { de: 'Der Monatsabschluss', en: 'Month end', tr: 'Ay sonu', kk: 'Ай соңы' },
+        without: {
+          de: 'Jemand legt zwei Tabellen nebeneinander und gleicht ab. Das dauert, und niemand weiß, ob es stimmt.',
+          en: 'Somebody lays two spreadsheets side by side and reconciles. It takes a while, and nobody knows whether it is right.',
+          tr: 'Biri iki tabloyu yan yana koyup mutabakat yapar. Uzun sürer ve doğru olup olmadığını kimse bilmez.',
+          kk: 'Біреу екі кестені қатар қойып, салыстырады. Ұзаққа созылады, әрі дұрыс екенін ешкім білмейді.',
+        },
+        system: {
+          de: 'Die Zahlen kommen aus dem Bestand, in dem gearbeitet wurde. Jede lässt sich bis zum einzelnen Datensatz aufklappen.',
+          en: 'The figures come from the records people worked in. Each one can be opened down to the single record.',
+          tr: 'Sayılar, üzerinde çalışılan veri kümesinden gelir. Her biri tek kayda kadar açılabilir.',
+          kk: 'Сандар адамдар жұмыс істеген дерек жиынынан шығады. Әрқайсысын жеке жазбаға дейін ашуға болады.',
+        },
+      },
+    ],
+    /**
+     * The boundary. A page that only claims strengths is easier to disbelieve
+     * than one that names a limit, and the limit here happens to be true.
+     */
+    honest: {
+      title: { de: 'Was ein System nicht löst', en: 'What a system does not fix', tr: 'Bir sistemin çözmediği şey', kk: 'Жүйе шешпейтін нәрсе' },
+      text: {
+        de: 'Einen Ablauf, über den sich das Haus nicht einig ist. Software zementiert, was sie vorfindet — deshalb ist Phase drei die unbequeme, in der wir jeden Schritt mit Ihnen durchgehen, bevor jemand etwas baut.',
+        en: 'A process the company does not agree on. Software sets in stone whatever it finds — which is why phase three is the uncomfortable one, where we walk every step with you before anybody builds anything.',
+        tr: 'Şirketin üzerinde anlaşamadığı bir akışı. Yazılım, önünde ne bulursa onu kalıcı hâle getirir — bu yüzden üçüncü aşama, kimse bir şey yapmadan önce her adımı sizinle birlikte geçtiğimiz rahatsız edici aşamadır.',
+        kk: 'Компания өзара келісе алмаған ағынды. Бағдарлама алдынан не тапса, соны бекітіп тастайды, сондықтан үшінші кезең — ешкім ештеңе құрмай тұрып, әр қадамды сізбен бірге қарап шығатын қолайсыз кезең.',
+      },
+    },
+  },
+
+  /**
+   * Framing for the voices section. Renders only when at least one entry in
+   * `voices` carries `approved: true`.
+   */
+  voices: {
+    eyebrow: { de: 'Stimmen aus dem Betrieb', en: 'Voices from the floor', tr: 'Sahadan sesler', kk: 'Кәсіп ішінен шыққан дауыстар' },
+    heading: {
+      de: 'Was sich für die geändert hat, die damit arbeiten',
+      en: 'What changed for the people who work in it',
+      tr: 'Onunla çalışanlar için ne değişti',
+      kk: 'Онымен жұмыс істейтіндер үшін не өзгерді',
+    },
+    intro: {
+      de: 'Nicht die Geschäftsführung allein — die Rollen, die den Unterschied täglich merken.',
+      en: 'Not management alone — the roles that feel the difference every day.',
+      tr: 'Yalnızca yönetim değil — farkı her gün hisseden roller.',
+      kk: 'Тек басшылық қана емес: айырманы күн сайын сезінетін рөлдер.',
+    },
+    beforeLabel: { de: 'Vorher', en: 'Before', tr: 'Öncesinde', kk: 'Бұрын' },
+    afterLabel: { de: 'Heute', en: 'Now', tr: 'Bugün', kk: 'Бүгін' },
+  },
+
   /** Self-selection. Routing someone away honestly is worth more than a lead. */
   split: {
     heading: {
@@ -332,12 +512,17 @@ export const systeme = {
 
   /** Proof the reader can verify without asking us anything. */
   portfolio: {
-    heading: { de: 'Zwei Systeme, die Sie aufmachen können', en: 'Two systems you can open right now', tr: 'Hemen açabileceğiniz iki sistem', kk: 'Дәл қазір ашып көре алатын екі жүйе' },
+    /**
+     * "Two systems" read as the catalogue — as though these were the two we
+     * sell. They are two builds shown as examples, and the heading has to say
+     * so before somebody concludes we only do estate agencies and academies.
+     */
+    heading: { de: 'Zwei Beispiele, die Sie öffnen können', en: 'Two examples you can open', tr: 'Açabileceğiniz iki örnek', kk: 'Ашып көре алатын екі мысал' },
     intro: {
-      de: 'Beide laufen produktiv. Klicken Sie hinein, statt uns zu glauben — Referenzen, die man nicht anfassen kann, sind keine.',
-      en: 'Both run in production. Click into them rather than taking our word for it — a reference you cannot touch is not a reference.',
-      tr: 'İkisi de üretimde çalışıyor. Bize inanmak yerine içine girin — dokunamadığınız bir referans, referans değildir.',
-      kk: 'Екеуі де өнеркәсіптік пайдалануда. Бізге сенудің орнына ішіне кіріп көріңіз, өйткені қолмен ұстап көре алмайтын референс референс емес.',
+      de: 'Zwei gebaute Systeme, kein Katalog — Ihres sähe anders aus. Beide laufen produktiv, und beide lassen sich öffnen: Referenzen, die man nicht anfassen kann, sind keine.',
+      en: 'Two systems we built, not a catalogue — yours would look different. Both run in production and both can be opened: a reference you cannot touch is not a reference.',
+      tr: 'Kurduğumuz iki sistem, bir katalog değil — sizinki farklı görünürdü. İkisi de üretimde çalışıyor ve ikisi de açılabiliyor: dokunamadığınız bir referans, referans değildir.',
+      kk: 'Біз жасаған екі жүйе, каталог емес: сіздікі басқаша болар еді. Екеуі де өнеркәсіптік пайдалануда әрі екеуін де ашып көруге болады, өйткені қолмен ұстап көре алмайтын референс референс емес.',
     },
     live: { de: 'System öffnen', en: 'Open the system', tr: 'Sistemi aç', kk: 'Жүйені ашу' },
     featuredLabel: { de: 'Referenzsystem', en: 'Reference system', tr: 'Referans sistem', kk: 'Референс жүйе' },
@@ -636,25 +821,32 @@ export const systeme = {
   },
 
   /**
-   * The strip under the hero. Terms, not screenshots: the web-design page
-   * scrolls client sites past the reader because it sells appearance, and this
-   * page sells substance, so it scrolls the vocabulary of the trade instead.
-   * Everything named here is delivered by the sections further down — nothing
-   * in the strip is a term the page does not go on to earn.
+   * The strip under the hero: the areas of a company a system covers.
+   *
+   * It used to scroll the vocabulary of the trade — row-level security, single
+   * source of truth, webhooks. Accurate, and useless here: a managing director
+   * reads it and cannot tell whether any of it touches their business. These
+   * are the departments instead, and a reader recognises their own in the
+   * first two seconds. The technical vocabulary has not gone anywhere — it
+   * lives in the module explorer and the security section, where somebody is
+   * already asking how rather than what.
+   *
+   * The list follows 1Çatı, which covers most of them in one workspace, and is
+   * generalised so it is not an estate-agency list.
    */
   marquee: [
-    { de: 'Rollen & Rechte', en: 'Roles & rights', tr: 'Roller ve yetkiler', kk: 'Рөлдер мен құқықтар' },
-    { de: 'Nachweiskette', en: 'Audit trail', tr: 'Kanıt zinciri', kk: 'Дәлел тізбегі' },
-    { de: 'Workflow-Engine', en: 'Workflow engine', tr: 'İş akışı motoru', kk: 'Workflow-жүйесі' },
-    { de: 'Rechte bis auf Zeilenebene', en: 'Row-level security', tr: 'Satır düzeyinde yetki', kk: 'Жол деңгейіндегі құқық' },
-    { de: 'REST-API & Webhooks', en: 'REST API & webhooks', tr: 'REST API ve webhook', kk: 'REST API және webhook' },
-    { de: 'Single Source of Truth', en: 'Single source of truth', tr: 'Tek doğruluk kaynağı', kk: 'Жалғыз ақиқат көзі' },
-    { de: 'DSGVO & AVV', en: 'GDPR & DPA', tr: 'GDPR ve VİS', kk: 'GDPR және ДӨШ' },
-    { de: 'Datenmigration', en: 'Data migration', tr: 'Veri göçü', kk: 'Деректерді көшіру' },
-    { de: 'KI mit Leitplanken', en: 'AI with guardrails', tr: 'Sınırlı yapay zekâ', kk: 'Шегі бар ЖИ' },
-    { de: 'Mehrmandantenfähig', en: 'Multi-tenant', tr: 'Çok kiracılı', kk: 'Көп жалдаушылы' },
-    { de: 'Barrierefrei nach BFSG', en: 'Accessible under the BFSG', tr: 'BFSG’ye göre erişilebilir', kk: 'BFSG бойынша қолжетімді' },
-    { de: 'Testmanagement nach ISTQB', en: 'Test management to ISTQB', tr: 'ISTQB’ye göre test yönetimi', kk: 'ISTQB бойынша тестілеу' },
+    { de: 'Vertrieb & Interessenten', en: 'Sales & leads', tr: 'Satış ve potansiyel müşteriler', kk: 'Сатылым және әлеуетті клиенттер' },
+    { de: 'Kunden & Stammdaten', en: 'Customers & master data', tr: 'Müşteriler ve ana veriler', kk: 'Клиенттер және негізгі деректер' },
+    { de: 'Objekte & Bestand', en: 'Assets & inventory', tr: 'Varlıklar ve envanter', kk: 'Нысандар және қор' },
+    { de: 'Aufträge & Vorgänge', en: 'Orders & cases', tr: 'Siparişler ve işlemler', kk: 'Тапсырыстар және істер' },
+    { de: 'Service & Einsätze', en: 'Service & field work', tr: 'Servis ve saha işleri', kk: 'Сервис және далалық жұмыс' },
+    { de: 'Finanzen & offene Posten', en: 'Finance & receivables', tr: 'Finans ve açık kalemler', kk: 'Қаржы және ашық баптар' },
+    { de: 'Dokumente & Nachweise', en: 'Documents & records', tr: 'Dokümanlar ve kanıtlar', kk: 'Құжаттар және дәлелдер' },
+    { de: 'Zutritt & Berechtigungen', en: 'Access & permissions', tr: 'Erişim ve yetkiler', kk: 'Кіру және рұқсаттар' },
+    { de: 'Kundenportal', en: 'Customer portal', tr: 'Müşteri portalı', kk: 'Клиент порталы' },
+    { de: 'Einkauf & Lieferanten', en: 'Purchasing & suppliers', tr: 'Satın alma ve tedarikçiler', kk: 'Сатып алу және жеткізушілер' },
+    { de: 'Meldungen an Behörden', en: 'Regulatory reporting', tr: 'Resmî bildirimler', kk: 'Мемлекеттік органдарға есеп' },
+    { de: 'Auswertung & Kennzahlen', en: 'Reporting & figures', tr: 'Analiz ve göstergeler', kk: 'Талдау және көрсеткіштер' },
   ],
 
   /**
@@ -682,6 +874,12 @@ export const systeme = {
       en: 'Schematic — no real data',
       tr: 'Şema — gerçek veri değil',
       kk: 'Схема — нақты дерек емес',
+    },
+    /** Labels of the three beats each layer's scenario is told in. */
+    beats: {
+      situation: { de: 'Die Situation', en: 'The situation', tr: 'Durum', kk: 'Жағдай' },
+      without: { de: 'Ohne System', en: 'Without a system', tr: 'Sistem olmadan', kk: 'Жүйесіз' },
+      solved: { de: 'Mit dieser Schicht', en: 'With this layer', tr: 'Bu katmanla', kk: 'Осы қабатпен' },
     },
   },
 
@@ -822,6 +1020,15 @@ export interface SystemModule {
   headline: L;
   text: L;
   points: L[];
+  /**
+   * One concrete moment from a working day, in three beats. The panels used to
+   * say what a layer is and left the reader to work out why it matters; a
+   * situation they recognise, the thing that goes wrong without the layer, and
+   * the way it is solved does that work for them. Deliberately small and
+   * specific — a trainee who may not see purchase prices beats "granular
+   * permission management".
+   */
+  scenario: { situation: L; without: L; solved: L };
   diagram: 'records' | 'workflow' | 'rights' | 'documents' | 'finance' | 'api' | 'insights';
   labels: L[];
 }
@@ -847,6 +1054,11 @@ export const modules: SystemModule[] = [
       { de: 'Pflichtfelder erzwingen die Angaben, die später jemand braucht', en: 'Required fields enforce the details somebody will need later', tr: 'Zorunlu alanlar, sonradan birinin ihtiyaç duyacağı bilgileri zorunlu kılar', kk: 'Міндетті өрістер кейін біреуге керек болатын мәліметті талап етеді' },
       { de: 'Jeder Datensatz kennt seine eigene Änderungsgeschichte', en: 'Every record knows its own change history', tr: 'Her kayıt kendi değişiklik geçmişini bilir', kk: 'Әр жазба өз өзгеріс тарихын біледі' },
     ],
+    scenario: {
+      situation: { de: 'Ein Kunde ruft an und fragt nach dem Stand. Drei Kolleginnen haben ihn angelegt, jede etwas anders geschrieben.', en: 'A customer calls and asks where things stand. Three colleagues have created him, each spelling the name slightly differently.', tr: 'Bir müşteri arayıp durumu soruyor. Üç meslektaş onu ayrı ayrı kaydetmiş, her biri adını biraz farklı yazmış.', kk: 'Клиент қоңырау шалып, істің жайын сұрайды. Оны үш әріптес бөлек енгізген, әрқайсысы атын сәл өзгеше жазған.' },
+      without: { de: 'Die Antwort hängt davon ab, welche der drei Karteien jemand zuerst öffnet. Zwei davon sind veraltet, und man sieht ihnen das nicht an.', en: 'The answer depends on which of the three files somebody opens first. Two are out of date, and nothing about them says so.', tr: 'Yanıt, üç kayıttan hangisinin önce açıldığına bağlı. İkisi güncel değil ve bunu dışarıdan anlamak mümkün değil.', kk: 'Жауап үш жазбаның қайсысы бірінші ашылғанына байланысты. Екеуі ескірген, бірақ оны сырттан білу мүмкін емес.' },
+      solved: { de: 'Der Datensatz existiert einmal. Beim Anlegen meldet das System die Ähnlichkeit, und die Historie zeigt, wer wann was geändert hat — die Antwort ist dieselbe, egal wer sie gibt.', en: 'The record exists once. On creation the system flags the similarity, and the history shows who changed what and when — the answer is the same whoever gives it.', tr: 'Kayıt bir kez var olur. Oluştururken sistem benzerliği bildirir ve geçmiş kimin ne zaman neyi değiştirdiğini gösterir — yanıtı kim verirse versin aynıdır.', kk: 'Жазба бір рет қана болады. Құру кезінде жүйе ұқсастықты ескертеді, ал тарих кімнің қашан нені өзгерткенін көрсетеді: жауап кім берсе де бірдей.' },
+    },
     diagram: 'records',
     labels: [
       { de: 'Datensatz', en: 'Record', tr: 'Kayıt', kk: 'Жазба' },
@@ -875,6 +1087,11 @@ export const modules: SystemModule[] = [
       { de: 'Fristen und Wiedervorlagen erinnern das System, nicht die Person', en: 'Deadlines and reminders sit with the system, not with a person', tr: 'Süreler ve hatırlatmalar kişide değil, sistemde durur', kk: 'Мерзімдер мен еске салулар адамда емес, жүйеде тұрады' },
       { de: 'Vertretung ist vorgesehen, nicht improvisiert', en: 'Cover is designed in, not improvised', tr: 'Vekâlet doğaçlama değil, önceden tasarlanmıştır', kk: 'Орынбасарлық суырыпсалма емес, алдын ала қарастырылған' },
     ],
+    scenario: {
+      situation: { de: 'Ein Angebot mit ungewöhnlichem Rabatt soll heute raus. Die Person, die freigeben darf, ist im Urlaub.', en: 'A quote with an unusual discount has to go out today. The person allowed to approve it is on holiday.', tr: 'Alışılmadık bir indirim içeren teklif bugün gitmeli. Onay verebilecek kişi izinde.', kk: 'Ерекше жеңілдігі бар ұсыныс бүгін кетуі керек. Бекітуге құқылы адам демалыста.' },
+      without: { de: 'Jemand gibt es trotzdem raus und sagt später Bescheid. Drei Monate danach fragt die Buchhaltung, wer das entschieden hat, und niemand weiß es mehr genau.', en: 'Somebody sends it anyway and mentions it later. Three months on, accounting asks who decided that, and nobody quite remembers.', tr: 'Biri yine de gönderir, sonra haber verir. Üç ay sonra muhasebe kimin karar verdiğini sorar ve kimse tam hatırlamaz.', kk: 'Біреу оны бәрібір жібереді де, кейін айтады. Үш айдан соң бухгалтерия кім шешкенін сұрайды, ал ешкім нақты есіне түсіре алмайды.' },
+      solved: { de: 'Der Vorgang bleibt im Zustand „geprüft" stehen und lässt sich nicht überspringen. Die Vertretung ist hinterlegt, gibt frei — und dass sie es war, steht danach in der Akte.', en: 'The case stays in the "reviewed" state and cannot be skipped. The designated stand-in approves it, and the fact that it was them is on the record afterwards.', tr: 'İşlem “incelendi” durumunda kalır ve atlanamaz. Tanımlı vekil onaylar ve bunu onun yaptığı sonrasında kayıtta durur.', kk: 'Іс «тексерілген» күйінде қалады әрі оны аттап өтуге болмайды. Тағайындалған орынбасар бекітеді, ал оны кімнің істегені кейін жазбада тұрады.' },
+    },
     diagram: 'workflow',
     labels: [
       { de: 'offen', en: 'open', tr: 'açık', kk: 'ашық' },
@@ -903,6 +1120,11 @@ export const modules: SystemModule[] = [
       { de: 'Lesen, ändern, freigeben und löschen sind vier verschiedene Rechte', en: 'Read, edit, approve and delete are four different rights', tr: 'Okuma, değiştirme, onaylama ve silme dört ayrı yetkidir', kk: 'Оқу, өзгерту, бекіту және жою — төрт бөлек құқық' },
       { de: 'Jede Rechteänderung landet selbst in der Nachweiskette', en: 'Every change to a permission lands in the audit trail itself', tr: 'Her yetki değişikliği de kanıt zincirine düşer', kk: 'Әр құқық өзгерісі дәлел тізбегіне түседі' },
     ],
+    scenario: {
+      situation: { de: 'Ein Praktikant soll Angebote schreiben. Die Einkaufspreise darf er dabei nicht sehen.', en: 'An intern is to write quotes. He must not see the purchase prices while doing it.', tr: 'Bir stajyer teklif yazacak. Bunu yaparken alış fiyatlarını görmemeli.', kk: 'Тәжірибеден өтуші ұсыныс жазуы керек. Сол кезде сатып алу бағасын көрмеуі тиіс.' },
+      without: { de: 'Es entsteht eine zweite Tabelle ohne die Spalte. Ab Tag zwei weicht sie ab, und irgendwann schreibt jemand ein Angebot aus der falschen Datei.', en: 'A second spreadsheet appears without that column. From day two it drifts, and eventually somebody writes a quote from the wrong file.', tr: 'O sütun olmadan ikinci bir tablo oluşur. İkinci günden itibaren sapar ve bir gün biri yanlış dosyadan teklif yazar.', kk: 'Ол баған жоқ екінші кесте пайда болады. Екінші күннен бастап ол ауытқиды, ақыры біреу қате файлдан ұсыныс жазады.' },
+      solved: { de: 'Er arbeitet in derselben Liste wie alle. Die Spalte kommt für seine Rolle gar nicht erst aus der Datenbank — nicht ausgeblendet, sondern nicht geliefert.', en: 'He works in the same list as everyone else. For his role that column never leaves the database — not hidden, simply not sent.', tr: 'Herkesle aynı listede çalışır. O sütun onun rolü için veritabanından hiç çıkmaz — gizlenmiş değil, gönderilmemiştir.', kk: 'Ол бәрімен бір тізімде жұмыс істейді. Оның рөлі үшін ол баған дерекқордан мүлде шықпайды: жасырылған емес, жіберілмеген.' },
+    },
     diagram: 'rights',
     labels: [
       { de: 'Sachbearbeitung', en: 'Case handling', tr: 'Uzman', kk: 'Маман' },
@@ -933,6 +1155,11 @@ export const modules: SystemModule[] = [
       { de: 'Ablaufdaten und Fristen meldet das System von sich aus', en: 'Expiry dates and deadlines are raised by the system itself', tr: 'Geçerlilik ve son tarihleri sistem kendiliğinden bildirir', kk: 'Мерзімдерді жүйенің өзі ескертеді' },
       { de: 'Sichtbarkeit folgt derselben Rollenmatrix wie die Daten', en: 'Visibility follows the same role matrix as the data', tr: 'Görünürlük, veriyle aynı rol matrisini izler', kk: 'Көріну деректермен бірдей рөл матрицасына бағынады' },
     ],
+    scenario: {
+      situation: { de: 'Zwei Jahre nach einem Umbau fragt eine Versicherung nach dem Abnahmeprotokoll und den Fotos vom Tag der Übergabe.', en: 'Two years after a refit, an insurer asks for the handover report and the photos taken on the day.', tr: 'Bir tadilattan iki yıl sonra sigorta şirketi teslim tutanağını ve o günkü fotoğrafları istiyor.', kk: 'Жөндеуден екі жыл өткен соң сақтандыру компаниясы қабылдау хаттамасын және сол күнгі суреттерді сұрайды.' },
+      without: { de: 'Die Fotos sind auf einem Telefon, das inzwischen jemand anderem gehört. Das Protokoll liegt als Anhang in einem Postfach, das mit dem Kollegen gegangen ist.', en: 'The photos are on a phone that now belongs to somebody else. The report is an attachment in a mailbox that left with the colleague.', tr: 'Fotoğraflar artık başkasına ait bir telefonda. Tutanak ise şirketten ayrılan meslektaşın posta kutusunda ek olarak duruyor.', kk: 'Суреттер қазір басқа біреуге тиесілі телефонда. Хаттама болса, кеткен әріптестің пошта жәшігінде тіркеме болып жатыр.' },
+      solved: { de: 'Beides hängt an dem Vorgang, zu dem es gehört, versioniert und mit der Person, die es hochgeladen hat. Die Anfrage ist in zwei Minuten beantwortet statt in zwei Tagen.', en: 'Both sit on the case they belong to, versioned and with the person who uploaded them. The request is answered in two minutes rather than two days.', tr: 'İkisi de ait oldukları işlemde durur; sürümlü ve yükleyen kişiyle birlikte. Talep iki gün yerine iki dakikada yanıtlanır.', kk: 'Екеуі де өздері тиесілі істің қасында тұрады: нұсқасымен және жүктеген адамымен. Сұрау екі күнде емес, екі минутта жауап табады.' },
+    },
     diagram: 'documents',
     labels: [
       { de: 'hochgeladen', en: 'uploaded', tr: 'yüklendi', kk: 'жүктелді' },
@@ -960,6 +1187,11 @@ export const modules: SystemModule[] = [
       { de: 'Mehrere Währungen, wenn Ihr Geschäft sie braucht', en: 'Several currencies, when your business needs them', tr: 'İşiniz gerektiriyorsa birden çok para birimi', kk: 'Кәсібіңізге керек болса, бірнеше валюта' },
       { de: 'Export in das Format, das Ihre Buchhaltung schon liest', en: 'Export in the format your accounting already reads', tr: 'Muhasebenizin zaten okuduğu biçimde dışa aktarım', kk: 'Бухгалтерияңыз бұрыннан оқитын форматқа шығару' },
     ],
+    scenario: {
+      situation: { de: 'Am Monatsende soll die Geschäftsführung wissen, was offen ist und wie lange schon.', en: 'At month end, management wants to know what is outstanding and for how long.', tr: 'Ay sonunda yönetim, neyin açık olduğunu ve ne kadar süredir açık olduğunu bilmek istiyor.', kk: 'Ай соңында басшылық не ашық тұрғанын және қанша уақыттан бері екенін білгісі келеді.' },
+      without: { de: 'Jemand exportiert aus zwei Systemen und gleicht von Hand ab. Der Stand ist am Tag der Fertigstellung schon wieder alt, und Rückfragen beginnen von vorn.', en: 'Somebody exports from two systems and reconciles by hand. The result is already stale on the day it is finished, and any query starts over.', tr: 'Biri iki sistemden dışa aktarıp elle mutabakat yapar. Sonuç bittiği gün çoktan eskimiştir ve her soru baştan başlar.', kk: 'Біреу екі жүйеден экспорттап, қолмен салыстырады. Нәтиже дайын болған күні-ақ ескіреді, ал әр сұрақ басынан басталады.' },
+      solved: { de: 'Forderung, Zahlung und Beleg hängen am selben Vorgang. Was offen ist, ist offen, weil der Datensatz es sagt — und jede Zeile lässt sich bis zum Beleg aufklappen.', en: 'Receivable, payment and document hang on the same case. What is outstanding is outstanding because the record says so — and every line opens down to the document.', tr: 'Alacak, ödeme ve belge aynı işleme bağlıdır. Açık olan, kayıt öyle dediği için açıktır ve her satır belgeye kadar açılabilir.', kk: 'Талап, төлем және құжат бір істің бойында тұрады. Ашық бап жазба солай дегендіктен ашық, әрі әр жол құжатқа дейін ашылады.' },
+    },
     diagram: 'finance',
     labels: [
       { de: 'Forderung', en: 'Receivable', tr: 'Alacak', kk: 'Талап' },
@@ -988,6 +1220,11 @@ export const modules: SystemModule[] = [
       { de: 'Ereignisse werden gemeldet, statt im Minutentakt abgefragt', en: 'Events are pushed rather than polled every minute', tr: 'Olaylar dakika başı sorgulanmak yerine bildirilir', kk: 'Оқиғалар минут сайын сұралмай, өздігінен хабарланады' },
       { de: 'Jede Anbindung wird protokolliert wie jede andere Änderung', en: 'Every connection is logged like any other change', tr: 'Her bağlantı da diğer değişiklikler gibi kaydedilir', kk: 'Әр жалғанысы да басқа өзгеріс сияқты тіркеледі' },
     ],
+    scenario: {
+      situation: { de: 'Die Steuerkanzlei möchte die Belege monatlich in ihrem eigenen Format, und der Kalender des Außendienstes soll die Termine kennen.', en: 'The tax firm wants the documents monthly in its own format, and the field team’s calendar should know the appointments.', tr: 'Mali müşavir belgeleri her ay kendi biçiminde istiyor ve saha ekibinin takvimi randevuları bilmeli.', kk: 'Салық кеңсесі құжаттарды ай сайын өз форматында алғысы келеді, ал далалық команданың күнтізбесі кездесулерді білуі керек.' },
+      without: { de: 'Einmal im Monat sitzt jemand einen halben Tag am Export, und Termine werden zweimal gepflegt. Beides funktioniert, bis die Person, die es macht, krank wird.', en: 'Once a month somebody spends half a day on the export, and appointments are maintained twice. Both work until the person doing it is off sick.', tr: 'Ayda bir kez biri yarım gününü dışa aktarıma verir ve randevular iki kez girilir. İkisi de, bunu yapan kişi hastalanana kadar işler.', kk: 'Айына бір рет біреу жарты күнін экспортқа жұмсайды, ал кездесулер екі рет енгізіледі. Екеуі де оны істейтін адам ауырғанша жұмыс істейді.' },
+      solved: { de: 'Die Kanzlei zieht sich die Belege selbst über eine dokumentierte Schnittstelle, der Kalender bekommt jeden neuen Termin als Ereignis gemeldet. Beides läuft weiter, wenn niemand da ist.', en: 'The tax firm pulls the documents itself through a documented interface, and the calendar is notified of every new appointment as an event. Both keep running when nobody is there.', tr: 'Mali müşavir belgeleri belgelenmiş bir arayüzden kendisi çeker; takvime her yeni randevu olay olarak bildirilir. Kimse olmadığında da ikisi çalışmaya devam eder.', kk: 'Салық кеңсесі құжаттарды құжатталған интерфейс арқылы өзі алады, ал күнтізбеге әр жаңа кездесу оқиға ретінде хабарланады. Ешкім болмаса да, екеуі жұмысын жалғастырады.' },
+    },
     diagram: 'api',
     labels: [
       { de: 'Datensätze lesen', en: 'Read records', tr: 'Kayıtları oku', kk: 'Жазбаларды оқу' },
@@ -1016,12 +1253,170 @@ export const modules: SystemModule[] = [
       { de: 'Der KI-Assistent antwortet aus Ihren Inhalten und schweigt sonst', en: 'The AI assistant answers from your content and otherwise stays quiet', tr: 'Yapay zekâ asistanı kendi içeriğinizden yanıtlar, aksi hâlde susar', kk: 'ЖИ көмекшісі сіздің мазмұныңыздан жауап береді, әйтпесе үндемейді' },
       { de: 'Auswertungen respektieren dieselben Rechte wie die Listen', en: 'Reports respect the same rights as the lists do', tr: 'Analizler de listelerle aynı yetkilere uyar', kk: 'Талдаулар да тізімдермен бірдей құқықты сақтайды' },
     ],
+    scenario: {
+      situation: { de: 'In der Sitzung fällt die Frage, wie viele Vorgänge im letzten Quartal in der Freigabe hängen geblieben sind.', en: 'In a meeting somebody asks how many cases got stuck at approval last quarter.', tr: 'Toplantıda geçen çeyrekte kaç işlemin onayda takıldığı soruluyor.', kk: 'Отырыста өткен тоқсанда қанша істің бекітуде тұрып қалғаны сұралады.' },
+      without: { de: 'Es wird geschätzt. Die Schätzung landet in einem Protokoll, aus dem Protokoll in einer Präsentation, und ab da gilt sie als Zahl.', en: 'Somebody estimates. The estimate goes into minutes, from the minutes into a deck, and from then on it counts as a figure.', tr: 'Bir tahmin yapılır. Tahmin tutanağa, tutanaktan sunuma geçer ve o andan itibaren sayı sayılır.', kk: 'Болжам айтылады. Болжам хаттамаға, хаттамадан презентацияға көшеді де, содан бастап сан ретінде қабылданады.' },
+      solved: { de: 'Die Auswertung rechnet auf demselben Bestand, in dem gearbeitet wird, und lässt sich bis zum einzelnen Vorgang aufklappen. Und wo die Frage aus den Daten noch nicht zu beantworten ist, sagt die Kachel genau das.', en: 'The report calculates on the same records people work in and opens down to the single case. And where the data cannot answer the question yet, the tile says exactly that.', tr: 'Analiz, üzerinde çalışılan veri kümesinden hesaplanır ve tek işleme kadar açılabilir. Veriler soruyu henüz yanıtlayamıyorsa, kutu bunu açıkça yazar.', kk: 'Талдау адамдар жұмыс істейтін дәл сол дерек жиынынан есептеледі әрі жеке іске дейін ашылады. Ал дерек сұраққа әлі жауап бере алмаса, тақташа соны ашық жазады.' },
+    },
     diagram: 'insights',
     labels: [
       { de: 'aus echten Daten', en: 'from real data', tr: 'gerçek veriden', kk: 'нақты деректен' },
       { de: 'noch nicht berechenbar', en: 'not yet calculable', tr: 'henüz hesaplanamıyor', kk: 'әзірге есептеуге келмейді' },
       { de: 'bis zum Datensatz aufklappbar', en: 'expandable to the record', tr: 'kayda kadar açılabilir', kk: 'жазбаға дейін ашылады' },
     ],
+  },
+];
+
+/**
+ * Voices from the two systems.
+ *
+ * READ THIS BEFORE EDITING. Every entry below is a DRAFT written to show the
+ * shape and tone a usable quote has — a role, one sentence about the state
+ * before, one about what changed. None of them is a real quote, and none of
+ * them renders: the page only shows entries with `approved: true`, and until a
+ * named person has said the words and agreed in writing to be named, the whole
+ * section stays off the page.
+ *
+ * Star ratings are deliberately absent. In B2B nobody buys a system because it
+ * has four and a half stars; they buy it because somebody in their own job
+ * describes a Tuesday that got easier. That is why the shape is role → before
+ * → after rather than a testimonial blob.
+ *
+ * The interview guide — which questions produce answers in this shape, and the
+ * release wording — is in `docs/systemstimmen-leitfaden.md`.
+ */
+export interface SystemVoice {
+  /** Set true ONLY once a named person has approved the exact wording. */
+  approved: boolean;
+  /** Which of the two reference systems the voice belongs to. */
+  system: '1cati' | 'ditele';
+  role: L;
+  /** Filled in with the real person once they have agreed to be named. */
+  name?: string;
+  org?: string;
+  before: L;
+  after: L;
+}
+
+export const voices: SystemVoice[] = [
+  {
+    approved: false,
+    system: '1cati',
+    role: { de: 'Geschäftsführung', en: 'Managing director', tr: 'Genel müdür', kk: 'Басқарушы директор' },
+    before: {
+      de: 'Wenn ich wissen wollte, wo wir stehen, musste ich drei Leute fragen und bekam drei Stände.',
+      en: 'If I wanted to know where we stood, I had to ask three people and got three answers.',
+      tr: 'Nerede olduğumuzu bilmek istediğimde üç kişiye sormam gerekiyordu ve üç farklı cevap alıyordum.',
+      kk: 'Қай жерде тұрғанымызды білгім келсе, үш адамнан сұрауға тура келетін, үш түрлі жауап алатынмын.',
+    },
+    after: {
+      de: 'Heute mache ich den Arbeitsbereich auf. Die Frage stellt sich nicht mehr.',
+      en: 'Now I open the workspace. The question does not come up any more.',
+      tr: 'Artık çalışma alanını açıyorum. Soru artık ortaya çıkmıyor.',
+      kk: 'Қазір жұмыс кеңістігін ашамын. Ол сұрақ енді туындамайды.',
+    },
+  },
+  {
+    approved: false,
+    system: '1cati',
+    role: { de: 'Vertriebsleitung', en: 'Head of sales', tr: 'Satış müdürü', kk: 'Сатылым жетекшісі' },
+    before: {
+      de: 'Jeder im Team hatte seine eigene Liste. Vor jedem Meeting habe ich sie zusammengeführt.',
+      en: 'Everybody on the team had their own list. Before every meeting I merged them.',
+      tr: 'Ekipteki herkesin kendi listesi vardı. Her toplantı öncesi onları birleştiriyordum.',
+      kk: 'Командадағы әркімнің өз тізімі болатын. Әр жиналыс алдында оларды біріктіретінмін.',
+    },
+    after: {
+      de: 'Es gibt eine Liste, und sie ist immer aktuell. Die Vorbereitung ist weggefallen.',
+      en: 'There is one list and it is always current. The preparation has simply gone.',
+      tr: 'Tek bir liste var ve hep güncel. Hazırlık aşaması tamamen ortadan kalktı.',
+      kk: 'Бір ғана тізім бар, әрі ол әрқашан жаңа. Дайындық деген мүлде жоғалды.',
+    },
+  },
+  {
+    approved: false,
+    system: '1cati',
+    role: { de: 'Buchhaltung', en: 'Accounting', tr: 'Muhasebe', kk: 'Бухгалтерия' },
+    before: {
+      de: 'Zum Monatsende habe ich zwei Exporte nebeneinandergelegt und von Hand abgeglichen.',
+      en: 'At month end I laid two exports side by side and reconciled them by hand.',
+      tr: 'Ay sonunda iki dışa aktarımı yan yana koyup elle mutabakat yapıyordum.',
+      kk: 'Ай соңында екі экспортты қатар қойып, қолмен салыстыратынмын.',
+    },
+    after: {
+      de: 'Die offenen Posten stehen am Vorgang. Wenn jemand fragt, klappe ich die Zeile auf.',
+      en: 'The outstanding items sit on the case. If somebody asks, I open the line.',
+      tr: 'Açık kalemler işlemin üzerinde duruyor. Biri sorarsa satırı açıyorum.',
+      kk: 'Ашық баптар істің бойында тұр. Біреу сұраса, жолды ашып көрсетемін.',
+    },
+  },
+  {
+    approved: false,
+    system: '1cati',
+    role: { de: 'Objektbetreuung', en: 'Property services', tr: 'Saha ve servis', kk: 'Нысанды күтіп ұстау' },
+    before: {
+      de: 'Einsätze kamen per Anruf. Was gemacht wurde, stand hinterher nirgends.',
+      en: 'Jobs came in by phone. What had been done was afterwards written down nowhere.',
+      tr: 'İşler telefonla geliyordu. Ne yapıldığı sonrasında hiçbir yerde yazmıyordu.',
+      kk: 'Тапсырмалар телефонмен келетін. Не істелгені кейін еш жерде жазылмайтын.',
+    },
+    after: {
+      de: 'Der Einsatz hängt am Objekt, mit Foto und Zeitpunkt. Diskussionen darüber gibt es nicht mehr.',
+      en: 'The job hangs on the property, with a photo and a timestamp. There are no more arguments about it.',
+      tr: 'İş, fotoğraf ve zaman bilgisiyle birlikte varlığa bağlı. Artık bu konuda tartışma olmuyor.',
+      kk: 'Тапсырма нысанның бойында, фотосымен және уақытымен тұр. Бұл туралы дау енді жоқ.',
+    },
+  },
+  {
+    approved: false,
+    system: '1cati',
+    role: { de: 'Eigentümerin, Portalnutzerin', en: 'Owner, portal user', tr: 'Malik, portal kullanıcısı', kk: 'Меншік иесі, портал қолданушысы' },
+    before: {
+      de: 'Für jede Auskunft musste ich im Büro anrufen, am besten vormittags.',
+      en: 'For any information I had to phone the office, preferably in the morning.',
+      tr: 'Her bilgi için ofisi aramam gerekiyordu, tercihen sabahları.',
+      kk: 'Кез келген ақпарат үшін кеңсеге қоңырау шалуым керек еді, ең дұрысы таңертең.',
+    },
+    after: {
+      de: 'Ich sehe meinen Stand selbst, in meiner Sprache, auch abends um zehn.',
+      en: 'I can see where I stand myself, in my own language, at ten in the evening as well.',
+      tr: 'Durumumu kendim görebiliyorum, kendi dilimde, akşam onda bile.',
+      kk: 'Өз жағдайымды өзім көремін, өз тілімде, тіпті кешкі онда да.',
+    },
+  },
+  {
+    approved: false,
+    system: 'ditele',
+    role: { de: 'Trainerin', en: 'Trainer', tr: 'Eğitmen', kk: 'Тренер' },
+    before: {
+      de: 'Fehlerberichte kamen per Mail, in jedem Format, das man sich vorstellen kann.',
+      en: 'Defect reports arrived by email, in every format you can imagine.',
+      tr: 'Hata raporları e-postayla, akla gelebilecek her biçimde geliyordu.',
+      kk: 'Ақау есептері поштамен, ойға келетін кез келген форматта келетін.',
+    },
+    after: {
+      de: 'Alle Einreichungen liegen an einem Ort, in einer Struktur. Ich bewerte, statt zu sortieren.',
+      en: 'Every submission is in one place, in one structure. I review instead of sorting.',
+      tr: 'Tüm teslimler tek yerde, tek yapıda. Artık ayıklamak yerine değerlendiriyorum.',
+      kk: 'Барлық тапсырма бір жерде, бір құрылымда. Енді сұрыптамай, бағалаймын.',
+    },
+  },
+  {
+    approved: false,
+    system: 'ditele',
+    role: { de: 'Teilnehmer', en: 'Learner', tr: 'Katılımcı', kk: 'Қатысушы' },
+    before: {
+      de: 'Ich hatte Testen aus Folien gelernt und noch nie einen echten Fehlerbericht geschrieben.',
+      en: 'I had learned testing from slides and had never written a real defect report.',
+      tr: 'Testi slaytlardan öğrenmiştim ve hiç gerçek bir hata raporu yazmamıştım.',
+      kk: 'Тестілеуді слайдтан үйренгенмін, нағыз ақау есебін ешқашан жазып көрмегенмін.',
+    },
+    after: {
+      de: 'Ich teste an laufenden Anwendungen und bekomme zu jedem Bericht eine Rückmeldung.',
+      en: 'I test running applications and get feedback on every report I write.',
+      tr: 'Çalışan uygulamaları test ediyorum ve yazdığım her rapora geri bildirim alıyorum.',
+      kk: 'Жұмыс істеп тұрған қосымшаларды тестілеймін әрі жазған әр есебіме кері байланыс аламын.',
+    },
   },
 ];
 

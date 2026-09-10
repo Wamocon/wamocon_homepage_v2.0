@@ -32,7 +32,7 @@
 import Button from '../ui/Button.astro';
 import ContactBlock from './ContactBlock.astro';
 import FaqSection from '../ui/FaqSection.astro';
-import { systeme as s, systems, domains, modules, systemeFaq } from '../../data/systeme';
+import { systeme as s, systems, domains, modules, systemeFaq, voices } from '../../data/systeme';
 import type { Lang } from '../../i18n/config';
 
 interface Props { lang: Lang; }
@@ -71,6 +71,19 @@ const consoleRows = [
 ];
 
 const faq = systemeFaq[lang];
+
+/**
+ * Only released quotes reach the page. The entries in `voices` are drafts that
+ * show the shape a usable quote has; until a named person has approved the
+ * exact wording, `approved` stays false and the section does not exist for a
+ * visitor. A fabricated testimonial would be the one thing that undoes the
+ * page's entire argument — and a misleading commercial practice under § 5 UWG.
+ * See `docs/systemstimmen-leitfaden.md`.
+ */
+const releasedVoices = voices.filter((v) => v.approved);
+
+/** Which system a voice belongs to, for the small label above the quote. */
+const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP');
 ---
 
 <!-- ============ HERO ============ -->
@@ -102,13 +115,33 @@ const faq = systemeFaq[lang];
       </ul>
     </div>
 
-    <!-- Schematic workspace. Decorative: everything it says is said in words
-         beside it, so it is hidden from assistive technology rather than
-         narrated as a table that does not exist. -->
-    <div class="sy-hero__stage" data-reveal="zoom" aria-hidden="true">
-      <!-- The frame is exactly the size of the workspace, so the two callout
-           cards can be anchored to its edges instead of to a stage whose
-           height changes with the copy column beside it. -->
+    <!-- Schematic ecosystem: one workspace with the system's other faces
+         hanging off it. Decorative, so it is hidden from assistive technology
+         and summarised once in the caption below rather than narrated as a
+         table that does not exist. -->
+    <div class="sy-hero__stage" data-reveal="zoom">
+      <p class="visually-hidden">{s.hero.console.alt[lang]}</p>
+      <div class="sy-constellation" aria-hidden="true">
+        <!-- Drawn connections. The viewBox is a percentage grid so the lines
+             land on the surfaces at every width; the second stroke of each
+             pair is a short dash travelling along it, which reads as data
+             moving rather than as a static wire. -->
+        <!-- All three start at the workspace's centre, so they read as coming
+             out of it; the workspace itself covers the first stretch, leaving
+             only the span between the surfaces visible. Coordinates are the
+             centres of the four boxes positioned in CSS below — move one and
+             the matching line has to move with it. -->
+        <svg class="sy-wires" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <g class="sy-wires__base">
+            <path d="M29 35 L86 11" /><path d="M29 35 L83 73" /><path d="M29 35 L23 84" />
+          </g>
+          <g class="sy-wires__pulse">
+            <path d="M29 35 L86 11" style="--d: 0s" />
+            <path d="M29 35 L83 73" style="--d: 1.2s" />
+            <path d="M29 35 L23 84" style="--d: 2.4s" />
+          </g>
+        </svg>
+
       <div class="sy-hero__frame">
       <figure class="sy-console">
         <span class="sy-console__bar">
@@ -142,14 +175,45 @@ const faq = systemeFaq[lang];
         </div>
       </figure>
 
-      <figure class="sy-float sy-float--audit">
-        <span class="sy-float__label">{s.hero.console.auditTitle[lang]}</span>
-        <span class="sy-float__text">{s.hero.console.auditLine[lang]}</span>
+      </div>
+
+      <!-- Portal: lighter, because it is the surface that faces outwards. -->
+      <figure class="sy-sat sy-sat--portal">
+        <span class="sy-sat__bar"><i></i><i></i></span>
+        <span class="sy-sat__body">
+          <span class="sy-bar" style="--w: 64%"></span>
+          <span class="sy-bar sy-bar--dim" style="--w: 44%"></span>
+          <span class="sy-bar sy-bar--dim" style="--w: 54%"></span>
+        </span>
+        <figcaption>
+          <b>{s.hero.console.satellites.portal.title[lang]}</b>
+          <span>{s.hero.console.satellites.portal.line[lang]}</span>
+        </figcaption>
       </figure>
 
-      <figure class="sy-float sy-float--rights">
-        <span class="sy-float__label">{s.hero.console.rightsTitle[lang]}</span>
-        <span class="sy-float__text">{s.hero.console.rightsLine[lang]}</span>
+      <!-- Field view: a phone, because that is where the job actually is. -->
+      <figure class="sy-sat sy-sat--field">
+        <span class="sy-phone">
+          <span class="sy-phone__notch"></span>
+          <span class="sy-phone__shot"></span>
+          <span class="sy-bar" style="--w: 72%"></span>
+          <span class="sy-bar sy-bar--dim" style="--w: 48%"></span>
+        </span>
+        <figcaption>
+          <b>{s.hero.console.satellites.field.title[lang]}</b>
+          <span>{s.hero.console.satellites.field.line[lang]}</span>
+        </figcaption>
+      </figure>
+
+      <!-- Board: the same records, counted. -->
+      <figure class="sy-sat sy-sat--board">
+        <span class="sy-sat__spark">
+          <i style="--h: 38%"></i><i style="--h: 62%"></i><i style="--h: 48%"></i><i style="--h: 80%"></i><i style="--h: 66%"></i>
+        </span>
+        <figcaption>
+          <b>{s.hero.console.satellites.board.title[lang]}</b>
+          <span>{s.hero.console.satellites.board.line[lang]}</span>
+        </figcaption>
       </figure>
       </div>
     </div>
@@ -181,6 +245,54 @@ const faq = systemeFaq[lang];
       ))}
     </ul>
     <p class="sy-symptoms__close" data-reveal="up">{s.symptoms.close[lang]}</p>
+  </div>
+</section>
+
+<!-- ============ OHNE SYSTEM / MIT SYSTEM ============ -->
+<!-- Sits here because this is where somebody who just recognised themselves in
+     the five sentences asks "and?". An outcome is only visible against the
+     state it replaces, so the left column is written first and concretely. -->
+<section class="section section--alt sy-vs">
+  <div class="container">
+    <div class="sy-head" data-reveal="up">
+      <span class="sy-eyebrow">{s.contrast.eyebrow[lang]}</span>
+      <h2>{s.contrast.heading[lang]}</h2>
+      <p class="text-muted">{s.contrast.intro[lang]}</p>
+    </div>
+
+    <div class="sy-vs__table" role="table" aria-label={s.contrast.heading[lang]}>
+      <div class="sy-vs__head" role="row">
+        <span role="columnheader" class="sy-vs__topic-head"></span>
+        <span role="columnheader" class="sy-vs__label sy-vs__label--without">{s.contrast.withoutLabel[lang]}</span>
+        <span role="columnheader" class="sy-vs__label sy-vs__label--with">{s.contrast.withLabel[lang]}</span>
+      </div>
+      {s.contrast.rows.map((row, i) => (
+        <div class="sy-vs__row" role="row" data-reveal="up" data-reveal-delay={(i % 3) * 70}>
+          <span class="sy-vs__topic" role="rowheader">{row.topic[lang]}</span>
+          <span class="sy-vs__cell sy-vs__cell--without" role="cell">
+            <span class="sy-vs__mark sy-vs__mark--without" aria-hidden="true">
+              <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8" /></svg>
+            </span>
+            <span class="sy-vs__mobile-label" aria-hidden="true">{s.contrast.withoutLabel[lang]}</span>
+            <span class="sy-vs__text">{row.without[lang]}</span>
+          </span>
+          <span class="sy-vs__cell sy-vs__cell--with" role="cell">
+            <span class="sy-vs__mark sy-vs__mark--with" aria-hidden="true">
+              <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7.5" /></svg>
+            </span>
+            <span class="sy-vs__mobile-label" aria-hidden="true">{s.contrast.withLabel[lang]}</span>
+            <span class="sy-vs__text">{row.system[lang]}</span>
+          </span>
+        </div>
+      ))}
+    </div>
+
+    <!-- The boundary. A page that only claims strengths is easier to
+         disbelieve than one that names a limit. -->
+    <aside class="sy-vs__honest" data-reveal="up">
+      <h3>{s.contrast.honest.title[lang]}</h3>
+      <p>{s.contrast.honest.text[lang]}</p>
+    </aside>
   </div>
 </section>
 
@@ -289,6 +401,26 @@ const faq = systemeFaq[lang];
                 </li>
               ))}
             </ul>
+
+            <!-- Why the layer matters, in one concrete Tuesday. Without this
+                 the panels said what a layer is and left the reader to work
+                 out the point on their own. -->
+            <div class="sy-case">
+              <ol class="sy-case__beats">
+                <li class="sy-case__beat">
+                  <span class="sy-case__label">{s.explorer.beats.situation[lang]}</span>
+                  <p>{m.scenario.situation[lang]}</p>
+                </li>
+                <li class="sy-case__beat sy-case__beat--bad">
+                  <span class="sy-case__label">{s.explorer.beats.without[lang]}</span>
+                  <p>{m.scenario.without[lang]}</p>
+                </li>
+                <li class="sy-case__beat sy-case__beat--good">
+                  <span class="sy-case__label">{s.explorer.beats.solved[lang]}</span>
+                  <p>{m.scenario.solved[lang]}</p>
+                </li>
+              </ol>
+            </div>
           </div>
 
           <figure class="sy-diagram" aria-hidden="true">
@@ -455,6 +587,40 @@ const faq = systemeFaq[lang];
   </div>
 </section>
 
+<!-- ============ STIMMEN ============ -->
+{releasedVoices.length > 0 && (
+  <section class="section sy-voices">
+    <div class="container">
+      <div class="sy-head" data-reveal="up">
+        <span class="sy-eyebrow">{s.voices.eyebrow[lang]}</span>
+        <h2>{s.voices.heading[lang]}</h2>
+        <p class="text-muted">{s.voices.intro[lang]}</p>
+      </div>
+      <div class="sy-voices__grid">
+        {releasedVoices.map((v, i) => (
+          <figure class="sy-voice" data-reveal="up" data-reveal-delay={(i % 3) * 70}>
+            <span class="sy-voice__system">{systemName(v.system)}</span>
+            <blockquote>
+              <p class="sy-voice__before">
+                <span class="sy-voice__tag">{s.voices.beforeLabel[lang]}</span>
+                {v.before[lang]}
+              </p>
+              <p class="sy-voice__after">
+                <span class="sy-voice__tag">{s.voices.afterLabel[lang]}</span>
+                {v.after[lang]}
+              </p>
+            </blockquote>
+            <figcaption>
+              <b>{v.name ?? v.role[lang]}</b>
+              <span>{v.name ? `${v.role[lang]}${v.org ? ` · ${v.org}` : ''}` : v.org}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
 <!-- ============ SCHNITTSTELLEN ============ -->
 <section class="section sy-orbit-sec">
   <div class="container sy-orbit-sec__inner">
@@ -464,6 +630,15 @@ const faq = systemeFaq[lang];
       <p class="sy-orbit-sec__note">{s.integrations.note[lang]}</p>
     </div>
 
+    <!-- The docking sequence. Each area flies in along its spoke and the
+         connection draws itself behind it; after all eight have docked the
+         picture holds, then starts over. Ten seconds a cycle, begun when the
+         diagram comes into view and stopped again when it leaves.
+
+         WCAG 2.2.2 asks that motion which starts by itself and runs longer
+         than five seconds can be stopped, so there is a real control for it —
+         on a page that sells accessibility, an unstoppable loop would be an
+         awkward thing to ship. -->
     <div class="sy-orbit" data-reveal="zoom">
       <svg class="sy-orbit__rings" viewBox="0 0 400 400" aria-hidden="true">
         <circle cx="200" cy="200" r="118" class="sy-orbit__ring" />
@@ -475,7 +650,7 @@ const faq = systemeFaq[lang];
             x2={200 + 150 * Math.cos((n * 45 - 90) * Math.PI / 180)}
             y2={200 + 150 * Math.sin((n * 45 - 90) * Math.PI / 180)}
             class="sy-orbit__spoke"
-            style={`--d: ${n * 0.35}s`}
+            style={`--i: ${n}`}
           />
         ))}
       </svg>
@@ -485,6 +660,17 @@ const faq = systemeFaq[lang];
           <li style={`--i: ${i}`}>{n[lang]}</li>
         ))}
       </ul>
+      <button
+        type="button"
+        class="sy-orbit__toggle"
+        data-orbit-toggle
+        data-play-label={s.hero.console.play[lang]}
+        aria-pressed="false"
+      >
+        <svg class="sy-orbit__icon-pause" viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><rect x="3" y="2.5" width="3.6" height="11" rx="1" /><rect x="9.4" y="2.5" width="3.6" height="11" rx="1" /></svg>
+        <svg class="sy-orbit__icon-play" viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M4 2.6l9 5.4-9 5.4z" /></svg>
+        <span data-orbit-label>{s.hero.console.pause[lang]}</span>
+      </button>
     </div>
   </div>
 </section>
@@ -498,8 +684,11 @@ const faq = systemeFaq[lang];
     </div>
     <ol class="sy-steps">
       <span class="sy-steps__rail" aria-hidden="true"><span class="sy-steps__fill"></span></span>
+      {/* No `data-reveal` here: that fires once and stays fired. These phases
+          are tied to the scroll position instead, so they travel back out to
+          the right when the reader scrolls up again. */}
       {s.process.steps.map((step, i) => (
-        <li class="sy-step" data-reveal="up" data-reveal-delay={(i % 3) * 70}>
+        <li class="sy-step" data-step-slide>
           <span class="sy-step__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
           <div class="sy-step__body">
             <h3 class="sy-step__title">{step.title[lang]}</h3>
@@ -717,12 +906,93 @@ const faq = systemeFaq[lang];
   }
   .sy-hero__chips svg { color: var(--color-accent); flex: 0 0 auto; }
 
-  /* ---------- hero workspace schematic ---------- */
-  /* The two callout cards hang off the bottom of the workspace, so the stage
-     reserves that overhang as padding rather than letting it collide with the
-     keyword strip below. */
-  .sy-hero__stage { position: relative; padding-bottom: 5.5rem; }
-  .sy-hero__frame { position: relative; }
+  /* ---------- hero constellation ---------- */
+  /* One system, several surfaces. The stage holds a fixed ratio so the drawn
+     wires, which use a percentage viewBox, always meet the surfaces they
+     connect. */
+  .sy-hero__stage { position: relative; }
+  .sy-constellation {
+    position: relative;
+    aspect-ratio: 1 / 0.92;
+    /* Written by the pointer-parallax handler; 0 until then. */
+    --px: 0; --py: 0;
+  }
+  /* Four boxes on one grid. The wires above are drawn to these centres, so
+     any change here needs the matching path moved too. */
+  .sy-hero__frame {
+    position: absolute; left: 0; top: 10%; width: 58%; z-index: 2;
+    transform: translate3d(calc(var(--px) * -10px), calc(var(--py) * -8px), 0);
+    transition: transform 0.5s var(--ease-out);
+  }
+
+  /* Drawn connections between the surfaces. */
+  .sy-wires { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .sy-wires path { fill: none; vector-effect: non-scaling-stroke; }
+  .sy-wires__base path { stroke: rgba(244, 14, 14, 0.34); stroke-width: 1.2; stroke-dasharray: 5 6; }
+  /* A short dash travelling the same path reads as data moving rather than as
+     a static wire, and costs one extra stroke. */
+  .sy-wires__pulse path {
+    stroke: var(--color-accent); stroke-width: 1.6; stroke-linecap: round;
+    stroke-dasharray: 12 300; stroke-dashoffset: 0;
+    animation: sy-pulse 3.6s linear infinite; animation-delay: var(--d);
+    filter: drop-shadow(0 0 4px rgba(244, 14, 14, 0.7));
+  }
+  @keyframes sy-pulse { to { stroke-dashoffset: -304; } }
+
+  /* The other faces of the system. */
+  .sy-sat {
+    position: absolute; margin: 0; z-index: 1;
+    display: flex; flex-direction: column; gap: 0.55rem;
+    padding: 0.75rem;
+    border-radius: 12px;
+    background: rgba(18, 18, 18, 0.94);
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 26px 60px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+    transition: transform 0.5s var(--ease-out);
+  }
+  .sy-sat figcaption { display: flex; flex-direction: column; gap: 0.15rem; }
+  .sy-sat figcaption b { font-size: 0.74rem; font-weight: var(--fw-semibold); color: #fff; }
+  .sy-sat figcaption span { font-size: 0.68rem; color: var(--color-text-subtle); line-height: 1.35; }
+
+  .sy-sat--portal {
+    left: 71%; top: 0; width: 29%;
+    /* Lighter, because this is the surface that faces outwards. */
+    background: rgba(38, 38, 38, 0.95);
+    border-color: var(--border-strong);
+    transform: translate3d(calc(var(--px) * 16px), calc(var(--py) * 14px), 0);
+    animation: sy-float 8.5s ease-in-out infinite;
+  }
+  .sy-sat__bar { display: flex; gap: 4px; }
+  .sy-sat__bar i { width: 6px; height: 6px; border-radius: 50%; background: rgba(255, 255, 255, 0.28); }
+  .sy-sat__body { display: grid; gap: 6px; padding: 0.35rem 0 0.15rem; }
+
+  .sy-sat--field {
+    left: 12%; top: 70%; width: 22%;
+    transform: translate3d(calc(var(--px) * 22px), calc(var(--py) * 18px), 0);
+    animation: sy-float 7s ease-in-out infinite reverse;
+  }
+  .sy-phone {
+    display: grid; gap: 6px; justify-items: stretch;
+    padding: 0.5rem 0.45rem 0.6rem;
+    border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.18);
+    background: #0d0d0d;
+  }
+  .sy-phone__notch { justify-self: center; width: 26%; height: 3px; border-radius: 2px; background: rgba(255, 255, 255, 0.25); margin-bottom: 2px; }
+  /* Stands for the photo a field job carries as its evidence. */
+  .sy-phone__shot {
+    height: 34px; border-radius: 5px;
+    background: linear-gradient(140deg, rgba(244, 14, 14, 0.3), rgba(255, 255, 255, 0.07));
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .sy-sat--board {
+    left: 68%; top: 63%; width: 30%;
+    transform: translate3d(calc(var(--px) * 13px), calc(var(--py) * -12px), 0);
+    animation: sy-float 9.5s ease-in-out infinite;
+  }
+  .sy-sat__spark { display: flex; align-items: flex-end; gap: 4px; height: 36px; }
+  .sy-sat__spark i { flex: 1; height: var(--h); border-radius: 2px 2px 0 0; background: linear-gradient(180deg, var(--color-accent), rgba(244, 14, 14, 0.2)); }
   .sy-console {
     position: relative; margin: 0; border-radius: 14px; overflow: hidden;
     background: linear-gradient(165deg, #191919, #101010);
@@ -776,25 +1046,6 @@ const faq = systemeFaq[lang];
     pointer-events: none;
   }
 
-  .sy-float {
-    position: absolute; margin: 0;
-    display: flex; flex-direction: column; gap: 0.25rem;
-    padding: 0.8rem 1rem;
-    border-radius: 12px;
-    background: rgba(20, 20, 20, 0.92);
-    border: 1px solid rgba(244, 14, 14, 0.32);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(6px);
-    max-width: 15rem;
-  }
-  .sy-float__label { font-size: 0.64rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-text); font-weight: var(--fw-semibold); }
-  .sy-float__text { font-size: 0.76rem; color: rgba(255, 255, 255, 0.72); line-height: 1.45; }
-  /* Both cards hang off the lower edge, at different depths so the group still
-     reads as a diagonal. Anywhere higher and they cover the window title or
-     the column headings, which reads as a rendering fault rather than depth. */
-  .sy-float--audit { right: -4%; bottom: -1.6rem; animation: sy-float 7.5s ease-in-out infinite reverse; }
-  .sy-float--rights { left: -4%; bottom: -3.6rem; animation: sy-float 8.5s ease-in-out infinite; }
-
   @keyframes sy-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -12px; } }
   @keyframes sy-scan { 0% { transform: translateY(-60px); } 55%, 100% { transform: translateY(240px); } }
 
@@ -837,6 +1088,64 @@ const faq = systemeFaq[lang];
   }
   .sy-symptoms__source::before { content: ''; width: 1.4rem; height: 2px; background: currentColor; flex: 0 0 auto; }
   .sy-symptoms__close { margin-top: 1.6rem; max-width: 60ch; color: var(--color-text-muted); font-size: 1.02rem; }
+
+  .sy-eyebrow {
+    display: inline-block; margin-bottom: 0.8rem;
+    font-size: 0.74rem; font-weight: var(--fw-semibold);
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--color-accent-text);
+  }
+
+  /* ---------- ohne system / mit system ---------- */
+  .sy-vs__table { display: grid; gap: 0.7rem; }
+  .sy-vs__head, .sy-vs__row {
+    display: grid; grid-template-columns: minmax(9rem, 0.7fr) 1fr 1fr; gap: 1rem;
+    align-items: stretch;
+  }
+  .sy-vs__head { padding: 0 clamp(1rem, 2vw, 1.4rem); }
+  .sy-vs__label {
+    font-size: 0.72rem; font-weight: var(--fw-semibold);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding-bottom: 0.5rem;
+  }
+  .sy-vs__label--without { color: var(--color-text-subtle); }
+  .sy-vs__label--with { color: var(--color-accent-text); }
+  .sy-vs__row {
+    padding: clamp(1rem, 2vw, 1.35rem) clamp(1rem, 2vw, 1.4rem);
+    border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+    background: var(--surface-card);
+    transition: border-color var(--dur-med) var(--ease-out);
+  }
+  .sy-vs__row:hover { border-color: rgba(244, 14, 14, 0.35); }
+  .sy-vs__topic { font-weight: var(--fw-semibold); color: #fff; line-height: var(--lh-snug); align-self: center; }
+  .sy-vs__cell {
+    display: grid; grid-template-columns: auto 1fr; gap: 0.7rem;
+    align-items: start; line-height: var(--lh-body); font-size: 0.95rem;
+  }
+  /* The left column is the state being left behind, so it is written in the
+     muted voice; the right one carries the accent. */
+  .sy-vs__cell--without { color: var(--color-text-muted); }
+  .sy-vs__cell--with { color: var(--color-text); }
+  .sy-vs__mark {
+    display: grid; place-items: center; width: 20px; height: 20px;
+    border-radius: 50%; margin-top: 0.1em;
+  }
+  .sy-vs__mark--without { color: var(--color-text-subtle); border: 1px solid var(--border-strong); }
+  .sy-vs__mark--with { color: var(--color-accent-text); border: 1px solid rgba(244, 14, 14, 0.5); background: rgba(244, 14, 14, 0.12); }
+  /* Both the label and the text live in the second column, so the mark keeps
+     the first one to itself and nothing wraps underneath it. */
+  .sy-vs__text { grid-column: 2; }
+  /* Shown only once the row stacks, where the column headings are out of
+     sight and each half has to say which side it is. */
+  .sy-vs__mobile-label { display: none; }
+  .sy-vs__honest {
+    margin-top: 1.75rem; max-width: 68ch;
+    padding: clamp(1.1rem, 2vw, 1.5rem) clamp(1.2rem, 2.5vw, 1.7rem);
+    border: 1px dashed var(--border-strong); border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.02);
+  }
+  .sy-vs__honest h3 { font-size: 1rem; font-weight: var(--fw-bold); margin-bottom: 0.5rem; }
+  .sy-vs__honest p { color: var(--color-text-muted); line-height: var(--lh-body); font-size: 0.95rem; }
 
   /* ---------- website oder system ---------- */
   .sy-split__grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); }
@@ -913,6 +1222,55 @@ const faq = systemeFaq[lang];
   .sy-panel__points { list-style: none; display: grid; gap: 0.7rem; margin-top: 1.5rem; }
   .sy-panel__points li { display: flex; gap: 0.7rem; align-items: flex-start; line-height: 1.5; font-size: 0.95rem; }
   .sy-panel__points svg { flex: 0 0 auto; margin-top: 0.15rem; color: var(--color-accent); }
+
+  /* ---------- szenario je schicht ---------- */
+  .sy-case { margin-top: 1.6rem; padding-top: 1.3rem; border-top: 1px solid var(--border-subtle); }
+  .sy-case__beats { list-style: none; display: grid; gap: 0.9rem; counter-reset: none; }
+  .sy-case__beat { display: grid; grid-template-columns: auto 1fr; gap: 0.9rem; align-items: start; }
+  .sy-case__beat::before {
+    content: ''; width: 3px; border-radius: 2px; align-self: stretch;
+    background: var(--border-strong);
+  }
+  .sy-case__beat--bad::before { background: rgba(255, 255, 255, 0.14); }
+  .sy-case__beat--good::before { background: var(--color-accent); }
+  .sy-case__label {
+    grid-column: 2; display: block; margin-bottom: 0.2rem;
+    font-size: 0.66rem; font-weight: var(--fw-semibold);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--color-text-subtle);
+  }
+  .sy-case__beat--good .sy-case__label { color: var(--color-accent-text); }
+  .sy-case__beat p { grid-column: 2; font-size: 0.92rem; line-height: var(--lh-body); color: var(--color-text-muted); }
+  .sy-case__beat--good p { color: var(--color-text); }
+
+  /* ---------- stimmen ---------- */
+  .sy-voices__grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); }
+  .sy-voice {
+    display: flex; flex-direction: column; gap: 1rem; margin: 0;
+    padding: clamp(1.4rem, 2.5vw, 1.9rem);
+    border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+    background: var(--surface-card);
+  }
+  .sy-voice__system {
+    align-self: flex-start; font-size: 0.66rem; font-weight: var(--fw-semibold);
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-text);
+    padding: 0.25rem 0.6rem; border: 1px solid rgba(244, 14, 14, 0.4);
+    border-radius: var(--radius-pill); background: rgba(244, 14, 14, 0.1);
+  }
+  .sy-voice blockquote { display: grid; gap: 0.85rem; margin: 0; }
+  .sy-voice__tag {
+    display: block; margin-bottom: 0.2rem;
+    font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--color-text-subtle);
+  }
+  .sy-voice__before { color: var(--color-text-muted); line-height: var(--lh-body); font-size: 0.95rem; }
+  .sy-voice__after {
+    color: var(--color-text); line-height: var(--lh-body); font-size: 0.95rem;
+    padding-left: 0.9rem; border-left: 2px solid var(--color-accent);
+  }
+  .sy-voice figcaption { margin-top: auto; display: flex; flex-direction: column; gap: 0.15rem; padding-top: 0.4rem; }
+  .sy-voice figcaption b { font-size: 0.95rem; }
+  .sy-voice figcaption span { font-size: 0.82rem; color: var(--color-text-subtle); }
 
   /* ---------- schematics ---------- */
   .sy-diagram {
@@ -1074,9 +1432,55 @@ const faq = systemeFaq[lang];
   .sy-orbit__rings { position: absolute; inset: 0; width: 100%; height: 100%; }
   .sy-orbit__ring { fill: none; stroke: rgba(255, 255, 255, 0.09); stroke-width: 1; }
   .sy-orbit__ring--outer { stroke-dasharray: 3 7; stroke: rgba(244, 14, 14, 0.22); }
-  /* The dash travels inwards: data arriving at the system, not leaving it. */
-  .sy-orbit__spoke { stroke: rgba(244, 14, 14, 0.4); stroke-width: 1.2; stroke-dasharray: 5 9; animation: sy-spoke 2.4s linear infinite; animation-delay: var(--d); }
-  @keyframes sy-spoke { to { stroke-dashoffset: -28; } }
+
+  /* --- docking sequence -------------------------------------------------
+     Ten seconds a cycle: eight areas dock one after another, roughly one a
+     second, then the finished picture holds for a moment and it starts over.
+     The stepping is done in script rather than with eight animation delays,
+     because delayed infinite animations drift apart — each node would loop on
+     its own clock and the ring would never be whole again.
+
+     `--fly` is added to the ring radius, so a node travels along its own spoke
+     instead of across the diagram. Registering the property is what lets the
+     browser interpolate it; on an engine that does not, the node arrives
+     without the travel, which is a smaller loss than a broken picture.
+
+     Everything rests in the docked state by default. A reader without
+     JavaScript, or with reduced motion, sees the complete diagram — never an
+     empty ring waiting for something that will not come. */
+  @property --fly {
+    syntax: '<length>';
+    inherits: false;
+    initial-value: 0px;
+  }
+
+  .sy-orbit__spoke {
+    stroke: rgba(244, 14, 14, 0.4); stroke-width: 1.2;
+    /* 152 is slightly over the longest spoke, so the dash hides all of it. */
+    stroke-dasharray: 152; stroke-dashoffset: 0;
+  }
+
+  /* The undocked state exists only once script has taken charge. */
+  html.sy-js-orbit .sy-orbit__spoke { stroke-dashoffset: 152; transition: stroke-dashoffset 0.85s var(--ease-out); }
+  html.sy-js-orbit .sy-orbit__spoke.is-docked { stroke-dashoffset: 0; }
+  html.sy-js-orbit .sy-orbit__list li {
+    --fly: 4.5rem; opacity: 0;
+    transition: --fly 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s var(--ease-out);
+  }
+  html.sy-js-orbit .sy-orbit__list li.is-docked { --fly: 0rem; opacity: 1; }
+
+  .sy-orbit__toggle {
+    position: absolute; right: 0; bottom: 0;
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.4rem 0.8rem; border-radius: var(--radius-pill);
+    border: 1px solid var(--border-subtle); background: rgba(16, 16, 16, 0.95);
+    color: var(--color-text-muted); font: inherit; font-size: 0.72rem;
+    cursor: pointer; transition: color var(--dur-fast), border-color var(--dur-fast);
+  }
+  .sy-orbit__toggle:hover { color: var(--color-text); border-color: var(--color-accent); }
+  .sy-orbit__icon-play { display: none; }
+  .sy-orbit__toggle[aria-pressed='true'] .sy-orbit__icon-play { display: block; }
+  .sy-orbit__toggle[aria-pressed='true'] .sy-orbit__icon-pause { display: none; }
   .sy-orbit__core {
     position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
     display: grid; place-items: center; text-align: center;
@@ -1098,9 +1502,12 @@ const faq = systemeFaq[lang];
        the ring: turn, step outwards, turn back upright, then centre the chip
        on the point it landed on. */
     transform-origin: 0 0;
+    /* `--fly` is the distance still to travel; it is 0 unless the docking
+       sequence has a node out beyond the ring. */
+    --fly: 0rem;
     transform:
       rotate(calc(var(--i) * 45deg))
-      translate(0, calc(var(--r) * -1))
+      translate(0, calc((var(--r) + var(--fly)) * -1))
       rotate(calc(var(--i) * -45deg))
       translate(-50%, -50%);
     padding: 0.4rem 0.75rem;
@@ -1126,6 +1533,16 @@ const faq = systemeFaq[lang];
     background: var(--surface-card);
     position: relative;
     transition: border-color var(--dur-med) var(--ease-out);
+  }
+  /* Tied to the scroll position rather than triggered once, so the phases
+     travel back out to the right when the reader scrolls up again. `--slide`
+     runs 1 (off to the right) to 0 (in place) and is written by script; the
+     class on <html> means a reader without JavaScript gets them in place. */
+  html.sy-js-slide .sy-step[data-step-slide] {
+    --slide: 1;
+    transform: translate3d(calc(var(--slide) * 14%), 0, 0);
+    opacity: calc(1 - var(--slide) * 0.85);
+    will-change: transform, opacity;
   }
   .sy-step::before {
     content: ''; position: absolute; left: -1.72rem; top: 1.9rem;
@@ -1242,18 +1659,24 @@ const faq = systemeFaq[lang];
   @media (max-width: 980px) {
     .sy-hero__inner { grid-template-columns: 1fr; min-height: 0; }
     .sy-hero__stage { margin-top: 1.5rem; }
-    /* Full-width stage: the cards no longer have a margin to hang into, and
-       the section's `overflow: hidden` would clip them instead. */
-    .sy-float--audit { right: 0; }
-    .sy-float--rights { left: 0; }
     .sy-orbit-sec__inner { grid-template-columns: 1fr; }
+    .sy-vs__head { display: none; }
+    .sy-vs__row { grid-template-columns: 1fr; gap: 0.85rem; }
+    .sy-vs__topic { font-size: 1.05rem; }
+    .sy-vs__mobile-label {
+      display: block; grid-column: 2; text-align: left; align-self: center;
+      font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--color-text-subtle);
+    }
+    /* Label on the mark's line, text on the next one, both indented past it. */
+    .sy-vs__cell { row-gap: 0.35rem; }
   }
   @media (max-width: 720px) {
-    /* The floating cards need room the phone does not have; the workspace on
-       its own still carries the idea. With them gone the stage no longer has
-       an overhang to reserve space for. */
-    .sy-float { display: none; }
-    .sy-hero__stage { padding-bottom: 0; }
+    /* The satellites need room the phone does not have; the workspace on its
+       own still carries the idea, and the wires have nothing left to join. */
+    .sy-sat, .sy-wires { display: none; }
+    .sy-constellation { aspect-ratio: auto; }
+    .sy-hero__frame { position: static; width: 100%; transform: none; }
     .sy-console__body { grid-template-columns: 1fr; }
     /* The module list becomes a horizontal strip that runs past the edge; a
        fade says "there is more" instead of guillotining the last word. */
@@ -1283,9 +1706,12 @@ const faq = systemeFaq[lang];
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .sy-console, .sy-float, .sy-marquee__track, .sy-console__scan, .sy-orbit__spoke { animation: none !important; }
-    .sy-console__scan { display: none; }
+    .sy-console, .sy-sat, .sy-marquee__track, .sy-console__scan, .sy-wires__pulse path { animation: none !important; }
+    .sy-console__scan, .sy-wires__pulse { display: none; }
+    .sy-hero__frame, .sy-sat { transition: none; }
     .sy-steps__fill { transition: none; }
+    /* The phases sit where they belong; nothing slides. */
+    html.sy-js-slide .sy-step[data-step-slide] { transform: none; opacity: 1; }
   }
 </style>
 
@@ -1326,28 +1752,48 @@ const faq = systemeFaq[lang];
     });
   });
 
-  // ---- Process rail ----------------------------------------------------
-  // Fills as the phase list travels through the viewport. Purely decorative:
-  // the six phases read the same with the rail empty, which is what a reader
-  // with reduced motion or without JavaScript gets.
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  // ---- Process rail and phase slide-in ---------------------------------
+  // One scroll pass drives both: the rail fills as the phase list travels
+  // through the viewport, and each phase is placed on its own little track
+  // according to where it sits relative to the fold. Position-linked rather
+  // than triggered once, so scrolling back up sends the phases out to the
+  // right again. Purely decorative: without JavaScript, or with reduced
+  // motion, everything is simply in its final place.
   const steps = document.querySelector<HTMLElement>('.sy-steps');
   const fill = document.querySelector<HTMLElement>('.sy-steps__fill');
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const slides = Array.from(document.querySelectorAll<HTMLElement>('[data-step-slide]'));
 
   if (steps && fill) {
     if (reduced.matches) {
       fill.style.setProperty('--progress', '100%');
+      slides.forEach((el) => el.style.setProperty('--slide', '0'));
     } else {
+      document.documentElement.classList.add('sy-js-slide');
       let ticking = false;
       const update = () => {
         ticking = false;
+        const vh = window.innerHeight;
+
         const rect = steps.getBoundingClientRect();
         // 0 when the list's top reaches the middle of the viewport,
         // 1 when its bottom does.
-        const mid = window.innerHeight * 0.55;
+        const mid = vh * 0.55;
         const travelled = mid - rect.top;
         const ratio = Math.min(1, Math.max(0, travelled / Math.max(rect.height, 1)));
         fill.style.setProperty('--progress', `${(ratio * 100).toFixed(1)}%`);
+
+        // Each phase travels in over the last 32% of the viewport height before
+        // its top crosses the 78% line, and travels back out the same way.
+        for (const el of slides) {
+          const r = el.getBoundingClientRect();
+          const start = vh * 0.94;
+          const end = vh * 0.62;
+          const p = Math.min(1, Math.max(0, (start - r.top) / (start - end)));
+          // 1 = fully off to the right, 0 = in place.
+          el.style.setProperty('--slide', (1 - p).toFixed(3));
+        }
       };
       const onScroll = () => {
         if (ticking) return;
@@ -1358,5 +1804,112 @@ const faq = systemeFaq[lang];
       window.addEventListener('resize', onScroll, { passive: true });
       update();
     }
+  }
+
+  // ---- Integration docking loop ----------------------------------------
+  // Runs only while the diagram is on screen, and can be stopped outright.
+  // WCAG 2.2.2: motion that starts on its own and lasts longer than five
+  // seconds needs a way to pause it, and a ten-second loop is exactly that.
+  const orbit = document.querySelector<HTMLElement>('.sy-orbit');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-orbit-toggle]');
+  const toggleLabel = document.querySelector<HTMLElement>('[data-orbit-label]');
+
+  if (orbit && toggle && toggleLabel) {
+    if (reduced.matches) {
+      // The docked picture is already the default. Offer no control for motion
+      // that is never going to happen.
+      toggle.hidden = true;
+    } else {
+      const nodes = Array.from(orbit.querySelectorAll<HTMLElement>('.sy-orbit__list li'));
+      const spokes = Array.from(orbit.querySelectorAll<SVGLineElement>('.sy-orbit__spoke'));
+      // Eight slots of 1.05s plus a 1.6s hold on the finished picture is ten
+      // seconds, which is the cadence this section was asked for.
+      const SLOT = 1050;
+      const HOLD = 1600;
+
+      const pauseText = toggleLabel.textContent ?? '';
+      const playText = toggle.dataset.playLabel ?? pauseText;
+      let stoppedByUser = false;
+      let inView = false;
+      let timers: number[] = [];
+
+      // Taking charge: until this class exists the diagram renders complete,
+      // so a reader without JavaScript never sees an empty ring.
+      document.documentElement.classList.add('sy-js-orbit');
+
+      const clearTimers = () => {
+        timers.forEach(clearTimeout);
+        timers = [];
+      };
+      const setDocked = (docked: boolean) => {
+        nodes.forEach((n) => n.classList.toggle('is-docked', docked));
+        spokes.forEach((sp) => sp.classList.toggle('is-docked', docked));
+      };
+
+      const cycle = () => {
+        setDocked(false);
+        nodes.forEach((node, i) => {
+          timers.push(
+            window.setTimeout(() => {
+              node.classList.add('is-docked');
+              spokes[i]?.classList.add('is-docked');
+            }, i * SLOT),
+          );
+        });
+        timers.push(window.setTimeout(cycle, nodes.length * SLOT + HOLD));
+      };
+
+      const start = () => {
+        clearTimers();
+        cycle();
+      };
+      const stop = (leaveDocked: boolean) => {
+        clearTimers();
+        if (leaveDocked) setDocked(true);
+      };
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            inView = entry.isIntersecting;
+            // Begin at the beginning each time the reader arrives here, and
+            // stop entirely once it is off screen — an animation nobody is
+            // looking at is only a drain on the battery.
+            if (inView && !stoppedByUser) start();
+            else if (!inView) stop(true);
+          }
+        },
+        { threshold: 0.35 },
+      );
+      observer.observe(orbit);
+
+      toggle.addEventListener('click', () => {
+        stoppedByUser = !stoppedByUser;
+        toggle.setAttribute('aria-pressed', String(stoppedByUser));
+        toggleLabel.textContent = stoppedByUser ? playText : pauseText;
+        // Stopping leaves the diagram whole rather than mid-sequence.
+        if (stoppedByUser) stop(true);
+        else if (inView) start();
+      });
+    }
+  }
+
+  // ---- Hero constellation parallax --------------------------------------
+  // A few pixels of depth on pointer move. Skipped on touch, where there is no
+  // pointer to follow, and under reduced motion.
+  const stage = document.querySelector<HTMLElement>('.sy-constellation');
+  if (stage && !reduced.matches && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    let raf = 0;
+    stage.closest('.sy-hero')?.addEventListener('pointermove', (event) => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const r = stage.getBoundingClientRect();
+        const x = ((event as PointerEvent).clientX - r.left) / r.width - 0.5;
+        const y = ((event as PointerEvent).clientY - r.top) / r.height - 0.5;
+        stage.style.setProperty('--px', x.toFixed(3));
+        stage.style.setProperty('--py', y.toFixed(3));
+      });
+    }, { passive: true });
   }
 </script>
