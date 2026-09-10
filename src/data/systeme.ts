@@ -141,17 +141,55 @@ export const systeme = {
       tr: 'İşletmeniz yürüyor.',
       kk: 'Кәсібіңіз жүріп жатыр.',
     },
-    titleAccent: {
-      de: 'Nur weiß niemand genau, wie.',
-      en: 'Nobody knows exactly how.',
-      tr: 'Ama tam olarak nasıl, kimse bilmiyor.',
-      kk: 'Тек оның қалай жүретінін ешкім нақты білмейді.',
+    /**
+     * The hook.
+     *
+     * "Ihr Betrieb läuft. Nur weiß niemand genau, wie." observes accurately and
+     * promises nothing — it was a good sentence that did not pull. What pulls
+     * is naming the place the knowledge actually sits, and then naming another,
+     * and another: the reader recognises their own on the second or third turn.
+     * The line does the work of the five sentences further down before the
+     * reader has scrolled at all, and it works on a phone, where the
+     * constellation beside it is hidden and the text carries the hero alone.
+     *
+     * Each entry is a complete line rather than a preposition plus a noun.
+     * Two reasons: a separate prefix is an atomic inline box, so on a narrow
+     * phone "Auf" was stranded alone on its own line; and Turkish and Kazakh
+     * carry the preposition inside the noun as a locative case, where a German
+     * "auf" bolted in front would be wrong twice over.
+     *
+     * Short lines on purpose — each one fits a 390px phone unbroken, and the
+     * rhythm of four short blows lands harder than four clauses. The last is
+     * the sharpest, and the animation stops there.
+     *
+     * It stops inside five seconds. Past that, auto-updating text needs a
+     * pause control under WCAG 2.2.2, and a headline with a pause button
+     * beside it is not a headline.
+     */
+    rotating: [
+      { de: 'Auf Excel-Tabellen.', en: 'On spreadsheets.', tr: 'Excel tablolarında.', kk: 'Excel кестелерінде.' },
+      { de: 'In Chatverläufen.', en: 'In chat threads.', tr: 'Sohbet geçmişlerinde.', kk: 'Чат жазбаларында.' },
+      { de: 'Auf Haftnotizen.', en: 'On sticky notes.', tr: 'Yapışkan notlarda.', kk: 'Жабысқақ қағаздарда.' },
+      { de: 'In drei Köpfen.', en: 'In three heads.', tr: 'Üç kişinin aklında.', kk: 'Үш адамның есінде.' },
+    ],
+    /** Read out in place of the animation, as one sentence. */
+    rotatingAlt: {
+      de: 'Auf Excel-Tabellen, in Chatverläufen, auf Haftnotizen und in drei Köpfen.',
+      en: 'On spreadsheets, in chat threads, on sticky notes and in three heads.',
+      tr: 'Excel tablolarında, sohbet geçmişlerinde, yapışkan notlarda ve üç kişinin aklında.',
+      kk: 'Excel кестелерінде, чат жазбаларында, жабысқақ қағаздарда және үш адамның есінде.',
     },
+    /**
+     * The lead no longer lists the places — the headline above does that, and
+     * moves while doing it. It keeps the sentence the old headline ended on,
+     * because it is the good one, and then says what is at stake and what we
+     * do about it.
+     */
     lead: {
-      de: 'Die Abläufe stehen in keiner Datei. Sie stehen in Excel, in Chatverläufen und in den Köpfen von drei Leuten, die alle gleichzeitig Urlaub nehmen könnten. Wir bauen die Systeme, in denen diese Abläufe endlich einen festen Ort bekommen — und wir fangen nicht mit Software an, sondern damit, Ihnen zuzusehen.',
-      en: 'The processes are not written down anywhere. They live in spreadsheets, in chat threads and in the heads of three people who could all take holiday in the same week. We build the systems where those processes finally get a fixed home — and we do not start with software, we start by watching how you work.',
-      tr: 'Süreçler hiçbir dosyada yazılı değil. Excel’de, sohbet geçmişlerinde ve aynı hafta izne çıkabilecek üç kişinin aklında duruyorlar. Bu süreçlerin nihayet sabit bir yer bulduğu sistemleri kuruyoruz — ve işe yazılımla değil, sizi izleyerek başlıyoruz.',
-      kk: 'Үдерістер ешбір файлда жазылмаған. Олар Excel-де, чат жазбаларында және бір аптада бірге демалысқа кете алатын үш адамның есінде жүр. Біз сол үдерістер ақыры тұрақты орын табатын жүйелерді құрамыз, әрі жұмысты бағдарламадан емес, сіздің қалай жұмыс істейтініңізді бақылаудан бастаймыз.',
+      de: 'Nur weiß niemand genau, wie — und solange das so bleibt, gehört Ihr Betrieb den Werkzeugen, die zufällig da waren. Wir bauen das System, in dem seine Abläufe einen festen Ort bekommen. Wir fangen dabei nicht mit Software an, sondern damit, Ihnen zuzusehen.',
+      en: 'Nobody knows exactly how — and while that holds, your company belongs to whichever tools happened to be lying around. We build the system where its processes finally get a fixed home. And we do not start with software, we start by watching how you work.',
+      tr: 'Ama tam olarak nasıl, kimse bilmiyor — ve bu böyle sürdükçe işletmeniz, eline ne geçtiyse o araçlara ait olur. Biz, süreçlerinin nihayet sabit bir yer bulduğu sistemi kuruyoruz. İşe de yazılımla değil, sizi izleyerek başlıyoruz.',
+      kk: 'Тек оның қалай жүретінін ешкім нақты білмейді, ал бұл осылай жалғасқан сайын кәсібіңіз кездейсоқ қолға түскен құралдардың еншісінде қалады. Біз оның үдерістері ақыры тұрақты орын табатын жүйені құрамыз. Жұмысты да бағдарламадан емес, сіздің қалай жұмыс істейтініңізді бақылаудан бастаймыз.',
     },
     ctaPrimary: { de: 'Erstgespräch vereinbaren', en: 'Arrange a first conversation', tr: 'İlk görüşmeyi ayarlayın', kk: 'Алғашқы кездесуді жоспарлау' },
     ctaSecondary: { de: 'So arbeiten wir', en: 'How we work', tr: 'Nasıl çalışıyoruz', kk: 'Біз осылай жұмыс істейміз' },

@@ -313,7 +313,7 @@ const faq = webdesignFaq[lang];
     font-weight: var(--fw-semibold);
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    font-size: 0.82rem;
+    font-size: var(--fs-label);
   }
   .wd-section-head { max-width: 760px; margin-bottom: clamp(2rem, 5vw, 3.5rem); }
   .wd-section-head h2 { margin-bottom: 1rem; }
@@ -360,7 +360,7 @@ const faq = webdesignFaq[lang];
     font-weight: var(--fw-semibold);
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    font-size: 0.74rem;
+    font-size: var(--fs-label);
   }
   .wd-hero__badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--color-accent); box-shadow: 0 0 10px 2px rgba(244, 14, 14, 0.7); }
   .wd-hero__title {
@@ -395,7 +395,7 @@ const faq = webdesignFaq[lang];
     color: transparent;
     line-height: 1;
   }
-  .wd-hero__stat-label { display: block; margin-top: 0.4rem; font-size: 0.9rem; color: var(--color-text-muted); }
+  .wd-hero__stat-label { display: block; margin-top: 0.4rem; font-size: var(--fs-small); color: var(--color-text-muted); }
 
   /* ---------- hero showcase (floating browser mockups) ---------- */
   .wd-hero__showcase {
@@ -463,7 +463,7 @@ const faq = webdesignFaq[lang];
     position: absolute;
     left: 0; right: 0; bottom: 0;
     padding: 0.9rem 1rem 0.7rem;
-    font-size: 0.82rem;
+    font-size: var(--fs-label);
     color: #fff;
     background: linear-gradient(transparent, rgba(0, 0, 0, 0.82));
   }
@@ -496,7 +496,7 @@ const faq = webdesignFaq[lang];
     background: transparent;
     color: var(--color-text-muted);
     font: inherit;
-    font-size: 0.9rem;
+    font-size: var(--fs-small);
     cursor: pointer;
     transition: color var(--dur-fast), border-color var(--dur-fast), background var(--dur-fast);
   }
@@ -527,13 +527,13 @@ const faq = webdesignFaq[lang];
   .wd-card__badge {
     position: absolute; top: 1rem; left: 1rem;
     padding: 0.35rem 0.75rem;
-    font-size: 0.72rem; font-weight: var(--fw-semibold); letter-spacing: 0.04em; text-transform: uppercase;
+    font-size: var(--fs-label); font-weight: var(--fw-semibold); letter-spacing: 0.04em; text-transform: uppercase;
     color: #fff; background: var(--color-accent-surface); border-radius: var(--radius-pill);
   }
   .wd-card__open {
     position: absolute; right: 1rem; bottom: 1rem;
     padding: 0.4rem 0.8rem;
-    font-size: 0.8rem; font-weight: var(--fw-semibold);
+    font-size: var(--fs-label); font-weight: var(--fw-semibold);
     color: #fff; background: rgba(0, 0, 0, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: var(--radius-pill);
@@ -544,8 +544,8 @@ const faq = webdesignFaq[lang];
 
   .wd-card__body { display: flex; flex-direction: column; gap: 0.5rem; padding: 1.5rem; }
   .wd-card__meta { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; }
-  .wd-card__industry { color: var(--color-accent-text); font-weight: var(--fw-semibold); font-size: 0.82rem; }
-  .wd-card__location { color: var(--color-text-muted); font-size: 0.82rem; }
+  .wd-card__industry { color: var(--color-accent-text); font-weight: var(--fw-semibold); font-size: var(--fs-label); }
+  .wd-card__location { color: var(--color-text-muted); font-size: var(--fs-label); }
   .wd-card__name { font-size: 1.35rem; margin: 0.1rem 0 0; }
   .wd-card__tagline { font-weight: var(--fw-semibold); color: var(--color-text); margin: 0; }
   .wd-card__desc { line-height: 1.6; margin: 0.2rem 0 0.4rem; }
@@ -566,7 +566,7 @@ const faq = webdesignFaq[lang];
     align-items: center;
   }
   .wd-offer__anchor { color: var(--color-accent); font-weight: var(--fw-semibold); font-size: 1.2rem; margin: 0.4rem 0 1rem; }
-  .wd-offer__features-head { font-size: 0.76rem; font-weight: var(--fw-semibold); letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-text); margin-bottom: 1.2rem; }
+  .wd-offer__features-head { font-size: var(--fs-label); font-weight: var(--fw-semibold); letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-text); margin-bottom: 1.2rem; }
   .wd-cross__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; padding: clamp(1.6rem, 3vw, 2.4rem); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--surface-card); }
   .wd-cross__inner > div { max-width: 46rem; }
   .wd-cross__heading { font-size: var(--fs-h3); font-weight: var(--fw-bold); line-height: var(--lh-snug); margin-bottom: 0.6rem; text-wrap: balance; }
@@ -579,11 +579,11 @@ const faq = webdesignFaq[lang];
   }
   .wd-offer__price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem 1rem; margin-bottom: 1.5rem; }
   .wd-offer__amount { font-size: clamp(2.2rem, 5vw, 3rem); font-weight: var(--fw-bold); color: #fff; line-height: 1; }
-  .wd-offer__note { color: var(--color-text-muted); font-size: 0.95rem; }
+  .wd-offer__note { color: var(--color-text-muted); font-size: var(--fs-body); }
   .wd-offer__features { display: grid; gap: 0.8rem; margin-bottom: 1.5rem; }
   .wd-offer__features li { display: flex; gap: 0.7rem; align-items: flex-start; line-height: 1.5; }
   .wd-offer__features svg { flex: 0 0 auto; margin-top: 0.15rem; color: var(--color-accent); }
-  .wd-offer__guarantee { padding-top: 1.25rem; border-top: 1px solid var(--border-subtle); color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.6; }
+  .wd-offer__guarantee { padding-top: 1.25rem; border-top: 1px solid var(--border-subtle); color: var(--color-text-muted); font-size: var(--fs-small); line-height: 1.6; }
   .wd-offer__cta { margin-top: 1.5rem; }
 
   /* ---------- trust (Search) ---------- */
@@ -600,7 +600,7 @@ const faq = webdesignFaq[lang];
     border-radius: var(--radius-md);
   }
   .wd-trust__value { display: block; font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: var(--fw-bold); color: var(--color-accent-2, var(--color-accent)); line-height: 1; }
-  .wd-trust__label { display: block; margin-top: 0.5rem; font-size: 0.9rem; color: var(--color-text-muted); }
+  .wd-trust__label { display: block; margin-top: 0.5rem; font-size: var(--fs-small); color: var(--color-text-muted); }
 
   /* ---------- outcomes (Desire) ---------- */
   .wd-outcomes__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
