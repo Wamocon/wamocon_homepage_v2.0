@@ -114,10 +114,10 @@ export const systems: SystemProject[] = [
 export const systeme = {
   seo: {
     title: {
-      de: 'Unternehmenssysteme | WAMOCON – Software, die Ihren Betrieb führt',
-      en: 'Business systems | WAMOCON – software that runs your operation',
-      tr: 'Kurumsal sistemler | WAMOCON – işletmenizi yürüten yazılım',
-      kk: 'Кәсіпорын жүйелері | WAMOCON: кәсібіңізді жүргізетін бағдарлама',
+      de: 'Unternehmenssysteme, die Ihren Betrieb führen | WAMOCON',
+      en: 'Business systems that run your operation | WAMOCON',
+      tr: 'İşletmenizi yürüten kurumsal sistemler | WAMOCON',
+      kk: 'Кәсібіңізді жүргізетін кәсіпорын жүйелері | WAMOCON',
     },
     description: {
       de: 'Von der Unternehmensanalyse über Anforderungserfassung und Prozessabstimmung bis zu Design, Test und Einführung: WAMOCON baut Systeme für Unternehmensprozesse. DSGVO-konform, aus Eschborn bei Frankfurt.',
@@ -1667,7 +1667,7 @@ export const systemeFaq: Record<Lang, { heading: string; intro: string; items: {
       {
         question: 'Жүйені енгізу қанша уақыт алады?',
         answer:
-          'Бұл ауқымға байланысты, шыдамдылығыңызға емес: біз тілімдеп құрамыз. Тар, бірақ толық тілім ертерек іске қосылады, командаңыз онымен жұмыс істейді, содан кейін келесісі шығады. Осылайша толық функционал дайын болмай тұрып-ақ пайдалануға жарамды дүние болады, ал біз нақты істер арқылы не жетіспейтінін білеміз. Алғашқы екі кезең — тыңдау мен жазып алу — орта кәсіпте әдетте бірнеше апта алады, әрі сіздің уақытыңыз бізге бізден гөрі көбірек керек болатын жалғыз кезең сол.',
+          'Бұл ауқымға байланысты, шыдамдылығыңызға емес: біз тілімдеп құрамыз. Тар, бірақ толық тілім ертерек іске қосылады, командаңыз онымен жұмыс істейді, содан кейін келесісі шығады. Осылайша толық функционал дайын болмай тұрып-ақ пайдалануға жарамды дүние болады, ал біз нақты істер арқылы не жетіспейтінін білеміз. Тыңдау мен жазып алу, яғни алғашқы екі кезең, орта кәсіпте әдетте бірнеше апта алады, әрі сіздің уақытыңыз бізге бізден гөрі көбірек керек болатын жалғыз кезең сол.',
       },
       {
         question: 'Неге дайын өнімнің орнына жеке әзірлеме?',
