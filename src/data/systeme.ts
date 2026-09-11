@@ -255,11 +255,34 @@ export const systeme = {
       },
       /** Screen-reader description of the whole constellation. */
       alt: {
-        de: 'Schematische Darstellung: ein Arbeitsbereich, verbunden mit einer Einsatzansicht für unterwegs, einem Kundenportal und einer Auswertung.',
-        en: 'Schematic: one workspace, connected to a field view, a customer portal and a reporting board.',
-        tr: 'Şema: bir çalışma alanı; saha görünümü, müşteri portalı ve analiz panosuna bağlı.',
-        kk: 'Схема: бір жұмыс кеңістігі, далалық көрініспен, клиент порталымен және талдау тақтасымен байланысқан.',
+        de: 'Schematische Darstellung: ein Arbeitsbereich, der sich mit einer Einsatzansicht für unterwegs, einem Kundenportal und einer Auswertung verbinden lässt.',
+        en: 'Schematic: a workspace that can be connected to a field view, a customer portal and a reporting board.',
+        tr: 'Şema: saha görünümü, müşteri portalı ve analiz panosuna bağlanabilen bir çalışma alanı.',
+        kk: 'Схема: далалық көрініспен, клиент порталымен және талдау тақтасымен байланыса алатын жұмыс кеңістігі.',
       },
+      /**
+       * The constellation is something to do, not only something to look at.
+       * Each surface starts unconnected and grey; connecting it draws the line
+       * and brings the colour. Somebody who has clicked all three has built
+       * the picture themselves, and a thing you assembled reads differently
+       * from a thing you were shown.
+       */
+      /** Neutral between tapping and clicking — the same line serves both. */
+      connectHint: {
+        de: 'Bereiche einzeln anbinden',
+        en: 'Connect the areas one by one',
+        tr: 'Alanları tek tek bağlayın',
+        kk: 'Аймақтарды бір-бірлеп жалғаңыз',
+      },
+      connectDone: {
+        de: 'Verbunden. Genau das ist ein System.',
+        en: 'Connected. That is what a system is.',
+        tr: 'Bağlandı. Sistem dediğimiz tam olarak budur.',
+        kk: 'Жалғанды. Жүйе дегеніміз дәл осы.',
+      },
+      /** Appended to a surface's name on its button, per state. */
+      connectAction: { de: 'anbinden', en: 'connect', tr: 'bağla', kk: 'жалғау' },
+      connectedState: { de: 'verbunden', en: 'connected', tr: 'bağlı', kk: 'жалғанған' },
       /** Label of the control that stops the docking animation further down. */
       pause: { de: 'Animation anhalten', en: 'Pause animation', tr: 'Animasyonu duraklat', kk: 'Анимацияны тоқтату' },
       play: { de: 'Animation abspielen', en: 'Play animation', tr: 'Animasyonu oynat', kk: 'Анимацияны ойнату' },

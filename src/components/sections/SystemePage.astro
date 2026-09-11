@@ -124,34 +124,41 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
       </ul>
     </div>
 
-    <!-- Schematic ecosystem: one workspace with the system's other faces
-         hanging off it. Decorative, so it is hidden from assistive technology
-         and summarised once in the caption below rather than narrated as a
-         table that does not exist. -->
+    <!-- Schematic ecosystem: one workspace and the system's other faces, which
+         the reader connects themselves. The workspace and the wires are
+         decorative; the three surfaces are buttons, so they are not hidden
+         from assistive technology — each one says what it is and whether it is
+         connected yet. -->
     <div class="sy-hero__stage" data-reveal="zoom">
       <p class="visually-hidden">{s.hero.console.alt[lang]}</p>
-      <div class="sy-constellation" aria-hidden="true">
-        <!-- Drawn connections. The viewBox is a percentage grid so the lines
-             land on the surfaces at every width; the second stroke of each
-             pair is a short dash travelling along it, which reads as data
-             moving rather than as a static wire. -->
-        <!-- All three start at the workspace's centre, so they read as coming
-             out of it; the workspace itself covers the first stretch, leaving
-             only the span between the surfaces visible. Coordinates are the
-             centres of the four boxes positioned in CSS below — move one and
-             the matching line has to move with it. -->
-        <svg class="sy-wires" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <div
+        class="sy-constellation"
+        data-constellation
+        data-action={s.hero.console.connectAction[lang]}
+        data-state={s.hero.console.connectedState[lang]}
+      >
+        <!-- Drawn connections. The viewBox matches the container's aspect
+             ratio, so the scaling stays uniform and a line's drawn length is
+             honest; `pathLength="100"` normalises every path to 100 units, so
+             one CSS rule draws all three regardless of how long they really
+             are. All three start at the workspace's centre and are covered by
+             it for their first stretch, which is why they read as coming out
+             of it. Coordinates are the centres of the four boxes positioned in
+             CSS below — move one and its line has to move with it. -->
+        <svg class="sy-wires" viewBox="0 0 100 92" aria-hidden="true">
           <g class="sy-wires__base">
-            <path d="M29 35 L86 11" /><path d="M29 35 L83 73" /><path d="M29 35 L23 84" />
+            <path d="M29 32.2 L86 10.1" pathLength="100" data-wire="portal" />
+            <path d="M29 32.2 L83 67.2" pathLength="100" data-wire="board" />
+            <path d="M29 32.2 L23 77.3" pathLength="100" data-wire="field" />
           </g>
           <g class="sy-wires__pulse">
-            <path d="M29 35 L86 11" style="--d: 0s" />
-            <path d="M29 35 L83 73" style="--d: 1.2s" />
-            <path d="M29 35 L23 84" style="--d: 2.4s" />
+            <path d="M29 32.2 L86 10.1" pathLength="100" data-wire="portal" style="--d: 0s" />
+            <path d="M29 32.2 L83 67.2" pathLength="100" data-wire="board" style="--d: 1.2s" />
+            <path d="M29 32.2 L23 77.3" pathLength="100" data-wire="field" style="--d: 2.4s" />
           </g>
         </svg>
 
-      <div class="sy-hero__frame">
+      <div class="sy-hero__frame" aria-hidden="true">
       <figure class="sy-console">
         <span class="sy-console__bar">
           <i></i><i></i><i></i>
@@ -186,45 +193,61 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
 
       </div>
 
-      <!-- Portal: lighter, because it is the surface that faces outwards. -->
-      <figure class="sy-sat sy-sat--portal">
-        <span class="sy-sat__bar"><i></i><i></i></span>
-        <span class="sy-sat__body">
-          <span class="sy-bar" style="--w: 64%"></span>
-          <span class="sy-bar sy-bar--dim" style="--w: 44%"></span>
-          <span class="sy-bar sy-bar--dim" style="--w: 54%"></span>
+      {/* Each surface is a button. It renders connected, so a reader without
+          JavaScript gets the finished picture; the script disconnects all
+          three on load and hands the reader the job of joining them up. */}
+
+      {/* Portal: lighter, because it is the surface that faces outwards. */}
+      <button type="button" class="sy-sat sy-sat--portal" data-sat="portal" aria-pressed="true">
+        <span class="sy-sat__ui" aria-hidden="true">
+          <span class="sy-sat__bar"><i></i><i></i></span>
+          <span class="sy-sat__body">
+            <span class="sy-bar" style="--w: 64%"></span>
+            <span class="sy-bar sy-bar--dim" style="--w: 44%"></span>
+            <span class="sy-bar sy-bar--dim" style="--w: 54%"></span>
+          </span>
         </span>
-        <figcaption>
+        <span class="sy-sat__label">
           <b>{s.hero.console.satellites.portal.title[lang]}</b>
-          <span>{s.hero.console.satellites.portal.line[lang]}</span>
-        </figcaption>
-      </figure>
-
-      <!-- Field view: a phone, because that is where the job actually is. -->
-      <figure class="sy-sat sy-sat--field">
-        <span class="sy-phone">
-          <span class="sy-phone__notch"></span>
-          <span class="sy-phone__shot"></span>
-          <span class="sy-bar" style="--w: 72%"></span>
-          <span class="sy-bar sy-bar--dim" style="--w: 48%"></span>
+          <span class="sy-sat__line">{s.hero.console.satellites.portal.line[lang]}</span>
         </span>
-        <figcaption>
+        <span class="sy-sat__plug" aria-hidden="true"></span>
+      </button>
+
+      {/* Field view: a phone, because that is where the job actually is. */}
+      <button type="button" class="sy-sat sy-sat--field" data-sat="field" aria-pressed="true">
+        <span class="sy-sat__ui" aria-hidden="true">
+          <span class="sy-phone">
+            <span class="sy-phone__notch"></span>
+            <span class="sy-phone__shot"></span>
+            <span class="sy-bar" style="--w: 72%"></span>
+            <span class="sy-bar sy-bar--dim" style="--w: 48%"></span>
+          </span>
+        </span>
+        <span class="sy-sat__label">
           <b>{s.hero.console.satellites.field.title[lang]}</b>
-          <span>{s.hero.console.satellites.field.line[lang]}</span>
-        </figcaption>
-      </figure>
-
-      <!-- Board: the same records, counted. -->
-      <figure class="sy-sat sy-sat--board">
-        <span class="sy-sat__spark">
-          <i style="--h: 38%"></i><i style="--h: 62%"></i><i style="--h: 48%"></i><i style="--h: 80%"></i><i style="--h: 66%"></i>
+          <span class="sy-sat__line">{s.hero.console.satellites.field.line[lang]}</span>
         </span>
-        <figcaption>
+        <span class="sy-sat__plug" aria-hidden="true"></span>
+      </button>
+
+      {/* Board: the same records, counted. */}
+      <button type="button" class="sy-sat sy-sat--board" data-sat="board" aria-pressed="true">
+        <span class="sy-sat__ui" aria-hidden="true">
+          <span class="sy-sat__spark">
+            <i style="--h: 38%"></i><i style="--h: 62%"></i><i style="--h: 48%"></i><i style="--h: 80%"></i><i style="--h: 66%"></i>
+          </span>
+        </span>
+        <span class="sy-sat__label">
           <b>{s.hero.console.satellites.board.title[lang]}</b>
-          <span>{s.hero.console.satellites.board.line[lang]}</span>
-        </figcaption>
-      </figure>
+          <span class="sy-sat__line">{s.hero.console.satellites.board.line[lang]}</span>
+        </span>
+        <span class="sy-sat__plug" aria-hidden="true"></span>
+      </button>
       </div>
+
+      <p class="sy-constellation__hint" data-hint
+         data-done={s.hero.console.connectDone[lang]}>{s.hero.console.connectHint[lang]}</p>
     </div>
   </div>
 
@@ -857,6 +880,7 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   .sy-bar--dim { background: rgba(255, 255, 255, 0.16); }
   .sy-bar--hot { background: var(--color-accent); }
   .sy-bar--ghost { background: rgba(255, 255, 255, 0.09); }
+  .sy-constellation .sy-bar { height: 1.1cqi; border-radius: 0.6cqi; }
 
   /* ---------- hero ---------- */
   .sy-hero { position: relative; padding: clamp(3rem, 8vw, 6rem) 0 0; overflow: hidden; }
@@ -932,82 +956,132 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   }
   .sy-hero__chips svg { color: var(--color-accent); flex: 0 0 auto; }
 
-  /* ---------- hero constellation ---------- */
-  /* One system, several surfaces. The stage holds a fixed ratio so the drawn
-     wires, which use a percentage viewBox, always meet the surfaces they
-     connect. */
+  /* ---------- hero constellation ----------
+     One system and its other faces, which the reader connects themselves.
+
+     Everything inside is sized in `cqi` — one percent of the constellation's
+     own width — so the whole picture scales with the space it gets instead of
+     being hidden on a phone, which is what used to happen. Text is the one
+     exception: proportional scaling would take a 12px caption down to 6px at
+     phone width, so type is clamped and the secondary line drops out below
+     620px rather than becoming unreadable. A picture you cannot read is not a
+     smaller picture, it is a worse one. */
   .sy-hero__stage { position: relative; }
   .sy-constellation {
     position: relative;
-    aspect-ratio: 1 / 0.92;
+    /* Matches the wires' viewBox, so their scaling stays uniform. */
+    aspect-ratio: 100 / 92;
+    container-type: inline-size;
     /* Written by the pointer-parallax handler; 0 until then. */
     --px: 0; --py: 0;
   }
-  /* Four boxes on one grid. The wires above are drawn to these centres, so
-     any change here needs the matching path moved too. */
+  /* Four boxes on one grid. The wires are drawn to these centres, so any
+     change here needs the matching path moved too. */
   .sy-hero__frame {
     position: absolute; left: 0; top: 10%; width: 58%; z-index: 2;
     transform: translate3d(calc(var(--px) * -10px), calc(var(--py) * -8px), 0);
     transition: transform 0.5s var(--ease-out);
   }
 
-  /* Drawn connections between the surfaces. */
-  .sy-wires { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-  .sy-wires path { fill: none; vector-effect: non-scaling-stroke; }
-  .sy-wires__base path { stroke: rgba(244, 14, 14, 0.34); stroke-width: 1.2; stroke-dasharray: 5 6; }
-  /* A short dash travelling the same path reads as data moving rather than as
-     a static wire, and costs one extra stroke. */
-  .sy-wires__pulse path {
-    stroke: var(--color-accent); stroke-width: 1.6; stroke-linecap: round;
-    stroke-dasharray: 12 300; stroke-dashoffset: 0;
-    animation: sy-pulse 3.6s linear infinite; animation-delay: var(--d);
-    filter: drop-shadow(0 0 4px rgba(244, 14, 14, 0.7));
+  /* --- the connections ---
+     `pathLength="100"` normalises every path, so one dash rule draws all three
+     no matter how long each really is. They start fully undrawn and are filled
+     in when their surface is connected. */
+  .sy-wires { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 0; }
+  .sy-wires path { fill: none; }
+  .sy-wires__base path {
+    stroke: rgba(244, 14, 14, 0.5); stroke-width: 0.4; stroke-linecap: round;
+    stroke-dasharray: 100; stroke-dashoffset: 100;
+    transition: stroke-dashoffset 0.75s var(--ease-out), stroke 0.4s;
   }
-  @keyframes sy-pulse { to { stroke-dashoffset: -304; } }
+  .sy-wires__base path.is-on { stroke-dashoffset: 0; }
+  /* A short dash travelling the drawn line: data moving, not a static wire. */
+  .sy-wires__pulse path {
+    stroke: var(--color-accent); stroke-width: 0.6; stroke-linecap: round;
+    stroke-dasharray: 4 96; stroke-dashoffset: 0;
+    opacity: 0; transition: opacity 0.4s 0.5s;
+    filter: drop-shadow(0 0 0.6cqi rgba(244, 14, 14, 0.8));
+  }
+  .sy-wires__pulse path.is-on { opacity: 1; animation: sy-pulse 3.2s linear infinite; animation-delay: var(--d); }
+  @keyframes sy-pulse { to { stroke-dashoffset: -100; } }
 
-  /* The other faces of the system. */
+  /* --- the surfaces --- */
   .sy-sat {
     position: absolute; margin: 0; z-index: 1;
-    display: flex; flex-direction: column; gap: 0.55rem;
-    padding: 0.75rem;
-    border-radius: 12px;
+    display: flex; flex-direction: column; gap: 1.1cqi;
+    padding: 1.7cqi;
+    border-radius: 2cqi;
     background: rgba(18, 18, 18, 0.94);
     border: 1px solid var(--border-subtle);
-    box-shadow: 0 26px 60px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 4cqi 9cqi rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(6px);
-    transition: transform 0.5s var(--ease-out);
+    font: inherit; text-align: left; cursor: pointer;
+    /* Unconnected: present but inert. */
+    filter: grayscale(1); opacity: 0.48;
+    transition:
+      opacity 0.45s var(--ease-out), filter 0.45s var(--ease-out),
+      border-color 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out),
+      transform 0.5s var(--ease-out);
   }
-  .sy-sat figcaption { display: flex; flex-direction: column; gap: 0.15rem; }
-  .sy-sat figcaption b { font-size: var(--fs-micro); font-weight: var(--fw-semibold); color: #fff; }
-  .sy-sat figcaption span { font-size: var(--fs-micro); color: var(--color-text-subtle); line-height: 1.35; }
+  .sy-sat[aria-pressed='true'] {
+    filter: none; opacity: 1;
+    border-color: rgba(244, 14, 14, 0.5);
+    box-shadow: 0 4cqi 9cqi rgba(0, 0, 0, 0.6), 0 0 6cqi -2cqi rgba(244, 14, 14, 0.6);
+  }
+  .sy-sat:hover { opacity: 0.75; }
+  .sy-sat[aria-pressed='true']:hover { opacity: 1; }
+  .sy-sat:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  /* Wraps the mini interface so its parts keep their spacing now that the
+     surface is a button rather than a figure. */
+  .sy-sat__ui { display: grid; gap: 1cqi; }
+  .sy-sat__label { display: flex; flex-direction: column; gap: 0.3cqi; }
+  .sy-sat__label b {
+    font-size: clamp(0.7rem, 1.85cqi, 0.8rem);
+    font-weight: var(--fw-semibold); color: #fff; line-height: 1.25;
+  }
+  .sy-sat__line {
+    font-size: clamp(0.6rem, 1.65cqi, 0.74rem);
+    color: var(--color-text-subtle); line-height: 1.3;
+  }
+  /* The socket, on the edge that faces the workspace. */
+  .sy-sat__plug {
+    position: absolute; width: 2.2cqi; height: 2.2cqi; border-radius: 50%;
+    border: 1px solid var(--border-strong); background: #0d0d0d;
+    transition: background 0.4s, border-color 0.4s, box-shadow 0.4s;
+  }
+  .sy-sat[aria-pressed='true'] .sy-sat__plug {
+    background: var(--color-accent); border-color: var(--color-accent);
+    box-shadow: 0 0 0 1cqi rgba(244, 14, 14, 0.18);
+  }
 
   .sy-sat--portal {
-    left: 71%; top: 0; width: 29%;
+    left: 71%; top: 3%; width: 29%;
     /* Lighter, because this is the surface that faces outwards. */
     background: rgba(38, 38, 38, 0.95);
-    border-color: var(--border-strong);
     transform: translate3d(calc(var(--px) * 16px), calc(var(--py) * 14px), 0);
     animation: sy-float 8.5s ease-in-out infinite;
   }
-  .sy-sat__bar { display: flex; gap: 4px; }
-  .sy-sat__bar i { width: 6px; height: 6px; border-radius: 50%; background: rgba(255, 255, 255, 0.28); }
-  .sy-sat__body { display: grid; gap: 6px; padding: 0.35rem 0 0.15rem; }
+  .sy-sat--portal .sy-sat__plug { left: -1.1cqi; bottom: 22%; }
+  .sy-sat__bar { display: flex; gap: 0.7cqi; }
+  .sy-sat__bar i { width: 1cqi; height: 1cqi; border-radius: 50%; background: rgba(255, 255, 255, 0.28); }
+  .sy-sat__body { display: grid; gap: 1cqi; padding: 0.6cqi 0 0.2cqi; }
 
   .sy-sat--field {
-    left: 12%; top: 70%; width: 22%;
+    left: 10%; top: 70%; width: 26%;
     transform: translate3d(calc(var(--px) * 22px), calc(var(--py) * 18px), 0);
     animation: sy-float 7s ease-in-out infinite reverse;
   }
+  .sy-sat--field .sy-sat__plug { right: -1.1cqi; top: 12%; }
   .sy-phone {
-    display: grid; gap: 6px; justify-items: stretch;
-    padding: 0.5rem 0.45rem 0.6rem;
-    border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.18);
+    display: grid; gap: 1cqi; justify-items: stretch;
+    padding: 0.9cqi 0.8cqi 1.1cqi;
+    border-radius: 1.6cqi; border: 1px solid rgba(255, 255, 255, 0.18);
     background: #0d0d0d;
   }
-  .sy-phone__notch { justify-self: center; width: 26%; height: 3px; border-radius: 2px; background: rgba(255, 255, 255, 0.25); margin-bottom: 2px; }
+  .sy-phone__notch { justify-self: center; width: 26%; height: 0.5cqi; border-radius: 1cqi; background: rgba(255, 255, 255, 0.25); margin-bottom: 0.3cqi; }
   /* Stands for the photo a field job carries as its evidence. */
   .sy-phone__shot {
-    height: 34px; border-radius: 5px;
+    height: 5.5cqi; border-radius: 0.8cqi;
     background: linear-gradient(140deg, rgba(244, 14, 14, 0.3), rgba(255, 255, 255, 0.07));
     border: 1px solid rgba(255, 255, 255, 0.12);
   }
@@ -1017,46 +1091,55 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
     transform: translate3d(calc(var(--px) * 13px), calc(var(--py) * -12px), 0);
     animation: sy-float 9.5s ease-in-out infinite;
   }
-  .sy-sat__spark { display: flex; align-items: flex-end; gap: 4px; height: 36px; }
-  .sy-sat__spark i { flex: 1; height: var(--h); border-radius: 2px 2px 0 0; background: linear-gradient(180deg, var(--color-accent), rgba(244, 14, 14, 0.2)); }
+  .sy-sat--board .sy-sat__plug { left: -1.1cqi; top: 18%; }
+  .sy-sat__spark { display: flex; align-items: flex-end; gap: 0.7cqi; height: 5.8cqi; }
+  .sy-sat__spark i { flex: 1; height: var(--h); border-radius: 0.4cqi 0.4cqi 0 0; background: linear-gradient(180deg, var(--color-accent), rgba(244, 14, 14, 0.2)); }
+
+  .sy-constellation__hint {
+    margin-top: 1rem; text-align: center;
+    font-size: var(--fs-label); color: var(--color-text-subtle);
+    transition: color var(--dur-med);
+  }
+  .sy-constellation__hint.is-done { color: var(--color-accent-text); }
+
   .sy-console {
-    position: relative; margin: 0; border-radius: 14px; overflow: hidden;
+    position: relative; margin: 0; border-radius: 2.2cqi; overflow: hidden;
     background: linear-gradient(165deg, #191919, #101010);
     border: 1px solid rgba(255, 255, 255, 0.14);
-    box-shadow: 0 46px 100px rgba(0, 0, 0, 0.65), 0 30px 80px -40px rgba(244, 14, 14, 0.35);
+    box-shadow: 0 7cqi 15cqi rgba(0, 0, 0, 0.65), 0 5cqi 12cqi -6cqi rgba(244, 14, 14, 0.35);
     animation: sy-float 9s ease-in-out infinite;
   }
   .sy-console__bar {
-    display: flex; align-items: center; gap: 6px;
-    height: 34px; padding: 0 12px;
+    display: flex; align-items: center; gap: 1cqi;
+    height: 5.2cqi; padding: 0 1.9cqi;
     background: #151515; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
-  .sy-console__bar i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); }
+  .sy-console__bar i { width: 1.3cqi; height: 1.3cqi; border-radius: 50%; background: rgba(255, 255, 255, 0.2); flex: 0 0 auto; }
   .sy-console__bar i:first-child { background: var(--color-accent); }
-  .sy-console__name { margin-left: 0.6rem; font-size: var(--fs-micro); color: rgba(255, 255, 255, 0.6); }
+  .sy-console__name { margin-left: 0.9cqi; font-size: clamp(0.62rem, 1.85cqi, 0.8rem); color: rgba(255, 255, 255, 0.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sy-console__role {
-    margin-left: auto; font-size: var(--fs-micro); letter-spacing: 0.05em;
-    padding: 0.2rem 0.6rem; border-radius: var(--radius-pill);
+    margin-left: auto; font-size: clamp(0.6rem, 1.75cqi, 0.76rem); letter-spacing: 0.05em;
+    padding: 0.35cqi 1cqi; border-radius: var(--radius-pill); white-space: nowrap;
     color: var(--color-accent-text); border: 1px solid rgba(244, 14, 14, 0.4); background: rgba(244, 14, 14, 0.1);
   }
-  .sy-console__body { display: grid; grid-template-columns: minmax(96px, 0.3fr) 1fr; min-height: 210px; }
-  .sy-console__nav { display: flex; flex-direction: column; gap: 0.15rem; padding: 0.8rem 0.5rem; border-right: 1px solid rgba(255, 255, 255, 0.07); background: rgba(255, 255, 255, 0.015); }
+  .sy-console__body { display: grid; grid-template-columns: minmax(0, 0.32fr) 1fr; min-height: 32cqi; }
+  .sy-console__nav { display: flex; flex-direction: column; gap: 0.25cqi; padding: 1.3cqi 0.8cqi; border-right: 1px solid rgba(255, 255, 255, 0.07); background: rgba(255, 255, 255, 0.015); }
   .sy-console__navitem {
-    display: flex; align-items: center; gap: 0.5rem;
-    padding: 0.42rem 0.55rem; border-radius: 7px;
-    font-size: var(--fs-micro); color: rgba(255, 255, 255, 0.45); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    display: flex; align-items: center; gap: 0.8cqi;
+    padding: 0.7cqi 0.9cqi; border-radius: 1.1cqi;
+    font-size: clamp(0.6rem, 1.8cqi, 0.78rem); color: rgba(255, 255, 255, 0.45); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .sy-console__navitem i { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex: 0 0 auto; }
-  .sy-console__navitem.is-active { color: #fff; background: rgba(244, 14, 14, 0.14); box-shadow: inset 2px 0 0 var(--color-accent); }
-  .sy-console__main { position: relative; padding: 0.85rem 1rem 1rem; overflow: hidden; }
+  .sy-console__navitem i { width: 0.8cqi; height: 0.8cqi; border-radius: 50%; background: currentColor; flex: 0 0 auto; }
+  .sy-console__navitem.is-active { color: #fff; background: rgba(244, 14, 14, 0.14); box-shadow: inset 0.35cqi 0 0 var(--color-accent); }
+  .sy-console__main { position: relative; padding: 1.3cqi 1.6cqi 1.6cqi; overflow: hidden; }
   .sy-console__head, .sy-console__row {
-    display: grid; grid-template-columns: 1fr 0.72fr 0.62fr; gap: 0.7rem; align-items: center;
+    display: grid; grid-template-columns: 1fr 0.72fr 0.62fr; gap: 1.1cqi; align-items: center;
   }
-  .sy-console__head { padding-bottom: 0.55rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: var(--fs-micro); letter-spacing: 0.09em; text-transform: uppercase; color: rgba(255, 255, 255, 0.35); }
-  .sy-console__row { padding: 0.58rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+  .sy-console__head { padding-bottom: 0.9cqi; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: clamp(0.58rem, 1.7cqi, 0.74rem); letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.35); }
+  .sy-console__row { padding: 0.9cqi 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
   .sy-state {
-    justify-self: start; font-size: var(--fs-micro); letter-spacing: 0.03em;
-    padding: 0.22rem 0.55rem; border-radius: var(--radius-pill);
+    justify-self: start; font-size: clamp(0.58rem, 1.7cqi, 0.74rem); letter-spacing: 0.03em;
+    padding: 0.35cqi 0.9cqi; border-radius: var(--radius-pill);
     border: 1px solid currentColor; opacity: 0.9; white-space: nowrap;
   }
   .sy-state--open { color: rgba(255, 255, 255, 0.5); }
@@ -1066,14 +1149,39 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   /* A single band travelling down the rows: enough motion to read as "live"
      without animating anything that looks like changing data. */
   .sy-console__scan {
-    position: absolute; left: 0; right: 0; top: 0; height: 46px;
+    position: absolute; left: 0; right: 0; top: 0; height: 7cqi;
     background: linear-gradient(180deg, transparent, rgba(244, 14, 14, 0.09), transparent);
     animation: sy-scan 5.5s ease-in-out infinite;
     pointer-events: none;
   }
 
-  @keyframes sy-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -12px; } }
-  @keyframes sy-scan { 0% { transform: translateY(-60px); } 55%, 100% { transform: translateY(240px); } }
+  /* The drift is a share of the picture, not a fixed 12px — at phone size that
+     was enough to push the portal out through the top edge. */
+  @keyframes sy-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -1.7cqi; } }
+
+  /* --- the schematic gets simpler rather than smaller ---
+     Below roughly a phone's worth of width, the workspace cannot show a
+     sidebar, three column headings and four word-long state pills without
+     dropping its type to 8px. So it stops trying: the sidebar goes, the
+     headings go, and each state becomes the coloured dot it always was. The
+     picture still says "rows of work, each in a state" — it just says it
+     without asking anyone to read 8px. */
+  @container (max-width: 460px) {
+    .sy-console__nav { display: none; }
+    .sy-console__body { grid-template-columns: 1fr; }
+    .sy-console__head { display: none; }
+    .sy-console__role { display: none; }
+    .sy-console__row { grid-template-columns: 1fr 0.55fr auto; padding: 1.2cqi 0; }
+    .sy-state {
+      font-size: 0; padding: 0; border: 0;
+      width: 2.2cqi; height: 2.2cqi; border-radius: 50%;
+      background: currentColor; opacity: 1;
+    }
+    .sy-state--open { color: rgba(255, 255, 255, 0.38); }
+    .sy-state--approved { color: var(--color-accent); }
+    .sy-console__main { padding: 1.8cqi; }
+  }
+  @keyframes sy-scan { 0% { transform: translateY(-9cqi); } 55%, 100% { transform: translateY(36cqi); } }
 
   /* ---------- keyword marquee ---------- */
   .sy-marquee {
@@ -1698,20 +1806,10 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
     .sy-vs__cell { row-gap: 0.35rem; }
   }
   @media (max-width: 720px) {
-    /* The satellites need room the phone does not have; the workspace on its
-       own still carries the idea, and the wires have nothing left to join. */
-    .sy-sat, .sy-wires { display: none; }
-    .sy-constellation { aspect-ratio: auto; }
-    .sy-hero__frame { position: static; width: 100%; transform: none; }
-    .sy-console__body { grid-template-columns: 1fr; }
-    /* The module list becomes a horizontal strip that runs past the edge; a
-       fade says "there is more" instead of guillotining the last word. */
-    .sy-console__nav {
-      flex-direction: row; overflow: hidden; border-right: 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-      -webkit-mask-image: linear-gradient(90deg, #000 78%, transparent);
-      mask-image: linear-gradient(90deg, #000 78%, transparent);
-    }
+    /* The constellation stays — it scales with the container rather than
+       being dropped. Only the secondary caption line goes, because below this
+       width it would have to shrink past reading size. */
+    .sy-sat__line { display: none; }
     .sy-dg--insights { grid-template-columns: 1fr; }
     .sy-flow { grid-template-columns: repeat(2, 1fr); gap: 1rem 0.4rem; }
     .sy-flow__step:not(:last-child)::after { display: none; }
@@ -2021,6 +2119,54 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
         else if (inView) start();
       });
     }
+  }
+
+  // ---- Hero constellation: connect the surfaces -------------------------
+  // The markup renders connected, so a reader without JavaScript gets the
+  // finished picture rather than a grey one that never lights up. Script then
+  // disconnects all three and hands the reader the job of joining them: a
+  // system you assembled yourself reads differently from one you were shown,
+  // and three taps is a cheaper way to understand "one record set, several
+  // surfaces" than a paragraph about it.
+  const constellation = document.querySelector<HTMLElement>('[data-constellation]');
+  const hint = document.querySelector<HTMLElement>('[data-hint]');
+
+  if (constellation) {
+    const sats = Array.from(constellation.querySelectorAll<HTMLButtonElement>('[data-sat]'));
+    const wires = Array.from(constellation.querySelectorAll<SVGPathElement>('[data-wire]'));
+    const connectAction = constellation.dataset.action ?? '';
+    const connectedState = constellation.dataset.state ?? '';
+    const hintText = hint?.textContent ?? '';
+    const doneText = hint?.dataset.done ?? hintText;
+
+    const wiresFor = (key: string) => wires.filter((w) => w.dataset.wire === key);
+
+    const setConnected = (sat: HTMLButtonElement, on: boolean) => {
+      sat.setAttribute('aria-pressed', String(on));
+      wiresFor(sat.dataset.sat ?? '').forEach((w) => w.classList.toggle('is-on', on));
+      // The button's name carries the state, so a screen reader hears what
+      // pressing it will do rather than just a noun.
+      const name = sat.querySelector('b')?.textContent?.trim() ?? '';
+      sat.setAttribute('aria-label', `${name} — ${on ? connectedState : connectAction}`);
+    };
+
+    const refreshHint = () => {
+      if (!hint) return;
+      const all = sats.every((sat) => sat.getAttribute('aria-pressed') === 'true');
+      hint.textContent = all ? doneText : hintText;
+      hint.classList.toggle('is-done', all);
+    };
+
+    // Start disconnected. Everything below this line only happens with script.
+    sats.forEach((sat) => setConnected(sat, false));
+    refreshHint();
+
+    sats.forEach((sat) => {
+      sat.addEventListener('click', () => {
+        setConnected(sat, sat.getAttribute('aria-pressed') !== 'true');
+        refreshHint();
+      });
+    });
   }
 
   // ---- Hero constellation parallax --------------------------------------
