@@ -69,10 +69,10 @@ export const systems: SystemProject[] = [
       kk: 'Бір жылжымайтын мүлік агенттігі, бір жұмыс кеңістігі',
     },
     description: {
-      de: 'Ein Maklerhaus mit jahrelanger Verkaufshistorie — und einem Überblick, der in getrennten Listen lag: Vertrieb hier, Objekte dort, Eigentümer im Ordner nebenan. Heute liegt alles in einem Arbeitsbereich, und wer welchen Datensatz sieht, entscheidet die Rolle — nicht die Absprache im Flur. Die öffentliche Website desselben Hauses stammt ebenfalls von uns.',
-      en: 'An estate agency with years of sales behind it — and an overview that lived in separate lists: sales here, properties there, owners in the folder next door. Today it all sits in one workspace, and who sees which record is decided by the role — not by an agreement in the corridor. The same firm’s public website came from us too.',
-      tr: 'Yıllara dayanan bir satış geçmişi olan bir emlak ofisi — ve ayrı listelerde duran bir genel görünüm: satış burada, portföy şurada, malikler yan klasörde. Bugün hepsi tek bir çalışma alanında ve hangi kaydı kimin göreceğine koridordaki mutabakat değil, rol karar veriyor. Aynı şirketin web sitesi de bizden.',
-      kk: 'Жылдар бойғы сатылым тарихы бар жылжымайтын мүлік агенттігі — ал жалпы көрініс бөлек-бөлек тізімде жатты: сатылым мұнда, нысандар анда, меншік иелері көрші қалтада. Бүгін бәрі бір жұмыс кеңістігінде, ал қай жазбаны кімнің көретінін дәлізде айтылған келісім емес, рөл шешеді. Дәл сол компанияның ашық сайты да біздің қолымыздан шыққан.',
+      de: 'Ein Maklerhaus mit jahrelanger Verkaufshistorie, dessen Überblick in getrennten Listen lag: Vertrieb hier, Objekte dort, Eigentümer im Ordner nebenan. Heute liegt alles in einem Arbeitsbereich. Wer welchen Datensatz sieht, entscheidet die Rolle und nicht die Absprache im Flur. Die öffentliche Website desselben Hauses stammt ebenfalls von uns.',
+      en: 'An estate agency with years of sales behind it, whose overview lived in separate lists: sales here, properties there, owners in the folder next door. Today it all sits in one workspace. Who sees which record is decided by the role, not by an agreement in the corridor. The same firm’s public website came from us too.',
+      tr: 'Yıllara dayanan bir satış geçmişi olan, genel görünümü ise ayrı listelerde duran bir emlak ofisi: satış burada, portföy şurada, malikler yan klasörde. Bugün hepsi tek bir çalışma alanında. Hangi kaydı kimin göreceğine koridordaki mutabakat değil, rol karar veriyor. Aynı şirketin web sitesi de bizden.',
+      kk: 'Жылдар бойғы сатылым тарихы бар жылжымайтын мүлік агенттігі, ал жалпы көрініс бөлек-бөлек тізімде жатты: сатылым мұнда, нысандар анда, меншік иелері көрші қалтада. Бүгін бәрі бір жұмыс кеңістігінде. Қай жазбаны кімнің көретінін дәлізде айтылған келісім емес, рөл шешеді. Дәл сол компанияның ашық сайты да біздің қолымыздан шыққан.',
     },
     capabilities: [
       { de: 'Vertrieb und Portfolio in einem Bestand', en: 'Sales and portfolio in one record set', tr: 'Satış ve portföy tek veri kümesinde', kk: 'Сатылым мен портфель бір деректер жиынында' },
@@ -97,9 +97,9 @@ export const systems: SystemProject[] = [
       kk: 'Шынымен жұмыс істейтін оқыту платформасы',
     },
     description: {
-      de: 'Softwaretesten lernt man nicht aus Folien. Auf DiTeLe testen Lernende an laufenden Anwendungen, schreiben echte Fehlerberichte und bekommen sie von Trainern bewertet. Drei Rollen mit getrennten Rechten, abgesichert in der Datenbank statt in der Oberfläche — bei einer Plattform, auf der Menschen das Prüfen lernen, wäre alles andere peinlich.',
-      en: 'You do not learn software testing from slides. On DiTeLe, learners test running applications, write real defect reports and have trainers review them. Three roles with separated rights, enforced in the database rather than the interface — on a platform where people learn to test, anything else would be embarrassing.',
-      tr: 'Yazılım testi slaytlardan öğrenilmez. DiTeLe’de öğrenciler çalışan uygulamaları test eder, gerçek hata raporları yazar ve bunlar eğitmenlerce değerlendirilir. Ayrı yetkilere sahip üç rol, arayüzde değil veritabanında güvence altına alınmıştır — insanların test etmeyi öğrendiği bir platformda başka türlüsü utanç verici olurdu.',
+      de: 'Softwaretesten lernt man nicht aus Folien. Auf DiTeLe testen Lernende an laufenden Anwendungen, schreiben echte Fehlerberichte und bekommen sie von Trainern bewertet. Drei Rollen mit getrennten Rechten, abgesichert in der Datenbank statt in der Oberfläche. Bei einer Plattform, auf der Menschen das Prüfen lernen, wäre alles andere peinlich.',
+      en: 'You do not learn software testing from slides. On DiTeLe, learners test running applications, write real defect reports and have trainers review them. Three roles with separated rights, enforced in the database rather than the interface. On a platform where people learn to test, anything else would be embarrassing.',
+      tr: 'Yazılım testi slaytlardan öğrenilmez. DiTeLe’de öğrenciler çalışan uygulamaları test eder, gerçek hata raporları yazar ve bunlar eğitmenlerce değerlendirilir. Ayrı yetkilere sahip üç rol, arayüzde değil veritabanında güvence altına alınmıştır. İnsanların test etmeyi öğrendiği bir platformda başka türlüsü utanç verici olurdu.',
       kk: 'Бағдарлама тестілеуді слайдтан үйренбейді. DiTeLe-де үйренушілер жұмыс істеп тұрған қосымшаны тестілейді, нағыз ақау есептерін жазады және оны тренерлер бағалайды. Бөлек құқығы бар үш рөл интерфейсте емес, дерекқорда бекітілген, өйткені адамдар тексеруді үйренетін платформада басқаша болуы ұят болар еді.',
     },
     capabilities: [
@@ -186,10 +186,10 @@ export const systeme = {
      * do about it.
      */
     lead: {
-      de: 'Nur weiß niemand genau, wie — und solange das so bleibt, gehört Ihr Betrieb den Werkzeugen, die zufällig da waren. Wir bauen das System, in dem seine Abläufe einen festen Ort bekommen. Wir fangen dabei nicht mit Software an, sondern damit, Ihnen zuzusehen.',
-      en: 'Nobody knows exactly how — and while that holds, your company belongs to whichever tools happened to be lying around. We build the system where its processes finally get a fixed home. And we do not start with software, we start by watching how you work.',
-      tr: 'Ama tam olarak nasıl, kimse bilmiyor — ve bu böyle sürdükçe işletmeniz, eline ne geçtiyse o araçlara ait olur. Biz, süreçlerinin nihayet sabit bir yer bulduğu sistemi kuruyoruz. İşe de yazılımla değil, sizi izleyerek başlıyoruz.',
-      kk: 'Тек оның қалай жүретінін ешкім нақты білмейді, ал бұл осылай жалғасқан сайын кәсібіңіз кездейсоқ қолға түскен құралдардың еншісінде қалады. Біз оның үдерістері ақыры тұрақты орын табатын жүйені құрамыз. Жұмысты да бағдарламадан емес, сіздің қалай жұмыс істейтініңізді бақылаудан бастаймыз.',
+      de: 'Nur weiß niemand genau, wie. Solange das so bleibt, gehört Ihr Betrieb den Werkzeugen, die zufällig da waren, und jedes Jahr kommen ein paar Sonderwege dazu. Wir bauen das System, in dem Ihre Abläufe einen festen Ort bekommen. Angefangen wird nicht mit Software, sondern mit einem Tag in Ihrem Betrieb.',
+      en: 'Nobody knows exactly how. While that holds, your company belongs to whichever tools happened to be lying around, and every year adds a few more workarounds. We build the system where your processes get a fixed home. It does not start with software. It starts with a day inside your company.',
+      tr: 'Ama tam olarak nasıl, kimse bilmiyor. Bu böyle sürdükçe işletmeniz eline ne geçtiyse o araçlara ait olur ve her yıl birkaç istisna daha eklenir. Süreçlerinizin sabit bir yer bulduğu sistemi kuruyoruz. İşe yazılımla değil, işletmenizde geçirilen bir günle başlıyoruz.',
+      kk: 'Тек оның қалай жүретінін ешкім нақты білмейді. Бұл осылай жалғасқан сайын кәсібіңіз кездейсоқ қолға түскен құралдардың еншісінде қалады, әрі жыл сайын тағы бірнеше айналма жол қосылады. Біз үдерістеріңіз тұрақты орын табатын жүйені құрамыз. Жұмыс бағдарламадан емес, кәсібіңізде өткізілген бір күннен басталады.',
     },
     ctaPrimary: { de: 'Erstgespräch vereinbaren', en: 'Arrange a first conversation', tr: 'İlk görüşmeyi ayarlayın', kk: 'Алғашқы кездесуді жоспарлау' },
     ctaSecondary: { de: 'So arbeiten wir', en: 'How we work', tr: 'Nasıl çalışıyoruz', kk: 'Біз осылай жұмыс істейміз' },
@@ -325,9 +325,9 @@ export const systeme = {
       {
         source: { de: 'Im Chatverlauf', en: 'In a chat thread', tr: 'Sohbet geçmişinde', kk: 'Чат жазбасында' },
         text: {
-          de: '„Wer hat den Rabatt eigentlich freigegeben?" — und die Antwort steht in einem Chat.',
-          en: '“Who actually approved that discount?” — and the answer is in a chat thread.',
-          tr: '“Bu indirimi kim onaylamıştı?” — ve cevap bir sohbet penceresinde.',
+          de: '„Wer hat den Rabatt eigentlich freigegeben?" Die Antwort steht in einem Chat.',
+          en: '“Who actually approved that discount?” The answer is in a chat thread.',
+          tr: '“Bu indirimi kim onaylamıştı?” Cevap bir sohbet penceresinde.',
           kk: '«Бұл жеңілдікті кім бекітті?» деген сұрақтың жауабы чатта жатыр.',
         },
       },
@@ -343,9 +343,9 @@ export const systeme = {
       {
         source: { de: 'Nirgends', en: 'Nowhere', tr: 'Hiçbir yerde', kk: 'Ешқайда' },
         text: {
-          de: 'Neue Mitarbeitende brauchen Wochen, bis sie den Ablauf kennen — weil ihn niemand aufgeschrieben hat.',
-          en: 'New hires need weeks to learn the process — because nobody ever wrote it down.',
-          tr: 'Yeni çalışanların süreci öğrenmesi haftalar alıyor — çünkü kimse yazmamış.',
+          de: 'Neue Mitarbeitende brauchen Wochen, bis sie den Ablauf kennen, weil ihn niemand aufgeschrieben hat.',
+          en: 'New hires need weeks to learn the process, because nobody ever wrote it down.',
+          tr: 'Yeni çalışanların süreci öğrenmesi haftalar alıyor, çünkü kimse yazmamış.',
           kk: 'Жаңа қызметкер үдерісті үйренуге бірнеше апта жұмсайды, өйткені оны ешкім жазып қоймаған.',
         },
       },
@@ -393,10 +393,10 @@ export const systeme = {
       kk: 'Үдерістердің орны болғанда не өзгереді',
     },
     intro: {
-      de: 'Nicht die Software ist der Nutzen. Der Nutzen sind sechs Situationen, die heute Zeit und Nerven kosten und danach keine Frage mehr sind.',
-      en: 'The software is not the benefit. The benefit is six situations that cost time and nerves today and stop being a question afterwards.',
-      tr: 'Fayda yazılımın kendisi değil. Fayda, bugün zaman ve sinir kaybettiren, sonrasında ise soru olmaktan çıkan altı durum.',
-      kk: 'Пайда — бағдарламаның өзі емес. Пайда деген — бүгін уақыт пен жүйке шығындайтын, кейін сұрақ болудан қалатын алты жағдай.',
+      de: 'Sechs Situationen, die heute jede Woche Zeit kosten. Danach sind sie keine Frage mehr.',
+      en: 'Six situations that cost time every week today. Afterwards they stop being a question.',
+      tr: 'Bugün her hafta zaman kaybettiren altı durum. Sonrasında bunlar soru olmaktan çıkar.',
+      kk: 'Бүгін апта сайын уақыт алатын алты жағдай. Кейін олар сұрақ болудан қалады.',
     },
     withoutLabel: { de: 'Ohne System', en: 'Without a system', tr: 'Sistem olmadan', kk: 'Жүйесіз' },
     withLabel: { de: 'Mit Unternehmenssystem', en: 'With a business system', tr: 'Kurumsal sistemle', kk: 'Кәсіпорын жүйесімен' },
@@ -404,15 +404,15 @@ export const systeme = {
       {
         topic: { de: 'Der Überblick', en: 'The overview', tr: 'Genel görünüm', kk: 'Жалпы көрініс' },
         without: {
-          de: 'Drei Listen mit denselben Kunden, und keine stimmt ganz. Wer die Wahrheit braucht, ruft jemanden an.',
-          en: 'Three lists with the same customers, and none of them is quite right. Anybody who needs the truth phones somebody.',
-          tr: 'Aynı müşterileri içeren üç liste ve hiçbiri tam doğru değil. Gerçeği isteyen birini arıyor.',
-          kk: 'Сол бір клиенттер жазылған үш тізім бар, бірде-біреуі толық дұрыс емес. Шындық керек адам біреуге қоңырау шалады.',
+          de: 'Wer den aktuellen Stand braucht, ruft jemanden an und hofft, dass der gerade am Platz ist.',
+          en: 'Anybody who needs the current position phones somebody and hopes they are at their desk.',
+          tr: 'Güncel durumu isteyen birini arar ve o kişinin yerinde olmasını umar.',
+          kk: 'Ағымдағы жағдайды білгісі келген адам біреуге қоңырау шалып, оның орнында болуын үміт етеді.',
         },
         system: {
-          de: 'Ein Bestand, eine Wahrheit. Wer sie braucht, sieht sie — im Rahmen dessen, was seine Rolle sehen darf.',
+          de: 'Ein Bestand, eine Wahrheit. Wer sie braucht, sieht sie, soweit seine Rolle es erlaubt.',
           en: 'One record set, one truth. Whoever needs it sees it, within what their role is allowed to see.',
-          tr: 'Tek veri kümesi, tek gerçek. İhtiyacı olan görür — rolünün görmesine izin verilen ölçüde.',
+          tr: 'Tek veri kümesi, tek gerçek. İhtiyacı olan, rolünün izin verdiği ölçüde görür.',
           kk: 'Бір дерек жиыны, бір шындық. Керек адам оны көреді, әрине рөлі көруге рұқсат еткен шамада.',
         },
       },
@@ -425,10 +425,10 @@ export const systeme = {
           kk: 'Іс бір адамды күтеді. «Мұны әріптес қана істей алады» деген сөз — аты бар кәсіптік тәуекел.',
         },
         system: {
-          de: 'Der Vorgang wartet auf eine Rolle. Vertretung ist vorgesehen, nicht improvisiert, und der Ablauf läuft weiter.',
-          en: 'The case waits for a role. Cover is designed in rather than improvised, and the process keeps moving.',
-          tr: 'İşlem bir rolü bekler. Vekâlet doğaçlama değil, önceden tasarlanmıştır ve akış devam eder.',
-          kk: 'Іс рөлді күтеді. Орынбасарлық суырыпсалма емес, алдын ала қарастырылған, ағын тоқтамайды.',
+          de: 'Der Vorgang wartet auf eine Rolle. Wer vertritt, ist vorher hinterlegt, und die Arbeit läuft weiter.',
+          en: 'The case waits for a role. Who stands in is settled beforehand, and the work keeps moving.',
+          tr: 'İşlem bir rolü bekler. Kimin vekâlet edeceği önceden bellidir ve iş devam eder.',
+          kk: 'Іс рөлді күтеді. Кімнің орнын басатыны алдын ала белгіленген, жұмыс тоқтамайды.',
         },
       },
       {
@@ -441,7 +441,7 @@ export const systeme = {
         },
         system: {
           de: 'Person, Zeitpunkt und Vorzustand stehen am Vorgang. Sie brauchen das nicht im Alltag, sondern an dem einen Tag.',
-          en: 'Person, timestamp and previous state sit on the case. You do not need that day to day — you need it on the one day.',
+          en: 'Person, timestamp and previous state sit on the case. Day to day you do not need that. You need it on the one day.',
           tr: 'Kişi, zaman ve önceki durum işlemin üzerinde durur. Buna her gün değil, o bir günde ihtiyacınız olur.',
           kk: 'Адам, уақыт және алдыңғы күй істің бойында тұрады. Бұл күнде емес, дәл сол бір күні керек болады.',
         },
@@ -455,7 +455,7 @@ export const systeme = {
           kk: 'Үдеріс ешқашан жазылмағандықтан, апталар бойы ауызша үйрету. Әркім сәл өзгеше нұсқа үйренеді.',
         },
         system: {
-          de: 'Der Ablauf steht im System. Wer neu ist, folgt ihm — und lernt dabei genau die Version, die alle anderen auch benutzen.',
+          de: 'Der Ablauf steht im System. Wer neu ist, folgt ihm und lernt dabei genau die Version, die alle anderen benutzen.',
           en: 'The process is in the system. A new person follows it, and learns exactly the version everybody else uses.',
           tr: 'Akış sistemde durur. Yeni gelen onu izler ve herkesin kullandığı sürümün aynısını öğrenir.',
           kk: 'Ағын жүйеде тұрады. Жаңа адам соны ұстанады әрі басқалардың бәрі қолданатын дәл сол нұсқаны үйренеді.',
@@ -470,7 +470,7 @@ export const systeme = {
           kk: 'Тапсырыс көбейсе, қол еңбегі мен көшіру қателері де көбейеді. Өсу алдымен қызметкерге түседі.',
         },
         system: {
-          de: 'Derselbe Ablauf, nur öfter. Was wächst, ist die Zahl der Vorgänge — nicht die Zahl der Sonderwege.',
+          de: 'Derselbe Ablauf, nur öfter. Es wachsen die Vorgänge, nicht die Sonderwege.',
           en: 'The same process, just more often. What grows is the number of cases, not the number of workarounds.',
           tr: 'Aynı akış, sadece daha sık. Büyüyen şey işlem sayısıdır, istisna sayısı değil.',
           kk: 'Сол ағын, тек жиірек. Өсетіні — істер саны, айналып өту жолдарының саны емес.',
@@ -485,10 +485,10 @@ export const systeme = {
           kk: 'Біреу екі кестені қатар қойып, салыстырады. Ұзаққа созылады, әрі дұрыс екенін ешкім білмейді.',
         },
         system: {
-          de: 'Die Zahlen kommen aus dem Bestand, in dem gearbeitet wurde. Jede lässt sich bis zum einzelnen Datensatz aufklappen.',
-          en: 'The figures come from the records people worked in. Each one can be opened down to the single record.',
-          tr: 'Sayılar, üzerinde çalışılan veri kümesinden gelir. Her biri tek kayda kadar açılabilir.',
-          kk: 'Сандар адамдар жұмыс істеген дерек жиынынан шығады. Әрқайсысын жеке жазбаға дейін ашуға болады.',
+          de: 'Die Zahlen kommen aus dem Bestand, in dem gearbeitet wurde, und halten einer Nachfrage stand.',
+          en: 'The figures come from the records people worked in, and they hold up when somebody asks.',
+          tr: 'Sayılar, üzerinde çalışılan veri kümesinden gelir ve sorulduğunda ayakta kalır.',
+          kk: 'Сандар адамдар жұмыс істеген дерек жиынынан шығады және сұрақ қойылғанда төтеп береді.',
         },
       },
     ],
@@ -499,9 +499,9 @@ export const systeme = {
     honest: {
       title: { de: 'Was ein System nicht löst', en: 'What a system does not fix', tr: 'Bir sistemin çözmediği şey', kk: 'Жүйе шешпейтін нәрсе' },
       text: {
-        de: 'Einen Ablauf, über den sich das Haus nicht einig ist. Software zementiert, was sie vorfindet — deshalb ist Phase drei die unbequeme, in der wir jeden Schritt mit Ihnen durchgehen, bevor jemand etwas baut.',
-        en: 'A process the company does not agree on. Software sets in stone whatever it finds — which is why phase three is the uncomfortable one, where we walk every step with you before anybody builds anything.',
-        tr: 'Şirketin üzerinde anlaşamadığı bir akışı. Yazılım, önünde ne bulursa onu kalıcı hâle getirir — bu yüzden üçüncü aşama, kimse bir şey yapmadan önce her adımı sizinle birlikte geçtiğimiz rahatsız edici aşamadır.',
+        de: 'Einen Ablauf, über den sich das Haus nicht einig ist. Software zementiert, was sie vorfindet. Deshalb ist Phase drei die unbequeme: Wir gehen jeden Schritt mit Ihnen durch, bevor jemand etwas baut.',
+        en: 'A process the company does not agree on. Software sets in stone whatever it finds. That is why phase three is the uncomfortable one: we walk every step with you before anybody builds anything.',
+        tr: 'Şirketin üzerinde anlaşamadığı bir akışı. Yazılım, önünde ne bulursa onu kalıcı hâle getirir. Bu yüzden üçüncü aşama rahatsız edici olandır: kimse bir şey yapmadan önce her adımı sizinle birlikte geçeriz.',
         kk: 'Компания өзара келісе алмаған ағынды. Бағдарлама алдынан не тапса, соны бекітіп тастайды, сондықтан үшінші кезең — ешкім ештеңе құрмай тұрып, әр қадамды сізбен бірге қарап шығатын қолайсыз кезең.',
       },
     },
@@ -520,10 +520,10 @@ export const systeme = {
       kk: 'Онымен жұмыс істейтіндер үшін не өзгерді',
     },
     intro: {
-      de: 'Nicht die Geschäftsführung allein — die Rollen, die den Unterschied täglich merken.',
-      en: 'Not management alone — the roles that feel the difference every day.',
-      tr: 'Yalnızca yönetim değil — farkı her gün hisseden roller.',
-      kk: 'Тек басшылық қана емес: айырманы күн сайын сезінетін рөлдер.',
+      de: 'Stimmen aus den Rollen, die täglich damit arbeiten.',
+      en: 'From the roles that work in it every day.',
+      tr: 'Her gün onunla çalışan rollerden.',
+      kk: 'Күн сайын онымен жұмыс істейтін рөлдерден.',
     },
     beforeLabel: { de: 'Vorher', en: 'Before', tr: 'Öncesinde', kk: 'Бұрын' },
     afterLabel: { de: 'Heute', en: 'Now', tr: 'Bugün', kk: 'Бүгін' },
@@ -538,9 +538,9 @@ export const systeme = {
       kk: 'Сайт па, жүйе ме? Айырмашылық естілгеннен әлдеқайда үлкен',
     },
     intro: {
-      de: 'Beide sind Software, beide laufen im Browser — und trotzdem sind es zwei völlig verschiedene Projekte. Diese Liste sortiert in zehn Sekunden.',
-      en: 'Both are software, both run in a browser — and they are still two entirely different projects. This list sorts it in ten seconds.',
-      tr: 'İkisi de yazılım, ikisi de tarayıcıda çalışıyor — yine de bunlar tamamen farklı iki proje. Bu liste on saniyede ayırır.',
+      de: 'Beide sind Software, beide laufen im Browser. Trotzdem sind es zwei völlig verschiedene Projekte. Diese Liste sortiert in zehn Sekunden.',
+      en: 'Both are software, both run in a browser. They are still two entirely different projects. This list sorts it in ten seconds.',
+      tr: 'İkisi de yazılım, ikisi de tarayıcıda çalışıyor. Yine de bunlar tamamen farklı iki proje. Bu liste on saniyede ayırır.',
       kk: 'Екеуі де бағдарлама, екеуі де браузерде жұмыс істейді, бірақ бұл екеуі мүлдем бөлек жоба. Осы тізім он секундта сұрыптап береді.',
     },
     website: {
@@ -580,10 +580,10 @@ export const systeme = {
      */
     heading: { de: 'Zwei Beispiele, die Sie öffnen können', en: 'Two examples you can open', tr: 'Açabileceğiniz iki örnek', kk: 'Ашып көре алатын екі мысал' },
     intro: {
-      de: 'Zwei gebaute Systeme, kein Katalog — Ihres sähe anders aus. Beide laufen produktiv, und beide lassen sich öffnen: Referenzen, die man nicht anfassen kann, sind keine.',
-      en: 'Two systems we built, not a catalogue — yours would look different. Both run in production and both can be opened: a reference you cannot touch is not a reference.',
-      tr: 'Kurduğumuz iki sistem, bir katalog değil — sizinki farklı görünürdü. İkisi de üretimde çalışıyor ve ikisi de açılabiliyor: dokunamadığınız bir referans, referans değildir.',
-      kk: 'Біз жасаған екі жүйе, каталог емес: сіздікі басқаша болар еді. Екеуі де өнеркәсіптік пайдалануда әрі екеуін де ашып көруге болады, өйткені қолмен ұстап көре алмайтын референс референс емес.',
+      de: 'Zwei gebaute Systeme, kein Katalog. Ihres sähe anders aus. Beide laufen produktiv und beide lassen sich öffnen. Schauen Sie hinein, bevor Sie mit uns sprechen.',
+      en: 'Two systems we built, not a catalogue. Yours would look different. Both run in production and both can be opened. Have a look inside before you talk to us.',
+      tr: 'Kurduğumuz iki sistem, bir katalog değil. Sizinki farklı görünürdü. İkisi de üretimde çalışıyor ve ikisi de açılabiliyor. Bizimle konuşmadan önce içine bir bakın.',
+      kk: 'Біз жасаған екі жүйе, каталог емес. Сіздікі басқаша болар еді. Екеуі де өнеркәсіптік пайдалануда әрі екеуін де ашып көруге болады. Бізбен сөйлесер алдында ішіне үңіліп көріңіз.',
     },
     live: { de: 'System öffnen', en: 'Open the system', tr: 'Sistemi aç', kk: 'Жүйені ашу' },
     featuredLabel: { de: 'Referenzsystem', en: 'Reference system', tr: 'Referans sistem', kk: 'Референс жүйе' },
@@ -598,9 +598,9 @@ export const systeme = {
   process: {
     heading: { de: 'So entsteht ein System bei uns', en: 'How a system comes about with us', tr: 'Bizde bir sistem böyle doğar', kk: 'Бізде жүйе осылай дүниеге келеді' },
     intro: {
-      de: 'Sechs Phasen. Jede endet mit etwas, das Sie in der Hand halten — kein Zwischenstand, den nur wir verstehen. Nach Phase zwei können Sie aussteigen und alles behalten.',
-      en: 'Six phases. Each ends with something you can hold — not an interim state only we understand. After phase two you may walk away and keep everything.',
-      tr: 'Altı aşama. Her biri elinizde tutabileceğiniz bir çıktıyla biter — yalnızca bizim anladığımız bir ara durumla değil. İkinci aşamadan sonra çıkıp her şeyi alıkoyabilirsiniz.',
+      de: 'Sechs Phasen. Jede endet mit etwas, das Sie in der Hand halten, nicht mit einem Zwischenstand, den nur wir verstehen. Nach Phase zwei können Sie aussteigen und alles behalten.',
+      en: 'Six phases. Each ends with something you can hold, not with an interim state only we understand. After phase two you may walk away and keep everything.',
+      tr: 'Altı aşama. Her biri, yalnızca bizim anladığımız bir ara durumla değil, elinizde tutabileceğiniz bir çıktıyla biter. İkinci aşamadan sonra çıkıp her şeyi alıkoyabilirsiniz.',
       kk: 'Алты кезең. Әрқайсысы қолыңызда қалатын нәтижемен аяқталады, тек біз ғана түсінетін аралық күймен емес. Екінші кезеңнен кейін тоқтап, бәрін өзіңізде қалдыра аласыз.',
     },
     steps: [
@@ -613,9 +613,9 @@ export const systeme = {
           kk: 'Алғашқы кездесу · кәсіпорынды талдау · үдерісті тіркеу',
         },
         text: {
-          de: 'Wir kommen vorbei und sehen zu, wie heute gearbeitet wird. Nicht wie es im Organigramm steht, sondern wie es tatsächlich läuft — inklusive der Umwege, die sich jemand vor Jahren ausgedacht hat, weil das System es nicht anders hergab.',
-          en: 'We come by and watch how the work is done today. Not how the org chart describes it, but how it actually runs — including the detours somebody invented years ago because the system left no other way.',
-          tr: 'Gelip bugün nasıl çalışıldığını izliyoruz. Organizasyon şemasındaki hâliyle değil, gerçekte nasıl yürüdüğüyle — sistem başka yol bırakmadığı için yıllar önce birinin bulduğu kestirmeler dâhil.',
+          de: 'Wir kommen vorbei und sehen zu, wie heute gearbeitet wird. Nicht wie es im Organigramm steht, sondern wie es tatsächlich läuft, inklusive der Umwege, die sich jemand vor Jahren ausgedacht hat, weil das System es nicht anders hergab.',
+          en: 'We come by and watch how the work is done today. Not how the org chart describes it, but how it actually runs, including the detours somebody invented years ago because the system left no other way.',
+          tr: 'Gelip bugün nasıl çalışıldığını izliyoruz. Organizasyon şemasındaki hâliyle değil, gerçekte nasıl yürüdüğüyle; sistem başka yol bırakmadığı için yıllar önce birinin bulduğu kestirmeler dâhil.',
           kk: 'Барып, бүгін жұмыс қалай жүріп жатқанын бақылаймыз. Ұйым құрылымындағы қағаз жүзіндегі емес, шындықтағы қалпын көреміз, оның ішінде жүйе басқа жол қалдырмағандықтан біреу жылдар бұрын ойлап тапқан айналма жолдар да бар.',
         },
         result: { de: 'Prozesslandkarte Ihres Ist-Zustands', en: 'A process map of how things stand today', tr: 'Mevcut durumunuzun süreç haritası', kk: 'Бүгінгі жағдайыңыздың үдеріс картасы' },
@@ -629,9 +629,9 @@ export const systeme = {
           kk: 'Талаптарды жинау · құжаттау · басымдық қою',
         },
         text: {
-          de: 'Aus dem Gesehenen wird ein Anforderungsdokument: was das System können muss, was es ausdrücklich nicht können soll, und in welcher Reihenfolge. Das Dokument gehört Ihnen — auch wenn Sie damit anschließend zu jemand anderem gehen.',
-          en: 'What we saw becomes a requirements document: what the system must do, what it explicitly should not do, and in which order. The document is yours — even if you take it to somebody else afterwards.',
-          tr: 'Görülenler bir gereksinim dokümanına dönüşür: sistemin ne yapması gerektiği, açıkça neyi yapmaması gerektiği ve hangi sırayla. Belge sizindir — sonrasında onunla başka birine gitseniz bile.',
+          de: 'Aus dem Gesehenen wird ein Anforderungsdokument: was das System können muss, was es ausdrücklich nicht können soll, und in welcher Reihenfolge. Das Dokument gehört Ihnen, auch wenn Sie damit anschließend zu jemand anderem gehen.',
+          en: 'What we saw becomes a requirements document: what the system must do, what it explicitly should not do, and in which order. The document is yours, even if you take it to somebody else afterwards.',
+          tr: 'Görülenler bir gereksinim dokümanına dönüşür: sistemin ne yapması gerektiği, açıkça neyi yapmaması gerektiği ve hangi sırayla. Belge sizindir, sonrasında onunla başka birine gitseniz bile.',
           kk: 'Көргеніміз талаптар құжатына айналады: жүйе не істей алуы керек, нені әдейі істемеуі керек және қандай кезекпен. Құжат сіздікі, тіпті одан кейін онымен басқа біреуге барсаңыз да.',
         },
         result: { de: 'Anforderungsdokument, freigegeben von Ihnen', en: 'A requirements document, signed off by you', tr: 'Sizin onayladığınız gereksinim dokümanı', kk: 'Өзіңіз бекіткен талаптар құжаты' },
@@ -645,9 +645,9 @@ export const systeme = {
           kk: 'Үдерісті келісу · рөл мен құқық тұжырымдамасы · интерфейстер',
         },
         text: {
-          de: 'Jetzt geht es an die unbequeme Frage: Welcher Ablauf bleibt, welcher fällt weg, welcher wird anders? Wir gehen jeden Schritt mit Ihnen durch und legen fest, wer was sehen und ändern darf. Ein System zementiert Ihre Prozesse — deshalb schauen wir vorher genau hin.',
-          en: 'Now comes the uncomfortable question: which workflow stays, which goes, which changes? We walk through every step with you and define who may see and change what. A system sets your processes in concrete — which is why we look closely first.',
-          tr: 'Şimdi rahatsız edici soruya geliyoruz: hangi akış kalacak, hangisi kalkacak, hangisi değişecek? Her adımı sizinle birlikte geçiyor ve kimin neyi görüp değiştirebileceğini belirliyoruz. Bir sistem süreçlerinizi betonlaştırır — bu yüzden önceden dikkatle bakıyoruz.',
+          de: 'Jetzt geht es an die unbequeme Frage: Welcher Ablauf bleibt, welcher fällt weg, welcher wird anders? Wir gehen jeden Schritt mit Ihnen durch und legen fest, wer was sehen und ändern darf. Ein System zementiert Ihre Prozesse. Deshalb schauen wir vorher genau hin.',
+          en: 'Now comes the uncomfortable question: which workflow stays, which goes, which changes? We walk through every step with you and define who may see and change what. A system sets your processes in concrete. That is why we look closely first.',
+          tr: 'Şimdi rahatsız edici soruya geliyoruz: hangi akış kalacak, hangisi kalkacak, hangisi değişecek? Her adımı sizinle birlikte geçiyor ve kimin neyi görüp değiştirebileceğini belirliyoruz. Bir sistem süreçlerinizi betonlaştırır. Bu yüzden önceden dikkatle bakıyoruz.',
           kk: 'Енді ыңғайсыз сұрақ келеді: қай ағын қалады, қайсысы алынып тасталады, қайсысы өзгереді? Әр қадамды сізбен бірге қарап шығып, кімнің нені көріп, нені өзгерте алатынын белгілейміз. Жүйе үдерісіңізді бетондап тастайды, сондықтан алдын ала мұқият қараймыз.',
         },
         result: { de: 'Abgestimmte Soll-Prozesse und eine Rollenmatrix', en: 'Agreed target processes and a role matrix', tr: 'Üzerinde anlaşılan hedef süreçler ve bir rol matrisi', kk: 'Келісілген мақсатты үдерістер мен рөл матрицасы' },
@@ -661,9 +661,9 @@ export const systeme = {
           kk: 'Дизайнды келісу · басып көруге болатын прототип · қолжетімділік',
         },
         text: {
-          de: 'Bevor eine Zeile Code entsteht, klicken Sie durch Ihr System. Echte Screens, echte Wege, die Begriffe aus Ihrem Haus statt aus einem Lehrbuch. Änderungen kosten hier Minuten — später kosten sie Tage.',
-          en: 'Before a single line of code exists, you click through your system. Real screens, real paths, the vocabulary of your company rather than a textbook. Changes cost minutes at this stage — later they cost days.',
-          tr: 'Tek satır kod yazılmadan önce sisteminizi tıklayarak geziyorsunuz. Gerçek ekranlar, gerçek yollar ve ders kitabının değil sizin şirketinizin terimleri. Bu aşamada değişiklikler dakikalar sürer — sonra günler.',
+          de: 'Bevor eine Zeile Code entsteht, klicken Sie durch Ihr System. Echte Screens, echte Wege, die Begriffe aus Ihrem Haus statt aus einem Lehrbuch. Änderungen kosten hier Minuten. Später kosten sie Tage.',
+          en: 'Before a single line of code exists, you click through your system. Real screens, real paths, the vocabulary of your company rather than a textbook. Changes cost minutes at this stage. Later they cost days.',
+          tr: 'Tek satır kod yazılmadan önce sisteminizi tıklayarak geziyorsunuz. Gerçek ekranlar, gerçek yollar ve ders kitabının değil sizin şirketinizin terimleri. Bu aşamada değişiklikler dakikalar sürer. Sonra günler.',
           kk: 'Бір жол код жазылмай тұрып, жүйеңізді басып көріп шығасыз. Нағыз экрандар, нағыз жолдар және оқулықтағы емес, өз компанияңыздағы терминдер. Бұл кезеңде өзгеріс бірнеше минут алады, кейінірек бірнеше күн алады.',
         },
         result: { de: 'Klickbarer Entwurf, von Ihnen abgenommen', en: 'A clickable design, accepted by you', tr: 'Sizin kabul ettiğiniz tıklanabilir tasarım', kk: 'Өзіңіз қабылдаған, басып көруге болатын жоба' },
@@ -677,9 +677,9 @@ export const systeme = {
           kk: 'Тілімдеп әзірлеу · тестілеуді басқару · қабылдау',
         },
         text: {
-          de: 'Wir bauen in Schnitten: ein schmaler, aber vollständiger Ausschnitt geht live, Sie arbeiten damit, dann kommt der nächste. Geprüft wird nach denselben Regeln, nach denen wir sonst die Software anderer prüfen — Testmanagement ist das Geschäft, aus dem WAMOCON kommt.',
-          en: 'We build in slices: one narrow but complete section goes live, you work with it, then the next one follows. Testing runs by the same rules we apply when auditing other people’s software — test management is the business WAMOCON came from.',
-          tr: 'Dilimler hâlinde inşa ediyoruz: dar ama eksiksiz bir bölüm yayına giriyor, siz onunla çalışıyorsunuz, sonra bir sonraki geliyor. Test, başkalarının yazılımını denetlerken uyguladığımız kurallarla yapılır — test yönetimi, WAMOCON’un geldiği alandır.',
+          de: 'Wir bauen in Schnitten: ein schmaler, aber vollständiger Ausschnitt geht live, Sie arbeiten damit, dann kommt der nächste. Geprüft wird nach denselben Regeln, nach denen wir sonst die Software anderer prüfen. Testmanagement ist das Geschäft, aus dem WAMOCON kommt.',
+          en: 'We build in slices: one narrow but complete section goes live, you work with it, then the next one follows. Testing runs by the same rules we apply when auditing other people’s software. Test management is the business WAMOCON came from.',
+          tr: 'Dilimler hâlinde inşa ediyoruz: dar ama eksiksiz bir bölüm yayına giriyor, siz onunla çalışıyorsunuz, sonra bir sonraki geliyor. Test, başkalarının yazılımını denetlerken uyguladığımız kurallarla yapılır. Test yönetimi, WAMOCON’un geldiği alandır.',
           kk: 'Тілімдеп құрамыз: тар, бірақ толық бір бөлік жұмысқа қосылады, сіз онымен жұмыс істейсіз, сосын келесісі шығады. Тексеру басқалардың бағдарламасын тексергендегі қағидалармен жүреді, өйткені тестілеуді басқару: WAMOCON шыққан сала.',
         },
         result: { de: 'Abgenommener Funktionsumfang je Meilenstein', en: 'An accepted scope at each milestone', tr: 'Her kilometre taşında kabul edilmiş kapsam', kk: 'Әр белесте қабылданған функционал' },
@@ -693,9 +693,9 @@ export const systeme = {
           kk: 'Деректерді көшіру · оқыту · нұсқаулық · пайдалану',
         },
         text: {
-          de: 'Die Altdaten kommen mit, auch die aus Excel. Ihr Team wird geschult, nicht informiert — der Unterschied entscheidet, ob ein System benutzt oder umgangen wird. Danach übernehmen wir Betrieb, Sicherung und Weiterentwicklung, mit Reaktionszeiten, die im Vertrag stehen.',
-          en: 'The legacy data comes along, spreadsheets included. Your team is trained, not merely informed — that difference decides whether a system gets used or worked around. After that we take over operation, backups and further development, with response times written into the contract.',
-          tr: 'Eski veriler de taşınır, Excel’dekiler dâhil. Ekibiniz bilgilendirilmez, eğitilir — bu fark, bir sistemin kullanılacağını mı yoksa etrafından dolaşılacağını mı belirler. Sonrasında işletimi, yedeklemeyi ve geliştirmeyi biz üstleniriz; yanıt süreleri sözleşmede yazar.',
+          de: 'Die Altdaten kommen mit, auch die aus Excel. Ihr Team wird geschult, nicht informiert. Der Unterschied entscheidet, ob ein System benutzt oder umgangen wird. Danach übernehmen wir Betrieb, Sicherung und Weiterentwicklung, mit Reaktionszeiten, die im Vertrag stehen.',
+          en: 'The legacy data comes along, spreadsheets included. Your team is trained, not merely informed. That difference decides whether a system gets used or worked around. After that we take over operation, backups and further development, with response times written into the contract.',
+          tr: 'Eski veriler de taşınır, Excel’dekiler dâhil. Ekibiniz bilgilendirilmez, eğitilir. Bu fark, bir sistemin kullanılacağını mı yoksa etrafından dolaşılacağını mı belirler. Sonrasında işletimi, yedeklemeyi ve geliştirmeyi biz üstleniriz; yanıt süreleri sözleşmede yazar.',
           kk: 'Ескі деректер де бірге көшеді, Excel-дегілері қоса. Командаңыз хабардар етілмейді, оқытылады, ал осы айырмашылық жүйенің қолданылатынын әлде айналып өтілетінін шешеді. Одан кейін пайдалануды, сақтық көшірмені және дамытуды өзіміз мойнымызға аламыз, жауап беру мерзімі шартта жазылады.',
         },
         result: { de: 'Ein System, mit dem Ihr Team arbeitet', en: 'A system your team actually works in', tr: 'Ekibinizin gerçekten çalıştığı bir sistem', kk: 'Командаңыз шынымен жұмыс істейтін жүйе' },
@@ -717,37 +717,37 @@ export const systeme = {
       {
         title: { de: 'Rollen und Rechte', en: 'Roles and rights', tr: 'Roller ve yetkiler', kk: 'Рөлдер мен құқықтар' },
         text: {
-          de: 'Wer was sieht, entscheidet die Datenbank — nicht die Oberfläche. Damit gibt auch ein Fehler im Frontend keine fremden Daten preis.',
-          en: 'Who sees what is decided by the database, not the interface. So even a bug in the front end cannot leak somebody else’s data.',
-          tr: 'Kimin neyi göreceğine arayüz değil, veritabanı karar verir. Böylece önyüzdeki bir hata bile başkasının verisini sızdıramaz.',
-          kk: 'Кімнің нені көретінін интерфейс емес, дерекқор шешеді. Сондықтан алдыңғы жақтағы қате де бөгде адамның деректерін ашып қоя алмайды.',
+          de: 'Jede Rolle bekommt genau die Daten, die zu ihr gehören. Durchgesetzt wird das in der Datenbank, nicht im Bildschirm davor.',
+          en: 'Every role gets exactly the data that belongs to it. That is enforced in the database, not on the screen in front of it.',
+          tr: 'Her rol yalnızca kendisine ait veriyi alır. Bu, önündeki ekranda değil, veritabanında zorunlu kılınır.',
+          kk: 'Әр рөл тек өзіне тиесілі деректі алады. Бұл алдындағы экранда емес, дерекқорда мәжбүрленеді.',
         },
       },
       {
         title: { de: 'Abläufe mit festen Zuständen', en: 'Workflows with defined states', tr: 'Tanımlı durumlara sahip iş akışları', kk: 'Күйі айқын белгіленген ағындар' },
         text: {
-          de: 'Ein Vorgang hat einen Zustand und erlaubte Übergänge. Eine Freigabe lässt sich nicht überspringen, nur weil gerade jemand fehlt.',
-          en: 'A case has a state and permitted transitions. An approval cannot be skipped just because somebody is away.',
-          tr: 'Bir işlemin durumu ve izin verilen geçişleri vardır. Biri yok diye bir onay atlanamaz.',
-          kk: 'Әр істің күйі және рұқсат етілген ауысулары бар. Біреу жоқ деп бекітуді аттап кетуге болмайды.',
+          de: 'Offen, geprüft, freigegeben, abgerechnet: Jeder Vorgang steht an genau einer Stelle, und der Weg dorthin ist vorher vereinbart.',
+          en: 'Open, reviewed, approved, invoiced: every case sits at exactly one point, and the route to it is agreed in advance.',
+          tr: 'Açık, incelendi, onaylandı, faturalandı: her işlem tam olarak tek bir noktadadır ve oraya giden yol önceden bellidir.',
+          kk: 'Ашық, тексерілген, бекітілген, шот қойылған: әр іс дәл бір нүктеде тұрады, ал оған апарар жол алдын ала келісілген.',
         },
       },
       {
         title: { de: 'Nachweiskette', en: 'Audit trail', tr: 'Kanıt zinciri', kk: 'Дәлел тізбегі' },
         text: {
-          de: 'Jede Änderung trägt Person, Zeitpunkt und Vorzustand. Sie brauchen das nicht im Alltag — Sie brauchen es an dem einen Tag, an dem jemand fragt.',
-          en: 'Every change carries the person, the time and the prior state. You do not need it day to day — you need it on the one day somebody asks.',
-          tr: 'Her değişiklik kişi, zaman ve önceki durumu taşır. Buna günlük işte değil, birinin sorduğu o tek günde ihtiyacınız olur.',
-          kk: 'Әр өзгеріс кімнің істегенін, уақытын және алдыңғы күйін сақтайды. Ол сізге күнделікті керек емес, біреу сұрайтын сол бір күні керек болады.',
+          de: 'Wer etwas ändert, hinterlässt eine Spur: Name, Uhrzeit und der Stand davor. Im Alltag brauchen Sie das nicht. Sie brauchen es an dem einen Tag, an dem jemand fragt.',
+          en: 'Whoever changes something leaves a trace: name, time, and the state before it. Day to day you do not need it. You need it on the one day somebody asks.',
+          tr: 'Bir şeyi değiştiren iz bırakır: ad, saat ve önceki durum. Buna günlük işte değil, birinin sorduğu o tek günde ihtiyacınız olur.',
+          kk: 'Бірдеңені өзгерткен адам із қалдырады: аты, уақыты және алдыңғы күйі. Ол сізге күнделікті керек емес, біреу сұрайтын сол бір күні керек болады.',
         },
       },
       {
         title: { de: 'Schnittstellen statt Insel', en: 'Interfaces, not an island', tr: 'Ada değil, arayüz', kk: 'Арал емес, интерфейстер' },
         text: {
-          de: 'Buchhaltung, Kalender, Ticketsystem, Zahlungsdienst. Ein System, das nichts anbinden kann, wird zur nächsten Excel-Datei.',
-          en: 'Accounting, calendar, ticketing, payment provider. A system that connects to nothing becomes the next spreadsheet.',
-          tr: 'Muhasebe, takvim, çağrı sistemi, ödeme sağlayıcı. Hiçbir şeye bağlanamayan bir sistem, bir sonraki Excel dosyası olur.',
-          kk: 'Бухгалтерия, күнтізбе, тікет жүйесі, төлем сервисі. Ешнәрсеге қосыла алмайтын жүйе келесі Excel файлына айналады.',
+          de: 'Ein System, das nichts anbinden kann, wird zur nächsten Excel-Datei. Deshalb bekommt jedes von uns eine dokumentierte Schnittstelle nach außen.',
+          en: 'A system that connects to nothing becomes the next spreadsheet. So every one of ours gets a documented interface outwards.',
+          tr: 'Hiçbir şeye bağlanamayan bir sistem, bir sonraki Excel dosyası olur. Bu yüzden bizden çıkan her sistem dışarıya belgelenmiş bir arayüz alır.',
+          kk: 'Ешнәрсеге қосыла алмайтын жүйе келесі Excel файлына айналады. Сондықтан бізден шыққан әрқайсысы сыртқа құжатталған интерфейс алады.',
         },
       },
       {
@@ -762,10 +762,10 @@ export const systeme = {
       {
         title: { de: 'Zahlen, die stimmen', en: 'Figures that hold up', tr: 'Doğru çıkan sayılar', kk: 'Дұрыс шығатын сандар' },
         text: {
-          de: 'Kennzahlen aus echten Daten statt aus Behauptungen. Wo eine Zahl noch nicht berechnet werden kann, sagt die Kachel genau das, statt zu schätzen.',
-          en: 'Metrics from real data instead of claims. Where a figure cannot be computed yet, the tile says exactly that instead of guessing.',
-          tr: 'İddialardan değil, gerçek veriden gelen göstergeler. Bir sayı henüz hesaplanamıyorsa, kutucuk tahmin yürütmez, bunu açıkça söyler.',
-          kk: 'Мәлімдемеден емес, нағыз деректен алынған көрсеткіштер. Бір сан әлі есептеле алмаса, тақташа болжам айтпай, дәл соны жазады.',
+          de: 'Kennzahlen kommen aus dem Bestand, in dem gearbeitet wird. Was sich noch nicht berechnen lässt, bleibt leer statt geschätzt.',
+          en: 'Figures come from the records people work in. What cannot be computed yet stays empty rather than estimated.',
+          tr: 'Göstergeler, üzerinde çalışılan veri kümesinden gelir. Henüz hesaplanamayan, tahmin edilmek yerine boş kalır.',
+          kk: 'Көрсеткіштер жұмыс істелетін дерек жиынынан шығады. Әзірге есептеуге келмейтіні болжанбай, бос қалады.',
         },
       },
     ],
@@ -778,36 +778,36 @@ export const systeme = {
       {
         title: { de: 'Wir kommen vom Prüfen, nicht vom Bauen', en: 'We come from testing, not from building', tr: 'Yapmaktan değil, denetlemekten geliyoruz', kk: 'Біз құрудан емес, тексеруден келдік' },
         text: {
-          de: 'WAMOCON prüft seit Jahren die Software anderer Unternehmen — im Testmanagement, nach ISTQB. Wer den ganzen Tag sieht, woran Projekte scheitern, baut anders. Vorsichtiger, und mit mehr Nachweis.',
-          en: 'WAMOCON has spent years testing other companies’ software — in test management, to ISTQB standards. When you spend your days seeing why projects fail, you build differently. More carefully, and with more evidence.',
-          tr: 'WAMOCON yıllardır başka şirketlerin yazılımlarını denetliyor — test yönetiminde, ISTQB standartlarına göre. Projelerin neden battığını her gün gören biri, başka türlü inşa eder. Daha temkinli ve daha fazla kanıtla.',
+          de: 'WAMOCON prüft seit Jahren die Software anderer Unternehmen, im Testmanagement, nach ISTQB. Wer den ganzen Tag sieht, woran Projekte scheitern, baut anders. Vorsichtiger, und mit mehr Nachweis.',
+          en: 'WAMOCON has spent years testing other companies’ software, in test management, to ISTQB standards. When you spend your days seeing why projects fail, you build differently. More carefully, and with more evidence.',
+          tr: 'WAMOCON yıllardır başka şirketlerin yazılımlarını test yönetiminde, ISTQB standartlarına göre denetliyor. Projelerin neden battığını her gün gören biri, başka türlü inşa eder. Daha temkinli ve daha fazla kanıtla.',
           kk: 'WAMOCON жылдар бойы басқа компаниялардың бағдарламасын тексеріп келеді, тестілеуді басқаруда, ISTQB стандарты бойынша. Жобалардың неден құлайтынын күнде көретін адам басқаша құрады: сақтығырақ және дәлелі молырақ.',
         },
       },
       {
         title: { de: 'Ein Ansprechpartner, kein Ticketsystem', en: 'One person, not a ticket queue', tr: 'Bir muhatap, çağrı kuyruğu değil', kk: 'Тікет кезегі емес, бір байланыс тұлғасы' },
         text: {
-          de: 'Sie sprechen mit den Leuten, die Ihr System auch bauen. Bei einem Haus unserer Größe geht das — und es erspart Ihnen die Übersetzungsschicht zwischen Vertrieb und Entwicklung.',
-          en: 'You talk to the people who actually build your system. At a firm our size that works — and it spares you the translation layer between sales and development.',
-          tr: 'Sisteminizi gerçekten kuran kişilerle konuşuyorsunuz. Bizim büyüklüğümüzde bir şirkette bu mümkün — ve satışla geliştirme arasındaki çeviri katmanından kurtulursunuz.',
+          de: 'Sie sprechen mit den Leuten, die Ihr System auch bauen. Bei einem Haus unserer Größe geht das, und es erspart Ihnen die Übersetzungsschicht zwischen Vertrieb und Entwicklung.',
+          en: 'You talk to the people who actually build your system. At a firm our size that works, and it spares you the translation layer between sales and development.',
+          tr: 'Sisteminizi gerçekten kuran kişilerle konuşuyorsunuz. Bizim büyüklüğümüzde bir şirkette bu mümkün ve satışla geliştirme arasındaki çeviri katmanından kurtulursunuz.',
           kk: 'Сіз жүйеңізді нақты құратын адамдармен сөйлесесіз. Біздей көлемдегі компанияда бұл мүмкін, әрі бұл сату мен әзірлеу арасындағы аудармашы қабатынан құтқарады.',
         },
       },
       {
         title: { de: 'Deutscher Vertragspartner, EU-Datenhaltung', en: 'A German contracting party, EU data', tr: 'Alman sözleşme tarafı, AB’de veri', kk: 'Германиялық шарт тарабы, ЕО-дағы деректер' },
         text: {
-          de: 'WAMOCON GmbH sitzt in Eschborn bei Frankfurt. Auftragsverarbeitungsvertrag nach DSGVO, Server in der EU, deutscher Gerichtsstand. Nichts davon ist ein Verkaufsargument — es ist die Voraussetzung dafür, dass Sie überhaupt unterschreiben können.',
-          en: 'WAMOCON GmbH sits in Eschborn near Frankfurt. GDPR data-processing agreement, servers in the EU, German place of jurisdiction. None of that is a selling point — it is the precondition for you being able to sign at all.',
-          tr: 'WAMOCON GmbH, Frankfurt yakınlarındaki Eschborn’da bulunuyor. GDPR uyarınca veri işleme sözleşmesi, AB’de sunucular, Alman yetkili mahkemesi. Bunların hiçbiri satış argümanı değil — imza atabilmenizin ön koşulu.',
+          de: 'WAMOCON GmbH sitzt in Eschborn bei Frankfurt. Auftragsverarbeitungsvertrag nach DSGVO, Server in der EU, deutscher Gerichtsstand. Nichts davon ist ein Verkaufsargument. Es ist die Voraussetzung dafür, dass Sie überhaupt unterschreiben können.',
+          en: 'WAMOCON GmbH sits in Eschborn near Frankfurt. GDPR data-processing agreement, servers in the EU, German place of jurisdiction. None of that is a selling point. It is the precondition for you being able to sign at all.',
+          tr: 'WAMOCON GmbH, Frankfurt yakınlarındaki Eschborn’da bulunuyor. GDPR uyarınca veri işleme sözleşmesi, AB’de sunucular, Alman yetkili mahkemesi. Bunların hiçbiri satış argümanı değil. İmza atabilmenizin ön koşulu.',
           kk: 'WAMOCON GmbH Франкфурт маңындағы Эшборнда орналасқан. GDPR бойынша деректерді өңдеу шарты, ЕО аумағындағы серверлер, германиялық сот құзыреті. Бұның бірі де сату дәлелі емес, бұл сіздің қол қоя алуыңыздың алғышарты.',
         },
       },
       {
         title: { de: 'Wir sagen auch ab', en: 'We also say no', tr: 'Hayır da diyoruz', kk: 'Біз бас та тартамыз' },
         text: {
-          de: 'Nicht jeder Betrieb braucht ein eigenes System. Manchmal reicht ein Standardprodukt, manchmal genügt es, drei Tabellen zusammenzulegen. Wenn wir das sehen, sagen wir es Ihnen — lieber ein ehrliches Nein als ein Projekt, das keiner benutzt.',
-          en: 'Not every company needs a system of its own. Sometimes an off-the-shelf product is enough, sometimes merging three spreadsheets does the job. When we see that, we say so — an honest no beats a project nobody uses.',
-          tr: 'Her işletmenin kendi sistemine ihtiyacı yoktur. Bazen hazır bir ürün yeter, bazen üç tabloyu birleştirmek. Bunu gördüğümüzde söyleriz — kimsenin kullanmadığı bir projeden, dürüst bir hayır iyidir.',
+          de: 'Nicht jeder Betrieb braucht ein eigenes System. Manchmal reicht ein Standardprodukt, manchmal genügt es, drei Tabellen zusammenzulegen. Wenn wir das sehen, sagen wir es Ihnen. Lieber ein ehrliches Nein als ein Projekt, das keiner benutzt.',
+          en: 'Not every company needs a system of its own. Sometimes an off-the-shelf product is enough, sometimes merging three spreadsheets does the job. When we see that, we say so. An honest no beats a project nobody uses.',
+          tr: 'Her işletmenin kendi sistemine ihtiyacı yoktur. Bazen hazır bir ürün yeter, bazen üç tabloyu birleştirmek. Bunu gördüğümüzde söyleriz. Kimsenin kullanmadığı bir projeden dürüst bir hayır iyidir.',
           kk: 'Әр кәсіпке өз жүйесі керек емес. Кейде дайын өнім жетеді, кейде үш кестені біріктірсе де болады. Соны көрсек, ашық айтамыз, өйткені ешкім қолданбайтын жобадан адал «жоқ» жақсы.',
         },
       },
@@ -825,7 +825,7 @@ export const systeme = {
     },
     points: [
       {
-        de: 'Abnahmekriterien stehen fest, bevor gebaut wird — nicht danach.',
+        de: 'Abnahmekriterien stehen fest, bevor gebaut wird, nicht danach.',
         en: 'Acceptance criteria are fixed before we build, not afterwards.',
         tr: 'Kabul kriterleri yapımdan önce belirlenir, sonrasında değil.',
         kk: 'Қабылдау критерийлері құрылым басталмай тұрып бекітіледі, кейін емес.',
@@ -843,7 +843,7 @@ export const systeme = {
         kk: 'Қолдау қызметінің жауап беру мерзімі келісіледі, орындалмаса өтемақы есептеледі.',
       },
       {
-        de: 'Quellcode und Daten gehören Ihnen. Eine Ausstiegsklausel regelt die Herausgabe, auch im Streit.',
+        de: 'Quellcode und Daten gehen an Sie, mit einer Ausstiegsklausel, die auch im Streit gilt.',
         en: 'Source code and data are yours. An exit clause governs handover, including in a dispute.',
         tr: 'Kaynak kod ve veri sizindir. Bir çıkış maddesi, ihtilafta da teslimi düzenler.',
         kk: 'Бастапқы код пен деректер сіздікі. Шығу тармағы дауда да оның берілуін реттейді.',
@@ -861,10 +861,10 @@ export const systeme = {
   firstStep: {
     heading: { de: 'Der erste Schritt kostet Sie eine Stunde', en: 'The first step costs you an hour', tr: 'İlk adım size bir saate mal olur', kk: 'Алғашқы қадам сізден бір сағат алады' },
     text: {
-      de: 'Erzählen Sie uns in einem Gespräch, wo es heute hakt. Wir hören zu, stellen Fragen und sagen Ihnen danach ehrlich, ob sich ein eigenes System lohnt — oder ob es etwas Einfacheres auch tut. Kein Angebot im Anhang, keine Verkaufspräsentation.',
-      en: 'Tell us in one conversation where things snag today. We listen, we ask, and afterwards we tell you honestly whether a system of your own is worth it — or whether something simpler will do. No quote attached, no sales deck.',
-      tr: 'Bir görüşmede bugün nerede takıldığını anlatın. Dinleriz, sorular sorarız ve ardından kendi sisteminizin değip değmeyeceğini ya da daha basit bir şeyin iş görüp görmeyeceğini dürüstçe söyleriz. Ekte teklif yok, satış sunumu yok.',
-      kk: 'Бүгін қай жерде тұрып қалғаныңызды әңгімеде айтып беріңіз. Тыңдаймыз, сұрақ қоямыз, содан соң өз жүйеңіздің керек-керек еместігін немесе одан қарапайым бірдеңе де жететінін адал айтамыз. Ілеспе ұсыныс та жоқ, сату презентациясы да жоқ.',
+      de: 'Erzählen Sie uns in einem Gespräch, wo es heute hakt. Wir hören zu, stellen Fragen und sagen Ihnen danach ehrlich, ob sich ein eigenes System lohnt oder ob es etwas Einfacheres auch tut. Kein Angebot im Anhang, keine Verkaufspräsentation. Je früher wir draufschauen, desto weniger Altlasten müssen später mitwandern.',
+      en: 'Tell us in one conversation where things snag today. We listen, we ask, and afterwards we tell you honestly whether a system of your own is worth it or whether something simpler will do. No quote attached, no sales deck. The earlier we look, the less legacy has to be carried across later.',
+      tr: 'Bir görüşmede bugün nerede takıldığını anlatın. Dinleriz, sorular sorarız ve ardından kendi sisteminizin değip değmeyeceğini ya da daha basit bir şeyin iş görüp görmeyeceğini dürüstçe söyleriz. Ekte teklif yok, satış sunumu yok. Ne kadar erken bakarsak, sonradan taşınması gereken eski yük o kadar az olur.',
+      kk: 'Бүгін қай жерде тұрып қалғаныңызды әңгімеде айтып беріңіз. Тыңдаймыз, сұрақ қоямыз, содан соң өз жүйеңіздің керек-керек еместігін немесе одан қарапайым бірдеңе де жететінін адал айтамыз. Ілеспе ұсыныс та жоқ, сату презентациясы да жоқ. Неғұрлым ерте қарасақ, кейін көшіретін ескі жүк соғұрлым аз болады.',
     },
     cta: { de: 'Gespräch vereinbaren', en: 'Arrange the conversation', tr: 'Görüşmeyi ayarlayın', kk: 'Әңгімені жоспарлау' },
   },
@@ -873,9 +873,9 @@ export const systeme = {
   crosslink: {
     heading: { de: 'Und wenn es doch eine Website ist', en: 'And if it turns out to be a website', tr: 'Ya sonuçta bir web sitesiyse', kk: 'Ал егер бәрібір сайт болса' },
     text: {
-      de: 'Dann sind Sie eine Abteilung zu weit gegangen. Unsere Webdesign-Abteilung baut mehrsprachige Auftritte mit Buchung, KI-Assistent und Suchmaschinen-Sichtbarkeit — für Kunden vom Barbier in Alanya bis zum Prüfdienstleister im Rhein-Main-Gebiet.',
-      en: 'Then you have gone one department too far. Our web-design team builds multilingual sites with booking, an AI assistant and search visibility — for clients from a barber in Alanya to a safety-testing provider in the Rhine-Main region.',
-      tr: 'O hâlde bir birim ileri gitmişsiniz. Web tasarım birimimiz; randevu, yapay zekâ asistanı ve arama görünürlüğü içeren çok dilli siteler yapıyor — Alanya’daki bir berberden Rhein-Main bölgesindeki bir denetim firmasına kadar.',
+      de: 'Dann sind Sie eine Abteilung zu weit gegangen. Unsere Webdesign-Abteilung baut mehrsprachige Auftritte mit Buchung, KI-Assistent und Suchmaschinen-Sichtbarkeit, für Kunden vom Barbier in Alanya bis zum Prüfdienstleister im Rhein-Main-Gebiet.',
+      en: 'Then you have gone one department too far. Our web-design team builds multilingual sites with booking, an AI assistant and search visibility, for clients from a barber in Alanya to a safety-testing provider in the Rhine-Main region.',
+      tr: 'O hâlde bir birim ileri gitmişsiniz. Web tasarım birimimiz Alanya’daki bir berberden Rhein-Main bölgesindeki bir denetim firmasına kadar; randevu, yapay zekâ asistanı ve arama görünürlüğü içeren çok dilli siteler yapıyor.',
       kk: 'Онда бір бөлім артық жүріп кетіпсіз. Веб-дизайн бөлімі жазылу, ЖИ көмекшісі және іздеу жүйелерінде көріну мүмкіндігі бар көп тілді сайттар жасайды, әрі клиенттеріміз Аланиядағы шаштараздан бастап Рейн-Майн өңіріндегі техникалық сараптама компаниясына дейін.',
     },
     cta: { de: 'Zur Webdesign-Abteilung', en: 'To the web-design department', tr: 'Web tasarım birimine', kk: 'Веб-дизайн бөліміне' },
@@ -925,16 +925,16 @@ export const systeme = {
       kk: 'Жүйені құрайтын жеті қабат',
     },
     intro: {
-      de: 'Klicken Sie sich durch die Bausteine, die unter jeder Oberfläche liegen. Die Bilder sind Schemata, keine Screenshots — echte Ansichten zeigen wir Ihnen in den beiden Systemen weiter unten, mit echten Daten und echtem Login.',
-      en: 'Click through the building blocks that sit under every interface. These pictures are schematics, not screenshots — real views are in the two live systems further down, with real data and a real login.',
-      tr: 'Her arayüzün altında duran yapı taşlarını tek tek inceleyin. Buradaki görseller şemadır, ekran görüntüsü değil — gerçek görünümleri aşağıdaki iki canlı sistemde, gerçek veriyle ve gerçek girişle gösteriyoruz.',
-      kk: 'Әр интерфейстің астында тұрған құрылыс блоктарын басып көріңіз. Мұндағы суреттер — схема, скриншот емес: нақты көріністерді төмендегі екі жүйеде, нақты дерекпен және нақты кірумен көрсетеміз.',
+      de: 'Klicken Sie sich durch die Bausteine, die unter jeder Oberfläche liegen. Die Bilder sind Schemata, keine Screenshots. Echte Ansichten zeigen wir Ihnen in den beiden Systemen weiter unten, mit echten Daten und echtem Login.',
+      en: 'Click through the building blocks that sit under every interface. These pictures are schematics, not screenshots. Real views are in the two live systems further down, with real data and a real login.',
+      tr: 'Her arayüzün altında duran yapı taşlarını tek tek inceleyin. Buradaki görseller şemadır, ekran görüntüsü değil. Gerçek görünümleri aşağıdaki iki canlı sistemde, gerçek veriyle ve gerçek girişle gösteriyoruz.',
+      kk: 'Әр интерфейстің астында тұрған құрылыс блоктарын басып көріңіз. Мұндағы суреттер — схема, скриншот емес. Нақты көріністерді төмендегі екі жүйеде, нақты дерекпен және нақты кірумен көрсетеміз.',
     },
     hint: {
-      de: 'Schema — keine echten Daten',
-      en: 'Schematic — no real data',
-      tr: 'Şema — gerçek veri değil',
-      kk: 'Схема — нақты дерек емес',
+      de: 'Schema, keine echten Daten',
+      en: 'Schematic, not real data',
+      tr: 'Şema, gerçek veri değil',
+      kk: 'Схема, нақты дерек емес',
     },
     /** Labels of the three beats each layer's scenario is told in. */
     beats: {
@@ -957,10 +957,10 @@ export const systeme = {
       kk: 'Қалған бәріне жалғанатын жүйе',
     },
     intro: {
-      de: 'Kein Betrieb fängt bei null an. Buchhaltung, Kalender, Zahlungsdienst und Ticketsystem stehen schon da — und sie bleiben stehen. Wir bauen die Verbindungen dorthin über dokumentierte Schnittstellen, damit Daten einmal entstehen und überall gelten.',
-      en: 'No company starts from zero. Accounting, calendars, payment providers and a ticket system are already there — and they stay. We build the connections through documented interfaces, so a piece of data is created once and counts everywhere.',
-      tr: 'Hiçbir işletme sıfırdan başlamaz. Muhasebe, takvim, ödeme sağlayıcısı ve çağrı sistemi zaten oradadır — ve orada kalır. Bağlantıları belgelenmiş arayüzler üzerinden kuruyoruz; böylece bir veri bir kez oluşur ve her yerde geçerli olur.',
-      kk: 'Ешбір кәсіп нөлден бастамайды. Бухгалтерия, күнтізбе, төлем қызметі және тікет жүйесі бұрыннан бар — әрі сол күйі қалады. Байланыстарды құжатталған интерфейстер арқылы саламыз, сонда дерек бір рет пайда болып, бәрінде жарамды болады.',
+      de: 'Kein Betrieb fängt bei null an. Buchhaltung, Kalender, Zahlungsdienst und Ticketsystem stehen schon da, und sie bleiben stehen. Wir bauen die Verbindungen dorthin über dokumentierte Schnittstellen, damit Daten einmal entstehen und überall gelten.',
+      en: 'No company starts from zero. Accounting, calendars, payment providers and a ticket system are already there, and they stay. We build the connections through documented interfaces, so a piece of data is created once and counts everywhere.',
+      tr: 'Hiçbir işletme sıfırdan başlamaz. Muhasebe, takvim, ödeme sağlayıcısı ve çağrı sistemi zaten oradadır ve orada kalır. Bağlantıları belgelenmiş arayüzler üzerinden kuruyoruz; böylece bir veri bir kez oluşur ve her yerde geçerli olur.',
+      kk: 'Ешбір кәсіп нөлден бастамайды. Бухгалтерия, күнтізбе, төлем қызметі және тікет жүйесі бұрыннан бар әрі сол күйі қалады. Байланыстарды құжатталған интерфейстер арқылы саламыз, сонда дерек бір рет пайда болып, бәрінде жарамды болады.',
     },
     coreLabel: { de: 'Ihr System', en: 'Your system', tr: 'Sisteminiz', kk: 'Сіздің жүйеңіз' },
     nodes: [
@@ -974,9 +974,9 @@ export const systeme = {
       { de: 'Dokumentenablage', en: 'Document storage', tr: 'Doküman arşivi', kk: 'Құжат қоймасы' },
     ],
     note: {
-      de: 'Welche davon angebunden werden, entscheidet Phase drei — und was technisch nicht geht, sagen wir dort, nicht nach der Unterschrift.',
-      en: 'Which of them get connected is decided in phase three — and whatever is not technically possible, we say so there, not after the signature.',
-      tr: 'Hangilerinin bağlanacağına üçüncü aşamada karar verilir — teknik olarak mümkün olmayanı da imzadan sonra değil, orada söyleriz.',
+      de: 'Welche davon angebunden werden, entscheidet Phase drei. Was technisch nicht geht, sagen wir dort und nicht nach der Unterschrift.',
+      en: 'Which of them get connected is decided in phase three. Whatever is not technically possible, we say so there and not after the signature.',
+      tr: 'Hangilerinin bağlanacağına üçüncü aşamada karar verilir. Teknik olarak mümkün olmayanı da imzadan sonra değil, orada söyleriz.',
       kk: 'Қайсысы жалғанатынын үшінші кезең шешеді, ал техникалық мүмкін емес нәрсені қол қойылғаннан кейін емес, сол жерде айтамыз.',
     },
   },
@@ -1057,9 +1057,9 @@ export const systeme = {
       {
         title: { de: 'Ausstieg geregelt', en: 'A regulated way out', tr: 'Düzenlenmiş çıkış', kk: 'Реттелген шығу' },
         text: {
-          de: 'Quellcode und Daten gehören Ihnen. Eine Ausstiegsklausel regelt die Herausgabe in einem Format, das jemand anderes lesen kann — auch im Streit.',
-          en: 'Source code and data belong to you. An exit clause governs handover in a format somebody else can read — including in a dispute.',
-          tr: 'Kaynak kod ve veriler size aittir. Bir çıkış maddesi, devrin başka birinin okuyabileceği bir biçimde yapılmasını düzenler — anlaşmazlık hâlinde de.',
+          de: 'Quellcode und Daten gehören Ihnen. Eine Ausstiegsklausel regelt die Herausgabe in einem Format, das jemand anderes lesen kann, auch im Streit.',
+          en: 'Source code and data belong to you. An exit clause governs handover in a format somebody else can read, including in a dispute.',
+          tr: 'Kaynak kod ve veriler size aittir. Bir çıkış maddesi, devrin başka birinin okuyabileceği bir biçimde yapılmasını düzenler; anlaşmazlık hâlinde de.',
           kk: 'Бастапқы код пен деректер сізге тиесілі. Шығу тармағы оларды басқа біреу оқи алатын форматта тапсыруды реттейді, тіпті дау кезінде де.',
         },
       },
@@ -1105,10 +1105,10 @@ export const modules: SystemModule[] = [
       kk: 'Үш тізімнің орнына бір жазба',
     },
     text: {
-      de: 'Kunde, Objekt, Lieferant, Mitarbeiter: jeder Gegenstand Ihres Betriebs existiert genau einmal, mit einer Historie und einer verantwortlichen Person. Wer den Datensatz ändert, ändert ihn für alle — das ist der Unterschied zwischen einer Datenbank und einer Tabelle.',
-      en: 'Customer, property, supplier, employee: every object in your business exists exactly once, with a history and a person accountable for it. Whoever edits the record edits it for everyone — that is the difference between a database and a spreadsheet.',
-      tr: 'Müşteri, portföy, tedarikçi, çalışan: işletmenizdeki her nesne tam olarak bir kez var olur; bir geçmişi ve sorumlu bir kişisi vardır. Kaydı değiştiren, herkes için değiştirir — veritabanı ile tablo arasındaki fark budur.',
-      kk: 'Клиент, нысан, жеткізуші, қызметкер: кәсібіңіздегі әр нысан дәл бір рет қана болады, тарихымен және жауапты адамымен. Жазбаны өзгерткен адам оны бәрі үшін өзгертеді — дерекқор мен кестенің айырмасы осы.',
+      de: 'Kunde, Objekt, Lieferant, Mitarbeiter: jeder Gegenstand Ihres Betriebs existiert genau einmal, mit einer Historie und einer verantwortlichen Person. Wer den Datensatz ändert, ändert ihn für alle. Das ist der Unterschied zwischen einer Datenbank und einer Tabelle.',
+      en: 'Customer, property, supplier, employee: every object in your business exists exactly once, with a history and a person accountable for it. Whoever edits the record edits it for everyone. That is the difference between a database and a spreadsheet.',
+      tr: 'Müşteri, portföy, tedarikçi, çalışan: işletmenizdeki her nesne tam olarak bir kez var olur; bir geçmişi ve sorumlu bir kişisi vardır. Kaydı değiştiren, herkes için değiştirir. Veritabanı ile tablo arasındaki fark budur.',
+      kk: 'Клиент, нысан, жеткізуші, қызметкер: кәсібіңіздегі әр нысан дәл бір рет қана болады, тарихымен және жауапты адамымен. Жазбаны өзгерткен адам оны бәрі үшін өзгертеді. Дерекқор мен кестенің айырмасы осы.',
     },
     points: [
       { de: 'Dubletten werden beim Anlegen erkannt, nicht beim Jahresabschluss', en: 'Duplicates are caught on creation, not at year end', tr: 'Mükerrer kayıtlar yıl sonunda değil, oluştururken yakalanır', kk: 'Қайталанған жазба жыл соңында емес, құру кезінде табылады' },
@@ -1118,7 +1118,7 @@ export const modules: SystemModule[] = [
     scenario: {
       situation: { de: 'Ein Kunde ruft an und fragt nach dem Stand. Drei Kolleginnen haben ihn angelegt, jede etwas anders geschrieben.', en: 'A customer calls and asks where things stand. Three colleagues have created him, each spelling the name slightly differently.', tr: 'Bir müşteri arayıp durumu soruyor. Üç meslektaş onu ayrı ayrı kaydetmiş, her biri adını biraz farklı yazmış.', kk: 'Клиент қоңырау шалып, істің жайын сұрайды. Оны үш әріптес бөлек енгізген, әрқайсысы атын сәл өзгеше жазған.' },
       without: { de: 'Die Antwort hängt davon ab, welche der drei Karteien jemand zuerst öffnet. Zwei davon sind veraltet, und man sieht ihnen das nicht an.', en: 'The answer depends on which of the three files somebody opens first. Two are out of date, and nothing about them says so.', tr: 'Yanıt, üç kayıttan hangisinin önce açıldığına bağlı. İkisi güncel değil ve bunu dışarıdan anlamak mümkün değil.', kk: 'Жауап үш жазбаның қайсысы бірінші ашылғанына байланысты. Екеуі ескірген, бірақ оны сырттан білу мүмкін емес.' },
-      solved: { de: 'Der Datensatz existiert einmal. Beim Anlegen meldet das System die Ähnlichkeit, und die Historie zeigt, wer wann was geändert hat — die Antwort ist dieselbe, egal wer sie gibt.', en: 'The record exists once. On creation the system flags the similarity, and the history shows who changed what and when — the answer is the same whoever gives it.', tr: 'Kayıt bir kez var olur. Oluştururken sistem benzerliği bildirir ve geçmiş kimin ne zaman neyi değiştirdiğini gösterir — yanıtı kim verirse versin aynıdır.', kk: 'Жазба бір рет қана болады. Құру кезінде жүйе ұқсастықты ескертеді, ал тарих кімнің қашан нені өзгерткенін көрсетеді: жауап кім берсе де бірдей.' },
+      solved: { de: 'Der Datensatz existiert einmal. Beim Anlegen meldet das System die Ähnlichkeit, und die Historie zeigt, wer wann was geändert hat. Die Antwort ist dieselbe, egal wer sie gibt.', en: 'The record exists once. On creation the system flags the similarity, and the history shows who changed what and when. The answer is the same whoever gives it.', tr: 'Kayıt bir kez var olur. Oluştururken sistem benzerliği bildirir ve geçmiş kimin ne zaman neyi değiştirdiğini gösterir. Yanıtı kim verirse versin aynıdır.', kk: 'Жазба бір рет қана болады. Құру кезінде жүйе ұқсастықты ескертеді, ал тарих кімнің қашан нені өзгерткенін көрсетеді: жауап кім берсе де бірдей.' },
     },
     diagram: 'records',
     labels: [
@@ -1138,10 +1138,10 @@ export const modules: SystemModule[] = [
       kk: 'Аттап өтуге болмайтын ағын',
     },
     text: {
-      de: 'Jeder Vorgang hat einen Zustand und erlaubte Übergänge. Eine Freigabe lässt sich nicht überspringen, weil gerade jemand im Urlaub ist — sie lässt sich vertreten, und auch das steht später in der Akte. Der Ablauf lebt im System, nicht in der Erinnerung.',
-      en: 'Every case has a state and permitted transitions. An approval cannot be skipped because somebody is on holiday — it can be delegated, and that too is on the record afterwards. The process lives in the system, not in someone’s memory.',
-      tr: 'Her işlemin bir durumu ve izin verilen geçişleri vardır. Biri izinde diye onay atlanamaz — vekâlet verilebilir ve bu da sonradan kayıtta görünür. Akış hafızada değil, sistemde yaşar.',
-      kk: 'Әр істің күйі және рұқсат етілген ауысулары бар. Біреу демалыста деп бекітуді аттап өтуге болмайды — оны басқаға тапсыруға болады, әрі ол да кейін жазбада тұрады. Ағын естеде емес, жүйеде тұрады.',
+      de: 'Jeder Vorgang hat einen Zustand und erlaubte Übergänge. Eine Freigabe lässt sich nicht überspringen, weil gerade jemand im Urlaub ist. Sie lässt sich vertreten, und auch das steht später in der Akte. Der Ablauf lebt im System, nicht in der Erinnerung.',
+      en: 'Every case has a state and permitted transitions. An approval cannot be skipped because somebody is on holiday. It can be delegated, and that too is on the record afterwards. The process lives in the system, not in someone’s memory.',
+      tr: 'Her işlemin bir durumu ve izin verilen geçişleri vardır. Biri izinde diye onay atlanamaz. Vekâlet verilebilir ve bu da sonradan kayıtta görünür. Akış hafızada değil, sistemde yaşar.',
+      kk: 'Әр істің күйі және рұқсат етілген ауысулары бар. Біреу демалыста деп бекітуді аттап өтуге болмайды. Оны басқаға тапсыруға болады, әрі ол да кейін жазбада тұрады. Ағын естеде емес, жүйеде тұрады.',
     },
     points: [
       { de: 'Zustände und Übergänge werden mit Ihnen festgelegt, nicht von uns geraten', en: 'States and transitions are agreed with you, not guessed by us', tr: 'Durumlar ve geçişler bizim tahminimizle değil, sizinle birlikte belirlenir', kk: 'Күйлер мен ауысулар біздің болжамымызбен емес, сізбен бірге бекітіледі' },
@@ -1151,7 +1151,7 @@ export const modules: SystemModule[] = [
     scenario: {
       situation: { de: 'Ein Angebot mit ungewöhnlichem Rabatt soll heute raus. Die Person, die freigeben darf, ist im Urlaub.', en: 'A quote with an unusual discount has to go out today. The person allowed to approve it is on holiday.', tr: 'Alışılmadık bir indirim içeren teklif bugün gitmeli. Onay verebilecek kişi izinde.', kk: 'Ерекше жеңілдігі бар ұсыныс бүгін кетуі керек. Бекітуге құқылы адам демалыста.' },
       without: { de: 'Jemand gibt es trotzdem raus und sagt später Bescheid. Drei Monate danach fragt die Buchhaltung, wer das entschieden hat, und niemand weiß es mehr genau.', en: 'Somebody sends it anyway and mentions it later. Three months on, accounting asks who decided that, and nobody quite remembers.', tr: 'Biri yine de gönderir, sonra haber verir. Üç ay sonra muhasebe kimin karar verdiğini sorar ve kimse tam hatırlamaz.', kk: 'Біреу оны бәрібір жібереді де, кейін айтады. Үш айдан соң бухгалтерия кім шешкенін сұрайды, ал ешкім нақты есіне түсіре алмайды.' },
-      solved: { de: 'Der Vorgang bleibt im Zustand „geprüft" stehen und lässt sich nicht überspringen. Die Vertretung ist hinterlegt, gibt frei — und dass sie es war, steht danach in der Akte.', en: 'The case stays in the "reviewed" state and cannot be skipped. The designated stand-in approves it, and the fact that it was them is on the record afterwards.', tr: 'İşlem “incelendi” durumunda kalır ve atlanamaz. Tanımlı vekil onaylar ve bunu onun yaptığı sonrasında kayıtta durur.', kk: 'Іс «тексерілген» күйінде қалады әрі оны аттап өтуге болмайды. Тағайындалған орынбасар бекітеді, ал оны кімнің істегені кейін жазбада тұрады.' },
+      solved: { de: 'Der Vorgang bleibt im Zustand „geprüft" stehen und lässt sich nicht überspringen. Die hinterlegte Vertretung gibt frei, und dass sie es war, steht danach in der Akte.', en: 'The case stays in the "reviewed" state and cannot be skipped. The designated stand-in approves it, and the fact that it was them is on the record afterwards.', tr: 'İşlem “incelendi” durumunda kalır ve atlanamaz. Tanımlı vekil onaylar ve bunu onun yaptığı sonrasında kayıtta durur.', kk: 'Іс «тексерілген» күйінде қалады әрі оны аттап өтуге болмайды. Тағайындалған орынбасар бекітеді, ал оны кімнің істегені кейін жазбада тұрады.' },
     },
     diagram: 'workflow',
     labels: [
@@ -1171,9 +1171,9 @@ export const modules: SystemModule[] = [
       kk: 'Кімнің нені көретінін дерекқор шешеді',
     },
     text: {
-      de: 'Rechte werden nicht in der Oberfläche ausgeblendet, sondern auf Zeilenebene erzwungen. Eine Rolle sieht genau die Datensätze, die zu ihr gehören — und ein Fehler im Frontend kann daran nichts ändern, weil dort gar nicht mehr ankommt, was nicht erlaubt ist.',
-      en: 'Rights are not hidden in the interface, they are enforced at row level. A role sees exactly the records that belong to it — and a bug in the front end cannot change that, because what is not permitted never arrives there.',
-      tr: 'Yetkiler arayüzde gizlenmez, satır düzeyinde zorunlu kılınır. Bir rol yalnızca kendisine ait kayıtları görür — ön yüzdeki bir hata bunu değiştiremez, çünkü izin verilmeyen veri oraya hiç ulaşmaz.',
+      de: 'Rechte werden nicht in der Oberfläche ausgeblendet, sondern auf Zeilenebene erzwungen. Eine Rolle sieht genau die Datensätze, die zu ihr gehören. Ein Fehler im Frontend kann daran nichts ändern, weil dort gar nicht erst ankommt, was nicht erlaubt ist.',
+      en: 'Rights are not hidden in the interface, they are enforced at row level. A role sees exactly the records that belong to it. A bug in the front end cannot change that, because what is not permitted never arrives there.',
+      tr: 'Yetkiler arayüzde gizlenmez, satır düzeyinde zorunlu kılınır. Bir rol yalnızca kendisine ait kayıtları görür. Ön yüzdeki bir hata bunu değiştiremez, çünkü izin verilmeyen veri oraya hiç ulaşmaz.',
       kk: 'Құқықтар интерфейсте жасырылмайды, жол деңгейінде мәжбүрленеді. Рөл тек өзіне тиесілі жазбаларды көреді, ал фронтендтегі қате оны өзгерте алмайды, өйткені рұқсат етілмеген дерек ол жерге тіпті жетпейді.',
     },
     points: [
@@ -1184,7 +1184,7 @@ export const modules: SystemModule[] = [
     scenario: {
       situation: { de: 'Ein Praktikant soll Angebote schreiben. Die Einkaufspreise darf er dabei nicht sehen.', en: 'An intern is to write quotes. He must not see the purchase prices while doing it.', tr: 'Bir stajyer teklif yazacak. Bunu yaparken alış fiyatlarını görmemeli.', kk: 'Тәжірибеден өтуші ұсыныс жазуы керек. Сол кезде сатып алу бағасын көрмеуі тиіс.' },
       without: { de: 'Es entsteht eine zweite Tabelle ohne die Spalte. Ab Tag zwei weicht sie ab, und irgendwann schreibt jemand ein Angebot aus der falschen Datei.', en: 'A second spreadsheet appears without that column. From day two it drifts, and eventually somebody writes a quote from the wrong file.', tr: 'O sütun olmadan ikinci bir tablo oluşur. İkinci günden itibaren sapar ve bir gün biri yanlış dosyadan teklif yazar.', kk: 'Ол баған жоқ екінші кесте пайда болады. Екінші күннен бастап ол ауытқиды, ақыры біреу қате файлдан ұсыныс жазады.' },
-      solved: { de: 'Er arbeitet in derselben Liste wie alle. Die Spalte kommt für seine Rolle gar nicht erst aus der Datenbank — nicht ausgeblendet, sondern nicht geliefert.', en: 'He works in the same list as everyone else. For his role that column never leaves the database — not hidden, simply not sent.', tr: 'Herkesle aynı listede çalışır. O sütun onun rolü için veritabanından hiç çıkmaz — gizlenmiş değil, gönderilmemiştir.', kk: 'Ол бәрімен бір тізімде жұмыс істейді. Оның рөлі үшін ол баған дерекқордан мүлде шықпайды: жасырылған емес, жіберілмеген.' },
+      solved: { de: 'Er arbeitet in derselben Liste wie alle. Die Spalte kommt für seine Rolle gar nicht erst aus der Datenbank. Nicht ausgeblendet, sondern nie geliefert.', en: 'He works in the same list as everyone else. For his role that column never leaves the database. Not hidden, simply never sent.', tr: 'Herkesle aynı listede çalışır. O sütun onun rolü için veritabanından hiç çıkmaz. Gizlenmiş değil, hiç gönderilmemiştir.', kk: 'Ол бәрімен бір тізімде жұмыс істейді. Оның рөлі үшін ол баған дерекқордан мүлде шықпайды: жасырылған емес, жіберілмеген.' },
     },
     diagram: 'rights',
     labels: [
@@ -1206,9 +1206,9 @@ export const modules: SystemModule[] = [
       kk: 'Құжат пошта жәшігінде емес, істің өзінде тұрады',
     },
     text: {
-      de: 'Verträge, Nachweise, Fotos und Protokolle liegen an dem Vorgang, zu dem sie gehören — versioniert, mit Datum und mit der Person, die sie hochgeladen hat. Der Tag, an dem jemand danach fragt, ist der Tag, für den dieses Modul gebaut wurde.',
-      en: 'Contracts, records, photos and minutes sit on the case they belong to — versioned, dated, and with the person who uploaded them. The day somebody asks for one is the day this layer was built for.',
-      tr: 'Sözleşmeler, kanıtlar, fotoğraflar ve tutanaklar ait oldukları işlemde durur — sürümlü, tarihli ve yükleyen kişiyle birlikte. Birinin bunu sorduğu gün, bu katmanın yapılma nedenidir.',
+      de: 'Verträge, Nachweise, Fotos und Protokolle liegen an dem Vorgang, zu dem sie gehören: versioniert, mit Datum und mit der Person, die sie hochgeladen hat. Der Tag, an dem jemand danach fragt, ist der Tag, für den dieses Modul gebaut wurde.',
+      en: 'Contracts, records, photos and minutes sit on the case they belong to: versioned, dated, and with the person who uploaded them. The day somebody asks for one is the day this layer was built for.',
+      tr: 'Sözleşmeler, kanıtlar, fotoğraflar ve tutanaklar ait oldukları işlemde durur: sürümlü, tarihli ve yükleyen kişiyle birlikte. Birinin bunu sorduğu gün, bu katmanın yapılma nedenidir.',
       kk: 'Шарттар, дәлелдер, фотолар және хаттамалар өздері тиесілі істің қасында тұрады: нұсқасымен, күнімен және жүктеген адамымен. Біреу оны сұрайтын күн — осы қабаттың жасалу себебі.',
     },
     points: [
@@ -1238,9 +1238,9 @@ export const modules: SystemModule[] = [
       kk: 'Ешкім қолмен жинамайтын ашық баптар',
     },
     text: {
-      de: 'Forderung, Zahlung, Mahnung und Beleg hängen an demselben Vorgang. Was offen ist, ist offen, weil es der Datensatz sagt — nicht, weil jemand am Monatsende zwei Tabellen nebeneinandergelegt hat.',
-      en: 'Receivable, payment, reminder and document hang on the same case. What is outstanding is outstanding because the record says so — not because somebody laid two spreadsheets side by side at the end of the month.',
-      tr: 'Alacak, ödeme, hatırlatma ve belge aynı işleme bağlıdır. Açık olan, kayıt öyle dediği için açıktır — ay sonunda biri iki tabloyu yan yana koyduğu için değil.',
+      de: 'Forderung, Zahlung, Mahnung und Beleg hängen an demselben Vorgang. Was offen ist, ist offen, weil es der Datensatz sagt und nicht, weil jemand am Monatsende zwei Tabellen nebeneinandergelegt hat.',
+      en: 'Receivable, payment, reminder and document hang on the same case. What is outstanding is outstanding because the record says so, not because somebody laid two spreadsheets side by side at the end of the month.',
+      tr: 'Alacak, ödeme, hatırlatma ve belge aynı işleme bağlıdır. Açık olan, ay sonunda biri iki tabloyu yan yana koyduğu için değil, kayıt öyle dediği için açıktır.',
       kk: 'Талап, төлем, ескерту және құжат бір істің бойында тұрады. Ашық бап кестені қатар қойған біреудің емес, жазбаның айтуымен ашық болады.',
     },
     points: [
@@ -1251,7 +1251,7 @@ export const modules: SystemModule[] = [
     scenario: {
       situation: { de: 'Am Monatsende soll die Geschäftsführung wissen, was offen ist und wie lange schon.', en: 'At month end, management wants to know what is outstanding and for how long.', tr: 'Ay sonunda yönetim, neyin açık olduğunu ve ne kadar süredir açık olduğunu bilmek istiyor.', kk: 'Ай соңында басшылық не ашық тұрғанын және қанша уақыттан бері екенін білгісі келеді.' },
       without: { de: 'Jemand exportiert aus zwei Systemen und gleicht von Hand ab. Der Stand ist am Tag der Fertigstellung schon wieder alt, und Rückfragen beginnen von vorn.', en: 'Somebody exports from two systems and reconciles by hand. The result is already stale on the day it is finished, and any query starts over.', tr: 'Biri iki sistemden dışa aktarıp elle mutabakat yapar. Sonuç bittiği gün çoktan eskimiştir ve her soru baştan başlar.', kk: 'Біреу екі жүйеден экспорттап, қолмен салыстырады. Нәтиже дайын болған күні-ақ ескіреді, ал әр сұрақ басынан басталады.' },
-      solved: { de: 'Forderung, Zahlung und Beleg hängen am selben Vorgang. Was offen ist, ist offen, weil der Datensatz es sagt — und jede Zeile lässt sich bis zum Beleg aufklappen.', en: 'Receivable, payment and document hang on the same case. What is outstanding is outstanding because the record says so — and every line opens down to the document.', tr: 'Alacak, ödeme ve belge aynı işleme bağlıdır. Açık olan, kayıt öyle dediği için açıktır ve her satır belgeye kadar açılabilir.', kk: 'Талап, төлем және құжат бір істің бойында тұрады. Ашық бап жазба солай дегендіктен ашық, әрі әр жол құжатқа дейін ашылады.' },
+      solved: { de: 'Forderung, Zahlung und Beleg hängen am selben Vorgang. Was offen ist, ist offen, weil der Datensatz es sagt, und jede Zeile lässt sich bis zum Beleg aufklappen.', en: 'Receivable, payment and document hang on the same case. What is outstanding is outstanding because the record says so, and every line opens down to the document.', tr: 'Alacak, ödeme ve belge aynı işleme bağlıdır. Açık olan, kayıt öyle dediği için açıktır ve her satır belgeye kadar açılabilir.', kk: 'Талап, төлем және құжат бір істің бойында тұрады. Ашық бап жазба солай дегендіктен ашық, әрі әр жол құжатқа дейін ашылады.' },
     },
     diagram: 'finance',
     labels: [
@@ -1304,9 +1304,9 @@ export const modules: SystemModule[] = [
       kk: 'Мәлімдемеден емес, деректен шыққан сандар',
     },
     text: {
-      de: 'Auswertungen rechnen auf demselben Bestand, in dem gearbeitet wird. Und wo eine Zahl noch nicht berechnet werden kann, sagt die Kachel genau das, statt zu schätzen — eine geschätzte Kennzahl ist schlimmer als gar keine, weil jemand sie weiterreicht.',
-      en: 'Reports calculate on the same records people work in. And where a figure cannot yet be calculated, the tile says exactly that instead of estimating — an estimated metric is worse than none, because somebody will pass it on.',
-      tr: 'Analizler, üzerinde çalışılan veri kümesinin ta kendisinden hesaplanır. Bir sayı henüz hesaplanamıyorsa kutu tahmin yürütmez, bunu açıkça yazar — tahmini bir gösterge, hiç olmamasından kötüdür; çünkü biri onu başkasına aktarır.',
+      de: 'Auswertungen rechnen auf demselben Bestand, in dem gearbeitet wird. Und wo eine Zahl noch nicht berechnet werden kann, sagt die Kachel genau das, statt zu schätzen. Eine geschätzte Kennzahl ist schlimmer als gar keine, weil jemand sie weiterreicht.',
+      en: 'Reports calculate on the same records people work in. And where a figure cannot yet be calculated, the tile says exactly that instead of estimating. An estimated metric is worse than none, because somebody will pass it on.',
+      tr: 'Analizler, üzerinde çalışılan veri kümesinin ta kendisinden hesaplanır. Bir sayı henüz hesaplanamıyorsa kutu tahmin yürütmez, bunu açıkça yazar. Tahmini bir gösterge hiç olmamasından kötüdür, çünkü biri onu başkasına aktarır.',
       kk: 'Талдаулар адамдар жұмыс істейтін дәл сол деректің үстінен есептеледі. Ал сан әлі есептелмейтін болса, тақташа болжам жасамай, соны ашық жазады: болжамды көрсеткіш мүлдем жоқтан да жаман, өйткені біреу оны әрі қарай таратады.',
     },
     points: [
@@ -1544,17 +1544,17 @@ export const systemeFaq: Record<Lang, { heading: string; intro: string; items: {
       {
         question: 'Wie lange dauert die Einführung eines Systems?',
         answer:
-          'Das hängt am Umfang, aber nicht an der Geduld: wir bauen in Schnitten. Ein schmaler, aber vollständiger Ausschnitt geht früh live, Ihr Team arbeitet damit, dann kommt der nächste. Dadurch haben Sie lange vor dem vollständigen Funktionsumfang etwas Benutzbares, und wir erfahren an echten Vorgängen, was noch fehlt. Die ersten beiden Phasen — zuhören und aufschreiben — dauern bei einem mittelständischen Betrieb typischerweise wenige Wochen und sind die einzigen, in denen wir mehr Ihrer Zeit brauchen als Sie unserer.',
+          'Das hängt am Umfang, aber nicht an der Geduld: wir bauen in Schnitten. Ein schmaler, aber vollständiger Ausschnitt geht früh live, Ihr Team arbeitet damit, dann kommt der nächste. Dadurch haben Sie lange vor dem vollständigen Funktionsumfang etwas Benutzbares, und wir erfahren an echten Vorgängen, was noch fehlt. Zuhören und Aufschreiben, die ersten beiden Phasen, dauern bei einem mittelständischen Betrieb typischerweise wenige Wochen. Es sind die einzigen, in denen wir mehr Ihrer Zeit brauchen als Sie unserer.',
       },
       {
         question: 'Warum kein Standardprodukt statt einer Eigenentwicklung?',
         answer:
-          'Oft ist ein Standardprodukt die richtige Antwort, und dann sagen wir das. Sinnvoll wird eine Eigenentwicklung dort, wo Ihr Ablauf Ihr Wettbewerbsvorteil ist und ein Standardprodukt Sie zwingen würde, ihn aufzugeben. Der zweite Fall sind Betriebe, die bereits drei Werkzeuge parallel betreiben und die Lücken dazwischen mit Excel und Absprachen füllen — dort ersetzt ein System nicht ein Produkt, sondern die Handarbeit zwischen dreien. Wenn wir im Erstgespräch sehen, dass es auch einfacher geht, bekommen Sie ein ehrliches Nein.',
+          'Oft ist ein Standardprodukt die richtige Antwort, und dann sagen wir das. Sinnvoll wird eine Eigenentwicklung dort, wo Ihr Ablauf Ihr Wettbewerbsvorteil ist und ein Standardprodukt Sie zwingen würde, ihn aufzugeben. Der zweite Fall sind Betriebe, die bereits drei Werkzeuge parallel betreiben und die Lücken dazwischen mit Excel und Absprachen füllen. Dort ersetzt ein System nicht ein Produkt, sondern die Handarbeit zwischen dreien. Wenn wir im Erstgespräch sehen, dass es auch einfacher geht, bekommen Sie ein ehrliches Nein.',
       },
       {
         question: 'Wem gehören Quellcode und Daten am Ende?',
         answer:
-          'Ihnen, und das steht im Vertrag statt in einer Zusage. Quellcode und Daten gehen an Sie, eine Ausstiegsklausel regelt die Herausgabe in einem Format, das ein anderer Dienstleister lesen kann, und sie greift auch dann, wenn wir uns streiten. Betrieb, Sicherung und Weiterentwicklung übernehmen wir gerne — aber als Leistung, die Sie bestellen, nicht als Abhängigkeit, aus der Sie nicht herauskommen. Verarbeitet wird nach einem Auftragsverarbeitungsvertrag gemäß DSGVO, auf Servern in der EU.',
+          'Ihnen, und das steht im Vertrag statt in einer Zusage. Quellcode und Daten gehen an Sie, eine Ausstiegsklausel regelt die Herausgabe in einem Format, das ein anderer Dienstleister lesen kann, und sie greift auch dann, wenn wir uns streiten. Betrieb, Sicherung und Weiterentwicklung übernehmen wir gerne, aber als Leistung, die Sie bestellen, und nicht als Abhängigkeit, aus der Sie nicht herauskommen. Verarbeitet wird nach einem Auftragsverarbeitungsvertrag gemäß DSGVO, auf Servern in der EU.',
       },
       {
         question: 'Wie stellt WAMOCON sicher, dass das System auch funktioniert?',
@@ -1564,7 +1564,7 @@ export const systemeFaq: Record<Lang, { heading: string; intro: string; items: {
       {
         question: 'Muss ein Unternehmenssystem barrierefrei sein?',
         answer:
-          'Für viele Betriebe ja. Das Barrierefreiheitsstärkungsgesetz verpflichtet seit Juni 2025 einen großen Teil der Anbieter digitaler Dienstleistungen, und selbst wo keine Pflicht besteht, ist Bedienbarkeit per Tastatur für ein System, in dem den ganzen Tag gearbeitet wird, schlicht schneller. Wir bauen Tastaturbedienung, Screenreader-Tauglichkeit und ausreichende Kontraste in Phase vier ein, in der Sie den klickbaren Entwurf abnehmen — nachträglich ist dasselbe Ergebnis deutlich teurer.',
+          'Für viele Betriebe ja. Das Barrierefreiheitsstärkungsgesetz verpflichtet seit Juni 2025 einen großen Teil der Anbieter digitaler Dienstleistungen, und selbst wo keine Pflicht besteht, ist Bedienbarkeit per Tastatur für ein System, in dem den ganzen Tag gearbeitet wird, schlicht schneller. Wir bauen Tastaturbedienung, Screenreader-Tauglichkeit und ausreichende Kontraste in Phase vier ein, in der Sie den klickbaren Entwurf abnehmen. Nachträglich ist dasselbe Ergebnis deutlich teurer.',
       },
       {
         question: 'Können bestehende Daten aus Excel übernommen werden?',
@@ -1585,17 +1585,17 @@ export const systemeFaq: Record<Lang, { heading: string; intro: string; items: {
       {
         question: 'How long does it take to roll a system out?',
         answer:
-          'It depends on the scope, but not on your patience: we build in slices. A narrow but complete slice goes live early, your team works in it, then the next one follows. That gives you something usable long before the full feature set exists, and it tells us from real cases what is still missing. The first two phases — listening and writing it down — typically take a few weeks at a mid-sized company, and they are the only ones where we need more of your time than you need of ours.',
+          'It depends on the scope, but not on your patience: we build in slices. A narrow but complete slice goes live early, your team works in it, then the next one follows. That gives you something usable long before the full feature set exists, and it tells us from real cases what is still missing. Listening and writing it down, the first two phases, typically take a few weeks at a mid-sized company. They are the only ones where we need more of your time than you need of ours.',
       },
       {
         question: 'Why not buy standard software instead of building?',
         answer:
-          'Often standard software is the right answer, and then we say so. Building your own makes sense where your process is your competitive advantage and a standard product would force you to give it up. The second case is companies already running three tools in parallel and filling the gaps between them with spreadsheets and verbal agreements — there a system does not replace a product, it replaces the manual work between three of them. If we see in the first conversation that something simpler will do, you get an honest no.',
+          'Often standard software is the right answer, and then we say so. Building your own makes sense where your process is your competitive advantage and a standard product would force you to give it up. The second case is companies already running three tools in parallel and filling the gaps between them with spreadsheets and verbal agreements. There a system does not replace a product, it replaces the manual work between three of them. If we see in the first conversation that something simpler will do, you get an honest no.',
       },
       {
         question: 'Who owns the source code and the data in the end?',
         answer:
-          'You do, and that sits in the contract rather than in a promise. Source code and data pass to you, an exit clause governs handover in a format another provider can read, and it applies even if we fall out. We are glad to take on operation, backups and further development — but as a service you order, not as a dependency you cannot leave. Processing runs under a GDPR data-processing agreement, on servers in the EU.',
+          'You do, and that sits in the contract rather than in a promise. Source code and data pass to you, an exit clause governs handover in a format another provider can read, and it applies even if we fall out. We are glad to take on operation, backups and further development, but as a service you order and not as a dependency you cannot leave. Processing runs under a GDPR data-processing agreement, on servers in the EU.',
       },
       {
         question: 'How does WAMOCON make sure the system actually works?',
@@ -1605,12 +1605,12 @@ export const systemeFaq: Record<Lang, { heading: string; intro: string; items: {
       {
         question: 'Does a business system have to be accessible?',
         answer:
-          'For many companies, yes. Germany’s Barrierefreiheitsstärkungsgesetz has obliged a large share of digital service providers since June 2025, and even where no duty applies, keyboard operability is simply faster in a system people work in all day. We build keyboard operation, screen-reader support and sufficient contrast into phase four, where you accept the clickable design — retrofitting the same result afterwards costs considerably more.',
+          'For many companies, yes. Germany’s Barrierefreiheitsstärkungsgesetz has obliged a large share of digital service providers since June 2025, and even where no duty applies, keyboard operability is simply faster in a system people work in all day. We build keyboard operation, screen-reader support and sufficient contrast into phase four, where you accept the clickable design. Retrofitting the same result afterwards costs considerably more.',
       },
       {
         question: 'Can existing data be migrated out of spreadsheets?',
         answer:
-          'Yes, and it is usually the underestimated part of the project. Legacy data rarely arrives clean: the same company appears three times spelled slightly differently, fields have been repurposed, and part of the truth lives in a notes column. Migration is therefore its own phase, with reconciliation, cleansing and a dry run you review before it counts. Whatever cannot be migrated cleanly, we name — rather than importing it quietly.',
+          'Yes, and it is usually the underestimated part of the project. Legacy data rarely arrives clean: the same company appears three times spelled slightly differently, fields have been repurposed, and part of the truth lives in a notes column. Migration is therefore its own phase, with reconciliation, cleansing and a dry run you review before it counts. Whatever cannot be migrated cleanly, we name rather than importing it quietly.',
       },
     ],
   },
@@ -1626,17 +1626,17 @@ export const systemeFaq: Record<Lang, { heading: string; intro: string; items: {
       {
         question: 'Bir sistemin devreye alınması ne kadar sürer?',
         answer:
-          'Bu kapsama bağlıdır, sabrınıza değil: dilimler hâlinde geliştiriyoruz. Dar ama eksiksiz bir dilim erkenden yayına alınır, ekibiniz onunla çalışır, ardından bir sonraki gelir. Böylece tüm işlevler hazır olmadan çok önce kullanılabilir bir şeyiniz olur ve biz de gerçek işlemler üzerinden neyin eksik olduğunu öğreniriz. İlk iki aşama — dinleme ve yazıya dökme — orta ölçekli bir işletmede genelde birkaç hafta sürer ve bizim sizden, sizin bizden daha çok zaman istediğimiz tek aşamalardır.',
+          'Bu kapsama bağlıdır, sabrınıza değil: dilimler hâlinde geliştiriyoruz. Dar ama eksiksiz bir dilim erkenden yayına alınır, ekibiniz onunla çalışır, ardından bir sonraki gelir. Böylece tüm işlevler hazır olmadan çok önce kullanılabilir bir şeyiniz olur ve biz de gerçek işlemler üzerinden neyin eksik olduğunu öğreniriz. İlk iki aşama olan dinleme ve yazıya dökme, orta ölçekli bir işletmede genelde birkaç hafta sürer. Bizim sizden, sizin bizden daha çok zaman istediğimiz tek aşamalar bunlardır.',
       },
       {
         question: 'Neden hazır bir ürün yerine özel geliştirme?',
         answer:
-          'Çoğu zaman hazır ürün doğru yanıttır ve o zaman bunu söyleriz. Özel geliştirme, akışınızın rekabet avantajınız olduğu ve hazır bir ürünün sizi bundan vazgeçmeye zorlayacağı yerde anlamlıdır. İkinci durum, hâlihazırda üç aracı paralel işleten ve aralarındaki boşlukları Excel ile sözlü mutabakatlarla dolduran işletmelerdir — orada bir sistem bir ürünün değil, üç ürün arasındaki el emeğinin yerine geçer. İlk görüşmede daha basitinin de iş göreceğini görürsek, dürüst bir hayır alırsınız.',
+          'Çoğu zaman hazır ürün doğru yanıttır ve o zaman bunu söyleriz. Özel geliştirme, akışınızın rekabet avantajınız olduğu ve hazır bir ürünün sizi bundan vazgeçmeye zorlayacağı yerde anlamlıdır. İkinci durum, hâlihazırda üç aracı paralel işleten ve aralarındaki boşlukları Excel ile sözlü mutabakatlarla dolduran işletmelerdir. Orada bir sistem bir ürünün değil, üç ürün arasındaki el emeğinin yerine geçer. İlk görüşmede daha basitinin de iş göreceğini görürsek, dürüst bir hayır alırsınız.',
       },
       {
         question: 'Sonunda kaynak kod ve veriler kime ait olur?',
         answer:
-          'Size, ve bu bir vaatte değil, sözleşmede yazar. Kaynak kod ve veriler size geçer; bir çıkış maddesi devrin başka bir sağlayıcının okuyabileceği bir biçimde yapılmasını düzenler ve anlaşmazlık hâlinde de geçerlidir. İşletim, yedekleme ve geliştirmeyi memnuniyetle üstleniriz — ama sipariş ettiğiniz bir hizmet olarak, çıkamadığınız bir bağımlılık olarak değil. Veri işleme, GDPR kapsamında bir veri işleme sözleşmesiyle ve AB’deki sunucularda yürür.',
+          'Size, ve bu bir vaatte değil, sözleşmede yazar. Kaynak kod ve veriler size geçer; bir çıkış maddesi devrin başka bir sağlayıcının okuyabileceği bir biçimde yapılmasını düzenler ve anlaşmazlık hâlinde de geçerlidir. İşletim, yedekleme ve geliştirmeyi memnuniyetle üstleniriz; ama sipariş ettiğiniz bir hizmet olarak, çıkamadığınız bir bağımlılık olarak değil. Veri işleme, GDPR kapsamında bir veri işleme sözleşmesiyle ve AB’deki sunucularda yürür.',
       },
       {
         question: 'WAMOCON sistemin gerçekten çalıştığından nasıl emin oluyor?',
@@ -1646,7 +1646,7 @@ export const systemeFaq: Record<Lang, { heading: string; intro: string; items: {
       {
         question: 'Bir kurumsal sistem erişilebilir olmak zorunda mı?',
         answer:
-          'Birçok işletme için evet. Almanya’daki Erişilebilirliği Güçlendirme Yasası, Haziran 2025’ten bu yana dijital hizmet sunucularının büyük bölümünü yükümlü kılıyor; yükümlülük olmadığı yerde bile klavyeyle kullanım, gün boyu içinde çalışılan bir sistemde açıkça daha hızlıdır. Klavye kullanımını, ekran okuyucu uyumunu ve yeterli kontrastı, tıklanabilir tasarımı kabul ettiğiniz dördüncü aşamada kurarız — aynı sonucu sonradan eklemek belirgin biçimde pahalıdır.',
+          'Birçok işletme için evet. Almanya’daki Erişilebilirliği Güçlendirme Yasası, Haziran 2025’ten bu yana dijital hizmet sunucularının büyük bölümünü yükümlü kılıyor; yükümlülük olmadığı yerde bile klavyeyle kullanım, gün boyu içinde çalışılan bir sistemde açıkça daha hızlıdır. Klavye kullanımını, ekran okuyucu uyumunu ve yeterli kontrastı, tıklanabilir tasarımı kabul ettiğiniz dördüncü aşamada kurarız. Aynı sonucu sonradan eklemek belirgin biçimde pahalıdır.',
       },
       {
         question: 'Mevcut Excel verileri aktarılabilir mi?',
