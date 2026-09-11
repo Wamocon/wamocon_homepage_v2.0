@@ -95,7 +95,16 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
       <span class="sy-hero__badge">{s.hero.eyebrow[lang]}</span>
       <h1 class="sy-hero__title">
         <span class="sy-hero__title-a">{s.hero.title[lang]}</span>
-        <span class="sy-hero__title-b">{s.hero.titleAccent[lang]}</span>
+        {/* The swapping words are a picture. They are hidden from assistive
+            technology and the whole line is read as one sentence instead —
+            otherwise a screen reader announces a headline that keeps rewriting
+            itself under the reader. */}
+        <span class="sy-hero__rotator" aria-hidden="true" data-rotator>
+          {s.hero.rotating.map((w, i) => (
+            <span class:list={['sy-hero__word', { 'is-current': i === 0 }]}>{w[lang]}</span>
+          ))}
+        </span>
+        <span class="visually-hidden">{s.hero.rotatingAlt[lang]}</span>
       </h1>
       <p class="sy-hero__lead">{s.hero.lead[lang]}</p>
       <div class="sy-hero__actions">
@@ -115,34 +124,41 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
       </ul>
     </div>
 
-    <!-- Schematic ecosystem: one workspace with the system's other faces
-         hanging off it. Decorative, so it is hidden from assistive technology
-         and summarised once in the caption below rather than narrated as a
-         table that does not exist. -->
+    <!-- Schematic ecosystem: one workspace and the system's other faces, which
+         the reader connects themselves. The workspace and the wires are
+         decorative; the three surfaces are buttons, so they are not hidden
+         from assistive technology — each one says what it is and whether it is
+         connected yet. -->
     <div class="sy-hero__stage" data-reveal="zoom">
       <p class="visually-hidden">{s.hero.console.alt[lang]}</p>
-      <div class="sy-constellation" aria-hidden="true">
-        <!-- Drawn connections. The viewBox is a percentage grid so the lines
-             land on the surfaces at every width; the second stroke of each
-             pair is a short dash travelling along it, which reads as data
-             moving rather than as a static wire. -->
-        <!-- All three start at the workspace's centre, so they read as coming
-             out of it; the workspace itself covers the first stretch, leaving
-             only the span between the surfaces visible. Coordinates are the
-             centres of the four boxes positioned in CSS below — move one and
-             the matching line has to move with it. -->
-        <svg class="sy-wires" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <div
+        class="sy-constellation"
+        data-constellation
+        data-action={s.hero.console.connectAction[lang]}
+        data-state={s.hero.console.connectedState[lang]}
+      >
+        <!-- Drawn connections. The viewBox matches the container's aspect
+             ratio, so the scaling stays uniform and a line's drawn length is
+             honest; `pathLength="100"` normalises every path to 100 units, so
+             one CSS rule draws all three regardless of how long they really
+             are. All three start at the workspace's centre and are covered by
+             it for their first stretch, which is why they read as coming out
+             of it. Coordinates are the centres of the four boxes positioned in
+             CSS below — move one and its line has to move with it. -->
+        <svg class="sy-wires" viewBox="0 0 100 92" aria-hidden="true">
           <g class="sy-wires__base">
-            <path d="M29 35 L86 11" /><path d="M29 35 L83 73" /><path d="M29 35 L23 84" />
+            <path d="M29 32.2 L86 10.1" pathLength="100" data-wire="portal" />
+            <path d="M29 32.2 L83 67.2" pathLength="100" data-wire="board" />
+            <path d="M29 32.2 L23 77.3" pathLength="100" data-wire="field" />
           </g>
           <g class="sy-wires__pulse">
-            <path d="M29 35 L86 11" style="--d: 0s" />
-            <path d="M29 35 L83 73" style="--d: 1.2s" />
-            <path d="M29 35 L23 84" style="--d: 2.4s" />
+            <path d="M29 32.2 L86 10.1" pathLength="100" data-wire="portal" style="--d: 0s" />
+            <path d="M29 32.2 L83 67.2" pathLength="100" data-wire="board" style="--d: 1.2s" />
+            <path d="M29 32.2 L23 77.3" pathLength="100" data-wire="field" style="--d: 2.4s" />
           </g>
         </svg>
 
-      <div class="sy-hero__frame">
+      <div class="sy-hero__frame" aria-hidden="true">
       <figure class="sy-console">
         <span class="sy-console__bar">
           <i></i><i></i><i></i>
@@ -177,45 +193,61 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
 
       </div>
 
-      <!-- Portal: lighter, because it is the surface that faces outwards. -->
-      <figure class="sy-sat sy-sat--portal">
-        <span class="sy-sat__bar"><i></i><i></i></span>
-        <span class="sy-sat__body">
-          <span class="sy-bar" style="--w: 64%"></span>
-          <span class="sy-bar sy-bar--dim" style="--w: 44%"></span>
-          <span class="sy-bar sy-bar--dim" style="--w: 54%"></span>
+      {/* Each surface is a button. It renders connected, so a reader without
+          JavaScript gets the finished picture; the script disconnects all
+          three on load and hands the reader the job of joining them up. */}
+
+      {/* Portal: lighter, because it is the surface that faces outwards. */}
+      <button type="button" class="sy-sat sy-sat--portal" data-sat="portal" aria-pressed="true">
+        <span class="sy-sat__ui" aria-hidden="true">
+          <span class="sy-sat__bar"><i></i><i></i></span>
+          <span class="sy-sat__body">
+            <span class="sy-bar" style="--w: 64%"></span>
+            <span class="sy-bar sy-bar--dim" style="--w: 44%"></span>
+            <span class="sy-bar sy-bar--dim" style="--w: 54%"></span>
+          </span>
         </span>
-        <figcaption>
+        <span class="sy-sat__label">
           <b>{s.hero.console.satellites.portal.title[lang]}</b>
-          <span>{s.hero.console.satellites.portal.line[lang]}</span>
-        </figcaption>
-      </figure>
-
-      <!-- Field view: a phone, because that is where the job actually is. -->
-      <figure class="sy-sat sy-sat--field">
-        <span class="sy-phone">
-          <span class="sy-phone__notch"></span>
-          <span class="sy-phone__shot"></span>
-          <span class="sy-bar" style="--w: 72%"></span>
-          <span class="sy-bar sy-bar--dim" style="--w: 48%"></span>
+          <span class="sy-sat__line">{s.hero.console.satellites.portal.line[lang]}</span>
         </span>
-        <figcaption>
+        <span class="sy-sat__plug" aria-hidden="true"></span>
+      </button>
+
+      {/* Field view: a phone, because that is where the job actually is. */}
+      <button type="button" class="sy-sat sy-sat--field" data-sat="field" aria-pressed="true">
+        <span class="sy-sat__ui" aria-hidden="true">
+          <span class="sy-phone">
+            <span class="sy-phone__notch"></span>
+            <span class="sy-phone__shot"></span>
+            <span class="sy-bar" style="--w: 72%"></span>
+            <span class="sy-bar sy-bar--dim" style="--w: 48%"></span>
+          </span>
+        </span>
+        <span class="sy-sat__label">
           <b>{s.hero.console.satellites.field.title[lang]}</b>
-          <span>{s.hero.console.satellites.field.line[lang]}</span>
-        </figcaption>
-      </figure>
-
-      <!-- Board: the same records, counted. -->
-      <figure class="sy-sat sy-sat--board">
-        <span class="sy-sat__spark">
-          <i style="--h: 38%"></i><i style="--h: 62%"></i><i style="--h: 48%"></i><i style="--h: 80%"></i><i style="--h: 66%"></i>
+          <span class="sy-sat__line">{s.hero.console.satellites.field.line[lang]}</span>
         </span>
-        <figcaption>
+        <span class="sy-sat__plug" aria-hidden="true"></span>
+      </button>
+
+      {/* Board: the same records, counted. */}
+      <button type="button" class="sy-sat sy-sat--board" data-sat="board" aria-pressed="true">
+        <span class="sy-sat__ui" aria-hidden="true">
+          <span class="sy-sat__spark">
+            <i style="--h: 38%"></i><i style="--h: 62%"></i><i style="--h: 48%"></i><i style="--h: 80%"></i><i style="--h: 66%"></i>
+          </span>
+        </span>
+        <span class="sy-sat__label">
           <b>{s.hero.console.satellites.board.title[lang]}</b>
-          <span>{s.hero.console.satellites.board.line[lang]}</span>
-        </figcaption>
-      </figure>
+          <span class="sy-sat__line">{s.hero.console.satellites.board.line[lang]}</span>
+        </span>
+        <span class="sy-sat__plug" aria-hidden="true"></span>
+      </button>
       </div>
+
+      <p class="sy-constellation__hint" data-hint
+         data-done={s.hero.console.connectDone[lang]}>{s.hero.console.connectHint[lang]}</p>
     </div>
   </div>
 
@@ -840,7 +872,7 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
      body font and wrap the far larger headings after a handful of words. */
   .sy-head { max-width: 760px; margin-bottom: clamp(2rem, 5vw, 3.5rem); }
   .sy-head h2 { font-size: var(--fs-h2); font-weight: var(--fw-bold); line-height: var(--lh-tight); margin-bottom: 1rem; text-wrap: balance; }
-  .sy-head p { font-size: 1.03rem; line-height: var(--lh-body); max-width: 62ch; }
+  .sy-head p { font-size: var(--fs-body); line-height: var(--lh-body); max-width: 62ch; }
 
   /* Skeleton bar used by every schematic. A width variable rather than a
      class per size, so a diagram row reads as data in the markup. */
@@ -848,6 +880,7 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   .sy-bar--dim { background: rgba(255, 255, 255, 0.16); }
   .sy-bar--hot { background: var(--color-accent); }
   .sy-bar--ghost { background: rgba(255, 255, 255, 0.09); }
+  .sy-constellation .sy-bar { height: 1.1cqi; border-radius: 0.6cqi; }
 
   /* ---------- hero ---------- */
   .sy-hero { position: relative; padding: clamp(3rem, 8vw, 6rem) 0 0; overflow: hidden; }
@@ -881,107 +914,174 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   .sy-hero__copy { max-width: 640px; }
   .sy-hero__badge {
     display: inline-flex; align-items: center; gap: 0.5rem;
-    font-size: 0.72rem; font-weight: var(--fw-semibold);
+    font-size: var(--fs-label); font-weight: var(--fw-semibold);
     letter-spacing: 0.12em; text-transform: uppercase; color: #fff;
     border: 1px solid rgba(244, 14, 14, 0.5); background: rgba(244, 14, 14, 0.1);
     border-radius: var(--radius-pill); padding: 0.4rem 0.95rem; margin-bottom: 1.25rem;
   }
   .sy-hero__badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--color-accent); box-shadow: 0 0 10px 2px rgba(244, 14, 14, 0.7); }
   .sy-hero__title {
-    font-size: clamp(2.5rem, 5.6vw, 4.6rem); font-weight: var(--fw-bold);
+    font-size: clamp(2.125rem, 1.543rem + 2.912vw, 4.6rem); font-weight: var(--fw-bold);
     line-height: 1.02; letter-spacing: -0.02em; margin-bottom: 1.2rem; text-wrap: balance;
   }
-  .sy-hero__title-a, .sy-hero__title-b { display: block; }
-  /* The second sentence is the one that stings, so it carries the colour. */
-  .sy-hero__title-b { color: var(--color-accent); }
-  .sy-hero__lead { font-size: clamp(1.02rem, 1.6vw, 1.22rem); line-height: var(--lh-body); color: var(--color-text-muted); max-width: 56ch; }
+  .sy-hero__title-a { display: block; }
+
+  /* --- the rotating line ---------------------------------------------
+     All four words share one grid cell, so the box is as wide and as tall as
+     the longest of them and nothing below shifts when they swap. Anything
+     absolute here would collapse the line height; anything inline would make
+     the paragraph jump on every change. */
+  /* A block-level grid, so each line wraps inside its own cell instead of
+     being an atomic inline box that gets pushed to the next line whole. */
+  .sy-hero__rotator { display: grid; color: var(--color-accent); }
+  .sy-hero__word {
+    grid-area: 1 / 1;
+    opacity: 0;
+    transform: translateY(0.36em);
+    transition: opacity 0.35s var(--ease-out), transform 0.35s var(--ease-out);
+  }
+  .sy-hero__word.is-current { opacity: 1; transform: none; }
+  /* Leaving upwards, arriving from below: the line reads as a list being
+     worked through rather than a crossfade. */
+  .sy-hero__word.is-leaving { opacity: 0; transform: translateY(-0.36em); }
+  .sy-hero__lead { font-size: clamp(1rem, 0.95rem + 0.257vw, 1.22rem); line-height: var(--lh-body); color: var(--color-text-muted); max-width: 56ch; }
   .sy-hero__actions { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2rem; }
   .sy-hero__chips { display: flex; flex-wrap: wrap; gap: 0.5rem 0.7rem; margin-top: clamp(1.6rem, 3vw, 2.4rem); list-style: none; }
   .sy-hero__chips li {
     display: inline-flex; align-items: center; gap: 0.45rem;
-    padding: 0.4rem 0.85rem; font-size: 0.8rem;
+    padding: 0.4rem 0.85rem; font-size: var(--fs-label);
     color: var(--color-text-muted);
     border: 1px solid var(--border-subtle); border-radius: var(--radius-pill);
     background: rgba(255, 255, 255, 0.03);
   }
   .sy-hero__chips svg { color: var(--color-accent); flex: 0 0 auto; }
 
-  /* ---------- hero constellation ---------- */
-  /* One system, several surfaces. The stage holds a fixed ratio so the drawn
-     wires, which use a percentage viewBox, always meet the surfaces they
-     connect. */
+  /* ---------- hero constellation ----------
+     One system and its other faces, which the reader connects themselves.
+
+     Everything inside is sized in `cqi` — one percent of the constellation's
+     own width — so the whole picture scales with the space it gets instead of
+     being hidden on a phone, which is what used to happen. Text is the one
+     exception: proportional scaling would take a 12px caption down to 6px at
+     phone width, so type is clamped and the secondary line drops out below
+     620px rather than becoming unreadable. A picture you cannot read is not a
+     smaller picture, it is a worse one. */
   .sy-hero__stage { position: relative; }
   .sy-constellation {
     position: relative;
-    aspect-ratio: 1 / 0.92;
+    /* Matches the wires' viewBox, so their scaling stays uniform. */
+    aspect-ratio: 100 / 92;
+    container-type: inline-size;
     /* Written by the pointer-parallax handler; 0 until then. */
     --px: 0; --py: 0;
   }
-  /* Four boxes on one grid. The wires above are drawn to these centres, so
-     any change here needs the matching path moved too. */
+  /* Four boxes on one grid. The wires are drawn to these centres, so any
+     change here needs the matching path moved too. */
   .sy-hero__frame {
     position: absolute; left: 0; top: 10%; width: 58%; z-index: 2;
     transform: translate3d(calc(var(--px) * -10px), calc(var(--py) * -8px), 0);
     transition: transform 0.5s var(--ease-out);
   }
 
-  /* Drawn connections between the surfaces. */
-  .sy-wires { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-  .sy-wires path { fill: none; vector-effect: non-scaling-stroke; }
-  .sy-wires__base path { stroke: rgba(244, 14, 14, 0.34); stroke-width: 1.2; stroke-dasharray: 5 6; }
-  /* A short dash travelling the same path reads as data moving rather than as
-     a static wire, and costs one extra stroke. */
-  .sy-wires__pulse path {
-    stroke: var(--color-accent); stroke-width: 1.6; stroke-linecap: round;
-    stroke-dasharray: 12 300; stroke-dashoffset: 0;
-    animation: sy-pulse 3.6s linear infinite; animation-delay: var(--d);
-    filter: drop-shadow(0 0 4px rgba(244, 14, 14, 0.7));
+  /* --- the connections ---
+     `pathLength="100"` normalises every path, so one dash rule draws all three
+     no matter how long each really is. They start fully undrawn and are filled
+     in when their surface is connected. */
+  .sy-wires { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 0; }
+  .sy-wires path { fill: none; }
+  .sy-wires__base path {
+    stroke: rgba(244, 14, 14, 0.5); stroke-width: 0.4; stroke-linecap: round;
+    stroke-dasharray: 100; stroke-dashoffset: 100;
+    transition: stroke-dashoffset 0.75s var(--ease-out), stroke 0.4s;
   }
-  @keyframes sy-pulse { to { stroke-dashoffset: -304; } }
+  .sy-wires__base path.is-on { stroke-dashoffset: 0; }
+  /* A short dash travelling the drawn line: data moving, not a static wire. */
+  .sy-wires__pulse path {
+    stroke: var(--color-accent); stroke-width: 0.6; stroke-linecap: round;
+    stroke-dasharray: 4 96; stroke-dashoffset: 0;
+    opacity: 0; transition: opacity 0.4s 0.5s;
+    filter: drop-shadow(0 0 0.6cqi rgba(244, 14, 14, 0.8));
+  }
+  .sy-wires__pulse path.is-on { opacity: 1; animation: sy-pulse 3.2s linear infinite; animation-delay: var(--d); }
+  @keyframes sy-pulse { to { stroke-dashoffset: -100; } }
 
-  /* The other faces of the system. */
+  /* --- the surfaces --- */
   .sy-sat {
     position: absolute; margin: 0; z-index: 1;
-    display: flex; flex-direction: column; gap: 0.55rem;
-    padding: 0.75rem;
-    border-radius: 12px;
+    display: flex; flex-direction: column; gap: 1.1cqi;
+    padding: 1.7cqi;
+    border-radius: 2cqi;
     background: rgba(18, 18, 18, 0.94);
     border: 1px solid var(--border-subtle);
-    box-shadow: 0 26px 60px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 4cqi 9cqi rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(6px);
-    transition: transform 0.5s var(--ease-out);
+    font: inherit; text-align: left; cursor: pointer;
+    /* Unconnected: present but inert. */
+    filter: grayscale(1); opacity: 0.48;
+    transition:
+      opacity 0.45s var(--ease-out), filter 0.45s var(--ease-out),
+      border-color 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out),
+      transform 0.5s var(--ease-out);
   }
-  .sy-sat figcaption { display: flex; flex-direction: column; gap: 0.15rem; }
-  .sy-sat figcaption b { font-size: 0.74rem; font-weight: var(--fw-semibold); color: #fff; }
-  .sy-sat figcaption span { font-size: 0.68rem; color: var(--color-text-subtle); line-height: 1.35; }
+  .sy-sat[aria-pressed='true'] {
+    filter: none; opacity: 1;
+    border-color: rgba(244, 14, 14, 0.5);
+    box-shadow: 0 4cqi 9cqi rgba(0, 0, 0, 0.6), 0 0 6cqi -2cqi rgba(244, 14, 14, 0.6);
+  }
+  .sy-sat:hover { opacity: 0.75; }
+  .sy-sat[aria-pressed='true']:hover { opacity: 1; }
+  .sy-sat:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  /* Wraps the mini interface so its parts keep their spacing now that the
+     surface is a button rather than a figure. */
+  .sy-sat__ui { display: grid; gap: 1cqi; }
+  .sy-sat__label { display: flex; flex-direction: column; gap: 0.3cqi; }
+  .sy-sat__label b {
+    font-size: clamp(0.7rem, 1.85cqi, 0.8rem);
+    font-weight: var(--fw-semibold); color: #fff; line-height: 1.25;
+  }
+  .sy-sat__line {
+    font-size: clamp(0.6rem, 1.65cqi, 0.74rem);
+    color: var(--color-text-subtle); line-height: 1.3;
+  }
+  /* The socket, on the edge that faces the workspace. */
+  .sy-sat__plug {
+    position: absolute; width: 2.2cqi; height: 2.2cqi; border-radius: 50%;
+    border: 1px solid var(--border-strong); background: #0d0d0d;
+    transition: background 0.4s, border-color 0.4s, box-shadow 0.4s;
+  }
+  .sy-sat[aria-pressed='true'] .sy-sat__plug {
+    background: var(--color-accent); border-color: var(--color-accent);
+    box-shadow: 0 0 0 1cqi rgba(244, 14, 14, 0.18);
+  }
 
   .sy-sat--portal {
-    left: 71%; top: 0; width: 29%;
+    left: 71%; top: 3%; width: 29%;
     /* Lighter, because this is the surface that faces outwards. */
     background: rgba(38, 38, 38, 0.95);
-    border-color: var(--border-strong);
     transform: translate3d(calc(var(--px) * 16px), calc(var(--py) * 14px), 0);
     animation: sy-float 8.5s ease-in-out infinite;
   }
-  .sy-sat__bar { display: flex; gap: 4px; }
-  .sy-sat__bar i { width: 6px; height: 6px; border-radius: 50%; background: rgba(255, 255, 255, 0.28); }
-  .sy-sat__body { display: grid; gap: 6px; padding: 0.35rem 0 0.15rem; }
+  .sy-sat--portal .sy-sat__plug { left: -1.1cqi; bottom: 22%; }
+  .sy-sat__bar { display: flex; gap: 0.7cqi; }
+  .sy-sat__bar i { width: 1cqi; height: 1cqi; border-radius: 50%; background: rgba(255, 255, 255, 0.28); }
+  .sy-sat__body { display: grid; gap: 1cqi; padding: 0.6cqi 0 0.2cqi; }
 
   .sy-sat--field {
-    left: 12%; top: 70%; width: 22%;
+    left: 10%; top: 70%; width: 26%;
     transform: translate3d(calc(var(--px) * 22px), calc(var(--py) * 18px), 0);
     animation: sy-float 7s ease-in-out infinite reverse;
   }
+  .sy-sat--field .sy-sat__plug { right: -1.1cqi; top: 12%; }
   .sy-phone {
-    display: grid; gap: 6px; justify-items: stretch;
-    padding: 0.5rem 0.45rem 0.6rem;
-    border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.18);
+    display: grid; gap: 1cqi; justify-items: stretch;
+    padding: 0.9cqi 0.8cqi 1.1cqi;
+    border-radius: 1.6cqi; border: 1px solid rgba(255, 255, 255, 0.18);
     background: #0d0d0d;
   }
-  .sy-phone__notch { justify-self: center; width: 26%; height: 3px; border-radius: 2px; background: rgba(255, 255, 255, 0.25); margin-bottom: 2px; }
+  .sy-phone__notch { justify-self: center; width: 26%; height: 0.5cqi; border-radius: 1cqi; background: rgba(255, 255, 255, 0.25); margin-bottom: 0.3cqi; }
   /* Stands for the photo a field job carries as its evidence. */
   .sy-phone__shot {
-    height: 34px; border-radius: 5px;
+    height: 5.5cqi; border-radius: 0.8cqi;
     background: linear-gradient(140deg, rgba(244, 14, 14, 0.3), rgba(255, 255, 255, 0.07));
     border: 1px solid rgba(255, 255, 255, 0.12);
   }
@@ -991,46 +1091,55 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
     transform: translate3d(calc(var(--px) * 13px), calc(var(--py) * -12px), 0);
     animation: sy-float 9.5s ease-in-out infinite;
   }
-  .sy-sat__spark { display: flex; align-items: flex-end; gap: 4px; height: 36px; }
-  .sy-sat__spark i { flex: 1; height: var(--h); border-radius: 2px 2px 0 0; background: linear-gradient(180deg, var(--color-accent), rgba(244, 14, 14, 0.2)); }
+  .sy-sat--board .sy-sat__plug { left: -1.1cqi; top: 18%; }
+  .sy-sat__spark { display: flex; align-items: flex-end; gap: 0.7cqi; height: 5.8cqi; }
+  .sy-sat__spark i { flex: 1; height: var(--h); border-radius: 0.4cqi 0.4cqi 0 0; background: linear-gradient(180deg, var(--color-accent), rgba(244, 14, 14, 0.2)); }
+
+  .sy-constellation__hint {
+    margin-top: 1rem; text-align: center;
+    font-size: var(--fs-label); color: var(--color-text-subtle);
+    transition: color var(--dur-med);
+  }
+  .sy-constellation__hint.is-done { color: var(--color-accent-text); }
+
   .sy-console {
-    position: relative; margin: 0; border-radius: 14px; overflow: hidden;
+    position: relative; margin: 0; border-radius: 2.2cqi; overflow: hidden;
     background: linear-gradient(165deg, #191919, #101010);
     border: 1px solid rgba(255, 255, 255, 0.14);
-    box-shadow: 0 46px 100px rgba(0, 0, 0, 0.65), 0 30px 80px -40px rgba(244, 14, 14, 0.35);
+    box-shadow: 0 7cqi 15cqi rgba(0, 0, 0, 0.65), 0 5cqi 12cqi -6cqi rgba(244, 14, 14, 0.35);
     animation: sy-float 9s ease-in-out infinite;
   }
   .sy-console__bar {
-    display: flex; align-items: center; gap: 6px;
-    height: 34px; padding: 0 12px;
+    display: flex; align-items: center; gap: 1cqi;
+    height: 5.2cqi; padding: 0 1.9cqi;
     background: #151515; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
-  .sy-console__bar i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); }
+  .sy-console__bar i { width: 1.3cqi; height: 1.3cqi; border-radius: 50%; background: rgba(255, 255, 255, 0.2); flex: 0 0 auto; }
   .sy-console__bar i:first-child { background: var(--color-accent); }
-  .sy-console__name { margin-left: 0.6rem; font-size: 0.72rem; color: rgba(255, 255, 255, 0.6); }
+  .sy-console__name { margin-left: 0.9cqi; font-size: clamp(0.62rem, 1.85cqi, 0.8rem); color: rgba(255, 255, 255, 0.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sy-console__role {
-    margin-left: auto; font-size: 0.64rem; letter-spacing: 0.05em;
-    padding: 0.2rem 0.6rem; border-radius: var(--radius-pill);
+    margin-left: auto; font-size: clamp(0.6rem, 1.75cqi, 0.76rem); letter-spacing: 0.05em;
+    padding: 0.35cqi 1cqi; border-radius: var(--radius-pill); white-space: nowrap;
     color: var(--color-accent-text); border: 1px solid rgba(244, 14, 14, 0.4); background: rgba(244, 14, 14, 0.1);
   }
-  .sy-console__body { display: grid; grid-template-columns: minmax(96px, 0.3fr) 1fr; min-height: 210px; }
-  .sy-console__nav { display: flex; flex-direction: column; gap: 0.15rem; padding: 0.8rem 0.5rem; border-right: 1px solid rgba(255, 255, 255, 0.07); background: rgba(255, 255, 255, 0.015); }
+  .sy-console__body { display: grid; grid-template-columns: minmax(0, 0.32fr) 1fr; min-height: 32cqi; }
+  .sy-console__nav { display: flex; flex-direction: column; gap: 0.25cqi; padding: 1.3cqi 0.8cqi; border-right: 1px solid rgba(255, 255, 255, 0.07); background: rgba(255, 255, 255, 0.015); }
   .sy-console__navitem {
-    display: flex; align-items: center; gap: 0.5rem;
-    padding: 0.42rem 0.55rem; border-radius: 7px;
-    font-size: 0.68rem; color: rgba(255, 255, 255, 0.45); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    display: flex; align-items: center; gap: 0.8cqi;
+    padding: 0.7cqi 0.9cqi; border-radius: 1.1cqi;
+    font-size: clamp(0.6rem, 1.8cqi, 0.78rem); color: rgba(255, 255, 255, 0.45); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .sy-console__navitem i { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex: 0 0 auto; }
-  .sy-console__navitem.is-active { color: #fff; background: rgba(244, 14, 14, 0.14); box-shadow: inset 2px 0 0 var(--color-accent); }
-  .sy-console__main { position: relative; padding: 0.85rem 1rem 1rem; overflow: hidden; }
+  .sy-console__navitem i { width: 0.8cqi; height: 0.8cqi; border-radius: 50%; background: currentColor; flex: 0 0 auto; }
+  .sy-console__navitem.is-active { color: #fff; background: rgba(244, 14, 14, 0.14); box-shadow: inset 0.35cqi 0 0 var(--color-accent); }
+  .sy-console__main { position: relative; padding: 1.3cqi 1.6cqi 1.6cqi; overflow: hidden; }
   .sy-console__head, .sy-console__row {
-    display: grid; grid-template-columns: 1fr 0.72fr 0.62fr; gap: 0.7rem; align-items: center;
+    display: grid; grid-template-columns: 1fr 0.72fr 0.62fr; gap: 1.1cqi; align-items: center;
   }
-  .sy-console__head { padding-bottom: 0.55rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 0.6rem; letter-spacing: 0.09em; text-transform: uppercase; color: rgba(255, 255, 255, 0.35); }
-  .sy-console__row { padding: 0.58rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+  .sy-console__head { padding-bottom: 0.9cqi; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: clamp(0.58rem, 1.7cqi, 0.74rem); letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.35); }
+  .sy-console__row { padding: 0.9cqi 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
   .sy-state {
-    justify-self: start; font-size: 0.6rem; letter-spacing: 0.03em;
-    padding: 0.22rem 0.55rem; border-radius: var(--radius-pill);
+    justify-self: start; font-size: clamp(0.58rem, 1.7cqi, 0.74rem); letter-spacing: 0.03em;
+    padding: 0.35cqi 0.9cqi; border-radius: var(--radius-pill);
     border: 1px solid currentColor; opacity: 0.9; white-space: nowrap;
   }
   .sy-state--open { color: rgba(255, 255, 255, 0.5); }
@@ -1040,14 +1149,39 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   /* A single band travelling down the rows: enough motion to read as "live"
      without animating anything that looks like changing data. */
   .sy-console__scan {
-    position: absolute; left: 0; right: 0; top: 0; height: 46px;
+    position: absolute; left: 0; right: 0; top: 0; height: 7cqi;
     background: linear-gradient(180deg, transparent, rgba(244, 14, 14, 0.09), transparent);
     animation: sy-scan 5.5s ease-in-out infinite;
     pointer-events: none;
   }
 
-  @keyframes sy-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -12px; } }
-  @keyframes sy-scan { 0% { transform: translateY(-60px); } 55%, 100% { transform: translateY(240px); } }
+  /* The drift is a share of the picture, not a fixed 12px — at phone size that
+     was enough to push the portal out through the top edge. */
+  @keyframes sy-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -1.7cqi; } }
+
+  /* --- the schematic gets simpler rather than smaller ---
+     Below roughly a phone's worth of width, the workspace cannot show a
+     sidebar, three column headings and four word-long state pills without
+     dropping its type to 8px. So it stops trying: the sidebar goes, the
+     headings go, and each state becomes the coloured dot it always was. The
+     picture still says "rows of work, each in a state" — it just says it
+     without asking anyone to read 8px. */
+  @container (max-width: 460px) {
+    .sy-console__nav { display: none; }
+    .sy-console__body { grid-template-columns: 1fr; }
+    .sy-console__head { display: none; }
+    .sy-console__role { display: none; }
+    .sy-console__row { grid-template-columns: 1fr 0.55fr auto; padding: 1.2cqi 0; }
+    .sy-state {
+      font-size: 0; padding: 0; border: 0;
+      width: 2.2cqi; height: 2.2cqi; border-radius: 50%;
+      background: currentColor; opacity: 1;
+    }
+    .sy-state--open { color: rgba(255, 255, 255, 0.38); }
+    .sy-state--approved { color: var(--color-accent); }
+    .sy-console__main { padding: 1.8cqi; }
+  }
+  @keyframes sy-scan { 0% { transform: translateY(-9cqi); } 55%, 100% { transform: translateY(36cqi); } }
 
   /* ---------- keyword marquee ---------- */
   .sy-marquee {
@@ -1063,7 +1197,7 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   .sy-marquee:hover .sy-marquee__track { animation-play-state: paused; }
   .sy-marquee__item {
     display: inline-flex; align-items: center; gap: 0.7rem;
-    font-size: 0.86rem; letter-spacing: 0.04em; color: var(--color-text-muted); white-space: nowrap;
+    font-size: var(--fs-small); letter-spacing: 0.04em; color: var(--color-text-muted); white-space: nowrap;
   }
   .sy-marquee__item::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--color-accent); }
   @keyframes sy-scroll { from { transform: translateX(0); } to { transform: translateX(calc(-50% - 1.2rem)); } }
@@ -1075,7 +1209,7 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
     padding: clamp(1rem, 2vw, 1.35rem) clamp(1.1rem, 2.5vw, 1.6rem);
     border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
     background: var(--surface-card);
-    font-size: 1.04rem; line-height: var(--lh-body);
+    font-size: var(--fs-body); line-height: var(--lh-body);
     transition: border-color var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
   }
   .sy-symptoms__list li:hover { border-color: rgba(244, 14, 14, 0.4); transform: translateX(4px); }
@@ -1083,15 +1217,15 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
      abstract complaint into something the reader can picture. */
   .sy-symptoms__source {
     display: inline-flex; align-items: center; gap: 0.5rem;
-    font-size: 0.7rem; letter-spacing: 0.09em; text-transform: uppercase;
+    font-size: var(--fs-label); letter-spacing: 0.09em; text-transform: uppercase;
     color: var(--color-accent-text); font-weight: var(--fw-semibold);
   }
   .sy-symptoms__source::before { content: ''; width: 1.4rem; height: 2px; background: currentColor; flex: 0 0 auto; }
-  .sy-symptoms__close { margin-top: 1.6rem; max-width: 60ch; color: var(--color-text-muted); font-size: 1.02rem; }
+  .sy-symptoms__close { margin-top: 1.6rem; max-width: 60ch; color: var(--color-text-muted); font-size: var(--fs-body); }
 
   .sy-eyebrow {
     display: inline-block; margin-bottom: 0.8rem;
-    font-size: 0.74rem; font-weight: var(--fw-semibold);
+    font-size: var(--fs-label); font-weight: var(--fw-semibold);
     letter-spacing: 0.12em; text-transform: uppercase;
     color: var(--color-accent-text);
   }
@@ -1104,7 +1238,7 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   }
   .sy-vs__head { padding: 0 clamp(1rem, 2vw, 1.4rem); }
   .sy-vs__label {
-    font-size: 0.72rem; font-weight: var(--fw-semibold);
+    font-size: var(--fs-label); font-weight: var(--fw-semibold);
     letter-spacing: 0.1em; text-transform: uppercase;
     padding-bottom: 0.5rem;
   }
@@ -1120,7 +1254,7 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   .sy-vs__topic { font-weight: var(--fw-semibold); color: #fff; line-height: var(--lh-snug); align-self: center; }
   .sy-vs__cell {
     display: grid; grid-template-columns: auto 1fr; gap: 0.7rem;
-    align-items: start; line-height: var(--lh-body); font-size: 0.95rem;
+    align-items: start; line-height: var(--lh-body); font-size: var(--fs-body);
   }
   /* The left column is the state being left behind, so it is written in the
      muted voice; the right one carries the accent. */
@@ -1144,8 +1278,8 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
     border: 1px dashed var(--border-strong); border-radius: var(--radius-md);
     background: rgba(255, 255, 255, 0.02);
   }
-  .sy-vs__honest h3 { font-size: 1rem; font-weight: var(--fw-bold); margin-bottom: 0.5rem; }
-  .sy-vs__honest p { color: var(--color-text-muted); line-height: var(--lh-body); font-size: 0.95rem; }
+  .sy-vs__honest h3 { font-size: var(--fs-body); font-weight: var(--fw-bold); margin-bottom: 0.5rem; }
+  .sy-vs__honest p { color: var(--color-text-muted); line-height: var(--lh-body); font-size: var(--fs-body); }
 
   /* ---------- website oder system ---------- */
   .sy-split__grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); }
@@ -1199,11 +1333,11 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
     flex: 0 0 auto; scroll-snap-align: start;
     padding: 0.7rem 1.05rem; border-radius: var(--radius-pill);
     border: 1px solid transparent; background: transparent;
-    color: var(--color-text-muted); font: inherit; font-size: 0.88rem; font-weight: var(--fw-semibold);
+    color: var(--color-text-muted); font: inherit; font-size: var(--fs-small); font-weight: var(--fw-semibold);
     cursor: pointer; white-space: nowrap;
     transition: color var(--dur-fast), background var(--dur-fast), border-color var(--dur-fast);
   }
-  .sy-tab__num { font-size: 0.66rem; letter-spacing: 0.06em; color: var(--color-accent-text); font-variant-numeric: tabular-nums; }
+  .sy-tab__num { font-size: var(--fs-label); letter-spacing: 0.06em; color: var(--color-accent-text); font-variant-numeric: tabular-nums; }
   .sy-tab:hover { color: var(--color-text); border-color: var(--border-subtle); }
   .sy-tab.is-active { color: #fff; background: rgba(244, 14, 14, 0.14); border-color: rgba(244, 14, 14, 0.5); }
   .sy-tab.is-active .sy-tab__num { color: #fff; }
@@ -1220,7 +1354,7 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   .sy-panel__copy h3 { font-size: var(--fs-h3); font-weight: var(--fw-bold); line-height: var(--lh-snug); margin-bottom: 0.9rem; text-wrap: balance; }
   .sy-panel__copy p { line-height: var(--lh-body); max-width: 52ch; }
   .sy-panel__points { list-style: none; display: grid; gap: 0.7rem; margin-top: 1.5rem; }
-  .sy-panel__points li { display: flex; gap: 0.7rem; align-items: flex-start; line-height: 1.5; font-size: 0.95rem; }
+  .sy-panel__points li { display: flex; gap: 0.7rem; align-items: flex-start; line-height: 1.5; font-size: var(--fs-body); }
   .sy-panel__points svg { flex: 0 0 auto; margin-top: 0.15rem; color: var(--color-accent); }
 
   /* ---------- szenario je schicht ---------- */
@@ -1235,12 +1369,12 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   .sy-case__beat--good::before { background: var(--color-accent); }
   .sy-case__label {
     grid-column: 2; display: block; margin-bottom: 0.2rem;
-    font-size: 0.66rem; font-weight: var(--fw-semibold);
+    font-size: var(--fs-label); font-weight: var(--fw-semibold);
     letter-spacing: 0.1em; text-transform: uppercase;
     color: var(--color-text-subtle);
   }
   .sy-case__beat--good .sy-case__label { color: var(--color-accent-text); }
-  .sy-case__beat p { grid-column: 2; font-size: 0.92rem; line-height: var(--lh-body); color: var(--color-text-muted); }
+  .sy-case__beat p { grid-column: 2; font-size: var(--fs-body); line-height: var(--lh-body); color: var(--color-text-muted); }
   .sy-case__beat--good p { color: var(--color-text); }
 
   /* ---------- stimmen ---------- */
@@ -1252,7 +1386,7 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
     background: var(--surface-card);
   }
   .sy-voice__system {
-    align-self: flex-start; font-size: 0.66rem; font-weight: var(--fw-semibold);
+    align-self: flex-start; font-size: var(--fs-label); font-weight: var(--fw-semibold);
     letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-text);
     padding: 0.25rem 0.6rem; border: 1px solid rgba(244, 14, 14, 0.4);
     border-radius: var(--radius-pill); background: rgba(244, 14, 14, 0.1);
@@ -1260,17 +1394,17 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   .sy-voice blockquote { display: grid; gap: 0.85rem; margin: 0; }
   .sy-voice__tag {
     display: block; margin-bottom: 0.2rem;
-    font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase;
+    font-size: var(--fs-label); letter-spacing: 0.1em; text-transform: uppercase;
     color: var(--color-text-subtle);
   }
-  .sy-voice__before { color: var(--color-text-muted); line-height: var(--lh-body); font-size: 0.95rem; }
+  .sy-voice__before { color: var(--color-text-muted); line-height: var(--lh-body); font-size: var(--fs-body); }
   .sy-voice__after {
-    color: var(--color-text); line-height: var(--lh-body); font-size: 0.95rem;
+    color: var(--color-text); line-height: var(--lh-body); font-size: var(--fs-body);
     padding-left: 0.9rem; border-left: 2px solid var(--color-accent);
   }
   .sy-voice figcaption { margin-top: auto; display: flex; flex-direction: column; gap: 0.15rem; padding-top: 0.4rem; }
-  .sy-voice figcaption b { font-size: 0.95rem; }
-  .sy-voice figcaption span { font-size: 0.82rem; color: var(--color-text-subtle); }
+  .sy-voice figcaption b { font-size: var(--fs-body); }
+  .sy-voice figcaption span { font-size: var(--fs-small); color: var(--color-text-subtle); }
 
   /* ---------- schematics ---------- */
   .sy-diagram {
@@ -1284,16 +1418,16 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
      cannot afford an illustration somebody could mistake for a screenshot. */
   .sy-diagram__hint {
     position: absolute; top: 0.75rem; right: 0.9rem;
-    font-size: 0.6rem; letter-spacing: 0.09em; text-transform: uppercase;
+    font-size: var(--fs-micro); letter-spacing: 0.09em; text-transform: uppercase;
     color: var(--color-text-subtle);
     padding: 0.2rem 0.55rem; border: 1px dashed var(--border-strong); border-radius: var(--radius-pill);
   }
   .sy-dg { display: grid; gap: 0.55rem; margin-top: 1.4rem; }
   .sy-dg__head, .sy-dg__row { display: grid; grid-template-columns: 1fr 0.8fr 0.8fr; gap: 0.8rem; align-items: center; }
-  .sy-dg__head { font-size: 0.6rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-text-subtle); padding-bottom: 0.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+  .sy-dg__head { font-size: var(--fs-micro); letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-text-subtle); padding-bottom: 0.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
   .sy-dg__row { padding: 0.6rem 0.5rem; border-radius: 8px; }
   .sy-dg__row.is-hot { background: rgba(244, 14, 14, 0.09); box-shadow: inset 2px 0 0 var(--color-accent); }
-  .sy-tagpill { justify-self: start; font-size: 0.62rem; padding: 0.2rem 0.55rem; border-radius: var(--radius-pill); color: var(--color-accent-text); border: 1px solid rgba(244, 14, 14, 0.45); background: rgba(244, 14, 14, 0.1); white-space: nowrap; }
+  .sy-tagpill { justify-self: start; font-size: var(--fs-micro); padding: 0.2rem 0.55rem; border-radius: var(--radius-pill); color: var(--color-accent-text); border: 1px solid rgba(244, 14, 14, 0.45); background: rgba(244, 14, 14, 0.1); white-space: nowrap; }
   /* The rejected duplicate. A strike-through over a 7px bar just repainted
      part of it; a cross beside a dimmed row says "caught and refused" at a
      glance. */
@@ -1303,7 +1437,7 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
     border-radius: 50%; color: var(--color-accent-text);
     border: 1px solid rgba(244, 14, 14, 0.5); background: rgba(244, 14, 14, 0.12);
   }
-  .sy-dg__note { margin-top: 0.9rem; font-size: 0.78rem; color: var(--color-text-subtle); }
+  .sy-dg__note { margin-top: 0.9rem; font-size: var(--fs-micro); color: var(--color-text-subtle); }
 
   .sy-flow { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; }
   .sy-flow__step { display: flex; flex-direction: column; align-items: center; gap: 0.55rem; position: relative; }
@@ -1313,15 +1447,15 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   }
   .sy-flow__dot { width: 13px; height: 13px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.35); background: #101010; }
   .sy-flow__step.is-hot .sy-flow__dot { border-color: var(--color-accent); background: var(--color-accent); box-shadow: 0 0 0 5px rgba(244, 14, 14, 0.16); }
-  .sy-flow__label { font-size: 0.72rem; color: var(--color-text-muted); text-align: center; line-height: 1.3; }
+  .sy-flow__label { font-size: var(--fs-micro); color: var(--color-text-muted); text-align: center; line-height: 1.3; }
   .sy-flow__step.is-hot .sy-flow__label { color: #fff; }
   .sy-flow__skip { width: 100%; height: auto; margin-top: 0.1rem; }
   .sy-fig-arc { fill: none; stroke: rgba(255, 255, 255, 0.2); stroke-width: 1.4; stroke-dasharray: 5 5; }
   .sy-fig-cross { stroke: var(--color-accent); stroke-width: 2.2; stroke-linecap: round; }
 
   .sy-matrix { display: grid; grid-template-columns: minmax(6.5rem, 1.2fr) repeat(3, 1fr); gap: 0.55rem 0.8rem; align-items: center; }
-  .sy-matrix__col { font-size: 0.62rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--color-text-subtle); text-align: center; }
-  .sy-matrix__row { font-size: 0.8rem; color: var(--color-text-muted); }
+  .sy-matrix__col { font-size: var(--fs-micro); letter-spacing: 0.07em; text-transform: uppercase; color: var(--color-text-subtle); text-align: center; }
+  .sy-matrix__row { font-size: var(--fs-micro); color: var(--color-text-muted); }
   .sy-cell { justify-self: center; width: 20px; height: 20px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.16); position: relative; }
   .sy-cell.is-yes { border-color: rgba(244, 14, 14, 0.6); background: rgba(244, 14, 14, 0.16); }
   /* A wider-than-tall corner rotated 45° reads as a tick; a square one reads
@@ -1342,17 +1476,17 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   .sy-trail li:not(:last-child)::before { content: ''; position: absolute; left: 5px; top: 18px; bottom: -16px; width: 1px; background: repeating-linear-gradient(180deg, rgba(244, 14, 14, 0.5) 0 4px, transparent 4px 8px); }
   .sy-trail__dot { width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--color-accent); background: #101010; }
   .sy-trail__doc { display: grid; gap: 5px; width: 54px; padding: 8px 7px; border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.03); }
-  .sy-trail__label { font-size: 0.78rem; color: var(--color-text-muted); }
+  .sy-trail__label { font-size: var(--fs-micro); color: var(--color-text-muted); }
 
   .sy-ledger { display: grid; gap: 0.75rem; }
   .sy-ledger__row { display: grid; grid-template-columns: minmax(6rem, 0.55fr) 1fr; gap: 1rem; align-items: center; padding: 0.55rem 0.6rem; border-radius: 8px; }
   .sy-ledger__row.is-hot { background: rgba(244, 14, 14, 0.09); box-shadow: inset 2px 0 0 var(--color-accent); }
-  .sy-ledger__key { font-size: 0.8rem; color: var(--color-text-muted); }
+  .sy-ledger__key { font-size: var(--fs-micro); color: var(--color-text-muted); }
   .sy-ledger__row.is-hot .sy-ledger__key { color: #fff; }
 
   .sy-dg--api { gap: 0.5rem; }
-  .sy-endpoint { display: flex; align-items: center; gap: 0.8rem; padding: 0.65rem 0.8rem; border: 1px solid var(--border-subtle); border-radius: 9px; font-size: 0.82rem; color: var(--color-text-muted); background: rgba(255, 255, 255, 0.02); }
-  .sy-verb { font-size: 0.62rem; font-weight: var(--fw-bold); letter-spacing: 0.08em; padding: 0.2rem 0.5rem; border-radius: 5px; color: var(--color-accent-text); background: rgba(244, 14, 14, 0.12); border: 1px solid rgba(244, 14, 14, 0.4); min-width: 3.4rem; text-align: center; }
+  .sy-endpoint { display: flex; align-items: center; gap: 0.8rem; padding: 0.65rem 0.8rem; border: 1px solid var(--border-subtle); border-radius: 9px; font-size: var(--fs-micro); color: var(--color-text-muted); background: rgba(255, 255, 255, 0.02); }
+  .sy-verb { font-size: var(--fs-micro); font-weight: var(--fw-bold); letter-spacing: 0.08em; padding: 0.2rem 0.5rem; border-radius: 5px; color: var(--color-accent-text); background: rgba(244, 14, 14, 0.12); border: 1px solid rgba(244, 14, 14, 0.4); min-width: 3.4rem; text-align: center; }
   .sy-verb--event { color: #fff; background: var(--color-accent-surface); border-color: var(--color-accent-surface); }
   .sy-endpoint--key { border-style: dashed; color: var(--color-accent-text); }
 
@@ -1360,7 +1494,7 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   .sy-tile { display: flex; flex-direction: column; justify-content: flex-end; gap: 0.6rem; min-height: 6.2rem; padding: 0.9rem; border: 1px solid var(--border-subtle); border-radius: 10px; background: rgba(255, 255, 255, 0.02); }
   .sy-tile--wide { grid-column: 1 / -1; }
   .sy-tile--empty { border-style: dashed; }
-  .sy-tile__label { font-size: 0.72rem; color: var(--color-text-subtle); line-height: 1.35; }
+  .sy-tile__label { font-size: var(--fs-micro); color: var(--color-text-subtle); line-height: 1.35; }
   .sy-tile__dash { font-size: 1.6rem; color: var(--color-text-subtle); line-height: 1; }
   .sy-spark { display: flex; align-items: flex-end; gap: 5px; height: 46px; }
   .sy-spark i { width: 9px; height: var(--h); border-radius: 3px 3px 0 0; background: linear-gradient(180deg, var(--color-accent), rgba(244, 14, 14, 0.25)); }
@@ -1386,13 +1520,13 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   .sy-card:hover .sy-card__media img { transform: scale(1.04); }
   .sy-card__badge {
     position: absolute; top: 2.2rem; left: 0.9rem; z-index: 2;
-    font-size: 0.64rem; font-weight: var(--fw-semibold); letter-spacing: 0.1em; text-transform: uppercase;
+    font-size: var(--fs-label); font-weight: var(--fw-semibold); letter-spacing: 0.1em; text-transform: uppercase;
     padding: 0.3rem 0.7rem; border-radius: var(--radius-pill);
     background: var(--color-accent-surface); color: #fff;
   }
   .sy-card__open {
     position: absolute; right: 0.9rem; bottom: 0.9rem; z-index: 2;
-    padding: 0.4rem 0.8rem; font-size: 0.78rem; font-weight: var(--fw-semibold);
+    padding: 0.4rem 0.8rem; font-size: var(--fs-label); font-weight: var(--fw-semibold);
     color: #fff; background: rgba(0, 0, 0, 0.72);
     border: 1px solid rgba(255, 255, 255, 0.25); border-radius: var(--radius-pill);
     opacity: 0; transform: translateY(6px);
@@ -1400,7 +1534,7 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   }
   .sy-card__media:hover .sy-card__open, .sy-card__media:focus-visible .sy-card__open { opacity: 1; transform: none; }
   .sy-card__body { display: flex; flex-direction: column; gap: 0.75rem; padding: clamp(1.3rem, 2.5vw, 1.8rem); }
-  .sy-card__meta { display: flex; flex-wrap: wrap; gap: 0.4rem 0.9rem; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .sy-card__meta { display: flex; flex-wrap: wrap; gap: 0.4rem 0.9rem; font-size: var(--fs-label); letter-spacing: 0.06em; text-transform: uppercase; }
   .sy-card__domain { color: var(--color-accent-text); font-weight: var(--fw-semibold); }
   .sy-card__client { color: var(--color-text-subtle); }
   .sy-card__name { font-size: var(--fs-h4); font-weight: var(--fw-bold); line-height: var(--lh-snug); }
@@ -1408,7 +1542,7 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   .sy-card__desc { line-height: var(--lh-body); }
   .sy-card__caps { list-style: none; display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.2rem; }
   .sy-card__caps li {
-    font-size: 0.76rem; padding: 0.28rem 0.65rem;
+    font-size: var(--fs-label); padding: 0.28rem 0.65rem;
     border: 1px solid var(--border-strong); border-radius: var(--radius-pill);
     color: var(--color-text-muted);
   }
@@ -1423,7 +1557,7 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   .sy-orbit-sec__inner { display: grid; grid-template-columns: 1fr 0.95fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
   .sy-orbit-sec__copy h2 { font-size: var(--fs-h2); font-weight: var(--fw-bold); line-height: var(--lh-tight); margin-bottom: 1rem; text-wrap: balance; }
   .sy-orbit-sec__copy p { line-height: var(--lh-body); max-width: 56ch; }
-  .sy-orbit-sec__note { margin-top: 1.2rem; padding-left: 1rem; border-left: 2px solid var(--color-accent); font-size: 0.92rem; color: var(--color-text-muted); }
+  .sy-orbit-sec__note { margin-top: 1.2rem; padding-left: 1rem; border-left: 2px solid var(--color-accent); font-size: var(--fs-body); color: var(--color-text-muted); }
 
   /* A container so the ring radius can be expressed as a share of the circle
      (`cqi`). A percentage in `translate` would resolve against the label's own
@@ -1474,7 +1608,7 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
     display: inline-flex; align-items: center; gap: 0.45rem;
     padding: 0.4rem 0.8rem; border-radius: var(--radius-pill);
     border: 1px solid var(--border-subtle); background: rgba(16, 16, 16, 0.95);
-    color: var(--color-text-muted); font: inherit; font-size: 0.72rem;
+    color: var(--color-text-muted); font: inherit; font-size: var(--fs-label);
     cursor: pointer; transition: color var(--dur-fast), border-color var(--dur-fast);
   }
   .sy-orbit__toggle:hover { color: var(--color-text); border-color: var(--color-accent); }
@@ -1486,7 +1620,7 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
     display: grid; place-items: center; text-align: center;
     width: 42%; aspect-ratio: 1; border-radius: 50%;
     padding: 1rem;
-    font-size: 0.92rem; font-weight: var(--fw-bold); line-height: 1.25;
+    font-size: var(--fs-small); font-weight: var(--fw-bold); line-height: 1.25;
     color: #fff;
     background: radial-gradient(circle at 50% 35%, rgba(244, 14, 14, 0.3), rgba(20, 20, 20, 0.95) 70%);
     border: 1px solid rgba(244, 14, 14, 0.55);
@@ -1511,7 +1645,7 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
       rotate(calc(var(--i) * -45deg))
       translate(-50%, -50%);
     padding: 0.4rem 0.75rem;
-    font-size: 0.74rem; white-space: nowrap;
+    font-size: var(--fs-label); white-space: nowrap;
     color: var(--color-text-muted);
     background: rgba(16, 16, 16, 0.95);
     border: 1px solid var(--border-subtle); border-radius: var(--radius-pill);
@@ -1556,20 +1690,20 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
     line-height: 1; font-variant-numeric: tabular-nums; opacity: 0.85;
   }
   .sy-step__body { display: flex; flex-direction: column; gap: 0.5rem; }
-  .sy-step__title { font-size: 1.12rem; font-weight: var(--fw-bold); line-height: var(--lh-snug); }
+  .sy-step__title { font-size: var(--fs-h4); font-weight: var(--fw-bold); line-height: var(--lh-snug); }
   .sy-step__disciplines {
-    font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase;
+    font-size: var(--fs-label); letter-spacing: 0.05em; text-transform: uppercase;
     color: var(--color-accent-text); font-weight: var(--fw-semibold);
   }
   .sy-step__text { line-height: var(--lh-body); max-width: 68ch; }
   .sy-step__result {
     margin-top: 0.3rem; padding-top: 0.75rem;
     border-top: 1px dashed var(--border-strong);
-    font-size: 0.93rem; color: var(--color-text);
+    font-size: var(--fs-body); color: var(--color-text);
   }
   .sy-step__result-label {
     display: inline-block; margin-right: 0.55rem;
-    font-size: 0.7rem; letter-spacing: 0.09em; text-transform: uppercase;
+    font-size: var(--fs-label); letter-spacing: 0.09em; text-transform: uppercase;
     color: var(--color-text-subtle);
   }
 
@@ -1587,8 +1721,8 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   }
   .sy-cap:hover { border-color: rgba(244, 14, 14, 0.4); transform: translateY(-4px); }
   .sy-cap__mark { position: absolute; inset: 0 auto 0 0; width: 3px; background: linear-gradient(180deg, var(--color-accent), transparent); }
-  .sy-cap h3 { font-size: 1.02rem; font-weight: var(--fw-bold); margin-bottom: 0.5rem; line-height: var(--lh-snug); }
-  .sy-cap p { line-height: var(--lh-body); font-size: 0.94rem; }
+  .sy-cap h3 { font-size: var(--fs-body); font-weight: var(--fw-bold); margin-bottom: 0.5rem; line-height: var(--lh-snug); }
+  .sy-cap p { line-height: var(--lh-body); font-size: var(--fs-body); }
 
   /* ---------- sicherheit ---------- */
   .sy-sec__grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); }
@@ -1604,8 +1738,8 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
     margin-bottom: 0.9rem; border-radius: 10px;
     color: var(--color-accent); background: rgba(244, 14, 14, 0.12); border: 1px solid rgba(244, 14, 14, 0.35);
   }
-  .sy-sec__item h3 { font-size: 1.02rem; font-weight: var(--fw-bold); margin-bottom: 0.5rem; line-height: var(--lh-snug); }
-  .sy-sec__item p { line-height: var(--lh-body); font-size: 0.93rem; }
+  .sy-sec__item h3 { font-size: var(--fs-body); font-weight: var(--fw-bold); margin-bottom: 0.5rem; line-height: var(--lh-snug); }
+  .sy-sec__item p { line-height: var(--lh-body); font-size: var(--fs-body); }
 
   /* ---------- warum wir ---------- */
   .sy-why__layout { display: grid; grid-template-columns: 1.25fr 0.75fr; gap: clamp(1.5rem, 3.5vw, 2.5rem); align-items: start; }
@@ -1615,8 +1749,8 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
     border: 1px solid var(--border-subtle); border-left: 3px solid var(--color-accent);
     border-radius: var(--radius-md); background: var(--surface-card);
   }
-  .sy-why__item h3 { font-size: 1.05rem; font-weight: var(--fw-bold); margin-bottom: 0.55rem; line-height: var(--lh-snug); }
-  .sy-why__item p { line-height: var(--lh-body); font-size: 0.96rem; }
+  .sy-why__item h3 { font-size: var(--fs-body); font-weight: var(--fw-bold); margin-bottom: 0.55rem; line-height: var(--lh-snug); }
+  .sy-why__item p { line-height: var(--lh-body); font-size: var(--fs-body); }
   .sy-why__media { margin: 0; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); position: relative; }
   .sy-why__media img { width: 100%; height: 100%; min-height: 18rem; object-fit: cover; }
   .sy-why__media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(244, 14, 14, 0.12), transparent 45%, rgba(0, 0, 0, 0.35)); pointer-events: none; }
@@ -1662,37 +1796,44 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
     .sy-orbit-sec__inner { grid-template-columns: 1fr; }
     .sy-vs__head { display: none; }
     .sy-vs__row { grid-template-columns: 1fr; gap: 0.85rem; }
-    .sy-vs__topic { font-size: 1.05rem; }
+    .sy-vs__topic { font-size: var(--fs-body); }
     .sy-vs__mobile-label {
       display: block; grid-column: 2; text-align: left; align-self: center;
-      font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase;
+      font-size: var(--fs-label); letter-spacing: 0.1em; text-transform: uppercase;
       color: var(--color-text-subtle);
     }
     /* Label on the mark's line, text on the next one, both indented past it. */
     .sy-vs__cell { row-gap: 0.35rem; }
   }
   @media (max-width: 720px) {
-    /* The satellites need room the phone does not have; the workspace on its
-       own still carries the idea, and the wires have nothing left to join. */
-    .sy-sat, .sy-wires { display: none; }
-    .sy-constellation { aspect-ratio: auto; }
-    .sy-hero__frame { position: static; width: 100%; transform: none; }
-    .sy-console__body { grid-template-columns: 1fr; }
-    /* The module list becomes a horizontal strip that runs past the edge; a
-       fade says "there is more" instead of guillotining the last word. */
-    .sy-console__nav {
-      flex-direction: row; overflow: hidden; border-right: 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-      -webkit-mask-image: linear-gradient(90deg, #000 78%, transparent);
-      mask-image: linear-gradient(90deg, #000 78%, transparent);
-    }
-    .sy-orbit { max-width: 22rem; }
-    .sy-orbit__list li { font-size: 0.66rem; padding: 0.32rem 0.55rem; }
-    .sy-orbit__core { font-size: 0.78rem; }
+    /* The constellation stays — it scales with the container rather than
+       being dropped. Only the secondary caption line goes, because below this
+       width it would have to shrink past reading size. */
+    .sy-sat__line { display: none; }
     .sy-dg--insights { grid-template-columns: 1fr; }
     .sy-flow { grid-template-columns: repeat(2, 1fr); gap: 1rem 0.4rem; }
     .sy-flow__step:not(:last-child)::after { display: none; }
     .sy-flow__skip { display: none; }
+
+    /* --- the integrations, unrolled ----------------------------------
+       Eight labels on a ring inside an 18rem circle can only be made to fit
+       by shrinking them, and that ended at 9.6px. A phone gets the same
+       statement laid out flat: the system on top, the eight areas as chips
+       below it. The docking sequence still runs — the chips arrive one after
+       another in the same order, they just arrive from below instead of from
+       out on a spoke. */
+    .sy-orbit { aspect-ratio: auto; max-width: none; container-type: normal; display: grid; justify-items: center; gap: 1.1rem; }
+    .sy-orbit__rings { display: none; }
+    .sy-orbit__core {
+      position: static; transform: none;
+      width: auto; aspect-ratio: auto; border-radius: var(--radius-pill);
+      padding: 0.75rem 1.6rem; font-size: var(--fs-body);
+    }
+    .sy-orbit__list { position: static; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+    .sy-orbit__list li { position: static; transform: none; font-size: var(--fs-label); }
+    html.sy-js-orbit .sy-orbit__list li { --fly: 0rem; transform: translateY(0.7rem); transition: transform 0.6s var(--ease-out), opacity 0.5s var(--ease-out); }
+    html.sy-js-orbit .sy-orbit__list li.is-docked { transform: none; }
+    .sy-orbit__toggle { position: static; }
   }
   @media (max-width: 640px) {
     .sy-step { grid-template-columns: 1fr; gap: 0.7rem; }
@@ -1701,11 +1842,66 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
     .sy-step::before { left: -1.36rem; top: 1.6rem; }
     .sy-symptoms__list li { grid-template-columns: 1fr; gap: 0.5rem; align-items: start; }
     .sy-matrix { grid-template-columns: minmax(5rem, 1fr) repeat(3, auto); gap: 0.5rem; }
-    .sy-orbit { max-width: 18rem; }
-    .sy-orbit__list li { font-size: 0.6rem; }
+
+    /* --- tighter rhythm on a phone ------------------------------------
+       Thirty-odd cards each carrying desktop padding is most of a screen
+       spent on air. The copy keeps its size — it just stops being framed
+       so generously. */
+    .sy-head { margin-bottom: 1.5rem; }
+    .sy-step,
+    .sy-vs__row,
+    .sy-sec__item,
+    .sy-cap,
+    .sy-why__item,
+    .sy-choice,
+    .sy-voice { padding: 1.05rem 1.1rem; }
+    .sy-symptoms__list li,
+    .sy-commit__list li { padding: 0.85rem 1rem; }
+    .sy-card__body { padding: 1.1rem; gap: 0.55rem; }
+    .sy-panel { padding: 1.2rem 1.1rem; }
+    .sy-vs__table { gap: 0.55rem; }
+    .sy-symptoms__list { gap: 0.6rem; }
+    .sy-case { margin-top: 1.1rem; padding-top: 1rem; }
+    .sy-case__beats { gap: 0.7rem; }
+  }
+
+  /* --- text in motion ---------------------------------------------------
+     Additive: it hangs off the `is-visible` the shared observer already sets,
+     so nothing about the existing reveal has to be overridden. The headings
+     are wiped upwards rather than faded, which reads as type being set rather
+     than as a slide deck; the hero's parts arrive one after another so the
+     eye is led from the badge down to the buttons. */
+  @keyframes sy-wipe {
+    from { clip-path: inset(0 0 108% 0); }
+    to { clip-path: inset(0 0 -20% 0); }
+  }
+  @keyframes sy-rise {
+    from { opacity: 0; transform: translateY(0.9rem); }
+    to { opacity: 1; transform: none; }
+  }
+  .sy-head.is-visible h2,
+  .sy-orbit-sec__copy.is-visible h2 { animation: sy-wipe 0.85s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .sy-hero__copy.is-visible > * { animation: sy-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .sy-hero__copy.is-visible > :nth-child(1) { animation-delay: 0.02s; }
+  .sy-hero__copy.is-visible > :nth-child(2) { animation-delay: 0.1s; }
+  .sy-hero__copy.is-visible > :nth-child(3) { animation-delay: 0.2s; }
+  .sy-hero__copy.is-visible > :nth-child(4) { animation-delay: 0.3s; }
+  .sy-hero__copy.is-visible > :nth-child(5) { animation-delay: 0.4s; }
+
+  /* Touch: the text links here were 22px tall, under half the comfortable
+     target. Padding rather than min-height, so the surrounding rhythm holds. */
+  @media (pointer: coarse) {
+    .sy-choice__link,
+    .sy-card__link { padding-block: 0.6rem; }
+    .sy-orbit__toggle { padding-block: 0.7rem; }
+    .sy-tab { padding-block: 0.85rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .sy-head.is-visible h2,
+    .sy-orbit-sec__copy.is-visible h2,
+    .sy-hero__copy.is-visible > * { animation: none !important; }
+    .sy-hero__word { transition: none; }
     .sy-console, .sy-sat, .sy-marquee__track, .sy-console__scan, .sy-wires__pulse path { animation: none !important; }
     .sy-console__scan, .sy-wires__pulse { display: none; }
     .sy-hero__frame, .sy-sat { transition: none; }
@@ -1753,6 +1949,37 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
   });
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  // ---- Hook: the rotating line -----------------------------------------
+  // Works through the four places the knowledge sits and then stops on the
+  // last one, which is the sharpest. It deliberately finishes inside five
+  // seconds: past that, auto-updating text needs a pause control under WCAG
+  // 2.2.2, and a headline with a pause button beside it is not a headline.
+  // Stopping also lets the hook land instead of cycling past its best line.
+  const rotator = document.querySelector<HTMLElement>('[data-rotator]');
+  if (rotator) {
+    const words = Array.from(rotator.querySelectorAll<HTMLElement>('.sy-hero__word'));
+    if (words.length > 1) {
+      if (reduced.matches) {
+        words.forEach((w, i) => w.classList.toggle('is-current', i === words.length - 1));
+      } else {
+        const STEP = 1500;
+        let i = 0;
+        const advance = () => {
+          const current = words[i];
+          const next = words[i + 1];
+          if (!next) return;
+          current.classList.remove('is-current');
+          current.classList.add('is-leaving');
+          next.classList.add('is-current');
+          i += 1;
+          if (i < words.length - 1) window.setTimeout(advance, STEP);
+        };
+        // A beat before the first swap, so the opening line is read first.
+        window.setTimeout(advance, STEP);
+      }
+    }
+  }
 
   // ---- Process rail and phase slide-in ---------------------------------
   // One scroll pass drives both: the rail fills as the phase list travels
@@ -1892,6 +2119,54 @@ const systemName = (key: string) => (key === 'ditele' ? 'DiTeLe' : '1Çatı ERP'
         else if (inView) start();
       });
     }
+  }
+
+  // ---- Hero constellation: connect the surfaces -------------------------
+  // The markup renders connected, so a reader without JavaScript gets the
+  // finished picture rather than a grey one that never lights up. Script then
+  // disconnects all three and hands the reader the job of joining them: a
+  // system you assembled yourself reads differently from one you were shown,
+  // and three taps is a cheaper way to understand "one record set, several
+  // surfaces" than a paragraph about it.
+  const constellation = document.querySelector<HTMLElement>('[data-constellation]');
+  const hint = document.querySelector<HTMLElement>('[data-hint]');
+
+  if (constellation) {
+    const sats = Array.from(constellation.querySelectorAll<HTMLButtonElement>('[data-sat]'));
+    const wires = Array.from(constellation.querySelectorAll<SVGPathElement>('[data-wire]'));
+    const connectAction = constellation.dataset.action ?? '';
+    const connectedState = constellation.dataset.state ?? '';
+    const hintText = hint?.textContent ?? '';
+    const doneText = hint?.dataset.done ?? hintText;
+
+    const wiresFor = (key: string) => wires.filter((w) => w.dataset.wire === key);
+
+    const setConnected = (sat: HTMLButtonElement, on: boolean) => {
+      sat.setAttribute('aria-pressed', String(on));
+      wiresFor(sat.dataset.sat ?? '').forEach((w) => w.classList.toggle('is-on', on));
+      // The button's name carries the state, so a screen reader hears what
+      // pressing it will do rather than just a noun.
+      const name = sat.querySelector('b')?.textContent?.trim() ?? '';
+      sat.setAttribute('aria-label', `${name} — ${on ? connectedState : connectAction}`);
+    };
+
+    const refreshHint = () => {
+      if (!hint) return;
+      const all = sats.every((sat) => sat.getAttribute('aria-pressed') === 'true');
+      hint.textContent = all ? doneText : hintText;
+      hint.classList.toggle('is-done', all);
+    };
+
+    // Start disconnected. Everything below this line only happens with script.
+    sats.forEach((sat) => setConnected(sat, false));
+    refreshHint();
+
+    sats.forEach((sat) => {
+      sat.addEventListener('click', () => {
+        setConnected(sat, sat.getAttribute('aria-pressed') !== 'true');
+        refreshHint();
+      });
+    });
   }
 
   // ---- Hero constellation parallax --------------------------------------
