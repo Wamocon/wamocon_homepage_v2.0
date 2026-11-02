@@ -5,7 +5,8 @@
  * To add or edit an app: update the relevant category below.
  *  - `soon: true` renders a "coming soon" card with no outbound link.
  *  - `url` is where the card itself leads — normally the landing page, which
- *    explains the product before someone signs up.
+ *    explains the product before someone signs up. A path on this site
+ *    (e.g. `/lfa-kfbm/`) opens in the same tab, a full URL in a new one.
  *  - `productUrl` adds a second button that opens the running application.
  *    Only set it where the deployment is actually live; several products are
  *    currently reachable through their landing page alone.
@@ -29,6 +30,37 @@ export interface AppCategory {
 }
 
 export const appCategories: AppCategory[] = [
+  {
+    label: {
+      de: 'Lernplattform',
+      en: 'Learning platform',
+      tr: 'Öğrenme platformu',
+      kk: 'Оқыту платформасы',
+    },
+    apps: [
+      {
+        name: 'LFA – FIAE',
+        url: 'https://fiae-learn.com/',
+        description: {
+          de: 'Lernplattform für Auszubildende zum Fachinformatiker für Anwendungsentwicklung (FIAE): Berufsschulstoff, IHK-Prüfungsvorbereitung und praxisnahe Aufgaben über die gesamte Ausbildung hinweg.',
+          en: 'Learning platform for apprentices training as IT specialists in application development (Fachinformatiker für Anwendungsentwicklung, FIAE): vocational-school content, IHK exam preparation and practical tasks throughout the apprenticeship.',
+          tr: 'Uygulama geliştirme alanında bilişim uzmanı (Fachinformatiker für Anwendungsentwicklung, FIAE) olmak için mesleki eğitim alanlara yönelik öğrenme platformu: meslek okulu konuları, IHK sınav hazırlığı ve eğitim boyunca uygulamalı görevler.',
+          kk: 'Қолданбалы бағдарламалау бойынша IT маманы (Fachinformatiker für Anwendungsentwicklung, FIAE) мамандығына оқитын шәкірттерге арналған оқыту платформасы: кәсіптік мектеп материалы, IHK емтиханына дайындық және бүкіл оқу кезеңіндегі тәжірибелік тапсырмалар.',
+        },
+      },
+      {
+        name: 'LFA – KfBM',
+        // Internal page: the KfBM one-pager lives on this site at /lfa-kfbm/.
+        url: '/lfa-kfbm/',
+        description: {
+          de: 'Lernplattform für Auszubildende zur Kauffrau bzw. zum Kaufmann für Büromanagement (KfBM): Berufsschulstoff, IHK-Prüfungsvorbereitung und praxisnahe Aufgaben über die gesamte Ausbildung hinweg.',
+          en: 'Learning platform for apprentices training as office management clerks (Kaufleute für Büromanagement, KfBM): vocational-school content, IHK exam preparation and practical tasks throughout the apprenticeship.',
+          tr: 'Büro yönetimi uzmanı (Kaufleute für Büromanagement, KfBM) olmak için mesleki eğitim alanlara yönelik öğrenme platformu: meslek okulu konuları, IHK sınav hazırlığı ve eğitim boyunca uygulamalı görevler.',
+          kk: 'Кеңсе менеджменті маманы (Kaufleute für Büromanagement, KfBM) мамандығына оқитын шәкірттерге арналған оқыту платформасы: кәсіптік мектеп материалы, IHK емтиханына дайындық және бүкіл оқу кезеңіндегі тәжірибелік тапсырмалар.',
+        },
+      },
+    ],
+  },
   {
     label: {
       de: 'Office & Produktivität',
@@ -224,16 +256,6 @@ export const appCategories: AppCategory[] = [
       //     tr: 'Çalışanlar ile yapay zekâ modelleri arasında DLP, istem filtreleme, kişisel veri anonimleştirme ve denetim kayıtları sunan ara katman.',
       //   },
       // },
-      {
-        name: 'LFA',
-        url: 'https://fiae-learn.com/',
-        description: {
-          de: 'Lern- und Ausbildungsplattform speziell für Fachinformatiker für Anwendungsentwicklung (FIAE).',
-          en: 'Learning and training platform specifically for IT Specialists in Application Development (FIAE).',
-          tr: 'Uygulama geliştirme alanındaki bilişim uzmanları (FIAE) için özel öğrenme ve eğitim platformu.',
-          kk: 'Қолданбалы бағдарламалау бағытындағы IT мамандарына (FIAE) арналған оқыту және даярлау платформасы.',
-        },
-      },
       {
         name: 'KI-Prüfungstrainer',
         url: 'https://wamocon.github.io/KI-Prufungstrainer_lp/',

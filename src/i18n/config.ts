@@ -56,10 +56,12 @@ export const nav: NavLink[] = [
       },
       {
         key: 'apps',
-        de: { label: 'Apps', href: '/apps/' },
-        en: { label: 'Apps', href: '/en/apps/' },
-        tr: { label: 'Uygulamalar', href: '/tr/uygulamalar/' },
-        kk: { label: 'Қосымшалар', href: '/kk/qosymshalar/' },
+        // Labelled "Systeme" while the URLs keep their old slugs, so existing
+        // links and search results still land here.
+        de: { label: 'Systeme', href: '/apps/' },
+        en: { label: 'Systems', href: '/en/apps/' },
+        tr: { label: 'Sistemler', href: '/tr/uygulamalar/' },
+        kk: { label: 'Жүйелер', href: '/kk/qosymshalar/' },
       },
       {
         key: 'about',

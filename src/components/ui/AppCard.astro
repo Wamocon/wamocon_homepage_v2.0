@@ -19,22 +19,28 @@ interface Props {
 }
 const { app, category, lang } = Astro.props;
 const soonLabel = { de: 'Bald verfügbar', en: 'Coming soon', tr: 'Yakında', kk: 'Жақында' }[lang];
-const openLabel = { de: 'App öffnen', en: 'Open app', tr: 'Uygulamayı aç', kk: 'Қосымшаны ашу' }[lang];
+const openLabel = { de: 'System öffnen', en: 'Open system', tr: 'Sistemi aç', kk: 'Жүйені ашу' }[lang];
 const openAria = {
   de: `${app.name} öffnen`,
   en: `Open ${app.name}`,
-  tr: `${app.name} uygulamasını aç`,
-  kk: `${app.name} қосымшасын ашу`,
+  tr: `${app.name} sistemini aç`,
+  kk: `${app.name} жүйесін ашу`,
 }[lang];
 const isLink = !app.soon && !!app.url;
 const hasProduct = isLink && !!app.productUrl;
+/** Pages on this site open in the same tab; everything else in a new one. */
+const isExternal = isLink && /^https?:/.test(app.url!);
 ---
 
 <div class:list={['app-card', { 'app-card--soon': app.soon, 'app-card--link': isLink }]} data-reveal="up">
   <div class="app-card__head">
     <h3 class="app-card__name">
       {isLink ? (
-        <a class="app-card__title-link" href={app.url} target="_blank" rel="noopener noreferrer">
+        <a
+          class="app-card__title-link"
+          href={app.url}
+          {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        >
           {app.name}
         </a>
       ) : (

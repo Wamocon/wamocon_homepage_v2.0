@@ -1,0 +1,19 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+
+// The KfBM one-pager is a self-contained HTML file (fonts and images
+// embedded), served as-is like the berber pages. Replace
+// src/data/lfa-kfbm.html to update it.
+//
+// The film is the one exception: it lives at public/videos/kfbm-spot.mp4.
+// The site's CSP (vercel.json) allows media from 'self' only, so the blob: URL
+// the original file built from its embedded base64 would be blocked online.
+const filePath = path.resolve('src/data/lfa-kfbm.html');
+const html = fs.readFileSync(filePath, 'utf-8');
+
+return new Response(html, {
+  status: 200,
+  headers: { 'Content-Type': 'text/html; charset=utf-8' },
+});
+---

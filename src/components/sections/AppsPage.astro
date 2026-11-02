@@ -1,7 +1,7 @@
 ---
 /**
- * Apps overview page — landing-page edition.
- * Immersive hero ➜ story strip ➜ app catalogue ➜ dual CTA ➜ contact.
+ * Systems overview page (route /apps/) — landing-page edition.
+ * Immersive hero ➜ story strip ➜ system catalogue ➜ dual CTA ➜ contact.
  * Shared by the German (`/apps/`) and English (`/en/apps/`) routes.
  */
 import Button from '../ui/Button.astro';
@@ -20,60 +20,60 @@ const totalApps = appCategories.reduce((sum, cat) => sum + cat.apps.length, 0);
 /* ---- Copy ---- */
 const hero = {
   de: {
-    eyebrow: 'Unsere Apps im Überblick',
+    eyebrow: 'Unsere Systeme im Überblick',
     title: 'Software, die wirklich',
     titleAccent: 'funktioniert.',
     subtitle:
-      'Wir entwickeln nützliche Anwendungen für Ihren Arbeitsalltag und Ihr Privatleben. Unsere Software ist einfach zu bedienen und löst konkrete Aufgaben ohne unnötige Funktionen.',
-    imgAlt: 'Die Softwareanwendungen von WAMOCON für Büro, künstliche Intelligenz, Mobilität und Freizeit, entwickelt in Eschborn nahe Frankfurt',
+      'Wir entwickeln nützliche Systeme für Ihren Arbeitsalltag und Ihr Privatleben. Unsere Systeme sind einfach zu bedienen und lösen konkrete Aufgaben ohne unnötige Funktionen.',
+    imgAlt: 'Die Softwaresysteme von WAMOCON für Büro, künstliche Intelligenz, Mobilität und Freizeit, entwickelt in Eschborn nahe Frankfurt',
   },
   en: {
-    eyebrow: 'Our Apps',
+    eyebrow: 'Our Systems',
     title: 'Software that actually',
     titleAccent: 'works.',
     subtitle:
-      'We design clean applications for your work and daily life. Our software is straightforward and built to help you get things done without unnecessary complexity.',
-    imgAlt: 'Software applications by WAMOCON for business, artificial intelligence, mobility and lifestyle, developed in Eschborn near Frankfurt',
+      'We design clean systems for your work and daily life. Our software is straightforward and built to help you get things done without unnecessary complexity.',
+    imgAlt: 'Software systems by WAMOCON for business, artificial intelligence, mobility and lifestyle, developed in Eschborn near Frankfurt',
   },
   tr: {
-    eyebrow: 'Uygulamalarımıza genel bakış',
+    eyebrow: 'Sistemlerimize genel bakış',
     title: 'Gerçekten',
     titleAccent: 'işe yarayan yazılım.',
     subtitle:
-      'İş gününüz ve özel hayatınız için kullanışlı uygulamalar geliştiriyoruz. Yazılımlarımız kolay kullanılır ve gereksiz özellikler olmadan somut işleri çözer.',
-    imgAlt: 'WAMOCON’un ofis, yapay zekâ, mobilite ve boş zaman için geliştirdiği yazılım uygulamaları; Frankfurt yakınlarındaki Eschborn’da geliştirildi',
+      'İş gününüz ve özel hayatınız için kullanışlı sistemler geliştiriyoruz. Yazılımlarımız kolay kullanılır ve gereksiz özellikler olmadan somut işleri çözer.',
+    imgAlt: 'WAMOCON’un ofis, yapay zekâ, mobilite ve boş zaman için geliştirdiği yazılım sistemleri; Frankfurt yakınlarındaki Eschborn’da geliştirildi',
   },
   kk: {
-    eyebrow: 'Қосымшаларымызға шолу',
+    eyebrow: 'Жүйелерімізге шолу',
     title: 'Шынымен',
     titleAccent: 'жұмыс істейтін бағдарлама.',
     subtitle:
-      'Жұмыс күніңіз бен күнделікті тұрмысыңызға пайдалы қосымшалар жасаймыз. Бағдарламаларымызды пайдалану оңай, олар артық функциясыз, нақты міндетті шешеді.',
-    imgAlt: 'WAMOCON кеңсеге, жасанды интеллектке, көлікке және демалысқа арнап жасаған бағдарламалық қосымшалар, Франкфурт маңындағы Эшборнда әзірленген',
+      'Жұмыс күніңіз бен күнделікті тұрмысыңызға пайдалы жүйелер жасаймыз. Жүйелерімізді пайдалану оңай, олар артық функциясыз, нақты міндетті шешеді.',
+    imgAlt: 'WAMOCON кеңсеге, жасанды интеллектке, көлікке және демалысқа арнап жасаған бағдарламалық жүйелер, Франкфурт маңындағы Эшборнда әзірленген',
   },
 }[lang];
 
 const story = {
-  de: 'Wir konzentrieren uns auf das Wesentliche. Jede unserer Anwendungen löst eine ganz bestimmte Aufgabe.',
-  en: 'We focus on simplicity. Each of our applications is designed to solve a single, clear task.',
-  tr: 'Özün üzerine odaklanıyoruz. Uygulamalarımızın her biri son derece belirli bir işi çözer.',
-  kk: 'Ең маңыздысына назар аударамыз. Қосымшаларымыздың әрқайсысы нақты бір міндетті шешеді.',
+  de: 'Wir konzentrieren uns auf das Wesentliche. Jedes unserer Systeme löst eine ganz bestimmte Aufgabe.',
+  en: 'We focus on simplicity. Each of our systems is designed to solve a single, clear task.',
+  tr: 'Özün üzerine odaklanıyoruz. Sistemlerimizin her biri son derece belirli bir işi çözer.',
+  kk: 'Ең маңыздысына назар аударамыз. Жүйелеріміздің әрқайсысы нақты бір міндетті шешеді.',
 }[lang];
 
 const catalogLabel = {
-  de: `${totalApps} Apps in ${appCategories.length} Kategorien`,
-  en: `${totalApps} apps across ${appCategories.length} categories`,
-  tr: `${appCategories.length} kategoride ${totalApps} uygulama`,
-  kk: `${appCategories.length} санатта ${totalApps} қосымша`,
+  de: `${totalApps} Systeme in ${appCategories.length} Kategorien`,
+  en: `${totalApps} systems across ${appCategories.length} categories`,
+  tr: `${appCategories.length} kategoride ${totalApps} sistem`,
+  kk: `${appCategories.length} санатта ${totalApps} жүйе`,
 }[lang];
 
 const cta = {
   de: {
     heading: 'Lassen Sie uns sprechen.',
-    subtext: 'Haben Sie Fragen zu unseren Anwendungen oder möchten Sie eine eigene Idee umsetzen? Schreiben Sie uns einfach.',
-    contactTitle: 'Rückfragen zu unseren Apps',
+    subtext: 'Haben Sie Fragen zu unseren Systemen oder möchten Sie eine eigene Idee umsetzen? Schreiben Sie uns einfach.',
+    contactTitle: 'Rückfragen zu unseren Systemen',
     contactText:
-      'Sie testen bereits eine unserer Anwendungen oder möchten wissen, ob sie für Ihr Vorhaben geeignet ist? Melden Sie sich direkt bei uns.',
+      'Sie testen bereits eines unserer Systeme oder möchten wissen, ob es für Ihr Vorhaben geeignet ist? Melden Sie sich direkt bei uns.',
     contactCta: 'Jetzt Kontakt aufnehmen',
     contactHref: '#apps-kontakt',
     ideaTitle: 'Ihre Idee umsetzen',
@@ -81,43 +81,43 @@ const cta = {
       'Sie planen ein Softwareprojekt und suchen einen Partner für die Entwicklung? Beschreiben Sie uns Ihr Vorhaben in unserem Portal. Wir prüfen Ihre Wünsche und erstellen ein Angebot für Sie.',
     ideaCta: 'Anforderung einreichen',
     ideaHref: 'https://wmc-anforderungsportal.vercel.app/de',
-    exploreCta: 'Apps entdecken',
+    exploreCta: 'Systeme entdecken',
     ideaTeaserCta: 'Idee besprechen',
     missionLabel: 'Unsere Mission',
-    appsWord: 'Apps',
+    appsWord: 'Systeme',
     aiBadgeLabel: 'Dieses Bild wurde mit künstlicher Intelligenz erstellt',
     aiBadgeText: 'KI-generiert',
     schemaDescription:
-      'Die WAMOCON GmbH aus Eschborn entwickelt nützliche Apps für Büro, künstliche Intelligenz und Mobilität. Hier finden Sie alle unsere Anwendungen im Überblick.',
+      'Die WAMOCON GmbH aus Eschborn entwickelt nützliche Systeme für Büro, künstliche Intelligenz, Mobilität und Ausbildung. Hier finden Sie alle unsere Systeme im Überblick.',
   },
   en: {
     heading: "Let's talk.",
-    subtext: "Do you have questions about our software or want to develop your own application? We are happy to help.",
-    contactTitle: 'Questions about our apps',
+    subtext: "Do you have questions about our systems or want to develop your own? We are happy to help.",
+    contactTitle: 'Questions about our systems',
     contactText:
-      "Are you currently testing one of our apps or wondering if it fits your specific requirements? Send us a message and we will get in touch.",
+      "Are you currently testing one of our systems or wondering if it fits your specific requirements? Send us a message and we will get in touch.",
     contactCta: 'Get in touch',
     contactHref: '#apps-kontakt',
     ideaTitle: 'Realise your project',
     ideaText:
-      "Do you have an idea for an app and want to know about development costs? Describe your project in our portal. We will review your request and send you a proposal.",
+      "Do you have an idea for a system and want to know about development costs? Describe your project in our portal. We will review your request and send you a proposal.",
     ideaCta: 'Submit requirements',
     ideaHref: 'https://wmc-anforderungsportal.vercel.app/de',
-    exploreCta: 'Explore apps',
-    ideaTeaserCta: 'Discuss app idea',
+    exploreCta: 'Explore systems',
+    ideaTeaserCta: 'Discuss your idea',
     missionLabel: 'Our mission',
-    appsWord: 'apps',
+    appsWord: 'systems',
     aiBadgeLabel: 'This image was created using artificial intelligence',
     aiBadgeText: 'AI-generated',
     schemaDescription:
-      'WAMOCON GmbH from Eschborn develops useful software applications for office tasks, artificial intelligence and mobility. Explore all our apps in one place.',
+      'WAMOCON GmbH from Eschborn develops useful software systems for office tasks, artificial intelligence, mobility and vocational training. Explore all our systems in one place.',
   },
   tr: {
     heading: 'Hadi konuşalım.',
-    subtext: 'Uygulamalarımız hakkında sorularınız mı var, yoksa kendi fikrinizi mi hayata geçirmek istiyorsunuz? Bize yazmanız yeterli.',
-    contactTitle: 'Uygulamalarımız hakkında sorular',
+    subtext: 'Sistemlerimiz hakkında sorularınız mı var, yoksa kendi fikrinizi mi hayata geçirmek istiyorsunuz? Bize yazmanız yeterli.',
+    contactTitle: 'Sistemlerimiz hakkında sorular',
     contactText:
-      'Uygulamalarımızdan birini deniyor ya da projenize uygun olup olmadığını mı merak ediyorsunuz? Doğrudan bize ulaşın.',
+      'Sistemlerimizden birini deniyor ya da projenize uygun olup olmadığını mı merak ediyorsunuz? Doğrudan bize ulaşın.',
     contactCta: 'Hemen iletişime geçin',
     contactHref: '#apps-kontakt',
     ideaTitle: 'Fikrinizi hayata geçirin',
@@ -125,21 +125,21 @@ const cta = {
       'Bir yazılım projesi planlıyor ve geliştirme için iş ortağı mı arıyorsunuz? Projenizi portalımızda anlatın. Taleplerinizi inceleyip size bir teklif hazırlayalım.',
     ideaCta: 'Talebinizi iletin',
     ideaHref: 'https://wmc-anforderungsportal.vercel.app/de',
-    exploreCta: 'Uygulamaları keşfedin',
+    exploreCta: 'Sistemleri keşfedin',
     ideaTeaserCta: 'Fikrinizi konuşalım',
     missionLabel: 'Misyonumuz',
-    appsWord: 'uygulama',
+    appsWord: 'sistem',
     aiBadgeLabel: 'Bu görsel yapay zekâ ile oluşturulmuştur',
     aiBadgeText: 'Yapay zekâ üretimi',
     schemaDescription:
-      'Eschborn merkezli WAMOCON GmbH; ofis, yapay zekâ ve mobilite için kullanışlı uygulamalar geliştirir. Tüm uygulamalarımızı burada topluca bulabilirsiniz.',
+      'Eschborn merkezli WAMOCON GmbH; ofis, yapay zekâ, mobilite ve mesleki eğitim için kullanışlı sistemler geliştirir. Tüm sistemlerimizi burada topluca bulabilirsiniz.',
   },
   kk: {
     heading: 'Әңгімелесейік.',
-    subtext: 'Қосымшаларымыз туралы сұрағыңыз бар ма, әлде өз идеяңызды жүзеге асырғыңыз келе ме? Жай ғана жазыңыз.',
-    contactTitle: 'Қосымшаларымыз туралы сұрақтар',
+    subtext: 'Жүйелеріміз туралы сұрағыңыз бар ма, әлде өз идеяңызды жүзеге асырғыңыз келе ме? Жай ғана жазыңыз.',
+    contactTitle: 'Жүйелеріміз туралы сұрақтар',
     contactText:
-      'Қосымшаларымыздың бірін қолданып көрдіңіз бе, әлде ол жобаңызға жарай ма деп ойлап тұрсыз ба? Бізге тікелей хабарласыңыз.',
+      'Жүйелеріміздің бірін қолданып көрдіңіз бе, әлде ол жобаңызға жарай ма деп ойлап тұрсыз ба? Бізге тікелей хабарласыңыз.',
     contactCta: 'Қазір хабарласыңыз',
     contactHref: '#apps-kontakt',
     ideaTitle: 'Идеяңызды жүзеге асырыңыз',
@@ -147,14 +147,14 @@ const cta = {
       'Бағдарлама жобасын жоспарлап жүрсіз бе, әзірлеуге серіктес іздейсіз бе? Жобаңызды порталымызда сипаттап беріңіз. Талаптарыңызды қарап шығып, ұсыныс дайындаймыз.',
     ideaCta: 'Сұрауыңызды жіберіңіз',
     ideaHref: 'https://wmc-anforderungsportal.vercel.app/de',
-    exploreCta: 'Қосымшаларды қараңыз',
+    exploreCta: 'Жүйелерді қараңыз',
     ideaTeaserCta: 'Идеяңызды талқылайық',
     missionLabel: 'Миссиямыз',
-    appsWord: 'қосымша',
+    appsWord: 'жүйе',
     aiBadgeLabel: 'Бұл сурет жасанды интеллект көмегімен жасалды',
     aiBadgeText: 'ЖИ жасаған',
     schemaDescription:
-      'Эшборндағы WAMOCON GmbH кеңсеге, жасанды интеллектке және көлікке арналған пайдалы қосымшалар жасайды. Барлық қосымшамызды осы беттен бір жерден табасыз.',
+      'Эшборндағы WAMOCON GmbH кеңсеге, жасанды интеллектке, көлікке және кәсіби оқуға арналған пайдалы жүйелер жасайды. Барлық жүйемізді осы беттен бір жерден табасыз.',
   },
 }[lang];
 
@@ -164,7 +164,7 @@ const jsonLd = {
   '@graph': [
     {
       '@type': 'SoftwareApplication',
-      'name': 'WAMOCON Apps',
+      'name': 'WAMOCON Systeme',
       'description': cta.schemaDescription,
       'applicationCategory': 'BusinessApplication',
       'operatingSystem': 'Web',
@@ -187,7 +187,7 @@ const jsonLd = {
     },
     {
       '@type': 'ItemList',
-      'name': 'WAMOCON Apps',
+      'name': 'WAMOCON Systeme',
       'numberOfItems': totalApps,
       'itemListElement': appCategories.flatMap((cat, ci) =>
         cat.apps.map((app, ai) => ({
