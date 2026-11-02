@@ -27,7 +27,7 @@
 
 - [Home](https://www.wamocon.com/): Overview of WAMOCON's IT test-management and quality-assurance services.
 - [Our system](https://www.wamocon.com/unser-system/): The 360-degree WAMOCON test-management methodology and how projects are structured.
-- [Apps and software portfolio](https://www.wamocon.com/apps/): Software and AI applications developed by WAMOCON.
+- [Systems and software portfolio](https://www.wamocon.com/systeme/): Software and AI systems developed by WAMOCON, including the LFA learning platforms.
 - [Cooperation models](https://www.wamocon.com/zusammenarbeit/): How clients engage WAMOCON, from single testers to full project teams.
 - [References](https://www.wamocon.com/referenzen/): Enterprise clients and projects WAMOCON has delivered.
 - [Customer reviews](https://www.wamocon.com/bewertungen/): Verified reviews from clients and training participants.
@@ -47,7 +47,7 @@
 - [References (EN)](https://www.wamocon.com/en/references/): Client references in English.
 - [Careers (EN)](https://www.wamocon.com/en/career/): Open roles in English.
 - [Contact (EN)](https://www.wamocon.com/en/#kontakt): English contact details and enquiry form on the English home page.
-- [Apps (EN)](https://www.wamocon.com/en/apps/): Software and AI application portfolio in English.
+- [Systems (EN)](https://www.wamocon.com/en/systems/): Software and AI systems portfolio in English.
 - [Employee voices (EN)](https://www.wamocon.com/en/employee-voices/): First-hand employee accounts in English.
 - [Testimonials (EN)](https://www.wamocon.com/en/testimonials/): Client testimonials in English.
 - [Apprenticeship (EN)](https://www.wamocon.com/en/apprenticeship/): IT apprenticeship programme in English.

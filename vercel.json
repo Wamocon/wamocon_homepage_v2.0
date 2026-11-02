@@ -10,6 +10,16 @@
       "maxDuration": 60
     }
   },
+  "redirects": [
+    { "source": "/apps", "destination": "/systeme/", "permanent": true },
+    { "source": "/apps/", "destination": "/systeme/", "permanent": true },
+    { "source": "/en/apps", "destination": "/en/systems/", "permanent": true },
+    { "source": "/en/apps/", "destination": "/en/systems/", "permanent": true },
+    { "source": "/tr/uygulamalar", "destination": "/tr/sistemler/", "permanent": true },
+    { "source": "/tr/uygulamalar/", "destination": "/tr/sistemler/", "permanent": true },
+    { "source": "/kk/qosymshalar", "destination": "/kk/juieler/", "permanent": true },
+    { "source": "/kk/qosymshalar/", "destination": "/kk/juieler/", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/(.*)",

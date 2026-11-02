@@ -3,7 +3,7 @@
  *
  * The dividing line against /webdesign/: a website presents a company to the
  * outside, a system runs it on the inside. Everything here has roles, rights,
- * workflows and an audit trail. Products anyone can sign up for live on /apps/.
+ * workflows and an audit trail. Products anyone can sign up for live on /systeme/.
  *
  * No prices on this page, on purpose. A system's price follows its scope, and
  * a number without a scope invites the reader to hunt for the catch rather

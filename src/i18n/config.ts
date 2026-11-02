@@ -56,12 +56,12 @@ export const nav: NavLink[] = [
       },
       {
         key: 'apps',
-        // Labelled "Systeme" while the URLs keep their old slugs, so existing
-        // links and search results still land here.
-        de: { label: 'Systeme', href: '/apps/' },
-        en: { label: 'Systems', href: '/en/apps/' },
-        tr: { label: 'Sistemler', href: '/tr/uygulamalar/' },
-        kk: { label: 'Жүйелер', href: '/kk/qosymshalar/' },
+        // Key stays 'apps' (footer and hreflang look it up). The old /apps/
+        // slugs redirect here, see vercel.json.
+        de: { label: 'Systeme', href: '/systeme/' },
+        en: { label: 'Systems', href: '/en/systems/' },
+        tr: { label: 'Sistemler', href: '/tr/sistemler/' },
+        kk: { label: 'Жүйелер', href: '/kk/juieler/' },
       },
       {
         key: 'about',
