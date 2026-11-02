@@ -1784,8 +1784,10 @@ footer nav a{display:inline-block;padding:10px 0}
 (function(){const g=document.querySelector('.enable');if(!g)return;const items=[...g.querySelectorAll(':scope>article')];
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window)){items.forEach(a=>a.classList.add('in','done'));return;}
   document.documentElement.classList.add('en-anim');
-  const io=new IntersectionObserver(es=>{let k=0;es.forEach(e=>{if(!e.isIntersecting)return;const a=e.target,d=k++*0.09;a.style.setProperty('--d',d.toFixed(2)+'s');io.unobserve(a);requestAnimationFrame(()=>a.classList.add('in'));setTimeout(()=>a.classList.add('done'),3200+d*1000);});},{threshold:.3});
-  items.forEach(a=>io.observe(a));
+  /* Spielt bei jedem Hineinscrollen wieder ab, in beide Richtungen. Zurückgesetzt wird erst, wenn eine Karte ganz aus dem Bild ist; .done schaltet dabei die Übergänge ab, damit nichts sichtbar zurückläuft. */
+  const io=new IntersectionObserver(es=>{let k=0;es.forEach(e=>{const a=e.target;if(!e.isIntersecting||a.classList.contains('in'))return;const d=k++*0.09;a.style.setProperty('--d',d.toFixed(2)+'s');requestAnimationFrame(()=>a.classList.add('in'));a._t=setTimeout(()=>a.classList.add('done'),3200+d*1000);});},{threshold:.3});
+  const out=new IntersectionObserver(es=>es.forEach(e=>{const a=e.target;if(e.isIntersecting||!a.classList.contains('in'))return;clearTimeout(a._t);a.classList.add('done');a.classList.remove('in');requestAnimationFrame(()=>requestAnimationFrame(()=>a.classList.remove('done')));}));
+  items.forEach(a=>{io.observe(a);out.observe(a);});
 })();
 </script>
 <script>
@@ -1795,9 +1797,13 @@ footer nav a{display:inline-block;padding:10px 0}
   document.documentElement.classList.add('up-anim');
   const nums=[];
   els.forEach(a=>a.querySelectorAll('[data-count]').forEach(n=>{const t=n.textContent,m=t.match(/^([\d.,]+)([\s\S]*)$/);if(!m)return;const dec=(m[1].split(',')[1]||'').length,val=parseFloat(m[1].replace(/\./g,'').replace(',','.'));const f=x=>x.toLocaleString('de-DE',{minimumFractionDigits:dec,maximumFractionDigits:dec})+m[2];n._c={t,val,f};n.textContent=f(0);}));
-  function count(n,delay){const c=n._c;if(!c)return;setTimeout(()=>{const t0=performance.now(),D=1500;const st=now=>{const k=Math.min(1,(now-t0)/D),e=1-Math.pow(1-k,3);n.textContent=k<1?c.f(c.val*e):c.t;if(k<1)requestAnimationFrame(st);};requestAnimationFrame(st);},delay);}
-  const io=new IntersectionObserver(es=>{let k=0;es.forEach(e=>{if(!e.isIntersecting)return;const a=e.target,d=a.dataset.up==='inner'?0:k++*0.12;a.style.setProperty('--d',d.toFixed(2)+'s');io.unobserve(a);requestAnimationFrame(()=>a.classList.add('in'));a.querySelectorAll('[data-count]').forEach(n=>count(n,d*1000+250));setTimeout(()=>a.classList.add('done'),4200+d*1000);});},{threshold:.25,rootMargin:'0px 0px -6% 0px'});
-  els.forEach(a=>io.observe(a));
+  /* _run verwirft einen laufenden Zählvorgang, wenn das Element zwischendurch zurückgesetzt wurde. */
+  function count(n,delay){const c=n._c;if(!c)return;const run=n._run=(n._run||0)+1;clearTimeout(n._ct);n._ct=setTimeout(()=>{const t0=performance.now(),D=1500;const st=now=>{if(n._run!==run)return;const k=Math.min(1,(now-t0)/D),e=1-Math.pow(1-k,3);n.textContent=k<1?c.f(c.val*e):c.t;if(k<1)requestAnimationFrame(st);};requestAnimationFrame(st);},delay);}
+  function zero(n){if(!n._c)return;n._run=(n._run||0)+1;clearTimeout(n._ct);n.textContent=n._c.f(0);}
+  /* Wie bei den LFA-Karten: bei jedem Hineinscrollen neu, zurückgesetzt erst ganz außerhalb des Bildes. */
+  const io=new IntersectionObserver(es=>{let k=0;es.forEach(e=>{const a=e.target;if(!e.isIntersecting||a.classList.contains('in'))return;const d=a.dataset.up==='inner'?0:k++*0.12;a.style.setProperty('--d',d.toFixed(2)+'s');requestAnimationFrame(()=>a.classList.add('in'));a.querySelectorAll('[data-count]').forEach(n=>count(n,d*1000+250));a._t=setTimeout(()=>a.classList.add('done'),4200+d*1000);});},{threshold:.25,rootMargin:'0px 0px -6% 0px'});
+  const out=new IntersectionObserver(es=>es.forEach(e=>{const a=e.target;if(e.isIntersecting||!a.classList.contains('in'))return;clearTimeout(a._t);a.classList.add('done');a.classList.remove('in');a.querySelectorAll('[data-count]').forEach(zero);requestAnimationFrame(()=>requestAnimationFrame(()=>a.classList.remove('done')));}));
+  els.forEach(a=>{io.observe(a);out.observe(a);});
 })();
 </script>
 </body>
