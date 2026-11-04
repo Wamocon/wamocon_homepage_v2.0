@@ -70,6 +70,14 @@ export const nav: NavLink[] = [
         tr: { label: 'Hakkımızda', href: '/tr/hakkimizda/' },
         kk: { label: 'Біз туралы', href: '/kk/biz-turaly/' },
       },
+      {
+        // The portfolio, told as a universe: core, three worlds, reach.
+        key: 'universe',
+        de: { label: 'Universum', href: '/universum/' },
+        en: { label: 'Universe', href: '/en/universe/' },
+        tr: { label: 'Evren', href: '/tr/evren/' },
+        kk: { label: 'Ғалам', href: '/kk/galam/' },
+      },
     ],
   },
   {
