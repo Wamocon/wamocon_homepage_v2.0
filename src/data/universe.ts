@@ -43,7 +43,7 @@ export const universeCopy = {
       scroll: 'Scrollen',
     },
     badges: [
-      { t: 'KI-Innovator 2025', s: 'Auszeichnung' },
+      { t: 'KI-Innovator', s: 'Auszeichnung' },
       { t: 'AZAV-zertifiziert', s: 'Trägerzulassung 10/2026' },
       { t: 'ISTQB CTFL 4.0', s: 'akkreditiert (GTB)' },
     ],
@@ -198,7 +198,7 @@ export const universeCopy = {
       scroll: 'Scroll',
     },
     badges: [
-      { t: 'AI Innovator 2025', s: 'Award' },
+      { t: 'KI-Innovator', s: 'Award' },
       { t: 'AZAV certified', s: 'Provider approval 10/2026' },
       { t: 'ISTQB CTFL 4.0', s: 'accredited (GTB)' },
     ],
@@ -353,7 +353,7 @@ export const universeCopy = {
       scroll: 'Kaydırın',
     },
     badges: [
-      { t: 'Yapay Zekâ İnovatörü 2025', s: 'Ödül' },
+      { t: 'KI-Innovator', s: 'Ödül' },
       { t: 'AZAV sertifikalı', s: 'Kurum onayı 10/2026' },
       { t: 'ISTQB CTFL 4.0', s: 'akredite (GTB)' },
     ],
@@ -508,7 +508,7 @@ export const universeCopy = {
       scroll: 'Төмен айналдырыңыз',
     },
     badges: [
-      { t: 'ЖИ-инноватор 2025', s: 'Марапат' },
+      { t: 'KI-Innovator', s: 'Марапат' },
       { t: 'AZAV сертификаты', s: 'Ұйымдық рұқсат 10/2026' },
       { t: 'ISTQB CTFL 4.0', s: 'аккредиттелген (GTB)' },
     ],
