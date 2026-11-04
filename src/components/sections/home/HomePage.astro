@@ -60,6 +60,29 @@ const projectProjectLabel = {
 }[lang];
 const ceoCaption = home.goal.signoff[lang];
 
+/**
+ * KI-Innovator seal of the diind (Deutsches Innovationsinstitut für
+ * Nachhaltigkeit und Digitalisierung). Certificate of 02.11.2026, awarded to
+ * "WAMOCON", valid up to and including 12/2027, i.e. until 31.12.2027
+ * (licence terms § 3 Abs. 2). This is the only place the seal appears on the
+ * site: if the award is suspended or withdrawn (§ 2 Abs. 2, § 5 Abs. 2),
+ * remove it here.
+ * Licence rules: the file is only scaled down proportionally (3508 x 5079 to
+ * 326 x 472, lossless), never cropped or recoloured and never shown with a
+ * CSS filter or reduced opacity (§ 1 Abs. 5), and the seal links to the
+ * issuer's assessment criteria (§ 2 Abs. 1). The name stays "KI-Innovator"
+ * in every language.
+ * A new seal always gets a new file name so no cache keeps serving the old one.
+ */
+const kiInnovator = {
+  name: 'KI-Innovator',
+  src: '/images/badge-ki-innovator-bis-12-2027.webp',
+  width: 326,
+  height: 472,
+  // Section "Das Prüfverfahren der Auszeichnung KI Innovator"; the page has no anchor for it.
+  criteriaUrl: 'https://diind.de/auszeichnungen/der-pruefprozess/',
+};
+
 /** Inline copy that does not live in src/data/home.ts. */
 const page = {
   de: {
@@ -68,7 +91,7 @@ const page = {
       'Unser strukturierter Weg vom ersten Kontakt bis zum erfolgreichen IT-Projekt: sechs aufeinander aufbauende Schritte, die Testerinnen und Tester sicher durch jedes Projekt führen und ihre Karriere gezielt weiterentwickeln.',
     boosterCta: 'Zum 360° Booster System',
     boosterAlt: 'Das 360° Booster System mit sechs Schritten',
-    badgeAiAlt: 'KI-Siegel: WAMOCON als KI-Innovator ausgezeichnet',
+    badgeAiLink: `${kiInnovator.name}: Prüfkriterien beim Aussteller (externe Seite, neuer Tab)`,
     badgeFutureAlt: 'Auszeichnung „Unternehmen der Zukunft“, nominiert',
     skylineAlt: 'Skyline von Frankfurt am Main bei Nacht',
     aboutCta: 'Mehr über uns',
@@ -96,7 +119,7 @@ const page = {
       'Our structured path from first contact to a successful IT project: six sequential steps that guide testers safely through every project and develop their careers in a targeted way.',
     boosterCta: 'Explore the 360° Booster System',
     boosterAlt: 'The 360° Booster System with six steps',
-    badgeAiAlt: 'AI seal: WAMOCON recognised as an AI innovator',
+    badgeAiLink: `${kiInnovator.name}: assessment criteria on the issuer’s website (external site, new tab)`,
     badgeFutureAlt: 'Nominee badge for the “Company of the Future” award',
     skylineAlt: 'The Frankfurt am Main skyline at night',
     aboutCta: 'More about us',
@@ -124,7 +147,7 @@ const page = {
       'İlk temastan başarılı BT projesine uzanan yapılandırılmış yolumuz: test uzmanlarını her projede güvenle yönlendiren ve kariyerlerini hedefe yönelik geliştiren, birbirini izleyen altı adım.',
     boosterCta: '360° Booster Sistemine git',
     boosterAlt: 'Altı adımdan oluşan 360° Booster Sistemi',
-    badgeAiAlt: 'Yapay zekâ mührü: WAMOCON yapay zekâ inovatörü olarak ödüllendirildi',
+    badgeAiLink: `${kiInnovator.name}: ödülü veren kuruluşun sitesindeki değerlendirme kriterleri (harici site, yeni sekme)`,
     badgeFutureAlt: '“Geleceğin Şirketi” ödülü aday rozeti',
     skylineAlt: 'Gece Frankfurt am Main silueti',
     aboutCta: 'Hakkımızda daha fazlası',
@@ -152,7 +175,8 @@ const page = {
       'Алғашқы байланыстан табысты IT жобасына дейінгі жүйелі жолымыз: тестілеушіні әр жобада сеніммен жетелейтін және мансабын мақсатты дамытатын, бірін-бірі жалғастыратын алты қадам.',
     boosterCta: '360° Booster жүйесіне өту',
     boosterAlt: 'Алты қадамнан тұратын 360° Booster жүйесі',
-    badgeAiAlt: 'Жасанды интеллект мөрі: WAMOCON ЖИ жаңашылы ретінде марапатталды',
+    // Same wording as the WAMOCON Academy site; native-speaker check still open.
+    badgeAiLink: `${kiInnovator.name}: марапат берушінің сайтындағы бағалау критерийлері (сыртқы сайт, жаңа қойынды)`,
     badgeFutureAlt: '«Болашақ компаниясы» сыйлығына үміткер белгісі',
     skylineAlt: 'Түнгі Майндағы Франкфурт панорамасы',
     aboutCta: 'Біз туралы толығырақ',
@@ -319,7 +343,10 @@ const modal = {
       <p class="text-muted">{home.goal.highlightText[lang]}</p>
       <p class="goal__signoff">{home.goal.signoff[lang]}</p>
       <div class="goal__badges">
-        <img src="/images/badge-ki-siegel.png" alt={page.badgeAiAlt} width="120" height="120" loading="lazy" />
+        {/* No visible caption here, so the image carries the name itself; the link label names the target. */}
+        <a href={kiInnovator.criteriaUrl} target="_blank" rel="noopener noreferrer" aria-label={page.badgeAiLink}>
+          <img src={kiInnovator.src} alt={kiInnovator.name} width={kiInnovator.width} height={kiInnovator.height} loading="lazy" />
+        </a>
         <img class="goal__badge--zukunft" src="/images/badge-zukunft.webp" alt={page.badgeFutureAlt} width="135" height="120" loading="lazy" />
       </div>
     </div>
@@ -900,13 +927,12 @@ const modal = {
     align-items: center;
     margin-top: 2rem;
   }
+  /* Both diind seals share one template with the same transparent margin,
+     so one height shows them at the same visible size. */
   .goal__badges img {
-    height: 110px;
+    height: 117px;
     width: auto;
     object-fit: contain;
-  }
-  .goal__badges img.goal__badge--zukunft {
-    height: 117px;
   }
 
   /* ---------- services / why / benefits grids ---------- */
