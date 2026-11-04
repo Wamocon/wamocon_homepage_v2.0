@@ -32,6 +32,7 @@
 - [References](https://www.wamocon.com/referenzen/): Enterprise clients and projects WAMOCON has delivered.
 - [Customer reviews](https://www.wamocon.com/bewertungen/): Verified reviews from clients and training participants.
 - [About WAMOCON](https://www.wamocon.com/ueber-uns/): Company history, mission and team.
+- [The WAMOCON universe](https://www.wamocon.com/universum/): Portfolio overview of WAMOCON GmbH and WAMOCON Academy GmbH: built-in governance core, AI and industry software, IT consulting and SAP, training, reach and timeline.
 - [Careers](https://www.wamocon.com/karriere/): Open roles and what working at WAMOCON involves.
 - [Employee voices](https://www.wamocon.com/mitarbeiter-stimmen/): First-hand accounts from WAMOCON employees.
 - [IT apprenticeship](https://www.wamocon.com/azubi-fae/): The Fachinformatiker apprenticeship for application development.

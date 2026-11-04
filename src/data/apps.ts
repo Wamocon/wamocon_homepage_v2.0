@@ -70,6 +70,17 @@ export const appCategories: AppCategory[] = [
     },
     apps: [
       {
+        name: 'Damicon',
+        // Internal page: the Damicon one-pager lives on this site at /damicon/.
+        url: '/damicon/',
+        description: {
+          de: 'Betriebssteuerung für landwirtschaftliche Betriebe am Beispiel einer Himbeerplantage: Pflückrunden, Pflanzenschutz, Pflückerlohn, Restmengen und Gewinn an einem Ort statt auf Papier.',
+          en: 'Farm management for agricultural businesses, shown on a raspberry plantation: picking rounds, crop protection, picker wages, remaining stock and profit in one place instead of on paper.',
+          tr: 'Bir ahududu çiftliği örneğinde tarım işletmeleri için işletme yönetimi: toplama turları, bitki koruma, toplayıcı ücretleri, kalan miktarlar ve kâr kâğıt yerine tek bir yerde.',
+          kk: 'Таңқурай плантациясы мысалында ауыл шаруашылығы кәсіпорындарына арналған басқару жүйесі: жинау кезеңдері, өсімдік қорғау, жинаушылар жалақысы, қалдық және пайда қағаздың орнына бір жерде.',
+        },
+      },
+      {
         name: 'urbackup',
         url: 'https://backuppilot.app/',
         description: {
