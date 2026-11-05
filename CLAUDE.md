@@ -43,6 +43,8 @@ Zum Aktualisieren eine neue Datei liefern lassen und sie ersetzen. Eigene Ergän
 
 - `chat.js`: Website-Assistent. Er antwortet nur auf Basis von `api/_knowledge.json`. Diese Datei wird aus dem gebauten `dist/` erzeugt und ist committet. Nach Textänderungen `npm run build` ausführen und `_knowledge.json` mitcommitten.
 - `lead.js`: Formularversand über Microsoft Graph an info@wamocon.com. Die Zugangsdaten stehen in `.env` (nicht im Repo). Hilfsskripte liegen in `scripts/` (`graph-auth.mjs`, `test-email.mjs`, `preview-emails.mjs`).
+  - Typ `portfolio`: Das Popup „Portfolio als PDF“ auf `/portfolio/` (`PortfolioPdfRequest.astro`) fragt nur E-Mail und Sprache (DE/EN) ab. `lead.js` schickt dann `api/_portfolio/WAMOCON_Portfolio_DE.pdf` oder `…_EN.pdf` als Anhang und benachrichtigt info@wamocon.com. In Production verweigert `lead.js` diese Anfragen, solange `TURNSTILE_SECRET_KEY` fehlt.
+  - Neue Portfolio-Fassung: Die PowerPoint-Quellen liegen nicht im Repo (Ordner `Portfolio/` ist in `.gitignore`, aktuelle Fassung bei Waleri Moretz). In der englischen Fassung alle Texte auf Englisch (UK) stellen (Überprüfen → Sprache), dann beide als PDF exportieren, jeweils unter 3 MB (Grenze für Anhänge bei Microsoft Graph), und die Dateien in `api/_portfolio/` unter demselben Namen überschreiben. `vercel.json` (`includeFiles`) bündelt sie mit der Funktion. Online erst nach dem manuellen Deploy.
 
 ## Sicherheit und Auslieferung
 

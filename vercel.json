@@ -8,6 +8,9 @@
   "functions": {
     "api/chat.js": {
       "maxDuration": 60
+    },
+    "api/lead.js": {
+      "includeFiles": "api/_portfolio/*.pdf"
     }
   },
   "redirects": [

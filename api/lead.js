@@ -1,6 +1,8 @@
 // Vercel serverless function: receives all js-lead-form submissions.
 // Sends an internal notification to info@wamocon.com and a confirmation
 // email to the visitor (when an email address was provided).
+// Type "portfolio" instead mails the portfolio PDF (DE or EN) to the visitor;
+// its only required field is the email address.
 //
 // Supports two Microsoft Graph auth flows (use the one you have):
 //   1. Client credentials (application permission):
@@ -14,8 +16,13 @@
 //   GRAPH_SENDER            (defaults to info@wamocon.com)
 //   LEAD_RECIPIENT          (defaults to info@wamocon.com)
 //   GRAPH_PUBLIC_CLIENT     (true/false, defaults to false)
+//   TURNSTILE_SECRET_KEY    (Cloudflare Turnstile; verified only when set. In
+//                            production, portfolio PDF requests are refused
+//                            without it, see the handler.)
 //
 // The client secret and refresh token must NEVER be committed to git.
+
+import { readFileSync } from 'node:fs';
 
 const TENANT_ID = process.env.GRAPH_TENANT_ID;
 const CLIENT_ID = process.env.GRAPH_CLIENT_ID;
@@ -25,6 +32,36 @@ const PUBLIC_CLIENT = process.env.GRAPH_PUBLIC_CLIENT === 'true';
 const GRAPH_SENDER = process.env.GRAPH_SENDER || 'info@wamocon.com';
 const RECIPIENT = process.env.LEAD_RECIPIENT || 'info@wamocon.com';
 const TURNSTILE_SECRET = process.env.TURNSTILE_SECRET_KEY;
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Portfolio one-pager, sent as an attachment for type "portfolio". The files
+// sit next to this function and are bundled through vercel.json (functions →
+// includeFiles). To publish a new version, overwrite them under the same name.
+// The literal URLs also let Vercel's file tracer find them.
+const PORTFOLIO_PDFS = {
+  de: { name: 'WAMOCON_Portfolio_DE.pdf', url: new URL('./_portfolio/WAMOCON_Portfolio_DE.pdf', import.meta.url) },
+  en: { name: 'WAMOCON_Portfolio_EN.pdf', url: new URL('./_portfolio/WAMOCON_Portfolio_EN.pdf', import.meta.url) },
+};
+const portfolioCache = new Map();
+
+function portfolioAttachment(pdfLang) {
+  const pdf = PORTFOLIO_PDFS[pdfLang];
+  if (!portfolioCache.has(pdfLang)) {
+    try {
+      portfolioCache.set(pdfLang, readFileSync(pdf.url).toString('base64'));
+    } catch (err) {
+      console.error('[lead] portfolio pdf missing', pdf.name, err.code || err.message);
+      throw err;
+    }
+  }
+  return {
+    '@odata.type': '#microsoft.graph.fileAttachment',
+    name: pdf.name,
+    contentType: 'application/pdf',
+    contentBytes: portfolioCache.get(pdfLang),
+  };
+}
 
 function readBody(req) {
   // Vercel parses application/json and x-www-form-urlencoded into req.body.
@@ -162,6 +199,8 @@ function formatReceived(iso, lang) {
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
+    // Vercel runs in UTC; the team reading these mails is in Germany.
+    timeZone: 'Europe/Berlin',
   });
 }
 
@@ -174,6 +213,7 @@ function typeLabel(type, lang) {
       testimonial: 'Bewertung',
       'it-tester': 'IT-Tester',
       'barber-inquiry': 'Berber-Anfrage',
+      portfolio: 'Portfolio-PDF',
     },
     en: {
       career: 'Career',
@@ -182,6 +222,7 @@ function typeLabel(type, lang) {
       testimonial: 'Testimonial',
       'it-tester': 'IT tester',
       'barber-inquiry': 'Barber inquiry',
+      portfolio: 'Portfolio PDF',
     },
     tr: {
       career: 'Kariyer',
@@ -190,6 +231,7 @@ function typeLabel(type, lang) {
       testimonial: 'Referans',
       'it-tester': 'IT Test Uzmanı',
       'barber-inquiry': 'Berber Talebi',
+      portfolio: 'Portföy PDF',
     },
     kk: {
       career: 'Мансап',
@@ -198,6 +240,7 @@ function typeLabel(type, lang) {
       testimonial: 'Пікір',
       'it-tester': 'IT тестілеуші',
       'barber-inquiry': 'Шаштараз сұрауы',
+      portfolio: 'Портфолио PDF',
     },
   };
   return (labels[lang] || labels.de)[type] || type;
@@ -239,6 +282,15 @@ function emailLayout({ title, lang, body }) {
         : lang === 'kk'
           ? 'Бұл хат автоматты түрде жіберілді. Сұрағыңыз болса, осы хатқа жауап жазсаңыз болғаны.'
           : 'This email was sent automatically. If you have any questions, simply reply to this message.';
+  // § 35a GmbHG: a mail to a named recipient is a business letter and has to
+  // state legal form, registered office, register court and number, and the
+  // managing director. Wording as in the imprint of each language.
+  const legalLine = {
+    de: 'WAMOCON GmbH · Sitz: Eschborn · Registergericht: Amtsgericht Frankfurt am Main, HRB 103893 · Geschäftsführer: Dipl.-Ing. Waleri Moretz',
+    en: 'WAMOCON GmbH · Registered office: Eschborn · Register court: Local Court Frankfurt am Main, HRB 103893 · Managing Director: Dipl.-Ing. Waleri Moretz',
+    tr: 'WAMOCON GmbH · Şirket merkezi: Eschborn · Sicil mahkemesi: Frankfurt am Main Sulh Mahkemesi, HRB 103893 · Genel Müdür: Dipl.-Ing. Waleri Moretz',
+    kk: 'WAMOCON GmbH · Тіркелген орны: Eschborn · Тіркеуші сот: Майндағы Франкфурт учаскелік соты, HRB 103893 · Басқарушы директор: Dipl.-Ing. Waleri Moretz',
+  }[lang] || 'WAMOCON GmbH · Sitz: Eschborn · Registergericht: Amtsgericht Frankfurt am Main, HRB 103893 · Geschäftsführer: Dipl.-Ing. Waleri Moretz';
 
   return `<!DOCTYPE html>
 <html lang="${lang}">
@@ -270,7 +322,8 @@ function emailLayout({ title, lang, body }) {
                 <tr>
                   <td style="padding-top:18px;color:rgba(255,255,255,0.45);font-size:12px;line-height:1.55;">
                     ${footerLine}<br>
-                    <a href="https://www.wamocon.com" style="color:#f40e0e;text-decoration:none;">www.wamocon.com</a>
+                    <a href="https://www.wamocon.com" style="color:#f40e0e;text-decoration:none;">www.wamocon.com</a><br>
+                    <span style="display:inline-block;margin-top:10px;">${legalLine}</span>
                   </td>
                 </tr>
               </table>
@@ -456,13 +509,118 @@ ${testimonialNote}
   };
 }
 
+// The mail that carries the portfolio PDF. It contains no text the visitor
+// typed, only fixed copy and the attachment: whoever enters someone else's
+// address cannot use this mail to deliver a message of their own.
+function portfolioEmail(submission) {
+  const isDe = submission.pdfLang === 'de';
+  const strong = (text) => `<strong style="color:#ffffff;">${text}</strong>`;
+  const subject = isDe ? 'Ihr WAMOCON-Portfolio' : 'Your WAMOCON portfolio';
+  const paragraphs = isDe
+    ? [
+        'Guten Tag,',
+        `vielen Dank für Ihr Interesse. Im Anhang finden Sie unser Portfolio als PDF: die ${strong('WAMOCON GmbH')} und die ${strong('WAMOCON Academy GmbH')} auf einer Seite.`,
+        'Wenn Sie sehen möchten, wie Built-in Governance in Ihrer SAP- oder ERP-Landschaft arbeitet, antworten Sie einfach auf diese E-Mail. Wir zeigen es Ihnen gern in einer Live-Demo.',
+      ]
+    : [
+        'Hello,',
+        `Thank you for your interest. Attached is our portfolio as a PDF: ${strong('WAMOCON GmbH')} and ${strong('WAMOCON Academy GmbH')} on a single page.`,
+        'If you would like to see how built-in governance works in your SAP or ERP landscape, simply reply to this email and we will show you in a live demo.',
+      ];
+  // DIN 5008: no comma after the German closing formula.
+  const signoff = isDe ? `Mit freundlichen Grüßen<br>${strong('Ihr WAMOCON-Team')}` : `Best regards,<br>${strong('Your WAMOCON Team')}`;
+  const why = isDe
+    ? 'Sie erhalten diese E-Mail, weil auf www.wamocon.com unser Portfolio für diese Adresse angefordert wurde. Weitere E-Mails folgen nicht.'
+    : 'You are receiving this email because our portfolio was requested for this address on www.wamocon.com. No further emails will follow.';
+
+  const body = `
+${paragraphs.map((text) => `<p style="margin:0 0 16px;">${text}</p>`).join('\n')}
+<p style="margin:24px 0 0;">${signoff}</p>
+<p style="margin:24px 0 0;font-size:13px;color:rgba(255,255,255,0.5);">${why}</p>
+`;
+
+  return {
+    subject,
+    body: { contentType: 'HTML', content: emailLayout({ title: subject, lang: isDe ? 'de' : 'en', body }) },
+    from: { emailAddress: { address: GRAPH_SENDER } },
+    toRecipients: [{ emailAddress: { address: submission.email } }],
+    attachments: [portfolioAttachment(submission.pdfLang)],
+  };
+}
+
+function portfolioInternalEmail(submission) {
+  // Same rule as internalEmail: German unless the page itself was English.
+  const isDe = submission.lang !== 'en';
+  const langNames = { de: 'Deutsch', en: 'English', tr: 'Türkçe', kk: 'Қазақша' };
+  const pdfName = submission.pdfLang === 'de' ? (isDe ? 'Deutsch' : 'German') : isDe ? 'Englisch' : 'English';
+  const subject = isDe
+    ? `Portfolio-PDF (${pdfName}) angefordert von ${submission.email}`
+    : `Portfolio PDF (${pdfName}) requested by ${submission.email}`;
+  const title = isDe ? 'Portfolio-PDF angefordert' : 'Portfolio PDF requested';
+  const row = (label, value) =>
+    `<p style="margin:0 0 10px;"><strong style="color:#ffffff;">${label}:</strong> ${value}</p>`;
+  const email = escapeHtml(submission.email);
+
+  const body = `
+<p style="margin:0 0 18px;">${
+    isDe
+      ? 'Über die Portfolio-Seite wurde das PDF angefordert und automatisch verschickt.'
+      : 'The PDF was requested on the portfolio page and has been sent automatically.'
+  }</p>
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.06);">
+  <tr><td style="padding:22px;">
+    ${row(isDe ? 'Typ' : 'Type', escapeHtml(typeLabel('portfolio', isDe ? 'de' : 'en')))}
+    ${row(isDe ? 'PDF-Sprache' : 'PDF language', escapeHtml(pdfName))}
+    ${row(isDe ? 'Seitensprache' : 'Page language', escapeHtml(langNames[submission.lang] || submission.lang))}
+    ${row('E-Mail', `<a href="mailto:${email}" style="color:#f40e0e;text-decoration:none;">${email}</a>`)}
+  </td></tr>
+</table>
+<p style="margin:18px 0 0;">${
+    isDe
+      ? 'Die Person hat nur das PDF angefordert. Werbe-E-Mails brauchen ihre ausdrückliche Einwilligung (§ 7 UWG). Meldet sie sich selbst, ist eine Antwort jederzeit in Ordnung.'
+      : 'This person only asked for the PDF. Marketing emails need their explicit consent (Section 7 UWG). If they get in touch themselves, replying is always fine.'
+  }</p>
+<p style="margin:18px 0 0;color:rgba(255,255,255,0.55);font-size:13px;">${isDe ? 'Eingegangen am' : 'Received at'}: ${formatReceived(submission.receivedAt, submission.lang)}</p>
+`;
+
+  return {
+    subject,
+    body: { contentType: 'HTML', content: emailLayout({ title, lang: isDe ? 'de' : 'en', body }) },
+    from: { emailAddress: { address: GRAPH_SENDER } },
+    toRecipients: [{ emailAddress: { address: RECIPIENT } }],
+    replyTo: [{ emailAddress: { address: submission.email } }],
+  };
+}
+
 async function sendEmails(submission) {
   if (!TENANT_ID || !CLIENT_ID || !(CLIENT_SECRET || REFRESH_TOKEN)) {
+    if (submission.type === 'portfolio') {
+      // Load the PDF anyway, so a broken bundle also shows up on previews.
+      portfolioAttachment(submission.pdfLang);
+      // In production the popup must not say "the PDF is on its way" when
+      // nothing was sent; fail instead (local and preview keep working).
+      if (process.env.VERCEL_ENV === 'production') throw new Error('Mail delivery is not configured.');
+    }
     console.log('[lead] Graph env vars missing — skipping email');
     return;
   }
 
   const accessToken = await getAccessToken();
+
+  if (submission.type === 'portfolio') {
+    // The visitor asked for the PDF, so that mail goes first. A failed internal
+    // notification must not turn an already delivered PDF into an error the
+    // visitor sees (and then retries, receiving the PDF twice).
+    await graphSendMail(accessToken, portfolioEmail(submission));
+    console.log('[lead] portfolio pdf sent', { pdfLang: submission.pdfLang });
+    try {
+      await graphSendMail(accessToken, portfolioInternalEmail(submission));
+      console.log('[lead] internal notification sent');
+    } catch (err) {
+      console.error('[lead] internal notification failed');
+    }
+    return;
+  }
 
   // 1. Internal notification
   await graphSendMail(accessToken, internalEmail(submission));
@@ -511,15 +669,46 @@ export default async function handler(req, res) {
   const testimonialConsent =
     body.testimonialConsent === true || body.testimonialConsent === 'true' || body.testimonialConsent === 'on';
 
-  // Data minimisation: name plus one reachable contact channel is sufficient.
-  if (!name || (!phone && !email)) {
-    return res.status(400).json({ ok: false, error: 'Missing required fields.' });
+  const isPortfolio = type === 'portfolio';
+  // PDF language of a portfolio request: German or English only. Anything
+  // else falls back to the page language (German page → German PDF).
+  const requestedPdfLang = cap(body.pdfLang || '', 5);
+  const pdfLang = requestedPdfLang === 'de' || requestedPdfLang === 'en' ? requestedPdfLang : lang === 'de' ? 'de' : 'en';
+
+  if (isPortfolio) {
+    // A deliverable address is all a portfolio request needs.
+    if (!email || !EMAIL_PATTERN.test(email)) {
+      return res.status(400).json({ ok: false, error: 'A valid email address is required.' });
+    }
+  } else {
+    // Data minimisation: name plus one reachable contact channel is sufficient.
+    if (!name || (!phone && !email)) {
+      return res.status(400).json({ ok: false, error: 'Missing required fields.' });
+    }
+    if (email && !EMAIL_PATTERN.test(email)) {
+      return res.status(400).json({ ok: false, error: 'Invalid email address.' });
+    }
+    if (phone && (!/[\d]/.test(phone) || !/[\d\s\+\-\(\)\/]{6,}$/.test(phone))) {
+      return res.status(400).json({ ok: false, error: 'Invalid phone number.' });
+    }
   }
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return res.status(400).json({ ok: false, error: 'Invalid email address.' });
-  }
-  if (phone && (!/[\d]/.test(phone) || !/[\d\s\+\-\(\)\/]{6,}$/.test(phone))) {
-    return res.status(400).json({ ok: false, error: 'Invalid phone number.' });
+
+  if (isPortfolio) {
+    // Only the site's own script may trigger the PDF mail. It sends JSON, which
+    // a foreign page cannot do cross-origin without a CORS preflight this
+    // endpoint never answers; form-encoded or text/plain posts from other
+    // sites are turned away here.
+    const contentType = String(req.headers?.['content-type'] || '');
+    if (!/^application\/json\b/i.test(contentType)) {
+      return res.status(415).json({ ok: false, error: 'JSON expected.' });
+    }
+    // Mailing a PDF to whatever address was typed in must never run unprotected
+    // in production: without Turnstile anyone could make info@wamocon.com send
+    // mail to arbitrary addresses. Fail closed until the secret is configured.
+    if (!TURNSTILE_SECRET && process.env.VERCEL_ENV === 'production') {
+      console.error('[lead] TURNSTILE_SECRET_KEY missing, portfolio request refused');
+      return res.status(503).json({ ok: false, error: 'Temporarily unavailable.' });
+    }
   }
 
   // Cloudflare Turnstile bot protection (optional, enabled when the secret is set).
@@ -534,23 +723,43 @@ export default async function handler(req, res) {
     }
   }
 
-  const submission = {
-    type,
-    lang,
-    name,
-    phone,
-    email,
-    comment,
-    shopName,
-    packageChoice,
-    source,
-    sourceOther,
-    testimonialConsent,
-    receivedAt: new Date().toISOString(),
-  };
+  // A portfolio request keeps only the address and the two languages. Anything
+  // else a client sends along (name, message, ...) is dropped, so it can never
+  // end up in a mail.
+  const submission = isPortfolio
+    ? {
+        type,
+        lang,
+        pdfLang,
+        email,
+        name: '',
+        phone: '',
+        comment: '',
+        receivedAt: new Date().toISOString(),
+      }
+    : {
+        type,
+        lang,
+        name,
+        phone,
+        email,
+        comment,
+        shopName,
+        packageChoice,
+        source,
+        sourceOther,
+        testimonialConsent,
+        receivedAt: new Date().toISOString(),
+      };
 
   // Operational log without names, contact details or free-text content.
-  console.log('[lead] submission received', { type, lang, hasEmail: Boolean(email), hasPhone: Boolean(phone) });
+  console.log('[lead] submission received', {
+    type,
+    lang,
+    hasEmail: Boolean(email),
+    hasPhone: Boolean(submission.phone),
+    ...(isPortfolio ? { pdfLang } : {}),
+  });
 
   // Send notification + optional visitor confirmation.
   try {
