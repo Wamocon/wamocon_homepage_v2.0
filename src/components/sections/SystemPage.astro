@@ -207,14 +207,15 @@ const academyUrl = 'https://test-it-academy.com/';
   /* Rad links, Einleitung rechts daneben; auf schmalen Bildschirmen untereinander. */
   .sys-hero__grid {
     display: grid;
-    grid-template-columns: minmax(0, 540px) minmax(0, 1fr);
-    gap: clamp(2rem, 5vw, 5rem);
+    grid-template-columns: minmax(0, 45fr) minmax(0, 55fr);
+    gap: clamp(2rem, 5vw, 6rem);
     align-items: center;
   }
-  .sys-hero__lead { max-width: 62ch; margin: 0; }
+  /* Text nutzt die ganze rechte Spalte bis zum Containerrand. */
+  .sys-hero__lead { max-width: none; margin: 0; }
   .sys-hero__lead p {
     color: var(--color-text-muted);
-    font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.25rem);
+    font-size: clamp(1.05rem, 0.7rem + 0.85vw, 1.65rem);
     line-height: 1.7;
     margin-bottom: 1.25rem;
   }
@@ -226,7 +227,7 @@ const academyUrl = 'https://test-it-academy.com/';
     line-height: 1.05;
     margin-bottom: 2.5rem;
   }
-  .sys-hero__img { width: 100%; }
+  .sys-hero__img { width: 100%; max-width: 760px; }
   @media (max-width: 900px) {
     .sys-hero__grid { grid-template-columns: minmax(0, 1fr); }
     .sys-hero__img { max-width: 440px; margin-inline: auto; }
