@@ -1,0 +1,426 @@
+---
+/**
+ * Portfolio PDF request: a popup that asks for nothing but an email address
+ * and the PDF language (German or English). api/lead.js (type "portfolio")
+ * then mails the one-pager from api/_portfolio/ as an attachment.
+ *
+ * Opened by every [data-portfolio-open] button on the page (hero and closing
+ * section of /portfolio/). Sending and Turnstile run through the shared
+ * js-lead-form script in BaseLayout; data-inline-success keeps the visitor on
+ * the page, and this component shows the confirmation itself.
+ */
+import { formChrome, legalNav, type Lang } from '../../i18n/config';
+import { universeCopy } from '../../data/universe';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = universeCopy[lang].pdf;
+const chrome = formChrome[lang];
+const privacyHref = legalNav.privacy[lang].href;
+// A German page defaults to the German PDF; every other edition to English,
+// the only other language the portfolio exists in.
+const defaultPdfLang = lang === 'de' ? 'de' : 'en';
+// The confirmation names the address; it is inserted as text, never as HTML.
+const [donePre, donePost = ''] = t.doneText.split('{email}');
+---
+
+<div class="pdf-modal" data-pdf-modal hidden>
+  <div class="pdf-modal__overlay" data-pdf-close></div>
+  <div
+    class="pdf-modal__panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="pdf-modal-title"
+    aria-describedby="pdf-modal-intro"
+  >
+    <button type="button" class="pdf-modal__close" data-pdf-close aria-label={t.close}>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+    </button>
+
+    <div class="pdf-modal__step" data-pdf-step="form">
+      <h2 class="pdf-modal__title" id="pdf-modal-title">{t.title}</h2>
+      <p class="pdf-modal__intro" id="pdf-modal-intro">{t.intro}</p>
+      <form class="pdf-modal__form js-lead-form" data-inline-success>
+        <input type="hidden" name="type" value="portfolio" />
+        <input type="hidden" name="lang" value={lang} />
+        <fieldset class="pdf-modal__langs">
+          <legend class="pdf-modal__label">{t.langLegend}</legend>
+          <div class="pdf-modal__switch">
+            <label class="pdf-modal__lang">
+              <input type="radio" name="pdfLang" value="de" checked={defaultPdfLang === 'de'} />
+              <span lang="de">Deutsch</span>
+            </label>
+            <label class="pdf-modal__lang">
+              <input type="radio" name="pdfLang" value="en" checked={defaultPdfLang === 'en'} />
+              <span lang="en">English</span>
+            </label>
+          </div>
+          {t.langNote && <p class="pdf-modal__note">{t.langNote}</p>}
+        </fieldset>
+        <label class="pdf-modal__field">
+          <span class="pdf-modal__label">{t.email}</span>
+          <!-- Same rule as the server (lead.js EMAIL_PATTERN), so "max@firma"
+               is caught here with a hint instead of failing after sending. -->
+          <input
+            type="email"
+            name="email"
+            autocomplete="email"
+            inputmode="email"
+            required
+            pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
+            title={t.emailHint}
+          />
+        </label>
+        <p class="pdf-modal__consent">
+          {chrome.consentPre}<a href={privacyHref}>{chrome.consentLink}</a>{chrome.consentPost}
+        </p>
+        <p class="pdf-modal__error" id="pdf-modal-error" role="alert" data-pdf-error hidden>{t.failed}</p>
+        <button type="submit" class="pdf-modal__button">{t.submit}</button>
+      </form>
+    </div>
+
+    <div class="pdf-modal__step" data-pdf-step="done" hidden>
+      <h2 class="pdf-modal__title" id="pdf-modal-done" tabindex="-1">{t.doneTitle}</h2>
+      <p class="pdf-modal__intro">{donePre}<strong data-pdf-email></strong>{donePost}</p>
+      <button type="button" class="pdf-modal__button" data-pdf-close>{t.done}</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pdf-modal {
+    position: fixed;
+    inset: 0;
+    /* Same layer as the contact popup: above header and chat launcher. */
+    z-index: calc(var(--z-modal, 1000) + 5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.64);
+    backdrop-filter: blur(2px);
+  }
+  .pdf-modal[hidden] {
+    display: none;
+  }
+  .pdf-modal__overlay {
+    position: absolute;
+    inset: 0;
+  }
+  .pdf-modal__panel {
+    position: relative;
+    width: min(480px, 100%);
+    max-height: 90vh;
+    max-height: 90dvh;
+    overflow-y: auto;
+    padding: clamp(1.5rem, 4vw, 2.25rem);
+    background: var(--surface-card, #161616);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
+  }
+  .pdf-modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.06);
+    cursor: pointer;
+    transition:
+      background var(--dur-fast) var(--ease-out),
+      color var(--dur-fast);
+  }
+  .pdf-modal__close:hover {
+    background: var(--color-accent-surface);
+    color: #fff;
+  }
+  .pdf-modal__title {
+    font-size: clamp(1.4rem, 3vw, 1.8rem);
+    line-height: 1.15;
+    margin: 0 2.75rem 0.6rem 0;
+  }
+  .pdf-modal__title:focus {
+    outline: none;
+  }
+  .pdf-modal__intro {
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+  .pdf-modal__intro strong {
+    color: var(--color-text);
+    overflow-wrap: anywhere;
+  }
+  .pdf-modal__form {
+    display: grid;
+    gap: 1.1rem;
+  }
+  .pdf-modal__label {
+    padding: 0;
+    color: var(--color-text);
+    font-size: 0.88rem;
+    font-weight: var(--fw-semibold);
+  }
+  .pdf-modal__langs {
+    display: grid;
+    gap: 0.5rem;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .pdf-modal__switch {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  .pdf-modal__lang {
+    position: relative;
+  }
+  /* The radio covers its label, so the whole tile is the click target. */
+  .pdf-modal__lang input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .pdf-modal__lang span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--color-text-muted);
+    font-weight: var(--fw-semibold);
+    transition:
+      border-color var(--dur-fast) var(--ease-out),
+      background var(--dur-fast) var(--ease-out),
+      color var(--dur-fast);
+  }
+  .pdf-modal__lang:hover span {
+    border-color: #fff;
+  }
+  .pdf-modal__lang input:checked + span {
+    border-color: var(--color-accent-surface);
+    background: rgba(244, 14, 14, 0.16);
+    color: #fff;
+  }
+  /* The choice must not rest on colour alone (WCAG 1.4.1). The tick is
+     decorative; the radio itself already announces "checked". */
+  .pdf-modal__lang input:checked + span::before {
+    content: '✓';
+    content: '✓' / '';
+    margin-right: 0.45em;
+  }
+  .pdf-modal__lang input:focus-visible + span {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+  .pdf-modal__note {
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+  }
+  .pdf-modal__field {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .pdf-modal__field input {
+    width: 100%;
+    padding: 0.9rem 1.1rem;
+    font: inherit;
+    color: #1a1a1a;
+    background: #fff;
+    border: 1px solid transparent;
+    border-radius: 10px;
+  }
+  .pdf-modal__consent {
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+  .pdf-modal__consent a {
+    color: var(--color-accent-text);
+    text-decoration: underline;
+  }
+  .pdf-modal__error {
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(244, 14, 14, 0.45);
+    border-radius: 10px;
+    background: rgba(244, 14, 14, 0.12);
+    color: #ffc2c2;
+    font-size: 0.88rem;
+  }
+  .pdf-modal__error[hidden] {
+    display: none;
+  }
+  .pdf-modal__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 48px;
+    padding: 0.8rem 1.6rem;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--color-accent-surface);
+    box-shadow: 0 12px 40px -12px rgba(244, 14, 14, 0.75);
+    color: #fff;
+    font: inherit;
+    font-weight: var(--fw-semibold);
+    cursor: pointer;
+    transition:
+      background 0.25s var(--ease-out),
+      transform 0.25s var(--ease-out);
+  }
+  .pdf-modal__button:hover {
+    background: var(--color-accent-surface-hover);
+    transform: translateY(-2px);
+  }
+  /* Set by the shared form script while the request is under way. */
+  .pdf-modal__button[disabled] {
+    opacity: 0.6;
+    cursor: progress;
+    transform: none;
+  }
+
+  @media (max-width: 480px) {
+    .pdf-modal {
+      padding: 0.75rem;
+    }
+    .pdf-modal__panel {
+      padding: 1.25rem;
+    }
+  }
+</style>
+
+<script>
+  // Open / close, focus handling and the confirmation step of the portfolio
+  // PDF popup. Sending itself is done by the shared lead-form script.
+  const modal = document.querySelector<HTMLElement>('[data-pdf-modal]');
+  const panel = modal?.querySelector<HTMLElement>('[role="dialog"]');
+  const form = modal?.querySelector<HTMLFormElement>('form');
+
+  if (modal && panel && form) {
+    const formStep = modal.querySelector<HTMLElement>('[data-pdf-step="form"]')!;
+    const doneStep = modal.querySelector<HTMLElement>('[data-pdf-step="done"]')!;
+    const doneTitle = modal.querySelector<HTMLElement>('#pdf-modal-done')!;
+    const error = modal.querySelector<HTMLElement>('[data-pdf-error]')!;
+    const emailOut = modal.querySelector<HTMLElement>('[data-pdf-email]')!;
+    const emailIn = form.querySelector<HTMLInputElement>('input[name="email"]')!;
+    const failedText = error.textContent ?? '';
+    let opener: HTMLElement | null = null;
+    // Outcome of a request that finished while the dialog was closed; shown on
+    // the next open, so nobody re-sends and gets the PDF twice.
+    let pending: 'done' | 'error' | null = null;
+
+    const showError = (message?: string) => {
+      error.textContent = message || failedText;
+      error.hidden = false;
+      // Tie the message to the field: moving focus there must not swallow it.
+      emailIn.setAttribute('aria-describedby', 'pdf-modal-error');
+    };
+    const hideError = () => {
+      error.hidden = true;
+      emailIn.removeAttribute('aria-describedby');
+    };
+
+    const showStep = (done: boolean) => {
+      formStep.hidden = done;
+      doneStep.hidden = !done;
+      panel.setAttribute('aria-labelledby', done ? 'pdf-modal-done' : 'pdf-modal-title');
+      if (done) panel.removeAttribute('aria-describedby');
+      else panel.setAttribute('aria-describedby', 'pdf-modal-intro');
+    };
+
+    const open = (trigger: HTMLElement) => {
+      opener = trigger;
+      const done = pending === 'done';
+      showStep(done);
+      if (pending !== 'error') hideError();
+      pending = null;
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      if (done) doneTitle.focus();
+      else emailIn.focus();
+    };
+
+    const close = () => {
+      if (modal.hidden) return;
+      modal.hidden = true;
+      document.body.style.overflow = '';
+      opener?.focus();
+    };
+
+    document.querySelectorAll<HTMLElement>('[data-portfolio-open]').forEach((btn) => {
+      btn.addEventListener('click', () => open(btn));
+    });
+    modal.querySelectorAll('[data-pdf-close]').forEach((el) => el.addEventListener('click', close));
+
+    // Everything focusable inside the open dialog, in DOM order. The Turnstile
+    // widget is an iframe and counts as one stop.
+    const focusables = () =>
+      [
+        ...panel.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([type="hidden"]):not([disabled]), iframe',
+        ),
+      ].filter((el) => el.getClientRects().length > 0);
+
+    document.addEventListener('keydown', (event) => {
+      if (modal.hidden) return;
+      if (event.key === 'Escape') {
+        close();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      // Keep keyboard focus inside the dialog while it is open (aria-modal).
+      const items = focusables();
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement;
+      if (event.shiftKey && (active === first || !panel.contains(active))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (active === last || !panel.contains(active))) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    form.addEventListener('submit', () => {
+      hideError();
+    });
+    form.addEventListener('lead:success', (event) => {
+      emailOut.textContent = (event as CustomEvent<{ email?: string }>).detail?.email ?? '';
+      // Clear the address but keep the chosen language for a second request.
+      emailIn.value = '';
+      if (modal.hidden) {
+        pending = 'done';
+        return;
+      }
+      showStep(true);
+      doneTitle.focus();
+    });
+    form.addEventListener('lead:error', (event) => {
+      showError((event as CustomEvent<{ message?: string }>).detail?.message);
+      if (modal.hidden) {
+        pending = 'error';
+        return;
+      }
+      // The submit button was disabled during the request and lost focus to
+      // <body>. Hand it back to the address field once the shared script has
+      // re-enabled the form, so keyboard users stay inside the dialog.
+      setTimeout(() => emailIn.focus(), 0);
+    });
+  }
+</script>

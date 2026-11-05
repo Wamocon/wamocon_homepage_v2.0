@@ -1,8 +1,9 @@
 /**
  * Copy for the "Portfolio" page (/portfolio/, formerly /universum/): the
  * WAMOCON portfolio told as a universe.
- * Source: WAMOCON_Portfolio.pdf (one-pager). Every figure on the page comes
- * from that document; nothing here is invented, the governance demo is
+ * Source: the portfolio one-pager (api/_portfolio/WAMOCON_Portfolio_DE.pdf,
+ * PowerPoint source kept outside Git in Portfolio/). Every figure on the page
+ * comes from that document; nothing here is invented, the governance demo is
  * labelled as a schematic.
  */
 import type { Lang } from '../i18n/config';
@@ -35,7 +36,6 @@ export const universeCopy = {
       l1: 'KI prüft.',
       l2: 'Der Mensch entscheidet.',
       lead: 'Software mit eingebauter Kontrolle, SAP-Beratung und Training. Für regulierte Konzerne in DACH und Zentralasien.',
-      explore: 'Portfolio erkunden',
       demo: 'Live-Demo anfragen',
       orbitLabel: 'Die drei Welten unseres Portfolios',
       orbitHint: 'Wählen Sie einen Planeten, um dorthin zu fliegen.',
@@ -175,8 +175,22 @@ export const universeCopy = {
       title: 'Bereit für den Start?',
       text: 'Beginnen Sie mit einer Live-Demo und einem Governance-Check für Ihre SAP- oder ERP-Landschaft.',
       primary: 'Live-Demo anfragen',
-      secondary: 'Systeme entdecken',
-      secondaryHref: '/systeme/',
+    },
+    /** Portfolio PDF request: hero button, closing button and popup. */
+    pdf: {
+      button: 'Portfolio als PDF',
+      title: 'Portfolio als PDF',
+      intro: 'Wir schicken Ihnen unseren Onepager per E-Mail. Kein Newsletter.',
+      langLegend: 'Sprache des PDFs',
+      langNote: '',
+      email: 'E-Mail',
+      emailHint: 'Bitte eine vollständige Adresse eingeben, z. B. name@firma.de',
+      submit: 'PDF zusenden',
+      doneTitle: 'Das PDF ist unterwegs',
+      doneText: 'Wir haben das Portfolio an {email} geschickt. Kommt es nicht an, sehen Sie bitte auch im Spam-Ordner nach.',
+      done: 'Fertig',
+      failed: 'Ihre Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder schreiben Sie an info@wamocon.com.',
+      close: 'Schließen',
     },
   },
 
@@ -190,7 +204,6 @@ export const universeCopy = {
       l1: 'AI checks.',
       l2: 'Humans decide.',
       lead: 'Software with built-in control, SAP consulting and training. For regulated enterprises in the DACH region and Central Asia.',
-      explore: 'Explore the portfolio',
       demo: 'Request a live demo',
       orbitLabel: 'The three worlds of our portfolio',
       orbitHint: 'Select a planet to fly there.',
@@ -330,8 +343,21 @@ export const universeCopy = {
       title: 'Ready for launch?',
       text: 'Start with a live demo and a governance check of your SAP or ERP landscape.',
       primary: 'Request a live demo',
-      secondary: 'Discover the systems',
-      secondaryHref: '/en/systems/',
+    },
+    pdf: {
+      button: 'Portfolio as PDF',
+      title: 'Portfolio as PDF',
+      intro: 'We will email you our one-page overview. No newsletter.',
+      langLegend: 'PDF language',
+      langNote: '',
+      email: 'Email',
+      emailHint: 'Please enter a full address, e.g. name@company.com',
+      submit: 'Send me the PDF',
+      doneTitle: 'The PDF is on its way',
+      doneText: 'We have sent the portfolio to {email}. If it does not arrive, please check your spam folder too.',
+      done: 'Done',
+      failed: 'Your request could not be sent. Please try again or write to info@wamocon.com.',
+      close: 'Close',
     },
   },
 
@@ -345,7 +371,6 @@ export const universeCopy = {
       l1: 'Yapay zekâ denetler.',
       l2: 'İnsan karar verir.',
       lead: 'Yerleşik kontrollü yazılım, SAP danışmanlığı ve eğitim. DACH bölgesi ve Orta Asya’daki regülasyona tabi büyük şirketler için.',
-      explore: 'Portföyü keşfedin',
       demo: 'Canlı demo talep edin',
       orbitLabel: 'Portföyümüzün üç dünyası',
       orbitHint: 'Oraya uçmak için bir gezegen seçin.',
@@ -485,8 +510,21 @@ export const universeCopy = {
       title: 'Kalkışa hazır mısınız?',
       text: 'SAP veya ERP ortamınız için canlı bir demo ve yönetişim kontrolüyle başlayın.',
       primary: 'Canlı demo talep edin',
-      secondary: 'Sistemleri keşfedin',
-      secondaryHref: '/tr/sistemler/',
+    },
+    pdf: {
+      button: 'Portföyü PDF olarak alın',
+      title: 'Portföyümüz PDF olarak',
+      intro: 'Tek sayfalık özetimizi size e-postayla gönderelim. Bülten göndermeyiz.',
+      langLegend: 'PDF dili',
+      langNote: 'Portföyümüz yalnızca Almanca ve İngilizce olarak mevcuttur.',
+      email: 'E-posta',
+      emailHint: 'Lütfen tam bir adres girin, ör. ad@firma.com',
+      submit: 'PDF’yi bana gönderin',
+      doneTitle: 'PDF yola çıktı',
+      doneText: 'Portföyü {email} adresine gönderdik. Gelmezse lütfen spam klasörünüze de bakın.',
+      done: 'Tamam',
+      failed: 'Talebiniz gönderilemedi. Lütfen tekrar deneyin veya info@wamocon.com adresine yazın.',
+      close: 'Kapat',
     },
   },
 
@@ -500,7 +538,6 @@ export const universeCopy = {
       l1: 'ЖИ тексереді.',
       l2: 'Шешімді адам қабылдайды.',
       lead: 'Бақылауы кіріктірілген бағдарламалық жасақтама, SAP консалтингі және оқыту. DACH өңірі мен Орталық Азиядағы реттелетін ірі компанияларға арналған.',
-      explore: 'Портфолионы зерттеу',
       demo: 'Тікелей демо сұрау',
       orbitLabel: 'Портфолиомыздың үш әлемі',
       orbitHint: 'Сол жерге ұшу үшін планетаны таңдаңыз.',
@@ -640,8 +677,21 @@ export const universeCopy = {
       title: 'Ұшуға дайынсыз ба?',
       text: 'SAP немесе ERP жүйеңіз үшін тікелей демо мен басқару тексеруінен бастаңыз.',
       primary: 'Тікелей демо сұрау',
-      secondary: 'Жүйелерді ашу',
-      secondaryHref: '/kk/juieler/',
+    },
+    pdf: {
+      button: 'Портфолионы PDF түрінде алу',
+      title: 'Портфолиомыз PDF түрінде',
+      intro: 'Бір беттік шолуымызды электрондық поштаңызға жібереміз. Сізді жаңалықтар таратылымына қоспаймыз.',
+      langLegend: 'PDF тілі',
+      langNote: 'Портфолиомыз тек неміс және ағылшын тілдерінде бар.',
+      email: 'Электрондық пошта',
+      emailHint: 'Толық мекенжайды жазыңыз, мысалы name@company.kz',
+      submit: 'PDF файлын алу',
+      doneTitle: 'PDF жіберілді',
+      doneText: 'Портфолионы {email} мекенжайына жібердік. Хат келмесе, спам қалтасын да тексеріңіз.',
+      done: 'Жарайды',
+      failed: 'Сұрауыңыз жіберілмеді. Қайталап көріңіз немесе info@wamocon.com мекенжайына жазыңыз.',
+      close: 'Жабу',
     },
   },
 } satisfies Record<Lang, unknown>;

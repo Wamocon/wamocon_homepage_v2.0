@@ -527,13 +527,29 @@ const structuredData = {
         if (submit) submit.before(container, hidden);
         else form.append(container, hidden);
 
-        window.turnstile.render(container, {
+        const widgetId = window.turnstile.render(container, {
           sitekey: ACTIVE_TURNSTILE_SITE_KEY,
           theme: 'dark',
           callback: (token) => { hidden.value = token; },
           'error-callback': () => { hidden.value = ''; },
           'expired-callback': () => { hidden.value = ''; },
         });
+        // Kept so this form can reset its own widget; a bare reset() would hit
+        // whichever widget on the page was rendered last.
+        if (widgetId) container.dataset.widgetId = widgetId;
+      };
+
+      // A Turnstile token is single-use: after every attempt the form needs a
+      // fresh one before it can be sent again.
+      // Never throws: on the success path a hiccup in the Turnstile API must not
+      // turn a delivered request into an error message (and a second send).
+      const resetTurnstile = (form) => {
+        try {
+          const box = form.querySelector('.cf-turnstile');
+          if (window.turnstile && box) window.turnstile.reset(box.dataset.widgetId || box);
+        } catch {}
+        const token = form.querySelector('input[name="cf-turnstile-response"]');
+        if (token) token.value = '';
       };
 
       const setupActiveLeadForms = () => {
@@ -565,7 +581,12 @@ const structuredData = {
               await ensureActiveTurnstile(form).catch(() => {});
               const token = form.querySelector('input[name="cf-turnstile-response"]')?.value || '';
               if (!token) {
-                alert(msg.captcha);
+                // Inline forms show the hint in their own error box, no native dialog.
+                if (form.hasAttribute('data-inline-success')) {
+                  form.dispatchEvent(new CustomEvent('lead:error', { detail: { message: msg.captcha } }));
+                } else {
+                  alert(msg.captcha);
+                }
                 return;
               }
             }
@@ -582,8 +603,13 @@ const structuredData = {
               source: (fd.get('source') || '').toString(),
               sourceOther: (fd.get('sourceOther') || '').toString(),
               testimonialConsent: fd.get('testimonialConsent') === 'on',
+              pdfLang: (fd.get('pdfLang') || '').toString(),
               'cf-turnstile-response': (fd.get('cf-turnstile-response') || '').toString(),
             };
+            // Forms marked data-inline-success (the portfolio PDF popup) show
+            // their own confirmation and keep the visitor on the page; they
+            // listen for lead:success / lead:error instead.
+            const inline = form.hasAttribute('data-inline-success');
 
             try {
               const response = await fetch('/api/lead', {
@@ -592,13 +618,18 @@ const structuredData = {
                 body: JSON.stringify(payload),
               });
               if (!response.ok) throw new Error('Request failed');
+              if (inline) {
+                resetTurnstile(form);
+                if (submit) submit.disabled = false;
+                form.dispatchEvent(new CustomEvent('lead:success', { detail: { email } }));
+                return;
+              }
               window.location.assign(form.dataset.redirect || msg.thankYou);
             } catch {
-              alert(msg.failed);
+              if (inline) form.dispatchEvent(new CustomEvent('lead:error'));
+              else alert(msg.failed);
               if (submit) submit.disabled = false;
-              if (window.turnstile) window.turnstile.reset();
-              const token = form.querySelector('input[name="cf-turnstile-response"]');
-              if (token) token.value = '';
+              resetTurnstile(form);
             }
           });
         });

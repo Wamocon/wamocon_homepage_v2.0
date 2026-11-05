@@ -30,4 +30,8 @@ email-preview-*.html
 # high-res source photos (not deployed)
 _originals/
 
+# PowerPoint sources and exports of the portfolio one-pager (owner's working
+# folder). Only the two PDFs the site mails out are versioned, in api/_portfolio/.
+/Portfolio/
+
 .vercel
