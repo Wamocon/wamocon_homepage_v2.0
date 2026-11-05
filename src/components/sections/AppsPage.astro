@@ -7,6 +7,7 @@
  */
 import Button from '../ui/Button.astro';
 import AppCard from '../ui/AppCard.astro';
+import SystemBoard from '../ui/SystemBoard.astro';
 import ContactBlock from './ContactBlock.astro';
 import { appCategories } from '../../data/apps';
 import type { Lang } from '../../i18n/config';
@@ -86,8 +87,6 @@ const cta = {
     ideaTeaserCta: 'Idee besprechen',
     missionLabel: 'Unsere Mission',
     appsWord: 'Systeme',
-    aiBadgeLabel: 'Dieses Bild wurde mit künstlicher Intelligenz erstellt',
-    aiBadgeText: 'KI-generiert',
     schemaDescription:
       'Die WAMOCON GmbH aus Eschborn entwickelt nützliche Systeme für Büro, künstliche Intelligenz, Mobilität und Ausbildung. Hier finden Sie alle unsere Systeme im Überblick.',
   },
@@ -108,8 +107,6 @@ const cta = {
     ideaTeaserCta: 'Discuss your idea',
     missionLabel: 'Our mission',
     appsWord: 'systems',
-    aiBadgeLabel: 'This image was created using artificial intelligence',
-    aiBadgeText: 'AI-generated',
     schemaDescription:
       'WAMOCON GmbH from Eschborn develops useful software systems for office tasks, artificial intelligence, mobility and vocational training. Explore all our systems in one place.',
   },
@@ -130,8 +127,6 @@ const cta = {
     ideaTeaserCta: 'Fikrinizi konuşalım',
     missionLabel: 'Misyonumuz',
     appsWord: 'sistem',
-    aiBadgeLabel: 'Bu görsel yapay zekâ ile oluşturulmuştur',
-    aiBadgeText: 'Yapay zekâ üretimi',
     schemaDescription:
       'Eschborn merkezli WAMOCON GmbH; ofis, yapay zekâ, mobilite ve mesleki eğitim için kullanışlı sistemler geliştirir. Tüm sistemlerimizi burada topluca bulabilirsiniz.',
   },
@@ -152,8 +147,6 @@ const cta = {
     ideaTeaserCta: 'Идеяңызды талқылайық',
     missionLabel: 'Миссиямыз',
     appsWord: 'жүйе',
-    aiBadgeLabel: 'Бұл сурет жасанды интеллект көмегімен жасалды',
-    aiBadgeText: 'ЖИ жасаған',
     schemaDescription:
       'Эшборндағы WAMOCON GmbH кеңсеге, жасанды интеллектке, көлікке және кәсіби оқуға арналған пайдалы жүйелер жасайды. Барлық жүйемізді осы беттен бір жерден табасыз.',
   },
@@ -226,17 +219,7 @@ const jsonLd = {
       </div>
     </div>
     <div class="apps-hero__media" data-reveal="right" data-reveal-delay="200">
-      <div class="apps-hero__img-wrap">
-        <img
-          src="/images/apps-hero.png"
-          alt={hero.imgAlt}
-          width="720"
-          height="450"
-          loading="eager"
-          fetchpriority="high"
-        />
-        <span class="ai-badge" aria-label={cta.aiBadgeLabel}>{cta.aiBadgeText}</span>
-      </div>
+      <SystemBoard label={hero.imgAlt} />
     </div>
   </div>
 </section>
@@ -401,58 +384,6 @@ const jsonLd = {
   .apps-hero__media {
     position: relative;
   }
-  .apps-hero__img-wrap {
-    position: relative;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow:
-      0 30px 80px -20px rgba(0, 0, 0, 0.6),
-      0 15px 50px -25px rgba(244, 14, 14, 0.25);
-    animation: hero-float 7s ease-in-out infinite;
-  }
-  .apps-hero__img-wrap::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      135deg,
-      rgba(244, 14, 14, 0.12) 0%,
-      transparent 50%,
-      rgba(244, 14, 14, 0.06) 100%
-    );
-    z-index: 1;
-    pointer-events: none;
-  }
-  .apps-hero__img-wrap img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-  /* Art. 50(5) EU AI Act: the label must be perceivable and accessible.
-     Solid dark background + white text = high contrast; sits above the
-     ::before overlay (z-index 1). */
-  .apps-hero__img-wrap .ai-badge {
-    position: absolute;
-    right: 0.6rem;
-    bottom: 0.6rem;
-    z-index: 2;
-    padding: 0.28rem 0.6rem;
-    border-radius: 999px;
-    background: rgba(0, 0, 0, 0.82);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    color: #fff;
-    font-size: 0.72rem;
-    font-weight: var(--fw-semibold);
-    letter-spacing: 0.02em;
-    line-height: 1;
-    pointer-events: none;
-  }
-  @keyframes hero-float {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-14px) rotate(-0.5deg); }
-  }
-
   /* ---------- story strip ---------- */
   .story-strip {
     position: relative;
