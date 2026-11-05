@@ -76,7 +76,7 @@ const [donePre, donePost = ''] = t.doneText.split('{email}');
         <p class="pdf-modal__consent">
           {chrome.consentPre}<a href={privacyHref}>{chrome.consentLink}</a>{chrome.consentPost}
         </p>
-        <p class="pdf-modal__error" id="pdf-modal-error" role="alert" data-pdf-error hidden>{t.failed}</p>
+        <p class="pdf-modal__error" id="pdf-modal-error" role="alert" data-pdf-error data-code-label={t.errorCode} hidden>{t.failed}</p>
         <button type="submit" class="pdf-modal__button">{t.submit}</button>
       </form>
     </div>
@@ -318,6 +318,7 @@ const [donePre, donePost = ''] = t.doneText.split('{email}');
     const emailOut = modal.querySelector<HTMLElement>('[data-pdf-email]')!;
     const emailIn = form.querySelector<HTMLInputElement>('input[name="email"]')!;
     const failedText = error.textContent ?? '';
+    const codeLabel = error.dataset.codeLabel ?? '';
     let opener: HTMLElement | null = null;
     // Outcome of a request that finished while the dialog was closed; shown on
     // the next open, so nobody re-sends and gets the PDF twice.
@@ -412,7 +413,10 @@ const [donePre, donePost = ''] = t.doneText.split('{email}');
       doneTitle.focus();
     });
     form.addEventListener('lead:error', (event) => {
-      showError((event as CustomEvent<{ message?: string }>).detail?.message);
+      const detail = (event as CustomEvent<{ message?: string; code?: string }>).detail;
+      // A failed request carries a short code (e.g. 502-token); it lets a
+      // screenshot of the message show where the request failed.
+      showError(detail?.message ?? (detail?.code ? `${failedText} (${codeLabel}: ${detail.code})` : undefined));
       if (modal.hidden) {
         pending = 'error';
         return;

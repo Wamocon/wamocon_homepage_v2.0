@@ -52,6 +52,7 @@ function portfolioAttachment(pdfLang) {
       portfolioCache.set(pdfLang, readFileSync(pdf.url).toString('base64'));
     } catch (err) {
       console.error('[lead] portfolio pdf missing', pdf.name, err.code || err.message);
+      err.stage = 'pdf';
       throw err;
     }
   }
@@ -76,8 +77,19 @@ function readBody(req) {
   return {};
 }
 
+// Error messages from Graph or Entra ID may quote an address; keep those out of
+// the logs, keep the rest (status, AADSTS code, Graph error code) for diagnosis.
+function redact(message) {
+  return String(message || '')
+    .replace(/[^\s@"'<>,;:()[\]]+@[^\s@"'<>,;:()[\]]+/g, '[address]')
+    .slice(0, 600);
+}
+
+// Returns { ok, reason }. reason is Cloudflare's first error code, e.g.
+// invalid-input-secret (the secret in Vercel is wrong), invalid-input-response
+// (token not valid for this secret) or timeout-or-duplicate (token reused or expired).
 async function verifyTurnstile(token) {
-  if (!TURNSTILE_SECRET) return true;
+  if (!TURNSTILE_SECRET) return { ok: true };
   try {
     const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'POST',
@@ -85,10 +97,13 @@ async function verifyTurnstile(token) {
       body: new URLSearchParams({ secret: TURNSTILE_SECRET, response: token }),
     });
     const data = await res.json();
-    return data.success === true;
+    if (data.success === true) return { ok: true };
+    const codes = Array.isArray(data['error-codes']) ? data['error-codes'].map(String) : [];
+    console.error('[lead] Turnstile rejected the token', codes.join(',') || 'no reason given');
+    return { ok: false, reason: codes[0] || 'rejected' };
   } catch (err) {
     console.error('[lead] Turnstile verification error', err.message || err);
-    return false;
+    return { ok: false, reason: 'unreachable' };
   }
 }
 
@@ -599,36 +614,58 @@ async function sendEmails(submission) {
       portfolioAttachment(submission.pdfLang);
       // In production the popup must not say "the PDF is on its way" when
       // nothing was sent; fail instead (local and preview keep working).
-      if (process.env.VERCEL_ENV === 'production') throw new Error('Mail delivery is not configured.');
+      if (process.env.VERCEL_ENV === 'production') {
+        throw Object.assign(new Error('Mail delivery is not configured.'), { stage: 'config' });
+      }
     }
     console.log('[lead] Graph env vars missing — skipping email');
     return;
   }
 
-  const accessToken = await getAccessToken();
+  let accessToken;
+  try {
+    accessToken = await getAccessToken();
+  } catch (err) {
+    // AADSTS700082 / invalid_grant: the stored refresh token has expired or was
+    // revoked. Fix: run scripts/graph-auth.mjs and put the new token into Vercel.
+    if (/AADSTS700082|AADSTS70008|AADSTS50173|invalid_grant/.test(err.message || '')) {
+      console.error('[lead] GRAPH_REFRESH_TOKEN expired or revoked: renew it with scripts/graph-auth.mjs and update Vercel');
+    }
+    err.stage = 'token';
+    throw err;
+  }
+  // Tags a failed Graph call, so the response tells token, PDF and send apart.
+  const send = async (message) => {
+    try {
+      await graphSendMail(accessToken, message);
+    } catch (err) {
+      err.stage = err.stage || 'send';
+      throw err;
+    }
+  };
 
   if (submission.type === 'portfolio') {
     // The visitor asked for the PDF, so that mail goes first. A failed internal
     // notification must not turn an already delivered PDF into an error the
     // visitor sees (and then retries, receiving the PDF twice).
-    await graphSendMail(accessToken, portfolioEmail(submission));
+    await send(portfolioEmail(submission));
     console.log('[lead] portfolio pdf sent', { pdfLang: submission.pdfLang });
     try {
-      await graphSendMail(accessToken, portfolioInternalEmail(submission));
+      await send(portfolioInternalEmail(submission));
       console.log('[lead] internal notification sent');
     } catch (err) {
-      console.error('[lead] internal notification failed');
+      console.error('[lead] internal notification failed', redact(err.message));
     }
     return;
   }
 
   // 1. Internal notification
-  await graphSendMail(accessToken, internalEmail(submission));
+  await send(internalEmail(submission));
   console.log('[lead] internal notification sent');
 
   // 2. Visitor confirmation
   if (submission.email) {
-    await graphSendMail(accessToken, confirmationEmail(submission));
+    await send(confirmationEmail(submission));
     console.log('[lead] visitor confirmation sent');
   }
 }
@@ -717,9 +754,13 @@ export default async function handler(req, res) {
     if (!turnstileToken) {
       return res.status(400).json({ ok: false, error: 'CAPTCHA token missing.' });
     }
-    const turnstileOk = await verifyTurnstile(turnstileToken);
-    if (!turnstileOk) {
-      return res.status(403).json({ ok: false, error: 'CAPTCHA verification failed.' });
+    const turnstile = await verifyTurnstile(turnstileToken);
+    if (!turnstile.ok) {
+      // The code is shown in the form's error message, so a failed attempt can be
+      // diagnosed from a screenshot without browser tools or server logs.
+      return res
+        .status(403)
+        .json({ ok: false, error: 'CAPTCHA verification failed.', code: `403-${turnstile.reason}` });
     }
   }
 
@@ -765,8 +806,11 @@ export default async function handler(req, res) {
   try {
     await sendEmails(submission);
   } catch (err) {
-    console.error('[lead] email delivery failed');
-    return res.status(502).json({ ok: false, error: 'Message delivery failed.' });
+    // stage: token (Graph sign-in), pdf (attachment missing), send (Graph refused
+    // the mail) or config (Graph not set up). Logged without any address.
+    const stage = err.stage || 'unknown';
+    console.error('[lead] email delivery failed', stage, redact(err.message));
+    return res.status(502).json({ ok: false, error: 'Message delivery failed.', code: `502-${stage}` });
   }
 
   return res.status(200).json({ ok: true });

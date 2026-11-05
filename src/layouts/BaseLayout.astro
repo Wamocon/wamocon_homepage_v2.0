@@ -57,6 +57,7 @@ const formMessages = {
     captcha: 'Bitte bestätigen Sie die Sicherheitsprüfung.',
     failed:
       'Ihre Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder kontaktieren Sie uns per E-Mail.',
+    errorCode: 'Fehlercode',
     thankYou: '/danke/',
   },
   en: {
@@ -64,6 +65,7 @@ const formMessages = {
     captcha: 'Please complete the security check.',
     failed:
       'Your inquiry could not be sent. Please try again or contact us by email.',
+    errorCode: 'Error code',
     thankYou: '/en/thank-you/',
   },
   tr: {
@@ -71,6 +73,7 @@ const formMessages = {
     captcha: 'Lütfen güvenlik doğrulamasını tamamlayın.',
     failed:
       'Talebiniz gönderilemedi. Lütfen tekrar deneyin veya bize e-posta ile ulaşın.',
+    errorCode: 'Hata kodu',
     thankYou: '/tr/tesekkurler/',
   },
   kk: {
@@ -78,6 +81,7 @@ const formMessages = {
     captcha: 'Қауіпсіздік тексерісінен өтіңіз.',
     failed:
       'Сұрауыңыз жіберілмеді. Қайталап көріңіз немесе бізге электрондық поштамен жазыңыз.',
+    errorCode: 'Қате коды',
     thankYou: '/kk/raqmet/',
   },
 };
@@ -552,11 +556,34 @@ const structuredData = {
         if (token) token.value = '';
       };
 
+      const readToken = (form) => form.querySelector('input[name="cf-turnstile-response"]')?.value || '';
+
+      // The check only starts when the visitor reaches the form and needs a few
+      // seconds, longer on a busy computer or when Cloudflare asks for a click.
+      // Wait for its token instead of rejecting someone who pressed the button
+      // right away (e.g. after a password manager filled in the address).
+      const waitForToken = async (form, timeoutMs) => {
+        const deadline = Date.now() + timeoutMs;
+        while (!readToken(form) && Date.now() < deadline) {
+          await new Promise((resolve) => setTimeout(resolve, 200));
+        }
+        return readToken(form);
+      };
+
       const setupActiveLeadForms = () => {
         document.querySelectorAll('form.js-lead-form').forEach((form) => {
           const startProtection = () => ensureActiveTurnstile(form).catch(() => {});
           form.addEventListener('focusin', startProtection, { once: true });
           form.addEventListener('pointerenter', startProtection, { once: true });
+
+          // Back from the thank-you page: the restored page must not keep the
+          // button locked from the request that led there.
+          window.addEventListener('pageshow', (event) => {
+            if (!event.persisted) return;
+            delete form.dataset.sending;
+            const button = form.querySelector('button[type="submit"]');
+            if (button) button.disabled = false;
+          });
 
           form.addEventListener('submit', async (event) => {
             event.preventDefault();
@@ -577,12 +604,29 @@ const structuredData = {
               return;
             }
 
+            // One request at a time: while the form waits for the security check,
+            // a second click or Enter must not start a second request.
+            if (form.dataset.sending) return;
+            form.dataset.sending = 'true';
+            const submit = form.querySelector('button[type="submit"]');
+            if (submit) submit.disabled = true;
+            const release = () => {
+              delete form.dataset.sending;
+              if (submit) submit.disabled = false;
+            };
+            // Forms marked data-inline-success (the portfolio PDF popup) show
+            // their own confirmation and keep the visitor on the page; they
+            // listen for lead:success / lead:error instead.
+            const inline = form.hasAttribute('data-inline-success');
+
+            let turnstileToken = '';
             if (ACTIVE_TURNSTILE_SITE_KEY) {
               await ensureActiveTurnstile(form).catch(() => {});
-              const token = form.querySelector('input[name="cf-turnstile-response"]')?.value || '';
-              if (!token) {
+              turnstileToken = await waitForToken(form, 20000);
+              if (!turnstileToken) {
+                release();
                 // Inline forms show the hint in their own error box, no native dialog.
-                if (form.hasAttribute('data-inline-success')) {
+                if (inline) {
                   form.dispatchEvent(new CustomEvent('lead:error', { detail: { message: msg.captcha } }));
                 } else {
                   alert(msg.captcha);
@@ -591,8 +635,6 @@ const structuredData = {
               }
             }
 
-            const submit = form.querySelector('button[type="submit"]');
-            if (submit) submit.disabled = true;
             const payload = {
               type: (fd.get('type') || 'lead').toString(),
               lang: language,
@@ -604,12 +646,9 @@ const structuredData = {
               sourceOther: (fd.get('sourceOther') || '').toString(),
               testimonialConsent: fd.get('testimonialConsent') === 'on',
               pdfLang: (fd.get('pdfLang') || '').toString(),
-              'cf-turnstile-response': (fd.get('cf-turnstile-response') || '').toString(),
+              // Read after the wait above: the FormData snapshot predates the token.
+              'cf-turnstile-response': turnstileToken,
             };
-            // Forms marked data-inline-success (the portfolio PDF popup) show
-            // their own confirmation and keep the visitor on the page; they
-            // listen for lead:success / lead:error instead.
-            const inline = form.hasAttribute('data-inline-success');
 
             try {
               const response = await fetch('/api/lead', {
@@ -617,18 +656,28 @@ const structuredData = {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
               });
-              if (!response.ok) throw new Error('Request failed');
+              if (!response.ok) {
+                // Short code for the error message (e.g. 502-token, 403-invalid-input-secret),
+                // so a screenshot of a failed attempt is enough to find the cause.
+                let code = String(response.status);
+                try {
+                  const data = await response.json();
+                  if (data && typeof data.code === 'string') code = data.code;
+                } catch {}
+                throw Object.assign(new Error('Request failed'), { code });
+              }
               if (inline) {
                 resetTurnstile(form);
-                if (submit) submit.disabled = false;
+                release();
                 form.dispatchEvent(new CustomEvent('lead:success', { detail: { email } }));
                 return;
               }
               window.location.assign(form.dataset.redirect || msg.thankYou);
-            } catch {
-              if (inline) form.dispatchEvent(new CustomEvent('lead:error'));
-              else alert(msg.failed);
-              if (submit) submit.disabled = false;
+            } catch (err) {
+              const code = (err && err.code) || 'network';
+              if (inline) form.dispatchEvent(new CustomEvent('lead:error', { detail: { code } }));
+              else alert(`${msg.failed} (${msg.errorCode}: ${code})`);
+              release();
               resetTurnstile(form);
             }
           });
