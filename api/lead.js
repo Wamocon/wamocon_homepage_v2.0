@@ -288,15 +288,22 @@ function sourceLabel(submission, isDe) {
   return submission.sourceOther ? `${base}: ${submission.sourceOther}` : base;
 }
 
-function emailLayout({ title, lang, body }) {
+// Small red text on the dark mail card. CI red #f40e0e reaches only 4.2:1 there;
+// the site's --color-accent-text reaches 5.6:1 and so meets WCAG AA.
+const SMALL_RED = '#ff5252';
+
+// eyebrow: the small red line above the title. footerLine: replaces the
+// standard footer sentence, e.g. when the body already explains how to reply.
+function emailLayout({ title, lang, body, eyebrow = 'WAMOCON GmbH', footerLine: customFooter }) {
   const footerLine =
-    lang === 'de'
+    customFooter ||
+    (lang === 'de'
       ? 'Diese E-Mail wurde automatisch versendet. Bei Fragen antworten Sie einfach auf diese Nachricht.'
       : lang === 'tr'
         ? 'Bu e-posta otomatik olarak gönderilmiştir. Sorularınız için bu mesajı yanıtlamanız yeterlidir.'
         : lang === 'kk'
           ? 'Бұл хат автоматты түрде жіберілді. Сұрағыңыз болса, осы хатқа жауап жазсаңыз болғаны.'
-          : 'This email was sent automatically. If you have any questions, simply reply to this message.';
+          : 'This email was sent automatically. If you have any questions, simply reply to this message.');
   // § 35a GmbHG: a mail to a named recipient is a business letter and has to
   // state legal form, registered office, register court and number, and the
   // managing director. Wording as in the imprint of each language.
@@ -322,7 +329,7 @@ function emailLayout({ title, lang, body }) {
           <tr><td style="height:5px;background-color:#f40e0e;font-size:0;line-height:0;">&nbsp;</td></tr>
           <tr>
             <td style="padding:36px 32px 24px;">
-              <p style="margin:0 0 8px;font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#f40e0e;">WAMOCON GmbH</p>
+              <p style="margin:0 0 8px;font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:${SMALL_RED};font-family:'Poppins',Arial,sans-serif;">${escapeHtml(eyebrow)}</p>
               <h1 style="margin:0;font-size:23px;font-weight:700;color:#ffffff;line-height:1.25;font-family:'Poppins',Arial,sans-serif;">${escapeHtml(title)}</h1>
             </td>
           </tr>
@@ -335,9 +342,9 @@ function emailLayout({ title, lang, body }) {
             <td style="padding:0 32px 32px;">
               <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-top:1px solid rgba(255,255,255,0.08);">
                 <tr>
-                  <td style="padding-top:18px;color:rgba(255,255,255,0.45);font-size:12px;line-height:1.55;">
+                  <td style="padding-top:18px;color:rgba(255,255,255,0.45);font-size:12px;line-height:1.55;font-family:'Poppins',Arial,sans-serif;">
                     ${footerLine}<br>
-                    <a href="https://www.wamocon.com" style="color:#f40e0e;text-decoration:none;">www.wamocon.com</a><br>
+                    <a href="https://www.wamocon.com" style="color:#ff5252;text-decoration:none;">www.wamocon.com</a><br>
                     <span style="display:inline-block;margin-top:10px;">${legalLine}</span>
                   </td>
                 </tr>
@@ -374,10 +381,10 @@ function detailTable(submission, lang) {
   return `
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.06);">
   <tr><td style="padding:22px;">
-    <h2 style="margin:0 0 16px;font-size:15px;font-weight:700;color:#f40e0e;text-transform:uppercase;letter-spacing:0.05em;">${t.heading}</h2>
+    <h2 style="margin:0 0 16px;font-size:15px;font-weight:700;color:#ff5252;text-transform:uppercase;letter-spacing:0.05em;">${t.heading}</h2>
     <p style="margin:0 0 8px;"><strong style="color:#ffffff;">${t.name}:</strong> ${escapeHtml(submission.name)}</p>
     <p style="margin:0 0 8px;"><strong style="color:#ffffff;">${t.phone}:</strong> ${escapeHtml(submission.phone)}</p>
-    <p style="margin:0 0 8px;"><strong style="color:#ffffff;">E-Mail:</strong> <a href="mailto:${escapeHtml(submission.email)}" style="color:#f40e0e;text-decoration:none;">${escapeHtml(submission.email)}</a></p>
+    <p style="margin:0 0 8px;"><strong style="color:#ffffff;">E-Mail:</strong> <a href="mailto:${escapeHtml(submission.email)}" style="color:#ff5252;text-decoration:none;">${escapeHtml(submission.email)}</a></p>
     ${extraRows}
   </td></tr>
 </table>`;
@@ -422,7 +429,7 @@ function internalEmail(submission) {
     <p style="margin:0 0 10px;"><strong style="color:#ffffff;">${isDe ? 'Sprache' : 'Language'}:</strong> ${escapeHtml(langName)}</p>
     <p style="margin:0 0 10px;"><strong style="color:#ffffff;">${isDe ? 'Name' : 'Name'}:</strong> ${escapeHtml(submission.name)}</p>
     <p style="margin:0 0 10px;"><strong style="color:#ffffff;">${isDe ? 'Telefon' : 'Phone'}:</strong> ${escapeHtml(submission.phone)}</p>
-    <p style="margin:0 0 10px;"><strong style="color:#ffffff;">E-Mail:</strong> <a href="mailto:${escapeHtml(submission.email)}" style="color:#f40e0e;text-decoration:none;">${escapeHtml(submission.email)}</a></p>
+    <p style="margin:0 0 10px;"><strong style="color:#ffffff;">E-Mail:</strong> <a href="mailto:${escapeHtml(submission.email)}" style="color:#ff5252;text-decoration:none;">${escapeHtml(submission.email)}</a></p>
     ${extraRows}
   </td></tr>
 </table>
@@ -490,12 +497,12 @@ function confirmationEmail(submission) {
     : '';
 
   const urgent = isDe
-    ? 'Bei dringenden Anliegen antworten Sie einfach auf diese E-Mail oder schreiben Sie uns an <a href="mailto:info@wamocon.com" style="color:#f40e0e;text-decoration:none;">info@wamocon.com</a>.'
+    ? 'Bei dringenden Anliegen antworten Sie einfach auf diese E-Mail oder schreiben Sie uns an <a href="mailto:info@wamocon.com" style="color:#ff5252;text-decoration:none;">info@wamocon.com</a>.'
     : isTr
-      ? 'Acil durumlar için bu e-postayı yanıtlayabilir veya <a href="mailto:info@wamocon.com" style="color:#f40e0e;text-decoration:none;">info@wamocon.com</a> adresine yazabilirsiniz.'
+      ? 'Acil durumlar için bu e-postayı yanıtlayabilir veya <a href="mailto:info@wamocon.com" style="color:#ff5252;text-decoration:none;">info@wamocon.com</a> adresine yazabilirsiniz.'
       : isKk
-        ? 'Мәселе шұғыл болса, осы хатқа жауап жазыңыз немесе <a href="mailto:info@wamocon.com" style="color:#f40e0e;text-decoration:none;">info@wamocon.com</a> мекенжайына жіберіңіз.'
-        : 'If your matter is urgent, simply reply to this email or write to us at <a href="mailto:info@wamocon.com" style="color:#f40e0e;text-decoration:none;">info@wamocon.com</a>.';
+        ? 'Мәселе шұғыл болса, осы хатқа жауап жазыңыз немесе <a href="mailto:info@wamocon.com" style="color:#ff5252;text-decoration:none;">info@wamocon.com</a> мекенжайына жіберіңіз.'
+        : 'If your matter is urgent, simply reply to this email or write to us at <a href="mailto:info@wamocon.com" style="color:#ff5252;text-decoration:none;">info@wamocon.com</a>.';
 
   const signoff = isDe ? 'Mit freundlichen Grüßen' : isTr ? 'Saygılarımızla' : isKk ? 'Ізгі тілекпен' : 'Best regards';
   const teamName = isDe
@@ -530,33 +537,64 @@ ${testimonialNote}
 function portfolioEmail(submission) {
   const isDe = submission.pdfLang === 'de';
   const strong = (text) => `<strong style="color:#ffffff;">${text}</strong>`;
-  const subject = isDe ? 'Ihr WAMOCON-Portfolio' : 'Your WAMOCON portfolio';
-  const paragraphs = isDe
+  // The two companies appear as one brand, "WAMOCON Group". The legal footer
+  // still names WAMOCON GmbH, the company that actually sends the mail (§ 35a GmbHG).
+  // The mail follows the one-page PDF: it opens with the PDF's headline and
+  // names every main topic under the PDF's own section names and figures, so
+  // mail and attachment read alike (forwarded mails included). It describes the
+  // attachment; the only offer is the reply line, because the mail answers a
+  // request and must not turn into advertising (§ 7 UWG). A new PDF version may
+  // need new figures here.
+  const subject = isDe ? 'Das Portfolio der WAMOCON Group' : 'The WAMOCON Group portfolio';
+  const greeting = isDe ? 'Guten Tag,' : 'Hello,';
+  const intro = isDe
+    ? `vielen Dank für Ihr Interesse. Das Portfolio der WAMOCON Group finden Sie als PDF im Anhang. Es beginnt mit unserem Grundsatz: ${strong('KI prüft. Der Mensch entscheidet.')}`
+    : `Thank you for your interest. You will find the WAMOCON Group portfolio attached as a PDF. It opens with our principle: ${strong('AI checks. Humans decide.')}`;
+  const sections = isDe
     ? [
-        'Guten Tag,',
-        `vielen Dank für Ihr Interesse. Im Anhang finden Sie unser Portfolio als PDF: die ${strong('WAMOCON GmbH')} und die ${strong('WAMOCON Academy GmbH')} auf einer Seite.`,
-        'Wenn Sie sehen möchten, wie Built-in Governance in Ihrer SAP- oder ERP-Landschaft arbeitet, antworten Sie einfach auf diese E-Mail. Wir zeigen es Ihnen gern in einer Live-Demo.',
+        ['Der Kern', 'Built-in Governance: Vier KI-Agenten prüfen gegen 13 Prüfpunkte, freigeben kann nur ein Mensch.'],
+        ['Drei Bereiche', 'KI-Lösungen &amp; Branchen-Software, IT-Consulting &amp; SAP sowie Training &amp; Enablement, für regulierte Konzerne in DACH und Zentralasien.'],
+        ['Erfahrung und Nachweise', 'Über 100 Projekte seit 2007 in mehr als 15 Branchen und sechs Ländern, über 50 eigene Systeme, mehr als 500 Kursteilnehmende, über sieben Jahre Governance in Konzern-IT. Ausgezeichnet als „KI-Innovator 2025“, AZAV-zertifiziert und ISTQB-akkreditiert.'],
+        ['Ihr Einstieg', 'Live-Demo und Governance-Check, dann ein Pilot in zwei Monaten zum Festpreis, danach Skalierung und Partnering.'],
       ]
     : [
-        'Hello,',
-        `Thank you for your interest. Attached is our portfolio as a PDF: ${strong('WAMOCON GmbH')} and ${strong('WAMOCON Academy GmbH')} on a single page.`,
-        'If you would like to see how built-in governance works in your SAP or ERP landscape, simply reply to this email and we will show you in a live demo.',
+        ['The core', 'Built-in Governance: four AI agents check against 13 checkpoints, and only a human can sign off.'],
+        ['Three areas', 'AI solutions &amp; industry-specific software, IT consulting &amp; SAP, and training &amp; enablement, for regulated corporations in the DACH region and Central Asia.'],
+        ['Experience and credentials', 'More than 100 projects since 2007 across over 15 sectors and six countries, over 50 in-house systems, more than 500 course participants and over seven years of governance in corporate IT. Awarded ‘AI Innovator 2025’, AZAV-certified and ISTQB-accredited.'],
+        ['Your first steps', 'A live demo and governance check, then a two-month pilot at a fixed price, followed by scaling and partnering.'],
       ];
-  // DIN 5008: no comma after the German closing formula.
-  const signoff = isDe ? `Mit freundlichen Grüßen<br>${strong('Ihr WAMOCON-Team')}` : `Best regards,<br>${strong('Your WAMOCON Team')}`;
+  const reply = isDe
+    ? 'Wenn Sie Fragen haben oder eine Live-Demo sehen möchten, antworten Sie einfach auf diese E-Mail.'
+    : 'If you have any questions or would like to see a live demo, simply reply to this email.';
+  // DIN 5008: no comma after the German closing formula. British English
+  // (as in the English PDF) signs off with "Kind regards," and "The … team".
+  const signoff = isDe ? `Mit freundlichen Grüßen<br>${strong('Ihr WAMOCON-Team')}` : `Kind regards,<br>${strong('The WAMOCON team')}`;
   const why = isDe
-    ? 'Sie erhalten diese E-Mail, weil auf www.wamocon.com unser Portfolio für diese Adresse angefordert wurde. Weitere E-Mails folgen nicht.'
-    : 'You are receiving this email because our portfolio was requested for this address on www.wamocon.com. No further emails will follow.';
+    ? 'Sie erhalten diese E-Mail, weil auf www.wamocon.com unser Portfolio für diese Adresse angefordert wurde. Weitere E-Mails schicken wir Ihnen nicht.'
+    : 'You are receiving this email because our portfolio was requested for this address on www.wamocon.com. We will not send you any further emails.';
+  // The body already says how to reply, so the footer only states the fact.
+  const footerLine = isDe ? 'Diese E-Mail wurde automatisch verschickt.' : 'This email was sent automatically.';
 
   const body = `
-${paragraphs.map((text) => `<p style="margin:0 0 16px;">${text}</p>`).join('\n')}
+<p style="margin:0 0 16px;">${greeting}</p>
+<p style="margin:0;">${intro}</p>
+${sections
+  .map(
+    ([title, text]) => `<p role="heading" aria-level="2" style="margin:22px 0 4px;font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:${SMALL_RED};">${title}</p>
+<p style="margin:0;">${text}</p>`
+  )
+  .join('\n')}
+<p style="margin:24px 0 0;">${reply}</p>
 <p style="margin:24px 0 0;">${signoff}</p>
 <p style="margin:24px 0 0;font-size:13px;color:rgba(255,255,255,0.5);">${why}</p>
 `;
 
   return {
     subject,
-    body: { contentType: 'HTML', content: emailLayout({ title: subject, lang: isDe ? 'de' : 'en', body }) },
+    body: {
+      contentType: 'HTML',
+      content: emailLayout({ title: subject, lang: isDe ? 'de' : 'en', body, eyebrow: 'WAMOCON Group', footerLine }),
+    },
     from: { emailAddress: { address: GRAPH_SENDER } },
     toRecipients: [{ emailAddress: { address: submission.email } }],
     attachments: [portfolioAttachment(submission.pdfLang)],
@@ -587,7 +625,7 @@ function portfolioInternalEmail(submission) {
     ${row(isDe ? 'Typ' : 'Type', escapeHtml(typeLabel('portfolio', isDe ? 'de' : 'en')))}
     ${row(isDe ? 'PDF-Sprache' : 'PDF language', escapeHtml(pdfName))}
     ${row(isDe ? 'Seitensprache' : 'Page language', escapeHtml(langNames[submission.lang] || submission.lang))}
-    ${row('E-Mail', `<a href="mailto:${email}" style="color:#f40e0e;text-decoration:none;">${email}</a>`)}
+    ${row('E-Mail', `<a href="mailto:${email}" style="color:#ff5252;text-decoration:none;">${email}</a>`)}
   </td></tr>
 </table>
 <p style="margin:18px 0 0;">${
