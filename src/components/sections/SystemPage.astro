@@ -1,6 +1,7 @@
 ---
 /** Unser System / Our System — the 360° Booster System. Faithful reproduction. */
 import ContactBlock from './ContactBlock.astro';
+import ProcessCycle from '../ui/ProcessCycle.astro';
 import type { Lang } from '../../i18n/config';
 
 interface Props {
@@ -145,7 +146,7 @@ const academyUrl = 'https://test-it-academy.com/';
       {c.heroParas.map((p) => <p>{p}</p>)}
     </div>
     <h1 class="sys-hero__title"><span class="t-white">{c.heroTitleLead}</span><span class="t-red">{c.heroTitleAccent}</span></h1>
-    <img class="sys-hero__img" src="/images/system-360.svg" alt={c.heroImgAlt} loading="lazy" />
+    <div class="sys-hero__img"><ProcessCycle lang={lang} label={c.heroImgAlt} /></div>
   </div>
 </section>
 
@@ -211,7 +212,7 @@ const academyUrl = 'https://test-it-academy.com/';
     margin-bottom: 2.5rem;
   }
   /* The diagram is a graphic, so it is centred and a little larger. */
-  .sys-hero__img { max-width: 960px; width: 100%; margin-inline: auto; display: block; }
+  .sys-hero__img { max-width: 760px; width: 100%; margin-inline: auto; }
 
   .sys-h2 {
     font-size: clamp(1.8rem, 4.5vw, 3rem);
