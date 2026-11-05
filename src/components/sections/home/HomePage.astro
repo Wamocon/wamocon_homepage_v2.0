@@ -5,6 +5,7 @@
  */
 import Button from '../../ui/Button.astro';
 import ExternalEmbed from '../../ui/ExternalEmbed.astro';
+import ProcessCycle from '../../ui/ProcessCycle.astro';
 import ContactBlock from '../ContactBlock.astro';
 import LeadSourceField from '../../ui/LeadSourceField.astro';
 import { home } from '../../../data/home';
@@ -456,7 +457,7 @@ const modal = {
       <Button href={systemHref} variant="primary" size="lg">{page.boosterCta}</Button>
     </div>
     <figure class="booster-teaser__media">
-      <img src="/images/system-360.svg" alt={page.boosterAlt} loading="lazy" />
+      <ProcessCycle lang={lang} label={page.boosterAlt} />
     </figure>
   </div>
 </section>
@@ -1069,16 +1070,16 @@ const modal = {
     z-index: 1;
     margin: 0;
   }
-  .booster-teaser__media img {
+  .booster-teaser__media :global(.cycle) {
     display: block;
     width: 100%;
-    max-width: 460px;
+    max-width: 480px;
     height: auto;
     margin-inline: auto;
   }
   @media (max-width: 860px) {
     .booster-teaser__inner { grid-template-columns: 1fr; }
-    .booster-teaser__media img { max-width: 360px; }
+    .booster-teaser__media :global(.cycle) { max-width: 440px; }
   }
 
   /* ---------- why ---------- */

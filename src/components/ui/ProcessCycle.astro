@@ -1,0 +1,1175 @@
+---
+/**
+ * 360° Booster System als interaktives Rad.
+ *
+ * Kern wie in der alten Grafik (system-360.svg): sechs Schritte im
+ * Uhrzeigersinn, dieselben Motive, ein geschlossener Kreislauf.
+ *
+ * Die Idee: Jeder Schritt ist 60° wert. Das Rad dreht den aktiven Schritt
+ * unter die Markierung oben, der Fortschrittsbogen wächst mit, und die Mitte
+ * zählt die Grade hoch. Bei 360° ist der Kreislauf geschlossen: BOOST.
+ *
+ * Bedienung: Das Rad läuft von selbst, sobald es sichtbar ist. Man kann es
+ * mit Maus oder Finger drehen (mit Schwung), einen Schritt antippen oder mit
+ * den Pfeiltasten weiterschalten. Beim Überfahren pausiert es.
+ *
+ * Ohne JavaScript bleibt ein statisches Rad mit Schritt 1 stehen.
+ * Unter prefers-reduced-motion: kein Selbstlauf, keine Partikel, kurze Übergänge.
+ */
+import type { Lang } from '../../i18n/config';
+
+interface Props {
+  lang: Lang;
+  /** Beschreibung der Grafik für Screenreader */
+  label: string;
+}
+const { lang, label } = Astro.props;
+
+const copy: Record<Lang, { names: string[]; details: string[]; hint: string; step: string }> = {
+  de: {
+    names: ['Anfrage senden', 'Adaption', 'Planung', 'Verbindung', 'Ausführung', 'Überblick'],
+    details: [
+      'Der erste Schritt zu Ihrem Traumprojekt',
+      'Erfolgreiches Onboarding leicht gemacht',
+      'Effiziente Planung für Ihren Erfolg',
+      'Erfolgreich starten: Ihre erste Aufgabe',
+      'Ausführung mit Präzision',
+      'Sicherer Projektabschluss',
+    ],
+    hint: 'Rad drehen oder Schritt antippen',
+    step: 'Schritt',
+  },
+  en: {
+    names: ['Send request', 'Adaptation', 'Planning', 'Connection', 'Execution', 'Overview'],
+    details: [
+      'The first step to your dream project',
+      'Successful onboarding made easy',
+      'Efficient planning for your success',
+      'Get started successfully: your first task',
+      'Execution with precision',
+      'Secure project completion',
+    ],
+    hint: 'Spin the wheel or tap a step',
+    step: 'Step',
+  },
+  tr: {
+    names: ['Talep gönder', 'Uyum', 'Planlama', 'Bağlantı', 'Uygulama', 'Genel bakış'],
+    details: [
+      'Hayalinizdeki projeye ilk adım',
+      'Başarılı bir işe başlangıç, artık çok kolay',
+      'Başarınız için verimli planlama',
+      'Başarılı bir başlangıç: ilk göreviniz',
+      'Kusursuz uygulama',
+      'Güvenli proje kapanışı',
+    ],
+    hint: 'Çarkı çevirin veya bir adıma dokunun',
+    step: 'Adım',
+  },
+  kk: {
+    names: ['Сұрау жіберу', 'Бейімделу', 'Жоспарлау', 'Байланыс', 'Орындау', 'Шолу'],
+    details: [
+      'Армандаған жобаңызға алғашқы қадам',
+      'Командаға қосылу енді оңай',
+      'Табысыңызға арналған тиімді жоспарлау',
+      'Сәтті бастама: алғашқы тапсырмаңыз',
+      'Дәлдікпен орындау',
+      'Жобаны сенімді аяқтау',
+    ],
+    hint: 'Дөңгелекті айналдырыңыз немесе қадамды басыңыз',
+    step: 'Қадам',
+  },
+};
+const c = copy[lang];
+
+// Linien-Icons (24er-Raster), gleiche Motive wie in der alten Grafik
+const icons = [
+  // 1 Anfrage senden: Rakete startet aus dem Laptop
+  '<rect x="3.5" y="4" width="17" height="11.5" rx="1.6"/><path d="M1.75 19.25h20.5"/><path d="M12 6.6c1.35 1.05 2 2.45 2 4.1v1.8h-4v-1.8c0-1.65.65-3.05 2-4.1z"/><path d="M11.1 15.5v-1.4M12.9 15.5v-1.4"/>',
+  // 2 Adaption: Regler
+  '<path d="M6 3.5v5M6 12.5v8M12 3.5v9M12 16.5v4M18 3.5v2.5M18 10v10.5"/><circle cx="6" cy="10.5" r="2"/><circle cx="12" cy="14.5" r="2"/><circle cx="18" cy="8" r="2"/>',
+  // 3 Planung: Ebenen
+  '<path d="M12 3 2.75 7.75 12 12.5l9.25-4.75z"/><path d="m2.75 12 9.25 4.75L21.25 12"/><path d="m2.75 16.25 9.25 4.75 9.25-4.75"/>',
+  // 4 Verbindung: steigender Verlauf
+  '<path d="M3.5 3.5v17h17"/><path d="m7 15.5 3.75-3.75 3 3L19.5 9"/><path d="M15.75 9h3.75v3.75"/>',
+  // 5 Ausführung: Rakete
+  '<path d="M13.6 15.4 8.6 10.4C10.4 5.4 14.6 3 20.6 3.4c.4 6-2 10.2-7 12z"/><circle cx="15.6" cy="8.4" r="1.6"/><path d="M8.6 10.4 5.2 9.9l-1.7 2.6 4 .6M13.6 15.4l.5 3.4-2.6 1.7-.6-4"/><path d="M6.4 17.6c-1.4.5-2.4 2.9-2.4 2.9s2.4-1 2.9-2.4"/>',
+  // 6 Überblick: Lesezeichen mit Stern
+  '<path d="M6 3.5h12v17l-6-4-6 4z"/><path d="m12 7.1 1.15 2.3 2.5.37-1.82 1.77.43 2.5L12 12.86l-2.26 1.18.43-2.5-1.82-1.77 2.5-.37z"/>',
+];
+
+const R = 37; // Radius des Rads in % der Breite
+const steps = c.names.map((name, i) => ({
+  name,
+  detail: c.details[i],
+  num: String(i + 1).padStart(2, '0'),
+  icon: icons[i],
+  a: i * 60,
+}));
+
+const pt = (a: number, r: number) => {
+  const rad = (a * Math.PI) / 180;
+  return [50 + r * Math.sin(rad), 50 - r * Math.cos(rad)].map((v) => +v.toFixed(2));
+};
+
+// Trennstriche zwischen den 60°-Sektoren (im Rad, dreht mit)
+const ticks = steps.map((s) => {
+  const [x1, y1] = pt(s.a + 30, R - 2.4);
+  const [x2, y2] = pt(s.a + 30, R + 2.4);
+  return { x1, y1, x2, y2 };
+});
+
+// Feine Gradskala außen (statisch)
+const scale = Array.from({ length: 120 }, (_, i) => {
+  const a = i * 3;
+  const major = a % 30 === 0;
+  const [x1, y1] = pt(a, 49);
+  const [x2, y2] = pt(a, major ? 46.6 : 47.8);
+  return { x1, y1, x2, y2, major };
+});
+
+const uid = 'bw' + Math.random().toString(36).slice(2, 7);
+---
+
+<div class="bw" lang={lang} data-bw>
+  <div class="bw__dial" role="group" aria-roledescription="carousel" aria-label={label} style="--w:0deg">
+    <span class="bw__spot" aria-hidden="true"></span>
+
+    <svg class="bw__static" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+      <g class="bw__scale">
+        {scale.map((t) => <line x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} class={t.major ? 'major' : undefined} />)}
+      </g>
+      <circle class="bw__inner" cx="50" cy="50" r="27.5" />
+      <circle class="bw__track" cx="50" cy="50" r={R} />
+    </svg>
+
+    <!-- Umlaufende Funken als Deko -->
+    <span class="bw__orbit bw__orbit--a" aria-hidden="true"><i></i></span>
+    <span class="bw__orbit bw__orbit--b" aria-hidden="true"><i></i></span>
+
+    <span class="bw__shock" aria-hidden="true"></span>
+    <span class="bw__shock bw__shock--late" aria-hidden="true"></span>
+    <span class="bw__sweep" aria-hidden="true"></span>
+
+    <div class="bw__wheel">
+      <svg class="bw__arc" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id={`${uid}-g`} x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0" stop-color="#8a0505" />
+            <stop offset=".6" stop-color="#f40e0e" />
+            <stop offset="1" stop-color="#ff8a80" />
+          </linearGradient>
+        </defs>
+        <!-- Leuchten als echte Vektorlinien (CSS-Filter würden pixelig) -->
+        <circle class="bw__glow bw__glow--wide" data-progress cx="50" cy="50" r={R} pathLength="360" transform="rotate(-120 50 50)" style="stroke-dashoffset:300" />
+        <circle class="bw__glow" data-progress cx="50" cy="50" r={R} pathLength="360" transform="rotate(-120 50 50)" style="stroke-dashoffset:300" />
+        <circle
+          class="bw__progress"
+          data-progress
+          cx="50"
+          cy="50"
+          r={R}
+          pathLength="360"
+          stroke={`url(#${uid}-g)`}
+          transform="rotate(-120 50 50)"
+          style="stroke-dashoffset:300"
+        />
+        <circle class="bw__flashline" cx="50" cy="50" r={R} />
+        {ticks.map((t) => <line class="bw__tick" x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} />)}
+      </svg>
+
+      {steps.map((s, i) => (
+        <button
+          type="button"
+          class:list={['bw__node', { 'is-active': i === 0 }]}
+          style={`--a:${s.a}deg`}
+          data-node={i}
+          data-name={s.name}
+          data-detail={s.detail}
+          aria-label={`${c.step} ${i + 1}: ${s.name}. ${s.detail}`}
+          aria-pressed={i === 0 ? 'true' : 'false'}
+        >
+          <span class="bw__face">
+            <span class="bw__num">{s.num}</span>
+            <svg class="bw__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={s.icon} />
+          </span>
+        </button>
+      ))}
+    </div>
+
+    <span class="bw__pointer" aria-hidden="true"></span>
+
+    <div class="bw__core" aria-hidden="true">
+      <span class="bw__core-ring"></span>
+      <span class="bw__boost">Boost!</span>
+      <span class="bw__deg"><span data-deg>60</span><em>°</em></span>
+      <span class="bw__meta" data-meta>01 / 06</span>
+      <span class="bw__title" data-title>{steps[0].name}</span>
+      <span class="bw__detail" data-detail-out>{steps[0].detail}</span>
+      <span class="bw__dots">
+        {steps.map((_, i) => <i class:list={{ on: i === 0 }}></i>)}
+      </span>
+    </div>
+
+    <div class="bw__fx" aria-hidden="true"></div>
+
+    <!-- Zeigehand: tippt den nächsten Schritt an, bis man selbst klickt -->
+    <span class="bw__tap" aria-hidden="true">
+      <span class="bw__ripple"></span>
+      <svg class="bw__hand" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <!-- geschlossene Kontur, damit die Füllung sauber bleibt -->
+        <path d="M9 12V4.6a1.5 1.5 0 0 1 3 0v5.6a1.5 1.5 0 0 1 3 0v.8a1.5 1.5 0 0 1 3 0v1a1.5 1.5 0 0 1 3 0v3.5c0 3.3-2.7 6-6.2 6h-1.6c-1.9 0-3.6-.9-4.7-2.4l-3.6-4.7a1.55 1.55 0 0 1 2.4-2L9 14.2z" />
+        <path class="bw__crease" d="M12 10.2v2.4M15 11v2M18 12v1.6" />
+      </svg>
+    </span>
+  </div>
+
+  <p class="bw__hint" aria-hidden="true">
+    <span class="bw__hint-dot"></span>
+    {c.hint}
+  </p>
+  <p class="visually-hidden" aria-live="polite" data-live></p>
+</div>
+
+<script>
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const mod = (n: number, m: number) => ((n % m) + m) % m;
+
+  document.querySelectorAll<HTMLElement>('[data-bw]').forEach((root) => {
+    const dial = root.querySelector<HTMLElement>('.bw__dial')!;
+    const nodes = [...root.querySelectorAll<HTMLButtonElement>('[data-node]')];
+    const progress = [...root.querySelectorAll<SVGCircleElement>('[data-progress]')];
+    const setProgress = (deg: number) => progress.forEach((p) => (p.style.strokeDashoffset = String(360 - deg)));
+    const degEl = root.querySelector<HTMLElement>('[data-deg]')!;
+    const metaEl = root.querySelector<HTMLElement>('[data-meta]')!;
+    const titleEl = root.querySelector<HTMLElement>('[data-title]')!;
+    const detailEl = root.querySelector<HTMLElement>('[data-detail-out]')!;
+    const dots = [...root.querySelectorAll<HTMLElement>('.bw__dots i')];
+    const core = root.querySelector<HTMLElement>('.bw__core')!;
+    const fx = root.querySelector<HTMLElement>('.bw__fx')!;
+    const live = root.querySelector<HTMLElement>('[data-live]')!;
+    const N = nodes.length;
+    const STEP = 360 / N;
+
+    let s = 0; // fortlaufender Schrittzähler (wächst über N hinaus)
+    let k = 0; // aktiver Schritt 0..N-1
+    let w = 0; // Drehwinkel des Rads in Grad
+    let shownDeg = 60;
+    let timer = 0;
+    let visible = false;
+    let hovered = false;
+    let dragging = false;
+
+    const setW = (deg: number) => {
+      w = deg;
+      dial.style.setProperty('--w', `${deg}deg`);
+    };
+
+    /* ---------- Partikel ---------- */
+    const colors = ['#ffffff', '#ff8a80', '#f40e0e', '#ff5252'];
+    const spark = (x: number, y: number, dx: number, dy: number, size: number, color: string, dur: number) => {
+      const p = document.createElement('i');
+      p.style.cssText = `left:${x}px;top:${y}px;width:${size}px;height:${size}px;background:${color}`;
+      fx.appendChild(p);
+      const a = p.animate(
+        [
+          { transform: 'translate(-50%,-50%) scale(1)', opacity: 1 },
+          { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(0)`, opacity: 0 },
+        ],
+        { duration: dur, easing: 'cubic-bezier(.12,.75,.3,1)' },
+      );
+      a.onfinish = () => p.remove();
+    };
+    const burstAtPointer = (n = 14) => {
+      if (reduce) return;
+      const size = dial.clientWidth;
+      const x = size / 2;
+      const y = size * 0.13;
+      for (let i = 0; i < n; i++) {
+        const ang = (-90 + (Math.random() - 0.5) * 200) * (Math.PI / 180);
+        const dist = size * (0.06 + Math.random() * 0.12);
+        spark(x, y, Math.cos(ang) * dist, Math.sin(ang) * dist, 2 + Math.random() * 4, colors[i % 4], 600 + Math.random() * 500);
+      }
+    };
+    const burstRing = () => {
+      if (reduce) return;
+      const size = dial.clientWidth;
+      const r = size * 0.37;
+      for (let i = 0; i < 56; i++) {
+        const ang = (i / 56) * Math.PI * 2;
+        const dist = size * (0.05 + Math.random() * 0.16);
+        spark(size / 2 + Math.cos(ang) * r, size / 2 + Math.sin(ang) * r, Math.cos(ang) * dist, Math.sin(ang) * dist, 2 + Math.random() * 5, colors[i % 4], 800 + Math.random() * 700);
+      }
+    };
+
+    // „+60°“ steigt neben dem aktiven Schritt auf
+    const floatLabel = () => {
+      if (reduce) return;
+      const size = dial.clientWidth;
+      const el = document.createElement('b');
+      el.textContent = `+${STEP}°`;
+      el.style.cssText = `left:${size * 0.5 + size * 0.12}px;top:${size * 0.1}px`;
+      fx.appendChild(el);
+      const a = el.animate(
+        [
+          { transform: 'translate(-50%,0) scale(.6)', opacity: 0 },
+          { transform: 'translate(-50%,-30%) scale(1.1)', opacity: 1, offset: 0.25 },
+          { transform: 'translate(-50%,-160%) scale(1)', opacity: 0 },
+        ],
+        { duration: 1100, easing: 'cubic-bezier(.2,.8,.2,1)' },
+      );
+      a.onfinish = () => el.remove();
+    };
+
+    // Zeigehand: zeigt, dass man den nächsten Schritt antippen kann
+    const tap = root.querySelector<HTMLElement>('.bw__tap')!;
+    const demo = () => {
+      if (reduce || root.classList.contains('is-touched')) return;
+      tap.classList.remove('is-on');
+      void tap.offsetWidth;
+      tap.classList.add('is-on');
+    };
+
+    /* ---------- Gradzähler ---------- */
+    let raf = 0;
+    const countTo = (target: number) => {
+      cancelAnimationFrame(raf);
+      const from = shownDeg;
+      const t0 = performance.now();
+      const dur = reduce ? 1 : 650;
+      const tick = (t: number) => {
+        const p = Math.min(1, (t - t0) / dur);
+        const e = 1 - Math.pow(1 - p, 3);
+        shownDeg = Math.round(from + (target - from) * e);
+        degEl.textContent = String(shownDeg);
+        if (p < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    };
+
+    /* ---------- Aktiven Schritt anzeigen ---------- */
+    const enter = [
+      { opacity: 0, transform: 'translateY(0.6em)', filter: 'blur(6px)' },
+      { opacity: 1, transform: 'none', filter: 'blur(0)' },
+    ];
+    const show = (next: number, announce: boolean) => {
+      const changed = next !== k;
+      k = next;
+      const deg = (k + 1) * STEP;
+      setProgress(deg);
+      nodes.forEach((n, i) => {
+        n.classList.toggle('is-active', i === k);
+        n.classList.toggle('is-next', i === mod(k + 1, N));
+        n.classList.toggle('is-done', i < k);
+        n.setAttribute('aria-pressed', i === k ? 'true' : 'false');
+      });
+      dots.forEach((d, i) => d.classList.toggle('on', i <= k));
+      if (!changed) return;
+
+      countTo(deg);
+      metaEl.textContent = `${String(k + 1).padStart(2, '0')} / ${String(N).padStart(2, '0')}`;
+      titleEl.textContent = nodes[k].dataset.name ?? '';
+      detailEl.textContent = nodes[k].dataset.detail ?? '';
+      if (!reduce) {
+        titleEl.animate(enter, { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)' });
+        detailEl.animate(enter, { duration: 620, delay: 60, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' });
+        core.animate([{ scale: '1' }, { scale: '1.045' }, { scale: '1' }], { duration: 480, easing: 'ease-out' });
+      }
+      if (announce) live.textContent = nodes[k].getAttribute('aria-label') ?? '';
+
+      if (k === N - 1) {
+        root.classList.remove('is-boost');
+        void root.offsetWidth;
+        root.classList.add('is-boost');
+        burstRing();
+        window.setTimeout(() => root.classList.remove('is-boost'), 1900);
+      } else {
+        burstAtPointer();
+        floatLabel();
+      }
+    };
+
+    const goTo = (target: number, announce = false) => {
+      s = target;
+      setW(-s * STEP);
+      show(mod(s, N), announce);
+    };
+
+    /* ---------- Selbstlauf ---------- */
+    let demoTimer = 0;
+    const stop = () => {
+      clearTimeout(timer);
+      clearTimeout(demoTimer);
+    };
+    const schedule = () => {
+      stop();
+      if (reduce || !visible || hovered || dragging || root.classList.contains('is-intro')) return;
+      const wait = k === N - 1 ? 3400 : 2500;
+      // Hand tippt kurz vor dem Weiterdrehen auf den nächsten Schritt
+      demoTimer = window.setTimeout(demo, wait - 1150);
+      timer = window.setTimeout(() => {
+        goTo(s + 1);
+        schedule();
+      }, wait);
+    };
+
+    /* ---------- Einflug beim ersten Sichtkontakt ---------- */
+    let intro = false;
+    const runIntro = () => {
+      if (intro) return;
+      intro = true;
+      if (reduce) return schedule();
+      root.classList.add('is-intro');
+      dial.classList.add('no-anim');
+      setW(300);
+      setProgress(0);
+      shownDeg = 0;
+      degEl.textContent = '0';
+      void dial.offsetWidth;
+      dial.classList.remove('no-anim');
+      requestAnimationFrame(() => {
+        setW(0);
+        setProgress(60);
+        countTo(60);
+        window.setTimeout(() => burstAtPointer(22), 900);
+        window.setTimeout(() => {
+          root.classList.remove('is-intro');
+          schedule();
+        }, 1600);
+      });
+    };
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(
+        (entries) => {
+          visible = entries.some((e) => e.isIntersecting);
+          if (visible) {
+            runIntro();
+            schedule();
+          } else stop();
+        },
+        { threshold: 0.35 },
+      ).observe(root);
+    }
+
+    const pause = () => {
+      hovered = true;
+      stop();
+    };
+    const resume = () => {
+      hovered = false;
+      schedule();
+    };
+    dial.addEventListener('pointerenter', (e) => {
+      if (e.pointerType === 'mouse') pause();
+    });
+    dial.addEventListener('pointerleave', (e) => {
+      dial.style.setProperty('--mx', '0');
+      dial.style.setProperty('--my', '0');
+      if (e.pointerType === 'mouse') resume();
+    });
+    root.addEventListener('focusin', pause);
+    root.addEventListener('focusout', resume);
+
+    const touched = () => {
+      root.classList.add('is-touched');
+      tap.classList.remove('is-on');
+    };
+
+    /* ---------- Drehen per Maus / Finger ---------- */
+    const angleAt = (e: PointerEvent) => {
+      const r = dial.getBoundingClientRect();
+      const x = e.clientX - (r.left + r.width / 2);
+      const y = e.clientY - (r.top + r.height / 2);
+      return { a: (Math.atan2(x, -y) * 180) / Math.PI, d: Math.hypot(x, y) / r.width };
+    };
+    let lastA = 0;
+    let moved = 0;
+    let samples: { t: number; w: number }[] = [];
+    let pid = -1;
+
+    dial.addEventListener('pointerdown', (e) => {
+      const { a, d } = angleAt(e);
+      moved = 0;
+      if (d < 0.2 || d > 0.52) return; // nur am Rad, nicht in der Mitte
+      pid = e.pointerId;
+      lastA = a;
+      samples = [{ t: performance.now(), w }];
+    });
+    dial.addEventListener('pointermove', (e) => {
+      if (fine && !dragging) {
+        const r = dial.getBoundingClientRect();
+        const fx01 = (e.clientX - r.left) / r.width;
+        const fy01 = (e.clientY - r.top) / r.height;
+        dial.style.setProperty('--mx', ((fx01 - 0.5) * 2).toFixed(3));
+        dial.style.setProperty('--my', ((fy01 - 0.5) * 2).toFixed(3));
+        dial.style.setProperty('--gx', `${(fx01 * 100).toFixed(1)}%`);
+        dial.style.setProperty('--gy', `${(fy01 * 100).toFixed(1)}%`);
+      }
+      if (e.pointerId !== pid) return;
+      const { a } = angleAt(e);
+      let delta = a - lastA;
+      if (delta > 180) delta -= 360;
+      if (delta < -180) delta += 360;
+      lastA = a;
+      moved += Math.abs(delta);
+      if (!dragging && moved > 4) {
+        dragging = true;
+        stop();
+        dial.setPointerCapture(pid);
+        dial.classList.add('is-drag');
+        dial.style.setProperty('--mx', '0');
+        dial.style.setProperty('--my', '0');
+        touched();
+      }
+      if (!dragging) return;
+      setW(w + delta);
+      const now = performance.now();
+      samples.push({ t: now, w });
+      samples = samples.filter((p) => now - p.t < 90);
+      const near = mod(Math.round(-w / STEP), N);
+      if (near !== k) show(near, false);
+    });
+    const endDrag = (e: PointerEvent) => {
+      if (e.pointerId !== pid) return;
+      pid = -1;
+      if (!dragging) return;
+      dragging = false;
+      dial.classList.remove('is-drag');
+      const first = samples[0];
+      const last = samples[samples.length - 1];
+      const v = first && last && last.t > first.t ? (last.w - first.w) / (last.t - first.t) : 0;
+      goTo(Math.round(-(w + v * 260) / STEP), true); // mit Schwung einrasten
+      schedule();
+    };
+    dial.addEventListener('pointerup', endDrag);
+    dial.addEventListener('pointercancel', endDrag);
+
+    /* ---------- Antippen und Tastatur ---------- */
+    nodes.forEach((n, i) => {
+      n.addEventListener('click', () => {
+        if (moved > 4) return;
+        touched();
+        const delta = mod(i - k + N / 2, N) - N / 2;
+        goTo(s + delta, true);
+      });
+    });
+    root.addEventListener('keydown', (e) => {
+      const dir = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+      if (!dir) return;
+      e.preventDefault();
+      touched();
+      goTo(s + dir, true);
+      nodes[k].focus({ preventScroll: true });
+    });
+  });
+</script>
+
+<style>
+  .bw {
+    --R: 37cqi;
+    --n: 14cqi;
+    --spring: cubic-bezier(0.34, 1.4, 0.5, 1);
+    width: 100%;
+    container-type: inline-size;
+  }
+  .bw__dial {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    isolation: isolate;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transform: perspective(1200px) rotateX(calc(var(--my, 0) * -5deg)) rotateY(calc(var(--mx, 0) * 5deg));
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    cursor: grab;
+  }
+  .bw__dial.is-drag { cursor: grabbing; }
+
+  /* Lichtkegel folgt der Maus */
+  .bw__spot {
+    position: absolute;
+    inset: -6%;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at var(--gx, 50%) var(--gy, 30%), rgba(244, 14, 14, 0.22), transparent 38%),
+      radial-gradient(circle at 50% 50%, rgba(244, 14, 14, 0.16), transparent 62%);
+    -webkit-mask: radial-gradient(closest-side, #000 60%, transparent);
+    mask: radial-gradient(closest-side, #000 60%, transparent);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .bw__static {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .bw__scale line {
+    stroke: rgba(255, 255, 255, 0.14);
+    stroke-width: 0.22;
+    stroke-linecap: round;
+  }
+  .bw__scale line.major {
+    stroke: rgba(255, 82, 82, 0.7);
+    stroke-width: 0.4;
+  }
+  .bw__inner {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.07);
+    stroke-width: 0.25;
+    stroke-dasharray: 0.5 1.5;
+  }
+  .bw__track {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.08);
+    stroke-width: 2.6;
+  }
+
+  /* Deko-Funken auf Umlaufbahnen */
+  .bw__orbit {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 92%;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: bw-spin 14s linear infinite;
+  }
+  .bw__orbit--b {
+    width: 56%;
+    animation-duration: 9s;
+    animation-direction: reverse;
+  }
+  .bw__orbit i {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 1.1cqi;
+    height: 1.1cqi;
+    translate: -50% -50%;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 1.6cqi 0.5cqi rgba(244, 14, 14, 0.9);
+  }
+  .bw__orbit--b i {
+    width: 0.8cqi;
+    height: 0.8cqi;
+    background: #ff8a80;
+  }
+
+  /* ---------- Rad ---------- */
+  .bw__wheel {
+    position: absolute;
+    inset: 0;
+    transform: rotate(var(--w));
+    transition: transform 0.95s var(--spring);
+  }
+  .bw__arc {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .bw__progress,
+  .bw__glow {
+    fill: none;
+    stroke-width: 2.6;
+    stroke-linecap: round;
+    stroke-dasharray: 360 360;
+    transition: stroke-dashoffset 0.95s var(--spring);
+  }
+  .bw__glow {
+    stroke: #f40e0e;
+    stroke-width: 5.5;
+    opacity: 0.22;
+  }
+  .bw__glow--wide {
+    stroke-width: 10;
+    opacity: 0.08;
+  }
+  .bw__flashline {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 1;
+    opacity: 0;
+  }
+  .bw__tick {
+    stroke: #101010;
+    stroke-width: 0.7;
+  }
+
+  .bw__node {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--n);
+    height: var(--n);
+    margin: calc(var(--n) / -2) 0 0 calc(var(--n) / -2);
+    padding: 0;
+    border: 0;
+    background: none;
+    border-radius: 50%;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    transform: rotate(var(--a)) translateY(calc(var(--R) * -1)) rotate(calc(var(--a) * -1));
+    -webkit-tap-highlight-color: transparent;
+  }
+  .bw__node:focus-visible { outline: none; }
+  .bw__node:focus-visible .bw__face {
+    outline: 2px solid #fff;
+    outline-offset: 4px;
+  }
+  .bw__face {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3cqi;
+    border-radius: 50%;
+    color: var(--color-accent-text);
+    background: radial-gradient(circle at 34% 26%, #2e2e2e, #141414 62%, #0a0a0a);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+      inset 0 0.4cqi 0.8cqi rgba(255, 255, 255, 0.06),
+      0 1.6cqi 3cqi -1cqi rgba(0, 0, 0, 0.9);
+    /* bleibt aufrecht, egal wie das Rad steht */
+    transform: rotate(calc(var(--w) * -1)) scale(var(--sc, 1));
+    transition:
+      transform 0.95s var(--spring),
+      background 0.4s,
+      box-shadow 0.4s,
+      color 0.4s;
+  }
+  .bw__num {
+    font-size: max(8px, 1.6cqi);
+    font-weight: var(--fw-bold);
+    letter-spacing: 0.12em;
+    line-height: 1;
+    color: var(--color-text-subtle);
+    font-variant-numeric: tabular-nums;
+    transition: color 0.4s;
+  }
+  .bw__icon {
+    width: 46%;
+    height: 46%;
+  }
+  .bw__node.is-done .bw__face {
+    box-shadow:
+      inset 0 0 0 1.5px rgba(244, 14, 14, 0.75),
+      0 0 2.4cqi rgba(244, 14, 14, 0.25),
+      0 1.6cqi 3cqi -1cqi rgba(0, 0, 0, 0.9);
+  }
+  .bw__node.is-active { --sc: 1.32; z-index: 2; }
+  .bw__node.is-active .bw__face {
+    color: #fff;
+    background: radial-gradient(circle at 34% 26%, #ff7a6b, #e3120f 45%, #7a0404);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.35),
+      0 0 0 1.2cqi rgba(244, 14, 14, 0.16),
+      0 0 7cqi rgba(244, 14, 14, 0.75);
+  }
+  .bw__node.is-active .bw__num { color: rgba(255, 255, 255, 0.85); }
+  .bw__node.is-active .bw__icon { animation: bw-pop 0.6s var(--spring); }
+  @media (hover: hover) {
+    .bw__node:not(.is-active):hover { --sc: 1.12; }
+    .bw__node:not(.is-active):hover .bw__face { color: #fff; }
+  }
+
+  /* Markierung oben */
+  .bw__pointer {
+    position: absolute;
+    left: 50%;
+    top: 0.6%;
+    width: 3cqi;
+    height: 2.2cqi;
+    translate: -50% 0;
+    background: linear-gradient(#fff, #ff5252);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    filter: drop-shadow(0 0 1.2cqi rgba(244, 14, 14, 0.9));
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  /* ---------- Mitte ---------- */
+  .bw__core {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 50cqi;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 35%, #1f1f1f, #0c0c0c 70%);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+      inset 0 0 6cqi rgba(244, 14, 14, 0.14),
+      0 0 10cqi rgba(244, 14, 14, 0.18);
+    pointer-events: none;
+    z-index: 1;
+  }
+  /* rotierender Energierand */
+  .bw__core-ring {
+    position: absolute;
+    inset: -1.2cqi;
+    border-radius: 50%;
+    padding: 0.5cqi;
+    background: conic-gradient(from 0deg, transparent 0 55%, rgba(244, 14, 14, 0.6) 80%, #fff 100%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    animation: bw-spin 3.2s linear infinite;
+  }
+  .bw__deg {
+    display: block;
+    font-size: 12.5cqi;
+    font-weight: var(--fw-bold);
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    background: linear-gradient(180deg, #fff 30%, #ffb3ab);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .bw__deg em {
+    font-style: normal;
+    color: var(--color-accent);
+    -webkit-text-fill-color: var(--color-accent);
+  }
+  .bw__meta {
+    margin-top: 1.4cqi;
+    font-size: max(9px, 1.7cqi);
+    font-weight: var(--fw-bold);
+    letter-spacing: 0.24em;
+    color: var(--color-accent-text);
+    font-variant-numeric: tabular-nums;
+  }
+  .bw__title {
+    margin-top: 0.8cqi;
+    max-width: 40cqi;
+    font-size: max(13px, 3.9cqi);
+    font-weight: var(--fw-bold);
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  .bw__detail {
+    margin-top: 0.9cqi;
+    max-width: 36cqi;
+    min-height: 2.6em;
+    font-size: max(10px, 2.2cqi);
+    line-height: 1.3;
+    color: var(--color-text-muted);
+    text-wrap: balance;
+  }
+  .bw__dots {
+    display: flex;
+    gap: 0.9cqi;
+    margin-top: 1.4cqi;
+  }
+  .bw__dots i {
+    width: 1.1cqi;
+    height: 1.1cqi;
+    min-width: 4px;
+    min-height: 4px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    transition: background 0.4s, box-shadow 0.4s;
+  }
+  .bw__dots i.on {
+    background: var(--color-accent);
+    box-shadow: 0 0 1cqi rgba(244, 14, 14, 0.9);
+  }
+  .bw__boost {
+    position: absolute;
+    top: 11%;
+    left: 50%;
+    translate: -50% 0;
+    padding: 0.4em 0.9em;
+    border-radius: var(--radius-pill);
+    background: var(--color-accent-surface);
+    color: #fff;
+    font-size: max(9px, 1.9cqi);
+    font-weight: var(--fw-bold);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    box-shadow: 0 0 3cqi rgba(244, 14, 14, 0.8);
+    opacity: 0;
+    scale: 0.4;
+  }
+
+  /* ---------- BOOST bei 360° ---------- */
+  .bw__shock {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 74%;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    border-radius: 50%;
+    border: 0.6cqi solid rgba(255, 82, 82, 0.9);
+    box-shadow: 0 0 4cqi rgba(244, 14, 14, 0.8), inset 0 0 4cqi rgba(244, 14, 14, 0.6);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .bw__shock--late { border-width: 0.3cqi; }
+  /* Ehrenrunde: ein heller Lichtpunkt rast einmal um den vollen Ring */
+  .bw__sweep {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 80%;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent 0 70%, rgba(255, 138, 128, 0.5) 88%, #fff 99%, transparent 100%);
+    -webkit-mask: radial-gradient(closest-side, transparent 88.5%, #000 90.5% 94.5%, transparent 96.5%);
+    mask: radial-gradient(closest-side, transparent 88.5%, #000 90.5% 94.5%, transparent 96.5%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .is-boost .bw__shock { animation: bw-shock 1.3s cubic-bezier(0.1, 0.7, 0.3, 1); }
+  .is-boost .bw__shock--late { animation: bw-shock 1.5s cubic-bezier(0.1, 0.7, 0.3, 1) 0.18s; }
+  .is-boost .bw__sweep { animation: bw-sweep 1.1s cubic-bezier(0.45, 0, 0.2, 1); }
+  .is-boost .bw__flashline { animation: bw-flashline 1.2s ease-out; }
+  .is-boost .bw__glow { animation: bw-glow 1.4s ease-out; }
+  .is-boost .bw__boost { animation: bw-boost 1.9s var(--spring); }
+  .is-boost .bw__deg { animation: bw-degpop 0.9s var(--spring); }
+  .is-boost .bw__core { animation: bw-core 1.2s ease-out; }
+
+  .bw__fx {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 4;
+  }
+  .bw__fx :global(i) {
+    position: absolute;
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(244, 14, 14, 0.9);
+  }
+  .bw__fx :global(b) {
+    position: absolute;
+    font-size: max(11px, 2.6cqi);
+    font-weight: var(--fw-bold);
+    color: #fff;
+    text-shadow: 0 0 1.4cqi rgba(244, 14, 14, 0.95);
+    white-space: nowrap;
+  }
+
+  /* Nächster Schritt pulsiert: lädt zum Antippen ein */
+  .bw__node.is-next .bw__face::after {
+    content: '';
+    position: absolute;
+    inset: -0.2cqi;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 82, 82, 0.85);
+    animation: bw-ping 1.6s cubic-bezier(0.2, 0.7, 0.3, 1) infinite;
+    pointer-events: none;
+  }
+
+  /* Zeigehand am Platz des nächsten Schritts (immer 60° rechts von oben) */
+  .bw__tap {
+    position: absolute;
+    left: calc(50% + var(--R) * 0.866);
+    top: calc(50% - var(--R) * 0.5);
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    z-index: 5;
+  }
+  .bw__hand {
+    position: absolute;
+    /* Fingerspitze liegt bei (10.6|3.6) im 24er-Raster */
+    left: calc(-4.4cqi + 1.6cqi);
+    top: calc(-1.5cqi + 1.8cqi);
+    width: 10cqi;
+    max-width: none;
+    height: 10cqi;
+    fill: #fff;
+    stroke: #111;
+    stroke-width: 1.1;
+    filter: drop-shadow(0 0 1.4cqi rgba(244, 14, 14, 0.9)) drop-shadow(0 0.8cqi 1.2cqi rgba(0, 0, 0, 0.7));
+    opacity: 0;
+    transform-origin: 40% 10%;
+  }
+  .bw__crease { fill: none; }
+  .bw__ripple {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 12cqi;
+    height: 12cqi;
+    translate: -50% -50%;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    opacity: 0;
+  }
+  .bw__tap.is-on .bw__hand { animation: bw-hand 1.2s cubic-bezier(0.3, 0.7, 0.3, 1) both; }
+  .bw__tap.is-on .bw__ripple { animation: bw-ripple 0.7s ease-out 0.62s both; }
+  .is-touched .bw__tap { display: none; }
+
+  .bw__hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    margin: 0.4rem 0 0;
+    font-size: var(--fs-label);
+    color: var(--color-text-muted);
+    transition: opacity 0.6s;
+  }
+  .bw__hint {
+    width: fit-content;
+    margin: 0.6rem auto 0;
+    padding: 0.45em 1em;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border-subtle);
+    background: rgba(255, 255, 255, 0.03);
+    color: #fff;
+    font-weight: var(--fw-semibold);
+  }
+  .bw__hint-dot {
+    position: relative;
+    width: 0.55em;
+    height: 0.55em;
+    flex: none;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+  .bw__hint-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--color-accent);
+    animation: bw-ping 1.6s cubic-bezier(0.2, 0.7, 0.3, 1) infinite;
+  }
+  .is-touched .bw__hint { opacity: 0; }
+
+  /* Einflug: langsamer, mit mehr Schwung */
+  .is-intro .bw__wheel,
+  .is-intro .bw__face,
+  .is-intro .bw__glow,
+  .is-intro .bw__progress {
+    transition-duration: 1.5s;
+    transition-timing-function: cubic-bezier(0.2, 1.25, 0.35, 1);
+  }
+  .no-anim .bw__wheel,
+  .no-anim .bw__face,
+  .no-anim .bw__progress,
+  .no-anim .bw__glow,
+  .is-drag .bw__wheel,
+  .is-drag .bw__face,
+  .is-drag .bw__glow,
+  .is-drag .bw__progress {
+    transition: none !important;
+  }
+
+  @keyframes bw-spin {
+    to { rotate: 360deg; }
+  }
+  @keyframes bw-pop {
+    0% { transform: scale(0.6) rotate(-12deg); }
+    60% { transform: scale(1.15) rotate(4deg); }
+    100% { transform: none; }
+  }
+  @keyframes bw-shock {
+    0% { opacity: 1; scale: 0.9; }
+    100% { opacity: 0; scale: 1.45; }
+  }
+  @keyframes bw-boost {
+    0% { opacity: 0; scale: 0.4; }
+    18% { opacity: 1; scale: 1.1; }
+    30% { scale: 1; }
+    80% { opacity: 1; scale: 1; }
+    100% { opacity: 0; scale: 0.9; }
+  }
+  @keyframes bw-flashline {
+    0% { opacity: 0; stroke-width: 0.4; }
+    15% { opacity: 1; stroke-width: 1.6; }
+    100% { opacity: 0; stroke-width: 0.4; }
+  }
+  @keyframes bw-glow {
+    0% { opacity: 0.22; }
+    15% { opacity: 0.6; }
+    100% { opacity: 0.22; }
+  }
+  @keyframes bw-sweep {
+    0% { opacity: 0; rotate: 0deg; }
+    12% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { opacity: 0; rotate: 360deg; }
+  }
+  @keyframes bw-degpop {
+    0% { scale: 1; }
+    35% { scale: 1.16; }
+    100% { scale: 1; }
+  }
+  @keyframes bw-ping {
+    0% { opacity: 0.9; scale: 1; }
+    100% { opacity: 0; scale: 1.45; }
+  }
+  @keyframes bw-hand {
+    0% { opacity: 0; transform: translate(5cqi, 7cqi) rotate(8deg); }
+    40% { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1); }
+    55% { transform: translate(0, 0.3cqi) scale(0.86); }
+    70% { transform: translate(0, 0) scale(1); }
+    85% { opacity: 1; }
+    100% { opacity: 0; transform: translate(1.5cqi, 2.5cqi) scale(1); }
+  }
+  @keyframes bw-ripple {
+    0% { opacity: 0.9; scale: 0.4; }
+    100% { opacity: 0; scale: 1.5; }
+  }
+  @keyframes bw-core {
+    0% { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), inset 0 0 10cqi rgba(244, 14, 14, 0.6), 0 0 18cqi rgba(244, 14, 14, 0.7); }
+    100% { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), inset 0 0 6cqi rgba(244, 14, 14, 0.14), 0 0 10cqi rgba(244, 14, 14, 0.18); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bw__dial { transform: none; transition: none; }
+    .bw__wheel,
+    .bw__face,
+    .bw__glow,
+    .bw__progress {
+      transition-duration: 0.2s;
+      transition-timing-function: ease-out;
+    }
+    .bw__orbit,
+    .bw__core-ring,
+    .bw__hint-dot::after,
+    .bw__node.is-next .bw__face::after,
+    .bw__node.is-active .bw__icon,
+    .is-boost .bw__shock,
+    .is-boost .bw__shock--late,
+    .is-boost .bw__sweep,
+    .is-boost .bw__flashline,
+    .is-boost .bw__glow,
+    .is-boost .bw__deg,
+    .is-boost .bw__core {
+      animation: none;
+    }
+    .bw__tap { display: none; }
+  }
+</style>
