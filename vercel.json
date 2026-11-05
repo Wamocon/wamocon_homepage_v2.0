@@ -18,7 +18,15 @@
     { "source": "/tr/uygulamalar", "destination": "/tr/sistemler/", "permanent": true },
     { "source": "/tr/uygulamalar/", "destination": "/tr/sistemler/", "permanent": true },
     { "source": "/kk/qosymshalar", "destination": "/kk/juieler/", "permanent": true },
-    { "source": "/kk/qosymshalar/", "destination": "/kk/juieler/", "permanent": true }
+    { "source": "/kk/qosymshalar/", "destination": "/kk/juieler/", "permanent": true },
+    { "source": "/universum", "destination": "/portfolio/", "permanent": true },
+    { "source": "/universum/", "destination": "/portfolio/", "permanent": true },
+    { "source": "/en/universe", "destination": "/en/portfolio/", "permanent": true },
+    { "source": "/en/universe/", "destination": "/en/portfolio/", "permanent": true },
+    { "source": "/tr/evren", "destination": "/tr/portfoy/", "permanent": true },
+    { "source": "/tr/evren/", "destination": "/tr/portfoy/", "permanent": true },
+    { "source": "/kk/galam", "destination": "/kk/portfolio/", "permanent": true },
+    { "source": "/kk/galam/", "destination": "/kk/portfolio/", "permanent": true }
   ],
   "headers": [
     {
