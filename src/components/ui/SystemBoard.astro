@@ -1,0 +1,1069 @@
+---
+/**
+ * SystemBoard: hero visual for /systeme/.
+ * A tilted circuit board with glass tiles of real WAMOCON systems. Data
+ * pulses run from the central WMC hub along the traces; the tile that gets
+ * hit reacts (new bar values, a new receipt, a higher score, ...).
+ * Pure HTML/CSS 3D + a small script, no dependencies. Only raster image:
+ * the WAMOCON logo in the hub (same file as in the header).
+ */
+interface Props {
+  label: string;
+}
+const { label } = Astro.props;
+
+/* Tiles on the board plane, coordinates in % of the plane (100 x 100). */
+const tiles = [
+  { id: 'line', name: 'Momentum Marketing', x: 4, y: 6, w: 30, h: 19, z: 5 },
+  { id: 'bars', name: 'Bedarfspilot', x: 39, y: 4, w: 22, h: 24, z: 7 },
+  { id: 'ring', name: 'Plan-it', x: 66, y: 6, w: 24, h: 24, z: 4 },
+  { id: 'list', name: 'belegnest', x: 4, y: 32, w: 27, h: 28, z: 6 },
+  { id: 'kpi', name: 'NebenkostenCheck', x: 69, y: 36, w: 27, h: 18, z: 8 },
+  { id: 'map', name: 'LadeKompass', x: 4, y: 67, w: 28, h: 27, z: 4 },
+  { id: 'quiz', name: 'KI-Prüfungstrainer', x: 37, y: 69, w: 27, h: 23, z: 7 },
+  { id: 'timer', name: 'Wartezeit-Wächter', x: 68, y: 61, w: 28, h: 19, z: 5 },
+];
+
+/* Orthogonal traces from the hub (center 50/50) to each tile, in plane
+   units of a 1000 x 1000 viewBox. Rounded corners via short arcs. */
+const traces: Record<string, string> = {
+  line: 'M440 470 H250 Q230 470 230 450 V250',
+  bars: 'M500 400 V280',
+  ring: 'M560 440 H760 Q780 440 780 420 V300',
+  list: 'M400 500 H310',
+  kpi: 'M600 470 H690',
+  map: 'M440 540 H210 Q190 540 190 560 V670',
+  quiz: 'M500 600 V690',
+  timer: 'M560 560 H790 Q810 560 810 580 V610',
+};
+
+/* Where each trace docks at its tile (plane %): a light rod rises there
+   from the board to the floating tile. */
+const docks: Record<string, [number, number]> = {
+  line: [23, 25], bars: [50, 28], ring: [78, 30], list: [31, 50],
+  kpi: [69, 47], map: [19, 67], quiz: [50, 69], timer: [81, 61],
+};
+
+/* Quiet network between neighbouring tiles, ambient flow only */
+const net = [
+  'M340 150 H390', 'M610 160 H660', 'M820 300 V360', 'M180 600 V670',
+  'M640 800 H680', 'M820 540 V610', 'M120 250 V320', 'M500 280 Q500 330 450 330 H320',
+  'M640 920 H900 Q920 920 920 900 V800',
+];
+
+/* Small satellite chips for density, no content */
+const chips = [
+  { x: 92, y: 18, s: 6, z: 3 },
+  { x: 35, y: 88, s: 5, z: 2 },
+  { x: 92, y: 85, s: 7, z: 3 },
+  { x: 32, y: 33, s: 4, z: 2 },
+  { x: 62, y: 33, s: 4, z: 3 },
+];
+const pins = [
+  [120, 140], [880, 120], [940, 520], [520, 960], [80, 980], [960, 940], [300, 600], [700, 300],
+];
+---
+
+<div class="sb" role="img" aria-label={label} data-sb>
+  <div class="sb__stars" aria-hidden="true"></div>
+  <svg class="sb__globe" viewBox="0 0 400 200" aria-hidden="true" preserveAspectRatio="xMidYMax meet">
+    <g fill="none" stroke="currentColor" stroke-width="0.6">
+      <ellipse cx="200" cy="230" rx="190" ry="150" />
+      <ellipse cx="200" cy="230" rx="140" ry="150" />
+      <ellipse cx="200" cy="230" rx="80" ry="150" />
+      <ellipse cx="200" cy="230" rx="22" ry="150" />
+      <path d="M14 180 Q200 150 386 180 M40 130 Q200 100 360 130 M84 92 Q200 66 316 92" />
+    </g>
+  </svg>
+
+  <div class="sb__scene" aria-hidden="true">
+    <div class="sb__plane">
+      <div class="sb__grid"></div>
+
+      <svg class="sb__traces" viewBox="0 0 1000 1000">
+        <g class="sb__net">
+          {net.map((d) => <path d={d} />)}
+        </g>
+        <g class="sb__pins">
+          {pins.map(([x, y]) => <circle cx={x} cy={y} r="3" />)}
+        </g>
+        {Object.entries(traces).map(([id, d]) => (
+          <g data-trace={id}>
+            <path class="sb__trace" d={d} />
+            <path class="sb__trace-glow" d={d} pathLength="100" />
+            <path class="sb__trace-pulse" d={d} pathLength="100" />
+          </g>
+        ))}
+      </svg>
+
+      <!-- radar rings around the hub, lying on the board -->
+      <div class="sb__radar"><i></i><i></i></div>
+
+      {tiles.map((t) => (
+        <div class="sb__shadow" data-shadow={t.id} style={`--x:${t.x};--y:${t.y};--tw:${t.w};--th:${t.h}`} />
+      ))}
+      {chips.map((c) => (
+        <div class="sb__shadow sb__shadow--chip" style={`--x:${c.x};--y:${c.y};--tw:${c.s};--th:${c.s}`} />
+      ))}
+
+      {Object.entries(docks).map(([id, [x, y]]) => {
+        const t = tiles.find((tt) => tt.id === id)!;
+        const di = tiles.indexOf(t);
+        return <div class="sb__rod" data-rod={id} style={`--x:${x};--y:${y};--z:${t.z};--d:${di * -0.9}s`} />;
+      })}
+
+      {chips.map((c, i) => (
+        <div class="sb__chip" style={`--x:${c.x};--y:${c.y};--tw:${c.s};--th:${c.s};--z:${c.z};--d:${i * -1.3}s`} />
+      ))}
+
+      {tiles.map((t, i) => (
+        <div class={`sb__tile sb__tile--${t.id}`} data-tile={t.id} style={`--x:${t.x};--y:${t.y};--tw:${t.w};--th:${t.h};--z:${t.z};--d:${i * -0.9}s`}>
+          <div class="sb__head">
+            <span class="sb__led"></span>
+            <span class="sb__name">{t.name}</span>
+          </div>
+          <div class="sb__body">
+            {t.id === 'line' && (
+              <svg viewBox="0 0 200 70" preserveAspectRatio="none" class="sb__chart">
+                <defs>
+                  <linearGradient id="sb-area" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#f40e0e" stop-opacity="0.45" />
+                    <stop offset="1" stop-color="#f40e0e" stop-opacity="0" />
+                  </linearGradient>
+                </defs>
+                <path class="sb__gridline" d="M0 17.5H200M0 35H200M0 52.5H200" />
+                <path class="sb__area" data-area d="M0 56 L25 50 L50 52 L75 38 L100 42 L125 28 L150 31 L175 18 L200 22 V70 H0Z" />
+                <path class="sb__line" data-line d="M0 56 L25 50 L50 52 L75 38 L100 42 L125 28 L150 31 L175 18 L200 22" />
+                <circle class="sb__line-dot" data-line-dot cx="200" cy="22" r="3.2" />
+              </svg>
+            )}
+            {t.id === 'bars' && (
+              <div class="sb__bars">
+                {[42, 68, 35, 80, 55, 92, 60].map((h) => <i style={`--h:${h}`} />)}
+              </div>
+            )}
+            {t.id === 'ring' && (
+              <div class="sb__ringwrap">
+                <svg viewBox="0 0 80 80" class="sb__ring">
+                  <circle cx="40" cy="40" r="31" class="sb__ring-track" />
+                  <circle cx="40" cy="40" r="31" class="sb__ring-val" pathLength="100" data-ring style="stroke-dashoffset:26" transform="rotate(-90 40 40)" />
+                </svg>
+                <span class="sb__ring-num"><b data-ring-num>74</b><small>Score</small></span>
+              </div>
+            )}
+            {t.id === 'list' && (
+              <ul class="sb__list" data-list>
+                <li><i></i><span style="--l:70"></span><b>48,90 €</b></li>
+                <li><i></i><span style="--l:52"></span><b>12,40 €</b></li>
+                <li><i></i><span style="--l:64"></span><b>230,00 €</b></li>
+                <li><i></i><span style="--l:44"></span><b>7,95 €</b></li>
+              </ul>
+            )}
+            {t.id === 'kpi' && (
+              <div class="sb__kpi">
+                <b><span data-kpi>412</span> €</b>
+                <svg viewBox="0 0 100 24" preserveAspectRatio="none">
+                  <path d="M0 18 L12 15 L24 17 L36 10 L48 13 L60 7 L72 9 L84 4 L100 6" />
+                </svg>
+              </div>
+            )}
+            {t.id === 'map' && (
+              <svg viewBox="0 0 200 110" class="sb__map">
+                <path class="sb__roads" d="M0 30 H200 M0 78 H200 M48 0 V110 M128 0 V110 M170 0 L90 110" />
+                <path class="sb__route" id="sb-route" d="M22 92 H48 V54 H128 V22 H178" />
+                <circle class="sb__route-dot" r="4.5">
+                  <animateMotion dur="5s" repeatCount="indefinite" rotate="auto">
+                    <mpath href="#sb-route" />
+                  </animateMotion>
+                </circle>
+                <g class="sb__pin" data-pin><circle cx="178" cy="22" r="7" /><circle cx="178" cy="22" r="2.5" /></g>
+              </svg>
+            )}
+            {t.id === 'quiz' && (
+              <div class="sb__quiz">
+                <div class="sb__segs" data-segs>{[1, 1, 1, 0, 0, 0].map((on) => <i class={on ? 'on' : ''} />)}</div>
+                <div class="sb__quiz-row"><span class="sb__check" data-check>✓</span><span class="sb__skel" style="--l:68"></span></div>
+                <div class="sb__quiz-row"><span class="sb__opt"></span><span class="sb__skel" style="--l:50"></span></div>
+              </div>
+            )}
+            {t.id === 'timer' && (
+              <div class="sb__timer">
+                <svg viewBox="0 0 60 60">
+                  <circle cx="30" cy="30" r="25" class="sb__clock" />
+                  <path d="M30 9V13M51 30H47M30 51V47M9 30H13" class="sb__clock-ticks" />
+                  <line x1="30" y1="30" x2="30" y2="14" class="sb__hand" data-hand />
+                  <circle cx="30" cy="30" r="2.6" fill="#f40e0e" />
+                </svg>
+                <b><span data-min>18</span><small>min</small></b>
+              </div>
+            )}
+          </div>
+        </div>
+      ))}
+
+      <div class="sb__hub">
+        <span class="sb__hub-core"><img src="/images/logo-wamocon.png" alt="" width="1680" height="1680" decoding="async" /></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const boards = document.querySelectorAll<HTMLElement>('[data-sb]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  boards.forEach((root) => {
+    const plane = root.querySelector<HTMLElement>('.sb__plane')!;
+    const hero = root.closest('section') ?? root;
+    const tile = (id: string) => root.querySelector<HTMLElement>(`[data-tile="${id}"]`)!;
+    const shadow = (id: string) => root.querySelector<HTMLElement>(`[data-shadow="${id}"]`)!;
+    const rnd = (a: number, b: number) => a + Math.random() * (b - a);
+
+    /* ---------- tile reactions ---------- */
+    const countTo = (el: Element, to: number, ms = 700, fmt = (n: number) => String(Math.round(n))) => {
+      const from = parseFloat(el.textContent || '0') || 0;
+      const t0 = performance.now();
+      const step = (t: number) => {
+        const p = Math.min(1, (t - t0) / ms);
+        el.textContent = fmt(from + (to - from) * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+
+    let ringVal = 74;
+    let segs = 3;
+    let minutes = 18;
+    let handDeg = 0;
+    const amounts = ['19,99 €', '64,20 €', '8,50 €', '149,00 €', '33,75 €', '5,40 €', '89,90 €'];
+
+    const react: Record<string, () => void> = {
+      line() {
+        let y = rnd(48, 60);
+        const pts = Array.from({ length: 9 }, (_, i) => {
+          y = Math.max(8, Math.min(62, y - rnd(-4, 9)));
+          return [i * 25, Math.round(y)];
+        });
+        const d = 'M' + pts.map((p) => p.join(' ')).join(' L');
+        root.querySelector('[data-line]')!.setAttribute('d', d);
+        root.querySelector('[data-area]')!.setAttribute('d', d + ' V70 H0Z');
+        const last = pts[pts.length - 1];
+        root.querySelector('[data-line-dot]')!.setAttribute('cy', String(last[1]));
+      },
+      bars() {
+        root.querySelectorAll<HTMLElement>('.sb__bars i').forEach((b) => b.style.setProperty('--h', String(Math.round(rnd(25, 98)))));
+      },
+      ring() {
+        ringVal = ringVal >= 96 ? 61 : Math.min(98, ringVal + Math.round(rnd(4, 9)));
+        root.querySelector<SVGElement>('[data-ring]')!.style.strokeDashoffset = String(100 - ringVal);
+        countTo(root.querySelector('[data-ring-num]')!, ringVal);
+      },
+      list() {
+        const ul = root.querySelector('[data-list]')!;
+        // clone an existing row so it keeps Astro's scoped style attribute
+        const li = ul.firstElementChild!.cloneNode(true) as HTMLElement;
+        li.classList.add('is-new');
+        li.querySelector<HTMLElement>('span')!.style.setProperty('--l', String(Math.round(rnd(40, 75))));
+        li.querySelector('b')!.textContent = amounts[Math.floor(Math.random() * amounts.length)];
+        ul.firstElementChild!.classList.remove('is-new');
+        ul.prepend(li);
+        while (ul.children.length > 4) ul.lastElementChild!.remove();
+      },
+      kpi() {
+        countTo(root.querySelector('[data-kpi]')!, Math.round(rnd(180, 640)));
+      },
+      map() {
+        const pin = root.querySelector('[data-pin]')!;
+        pin.classList.remove('is-ping');
+        void (pin as SVGElement).getBoundingClientRect();
+        pin.classList.add('is-ping');
+      },
+      quiz() {
+        segs = segs >= 6 ? 1 : segs + 1;
+        root.querySelectorAll('[data-segs] i').forEach((s, i) => s.classList.toggle('on', i < segs));
+        const c = root.querySelector('[data-check]')!;
+        c.classList.remove('is-pop');
+        void (c as HTMLElement).offsetWidth;
+        c.classList.add('is-pop');
+      },
+      timer() {
+        minutes = minutes <= 4 ? 25 : minutes - Math.round(rnd(2, 5));
+        handDeg += 360 * 0.6 + rnd(20, 90);
+        root.querySelector<SVGElement>('[data-hand]')!.style.transform = `rotate(${handDeg}deg)`;
+        countTo(root.querySelector('[data-min]')!, minutes);
+      },
+    };
+
+    const hit = (id: string) => {
+      const els = [tile(id), shadow(id), root.querySelector<HTMLElement>(`[data-rod="${id}"]`)!];
+      els.forEach((el) => el.classList.remove('is-hit'));
+      void els[0].offsetWidth;
+      els.forEach((el) => el.classList.add('is-hit'));
+      react[id]?.();
+      window.setTimeout(() => els.forEach((el) => el.classList.remove('is-hit')), 1100);
+    };
+
+    /* ---------- pulses along the traces ---------- */
+    const ids = Object.keys(react);
+    const radar = root.querySelector<HTMLElement>('.sb__radar')!;
+    const fire = (id: string) => {
+      const g = root.querySelector(`[data-trace="${id}"]`)!;
+      const pulse = g.querySelector<SVGPathElement>('.sb__trace-pulse')!;
+      const glow = g.querySelector<SVGPathElement>('.sb__trace-glow')!;
+      radar.classList.remove('is-on');
+      void radar.offsetWidth;
+      radar.classList.add('is-on');
+      const dur = 750;
+      pulse.animate(
+        [{ strokeDashoffset: 14, opacity: 1 }, { strokeDashoffset: -100, opacity: 1 }],
+        { duration: dur, easing: 'cubic-bezier(0.5, 0, 0.3, 1)' },
+      );
+      glow.animate([{ opacity: 0 }, { opacity: 0.55, offset: 0.4 }, { opacity: 0 }], { duration: dur + 500 });
+      window.setTimeout(() => hit(id), dur - 60);
+    };
+
+    /* ---------- loop, paused when off screen ---------- */
+    let timer = 0;
+    let visible = false;
+    let last = '';
+    const loop = () => {
+      window.clearTimeout(timer);
+      if (!visible || document.hidden) return;
+      let id = last;
+      while (id === last) id = ids[Math.floor(Math.random() * ids.length)];
+      last = id;
+      fire(id);
+      if (Math.random() < 0.35) {
+        let id2 = id;
+        while (id2 === id) id2 = ids[Math.floor(Math.random() * ids.length)];
+        window.setTimeout(() => fire(id2), 260);
+      }
+      timer = window.setTimeout(loop, rnd(1300, 1900));
+    };
+
+    if (!reduce) {
+      new IntersectionObserver(
+        ([e]) => {
+          visible = e.isIntersecting;
+          root.classList.toggle('is-paused', !visible);
+          if (visible) timer = window.setTimeout(loop, 900);
+          else window.clearTimeout(timer);
+        },
+        { threshold: 0.15 },
+      ).observe(root);
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && visible) loop();
+      });
+    }
+
+    /* ---------- pointer tilt with easing ---------- */
+    if (reduce) return;
+    let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
+    const tick = () => {
+      cx += (tx - cx) * 0.06;
+      cy += (ty - cy) * 0.06;
+      plane.style.setProperty('--px', cx.toFixed(3));
+      plane.style.setProperty('--py', cy.toFixed(3));
+      raf = Math.abs(tx - cx) + Math.abs(ty - cy) > 0.001 ? requestAnimationFrame(tick) : 0;
+    };
+    const kick = () => { if (!raf) raf = requestAnimationFrame(tick); };
+    hero.addEventListener('pointermove', (e) => {
+      if ((e as PointerEvent).pointerType !== 'mouse') return;
+      const r = root.getBoundingClientRect();
+      tx = Math.max(-1, Math.min(1, ((e as PointerEvent).clientX - (r.left + r.width / 2)) / (r.width * 0.8)));
+      ty = Math.max(-1, Math.min(1, ((e as PointerEvent).clientY - (r.top + r.height / 2)) / (r.height * 0.8)));
+      kick();
+    });
+    hero.addEventListener('pointerleave', () => { tx = 0; ty = 0; kick(); });
+  });
+</script>
+
+<style>
+  .sb {
+    --red: #f40e0e;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1.02;
+    container-type: inline-size;
+    isolation: isolate;
+    user-select: none;
+  }
+
+  /* ---------- backdrop: stars + wire globe ---------- */
+  .sb__stars {
+    position: absolute;
+    inset: -6% -10%;
+    z-index: -2;
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, 0.55), transparent 60%),
+      radial-gradient(1px 1px at 78% 9%, rgba(255, 255, 255, 0.4), transparent 60%),
+      radial-gradient(1.2px 1.2px at 91% 34%, rgba(255, 255, 255, 0.5), transparent 60%),
+      radial-gradient(1px 1px at 6% 62%, rgba(255, 255, 255, 0.35), transparent 60%),
+      radial-gradient(1px 1px at 34% 91%, rgba(255, 255, 255, 0.4), transparent 60%),
+      radial-gradient(1.2px 1.2px at 64% 79%, rgba(255, 140, 130, 0.5), transparent 60%),
+      radial-gradient(1px 1px at 48% 4%, rgba(255, 255, 255, 0.35), transparent 60%),
+      radial-gradient(1px 1px at 97% 71%, rgba(255, 255, 255, 0.35), transparent 60%);
+    animation: sb-twinkle 6s ease-in-out infinite alternate;
+  }
+  .sb__globe {
+    position: absolute;
+    left: 15%;
+    right: -12%;
+    bottom: -4%;
+    width: 97%;
+    max-width: none;
+    z-index: -1;
+    color: rgba(255, 255, 255, 0.07);
+    -webkit-mask: linear-gradient(to top, #000 10%, transparent 75%);
+    mask: linear-gradient(to top, #000 10%, transparent 75%);
+  }
+
+  /* ---------- 3D scene ---------- */
+  .sb__scene {
+    position: absolute;
+    inset: 0;
+    perspective: 220cqi;
+    perspective-origin: 50% 30%;
+  }
+  .sb__plane {
+    --px: 0;
+    --py: 0;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 80cqi;
+    aspect-ratio: 1;
+    transform-style: preserve-3d;
+    transform:
+      translate(-50%, -50%)
+      rotateX(calc(44deg - var(--py) * 6deg))
+      rotateZ(calc(-28deg + var(--px) * 7deg));
+  }
+  .sb__grid {
+    position: absolute;
+    inset: -14%;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+    background-size: 5% 5%;
+    background-position: center;
+    -webkit-mask: radial-gradient(closest-side, #000 35%, transparent 100%);
+    mask: radial-gradient(closest-side, #000 35%, transparent 100%);
+  }
+
+  /* ---------- traces ---------- */
+  .sb__traces {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    overflow: visible;
+  }
+  .sb__pins circle {
+    fill: rgba(255, 255, 255, 0.18);
+  }
+  .sb__trace {
+    fill: none;
+    stroke: rgba(244, 14, 14, 0.6);
+    stroke-width: 3;
+  }
+  .sb__net path {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.14);
+    stroke-width: 2;
+    stroke-dasharray: 3 9;
+    animation: sb-flow 3s linear infinite;
+  }
+  .sb__trace-glow {
+    fill: none;
+    stroke: #f40e0e;
+    stroke-width: 9;
+    stroke-linecap: round;
+    opacity: 0;
+  }
+  .sb__trace-pulse {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 3.4;
+    stroke-linecap: round;
+    stroke-dasharray: 14 200;
+    stroke-dashoffset: 14;
+    opacity: 0;
+  }
+
+  /* ---------- hub ---------- */
+  .sb__hub {
+    position: absolute;
+    left: 38%;
+    top: 42.5%;
+    width: 24%;
+    height: 15%;
+    transform-style: preserve-3d;
+    transform: translateZ(3cqi);
+  }
+  .sb__hub::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 2.2cqi;
+    background:
+      radial-gradient(circle at 50% 40%, rgba(244, 14, 14, 0.35), transparent 65%),
+      linear-gradient(155deg, #2a1414, #0e0808 70%);
+    border: 0.3cqi solid #f40e0e;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.25),
+      inset 0 0 2.4cqi rgba(244, 14, 14, 0.45),
+      0 0 2cqi rgba(244, 14, 14, 0.55);
+  }
+  .sb__hub::after {
+    /* glow on the board below the hub */
+    content: '';
+    position: absolute;
+    inset: -30%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(244, 14, 14, 0.42), transparent);
+    transform: translateZ(-3cqi);
+    z-index: -1;
+  }
+  .sb__hub-core {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+  .sb__hub-core {
+    overflow: hidden;
+    border-radius: 2.2cqi;
+  }
+  .sb__hub-core img {
+    /* The PNG is square; show only the WMC/WAMOCON band (without the
+       tagline) and keep it small in the middle of the hub. */
+    width: 56%;
+    height: auto;
+    aspect-ratio: 1680 / 505;
+    object-fit: cover;
+    object-position: 50% 41.3%;
+    max-width: none;
+  }
+  .sb__radar {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+  }
+  .sb__radar i {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 30cqi;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    border-radius: 50%;
+    border: 0.25cqi solid rgba(244, 14, 14, 0.7);
+    opacity: 0;
+  }
+  .sb__radar.is-on i { animation: sb-radar 1.3s cubic-bezier(0.1, 0.6, 0.3, 1); }
+  .sb__radar.is-on i + i { animation-delay: 0.16s; }
+
+  /* ---------- light rods from board to tile ---------- */
+  .sb__rod {
+    position: absolute;
+    left: calc(var(--x) * 1%);
+    top: calc(var(--y) * 1%);
+    width: 0.3cqi;
+    height: calc(var(--z) * 1cqi);
+    margin-left: -0.15cqi;
+    translate: 0 -100%;
+    transform-origin: 50% 100%;
+    transform: rotateX(-90deg);
+    background: linear-gradient(to top, rgba(244, 14, 14, 0.75), rgba(244, 14, 14, 0.15));
+    animation: sb-rod 7s ease-in-out var(--d) infinite;
+    transition: background 0.4s ease;
+  }
+  .sb__rod.is-hit {
+    background: linear-gradient(to top, #ff5a50, #fff);
+    box-shadow: 0 0 1cqi rgba(244, 14, 14, 0.9);
+    transition-duration: 0.08s;
+  }
+
+  /* ---------- tiles ---------- */
+  .sb__tile,
+  .sb__chip,
+  .sb__shadow {
+    position: absolute;
+    left: calc(var(--x) * 1%);
+    top: calc(var(--y) * 1%);
+    width: calc(var(--tw) * 1%);
+    height: calc(var(--th) * 1%);
+    border-radius: 1.4cqi;
+  }
+  .sb__shadow {
+    background: rgba(0, 0, 0, 0.55);
+    box-shadow: 0 0 2.4cqi 1cqi rgba(0, 0, 0, 0.55);
+    transition: background-color 0.4s ease, box-shadow 0.4s ease;
+  }
+  .sb__shadow.is-hit {
+    background: rgba(244, 14, 14, 0.28);
+    box-shadow: 0 0 4cqi 1.6cqi rgba(244, 14, 14, 0.35);
+    transition-duration: 0.12s;
+  }
+  .sb__shadow--chip {
+    border-radius: 0.9cqi;
+    opacity: 0.7;
+  }
+
+  .sb__tile {
+    --lift: 0cqi;
+    display: flex;
+    flex-direction: column;
+    padding: 1.2cqi 1.4cqi 1.3cqi;
+    background:
+      linear-gradient(155deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.015) 45%),
+      linear-gradient(180deg, #1d1d20, #121214);
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      inset 0 0 0 1px rgba(244, 14, 14, 0);
+    color: #fff;
+    transform: translateZ(calc(var(--z) * 1cqi + var(--lift)));
+    animation: sb-float 7s ease-in-out var(--d) infinite;
+    transition: box-shadow 0.4s ease, border-color 0.4s ease;
+    overflow: hidden;
+  }
+  .sb__tile::after {
+    /* red edge light on hit */
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(155deg, rgba(244, 14, 14, 0.28), transparent 55%);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+  }
+  .sb__tile.is-hit {
+    border-color: rgba(255, 90, 80, 0.8);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 0 0 1px rgba(244, 14, 14, 0.5);
+    transition-duration: 0.1s;
+  }
+  .sb__tile.is-hit::after {
+    opacity: 1;
+    transition-duration: 0.1s;
+  }
+  .sb__tile:hover {
+    --lift: 2.4cqi;
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+
+  .sb__chip {
+    border-radius: 0.9cqi;
+    background: linear-gradient(160deg, #26262a, #141416);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transform: translateZ(calc(var(--z) * 1cqi));
+    animation: sb-float 7s ease-in-out var(--d) infinite;
+  }
+  .sb__chip::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 22%;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    border-radius: 50%;
+    background: rgba(244, 14, 14, 0.75);
+    box-shadow: 0 0 1cqi rgba(244, 14, 14, 0.8);
+  }
+
+  .sb__head {
+    display: flex;
+    align-items: center;
+    gap: 0.8cqi;
+    font-size: 1.45cqi;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+  .sb__led {
+    flex: none;
+    width: 0.9cqi;
+    height: 0.9cqi;
+    border-radius: 50%;
+    background: #3a3a3e;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .is-hit .sb__led {
+    background: #ff3b30;
+    box-shadow: 0 0 0.9cqi #ff3b30;
+    transition-duration: 0.05s;
+  }
+  .sb__name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .sb__body {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    margin-top: 1cqi;
+  }
+
+  /* line chart */
+  .sb__chart {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    overflow: visible;
+  }
+  .sb__gridline {
+    stroke: rgba(255, 255, 255, 0.07);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  .sb__line {
+    fill: none;
+    stroke: #ff3b30;
+    stroke-width: 2;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+    transition: d 0.8s cubic-bezier(0.34, 1.2, 0.5, 1);
+  }
+  .sb__area {
+    fill: url(#sb-area);
+    transition: d 0.8s cubic-bezier(0.34, 1.2, 0.5, 1);
+  }
+  .sb__line-dot {
+    fill: #fff;
+    transition: cy 0.8s cubic-bezier(0.34, 1.2, 0.5, 1);
+  }
+
+  /* bars */
+  .sb__bars {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    gap: 7%;
+    padding-top: 0.4cqi;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .sb__bars i {
+    flex: 1;
+    height: calc(var(--h) * 1%);
+    border-radius: 0.4cqi 0.4cqi 0 0;
+    background: linear-gradient(180deg, #ff3b30, rgba(180, 10, 10, 0.55));
+    transition: height 0.85s cubic-bezier(0.34, 1.4, 0.5, 1);
+  }
+  .sb__bars i:nth-child(2n) {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.12));
+  }
+
+  /* ring */
+  .sb__ringwrap {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+  .sb__ring {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+  }
+  .sb__ring-track {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.08);
+    stroke-width: 7;
+  }
+  .sb__ring-val {
+    fill: none;
+    stroke: #ff3b30;
+    stroke-width: 7;
+    stroke-linecap: round;
+    stroke-dasharray: 100 100;
+    transition: stroke-dashoffset 0.9s cubic-bezier(0.34, 1.3, 0.5, 1);
+  }
+  .sb__ring-num {
+    position: absolute;
+    display: grid;
+    justify-items: center;
+    line-height: 1;
+  }
+  .sb__ring-num b {
+    font-size: 4cqi;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+  .sb__ring-num small {
+    margin-top: 0.3cqi;
+    font-size: 1.2cqi;
+    color: rgba(255, 255, 255, 0.55);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* receipt list */
+  .sb__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.9cqi;
+  }
+  .sb__list li {
+    display: flex;
+    align-items: center;
+    gap: 0.9cqi;
+    padding: 0.7cqi 0.8cqi;
+    border-radius: 0.7cqi;
+    background: rgba(255, 255, 255, 0.04);
+    font-size: 1.45cqi;
+    font-variant-numeric: tabular-nums;
+  }
+  .sb__list li i {
+    flex: none;
+    width: 1.6cqi;
+    height: 1.9cqi;
+    border-radius: 0.25cqi;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+  }
+  .sb__list li span,
+  .sb__skel {
+    height: 0.6cqi;
+    width: calc(var(--l) * 0.6%);
+    border-radius: 1cqi;
+    background: rgba(255, 255, 255, 0.16);
+  }
+  .sb__list li b {
+    margin-left: auto;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .sb__list li.is-new {
+    animation: sb-row 0.7s cubic-bezier(0.34, 1.3, 0.5, 1);
+    background: rgba(244, 14, 14, 0.16);
+    transition: background-color 1.4s ease 0.4s;
+  }
+  .sb__list li.is-new b {
+    color: #ff6b62;
+  }
+
+  /* kpi */
+  .sb__kpi {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .sb__kpi b {
+    font-size: 4.2cqi;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .sb__kpi svg {
+    width: 100%;
+    height: 34%;
+    max-width: none;
+  }
+  .sb__kpi path {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.5);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* map */
+  .sb__map {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+  }
+  .sb__roads {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 6;
+  }
+  .sb__route {
+    fill: none;
+    stroke: #ff3b30;
+    stroke-width: 3;
+    stroke-dasharray: 6 5;
+    stroke-linejoin: round;
+    animation: sb-dash 1.2s linear infinite;
+  }
+  .sb__route-dot {
+    fill: #fff;
+  }
+  .sb__pin circle:first-child {
+    fill: rgba(244, 14, 14, 0.25);
+    stroke: #ff3b30;
+    stroke-width: 1.5;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .sb__pin circle:last-child {
+    fill: #fff;
+  }
+  .sb__pin.is-ping circle:first-child {
+    animation: sb-pinping 0.9s cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+
+  /* quiz */
+  .sb__quiz {
+    display: grid;
+    gap: 1.1cqi;
+  }
+  .sb__segs {
+    display: flex;
+    gap: 0.6cqi;
+  }
+  .sb__segs i {
+    flex: 1;
+    height: 0.8cqi;
+    border-radius: 1cqi;
+    background: rgba(255, 255, 255, 0.1);
+    transition: background-color 0.4s ease;
+  }
+  .sb__segs i.on {
+    background: #ff3b30;
+  }
+  .sb__quiz-row {
+    display: flex;
+    align-items: center;
+    gap: 1cqi;
+    padding: 0.8cqi;
+    border-radius: 0.7cqi;
+    background: rgba(255, 255, 255, 0.04);
+  }
+  .sb__check,
+  .sb__opt {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.2cqi;
+    height: 2.2cqi;
+    border-radius: 50%;
+    font-size: 1.4cqi;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .sb__check {
+    background: #e10c0c;
+    color: #fff;
+  }
+  .sb__check.is-pop {
+    animation: sb-pop 0.6s cubic-bezier(0.34, 1.6, 0.5, 1);
+  }
+  .sb__opt {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  /* timer */
+  .sb__timer {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    gap: 1.6cqi;
+  }
+  .sb__timer svg {
+    height: 100%;
+    width: auto;
+    max-width: 42%;
+    flex: none;
+  }
+  .sb__clock {
+    fill: rgba(255, 255, 255, 0.03);
+    stroke: rgba(255, 255, 255, 0.2);
+    stroke-width: 1.5;
+  }
+  .sb__clock-ticks {
+    stroke: rgba(255, 255, 255, 0.4);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+  .sb__hand {
+    stroke: #ff3b30;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    transform-origin: 30px 30px;
+    transition: transform 1s cubic-bezier(0.34, 1.2, 0.5, 1);
+  }
+  .sb__timer b {
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.4cqi;
+    font-size: 3.2cqi;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .sb__timer small {
+    font-size: 1.5cqi;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* paused off screen */
+  .sb.is-paused *,
+  .sb.is-paused *::after {
+    animation-play-state: paused !important;
+  }
+
+  /* ---------- keyframes ---------- */
+  @keyframes sb-float {
+    0%, 100% { transform: translateZ(calc(var(--z) * 1cqi + var(--lift, 0cqi))); }
+    50% { transform: translateZ(calc(var(--z) * 1cqi + 1.2cqi + var(--lift, 0cqi))); }
+  }
+  @keyframes sb-rod {
+    0%, 100% { height: calc(var(--z) * 1cqi); }
+    50% { height: calc(var(--z) * 1cqi + 1.2cqi); }
+  }
+  @keyframes sb-flow {
+    to { stroke-dashoffset: -24; }
+  }
+  @keyframes sb-radar {
+    0% { opacity: 0.9; scale: 0.45; }
+    100% { opacity: 0; scale: 1.6; }
+  }
+  @keyframes sb-row {
+    0% { opacity: 0; transform: translateY(-60%) scale(0.96); }
+    100% { opacity: 1; transform: none; }
+  }
+  @keyframes sb-dash {
+    to { stroke-dashoffset: -11; }
+  }
+  @keyframes sb-pinping {
+    0% { scale: 1; }
+    40% { scale: 1.8; fill: rgba(244, 14, 14, 0.45); }
+    100% { scale: 1; }
+  }
+  @keyframes sb-pop {
+    0% { scale: 0.4; }
+    100% { scale: 1; }
+  }
+  @keyframes sb-twinkle {
+    0% { opacity: 0.55; }
+    100% { opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sb *,
+    .sb *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
