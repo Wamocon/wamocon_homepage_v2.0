@@ -142,11 +142,13 @@ const academyUrl = 'https://test-it-academy.com/';
 <section class="sys-hero">
   <div class="container">
     <p class="sys-hero__eyebrow"><span class="t-white">{c.heroEyebrowLead}</span><span class="t-red">{c.heroEyebrowAccent}</span></p>
-    <div class="sys-hero__lead">
-      {c.heroParas.map((p) => <p>{p}</p>)}
-    </div>
     <h1 class="sys-hero__title"><span class="t-white">{c.heroTitleLead}</span><span class="t-red">{c.heroTitleAccent}</span></h1>
-    <div class="sys-hero__img"><ProcessCycle lang={lang} label={c.heroImgAlt} /></div>
+    <div class="sys-hero__grid">
+      <div class="sys-hero__img"><ProcessCycle lang={lang} label={c.heroImgAlt} /></div>
+      <div class="sys-hero__lead">
+        {c.heroParas.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
   </div>
 </section>
 
@@ -202,17 +204,33 @@ const academyUrl = 'https://test-it-academy.com/';
     color: var(--color-text);
     margin-bottom: 1.5rem;
   }
-  /* Full-width, left-aligned intro copy (fills the screen instead of a narrow column). */
-  .sys-hero__lead { max-width: none; margin: 0 0 2rem; }
-  .sys-hero__lead p { color: var(--color-text-muted); line-height: 1.65; margin-bottom: 1rem; }
+  /* Rad links, Einleitung rechts daneben; auf schmalen Bildschirmen untereinander. */
+  .sys-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 540px) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+  .sys-hero__lead { max-width: 62ch; margin: 0; }
+  .sys-hero__lead p {
+    color: var(--color-text-muted);
+    font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.25rem);
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+  .sys-hero__lead p:first-child { color: var(--color-text); }
+  .sys-hero__lead p:last-child { margin-bottom: 0; }
   .sys-hero__title {
     font-size: clamp(2.4rem, 7vw, 5rem);
     font-weight: var(--fw-bold);
     line-height: 1.05;
     margin-bottom: 2.5rem;
   }
-  /* The diagram is a graphic, so it is centred and a little larger. */
-  .sys-hero__img { max-width: 760px; width: 100%; margin-inline: auto; }
+  .sys-hero__img { width: 100%; }
+  @media (max-width: 900px) {
+    .sys-hero__grid { grid-template-columns: minmax(0, 1fr); }
+    .sys-hero__img { max-width: 440px; margin-inline: auto; }
+  }
 
   .sys-h2 {
     font-size: clamp(1.8rem, 4.5vw, 3rem);
