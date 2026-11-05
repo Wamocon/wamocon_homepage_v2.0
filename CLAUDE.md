@@ -24,7 +24,7 @@ Firmenwebsite der WAMOCON GmbH (www.wamocon.com), gebaut mit Astro 7.3 als stati
   - `home.ts` und `faq.ts`: Startseite.
   - `systeme.ts`: `/unternehmenssysteme/`.
   - `webdesign.ts`: `/webdesign/`.
-  - `universe.ts`: `/portfolio/` (Komponente `UniversePage`, Hauptmenüpunkt direkt hinter Start). Alle Zahlen stammen aus WAMOCON_Portfolio.pdf, dort nichts erfinden.
+  - `universe.ts`: `/portfolio/` (Komponente `UniversePage`, Hauptmenüpunkt direkt hinter Start). Alle Zahlen stammen aus WAMOCON_Portfolio.pdf, dort nichts erfinden. Der technische Stand, auf dem die Weiterentwicklung der Seite aufbaut, steht in `docs/portfolio-seite-technik.md`. Vor Änderungen an der Seite zuerst lesen.
 - `src/layouts/BaseLayout.astro`: das einzige Layout. Props: `title`, `description`, `lang`, `image`, `noindex`, `schema` (JSON-LD) und `breadcrumbs`.
 - `src/components/layout/`: Header, Footer und CookieBanner. `src/components/ui/`: Button, AppCard, ChatWidget, PageHero usw.
 - `src/styles/tokens.css`: Design-Tokens (Farben, Schrift, Abstände). Die Seite hat einen dunklen Hintergrund (`#101010`) und das CI-Rot `#f40e0e`. Gefüllte Flächen mit weißer Schrift nutzen `--color-accent-surface`, kleiner roter Text `--color-accent-text`, damit die Kontraste WCAG AA erfüllen.
