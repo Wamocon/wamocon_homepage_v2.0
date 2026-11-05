@@ -61,7 +61,7 @@ German and English. The website, training and project documentation are availabl
 The accreditation belongs to the sister company. WAMOCON Academy GmbH is listed by ISTQB as an accredited training provider for German-language CTFL 4.0 and Agile Tester 1.0 materials.
 
 **Does WAMOCON develop software as well as test it?**
-Yes. Alongside testing services, WAMOCON develops custom software and AI-assisted applications, published in its apps portfolio.
+Yes. Alongside testing services, WAMOCON develops custom software and AI-assisted applications, published on its Systems page (https://www.wamocon.com/systeme/).
 
 ## Canonical sources
 

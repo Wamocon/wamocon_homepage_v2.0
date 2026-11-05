@@ -121,7 +121,10 @@ function retrieve(question, replyLang) {
   for (const page of knowledge.pages) {
     const langBoost = page.lang === replyLang ? 1.6 : 1;
     for (const text of page.chunks) {
-      const hay = text.toLowerCase();
+      // The page title counts too: short headings such as "Ein Portfolio.
+      // Drei Welten." fall below the chunker's minimum length, so without the
+      // title a page can be unfindable by its own name.
+      const hay = (page.title + ' ' + text).toLowerCase();
       let hits = 0;
       for (const tok of qTokens) if (hay.includes(tok)) hits++;
       if (!hits) continue;
