@@ -40,6 +40,17 @@ export const nav: NavLink[] = [
     kk: { label: 'Басты бет', href: '/kk/' },
   },
   {
+    // The portfolio, told as a universe: core, three worlds, reach. A top-level
+    // entry of its own, not a child of "Unser System". The old universe slugs
+    // (/universum/, /en/universe/, /tr/evren/, /kk/galam/) redirect here, see
+    // vercel.json.
+    key: 'portfolio',
+    de: { label: 'Portfolio', href: '/portfolio/' },
+    en: { label: 'Portfolio', href: '/en/portfolio/' },
+    tr: { label: 'Portföy', href: '/tr/portfoy/' },
+    kk: { label: 'Портфолио', href: '/kk/portfolio/' },
+  },
+  {
     // Dropdown group. The parent links to the primary child (the 360° page).
     key: 'system-group',
     de: { label: 'Unser System', href: '/unser-system/' },
@@ -69,14 +80,6 @@ export const nav: NavLink[] = [
         en: { label: 'About us', href: '/en/about-us/' },
         tr: { label: 'Hakkımızda', href: '/tr/hakkimizda/' },
         kk: { label: 'Біз туралы', href: '/kk/biz-turaly/' },
-      },
-      {
-        // The portfolio, told as a universe: core, three worlds, reach.
-        key: 'universe',
-        de: { label: 'Universum', href: '/universum/' },
-        en: { label: 'Universe', href: '/en/universe/' },
-        tr: { label: 'Evren', href: '/tr/evren/' },
-        kk: { label: 'Ғалам', href: '/kk/galam/' },
       },
     ],
   },

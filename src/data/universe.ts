@@ -1,5 +1,6 @@
 /**
- * Copy for the "Universum" page: the WAMOCON portfolio told as a universe.
+ * Copy for the "Portfolio" page (/portfolio/, formerly /universum/): the
+ * WAMOCON portfolio told as a universe.
  * Source: WAMOCON_Portfolio.pdf (one-pager). Every figure on the page comes
  * from that document; nothing here is invented, the governance demo is
  * labelled as a schematic.
@@ -34,7 +35,7 @@ export const universeCopy = {
       l1: 'KI prüft.',
       l2: 'Der Mensch entscheidet.',
       lead: 'Software mit eingebauter Kontrolle, SAP-Beratung und Training. Für regulierte Konzerne in DACH und Zentralasien.',
-      explore: 'Universum erkunden',
+      explore: 'Portfolio erkunden',
       demo: 'Live-Demo anfragen',
       orbitLabel: 'Die drei Welten unseres Portfolios',
       orbitHint: 'Wählen Sie einen Planeten, um dorthin zu fliegen.',
@@ -101,7 +102,7 @@ export const universeCopy = {
     },
     worlds: {
       eyebrow: 'Drei Welten',
-      title: 'Ein Universum. Drei Welten.',
+      title: 'Ein Portfolio. Drei Welten.',
       lead: 'Zwei Unternehmen teilen sich die Kapazität: 80 % WAMOCON GmbH und 20 % WAMOCON Academy GmbH.',
       capLabel: 'Anteil an der Kapazität',
       refLabel: 'Referenz',
@@ -159,7 +160,7 @@ export const universeCopy = {
     },
     timeline: {
       eyebrow: 'Zeitachse',
-      title: 'Wie unser Universum entstand',
+      title: 'Wie unser Portfolio entstand',
       items: [
         { y: '2007', t: 'Die ersten Projekte. Heute sind es über 100 in mehr als 15 Branchen.' },
         { y: '2015', t: 'Gründung der WAMOCON GmbH in Eschborn bei Frankfurt am Main.' },
@@ -189,7 +190,7 @@ export const universeCopy = {
       l1: 'AI checks.',
       l2: 'Humans decide.',
       lead: 'Software with built-in control, SAP consulting and training. For regulated enterprises in the DACH region and Central Asia.',
-      explore: 'Explore the universe',
+      explore: 'Explore the portfolio',
       demo: 'Request a live demo',
       orbitLabel: 'The three worlds of our portfolio',
       orbitHint: 'Select a planet to fly there.',
@@ -256,7 +257,7 @@ export const universeCopy = {
     },
     worlds: {
       eyebrow: 'Three worlds',
-      title: 'One universe. Three worlds.',
+      title: 'One portfolio. Three worlds.',
       lead: 'Two companies share the capacity: 80% WAMOCON GmbH and 20% WAMOCON Academy GmbH.',
       capLabel: 'Share of capacity',
       refLabel: 'Reference',
@@ -314,7 +315,7 @@ export const universeCopy = {
     },
     timeline: {
       eyebrow: 'Timeline',
-      title: 'How our universe came to be',
+      title: 'How our portfolio came to be',
       items: [
         { y: '2007', t: 'The first projects. Today there are more than 100 across over 15 industries.' },
         { y: '2015', t: 'WAMOCON GmbH is founded in Eschborn near Frankfurt am Main.' },
@@ -344,7 +345,7 @@ export const universeCopy = {
       l1: 'Yapay zekâ denetler.',
       l2: 'İnsan karar verir.',
       lead: 'Yerleşik kontrollü yazılım, SAP danışmanlığı ve eğitim. DACH bölgesi ve Orta Asya’daki regülasyona tabi büyük şirketler için.',
-      explore: 'Evreni keşfedin',
+      explore: 'Portföyü keşfedin',
       demo: 'Canlı demo talep edin',
       orbitLabel: 'Portföyümüzün üç dünyası',
       orbitHint: 'Oraya uçmak için bir gezegen seçin.',
@@ -411,7 +412,7 @@ export const universeCopy = {
     },
     worlds: {
       eyebrow: 'Üç dünya',
-      title: 'Tek evren. Üç dünya.',
+      title: 'Tek portföy. Üç dünya.',
       lead: 'İki şirket kapasiteyi paylaşır: %80 WAMOCON GmbH ve %20 WAMOCON Academy GmbH.',
       capLabel: 'Kapasitedeki pay',
       refLabel: 'Referans',
@@ -469,7 +470,7 @@ export const universeCopy = {
     },
     timeline: {
       eyebrow: 'Zaman çizelgesi',
-      title: 'Evrenimiz nasıl oluştu',
+      title: 'Portföyümüz nasıl oluştu',
       items: [
         { y: '2007', t: 'İlk projeler. Bugün 15’ten fazla sektörde 100’ü aşkın proje.' },
         { y: '2015', t: 'WAMOCON GmbH, Frankfurt yakınlarındaki Eschborn’da kuruldu.' },
@@ -499,7 +500,7 @@ export const universeCopy = {
       l1: 'ЖИ тексереді.',
       l2: 'Шешімді адам қабылдайды.',
       lead: 'Бақылауы кіріктірілген бағдарламалық жасақтама, SAP консалтингі және оқыту. DACH өңірі мен Орталық Азиядағы реттелетін ірі компанияларға арналған.',
-      explore: 'Ғаламды зерттеу',
+      explore: 'Портфолионы зерттеу',
       demo: 'Тікелей демо сұрау',
       orbitLabel: 'Портфолиомыздың үш әлемі',
       orbitHint: 'Сол жерге ұшу үшін планетаны таңдаңыз.',
@@ -566,7 +567,7 @@ export const universeCopy = {
     },
     worlds: {
       eyebrow: 'Үш әлем',
-      title: 'Бір ғалам. Үш әлем.',
+      title: 'Бір портфолио. Үш әлем.',
       lead: 'Екі компания қуатты бөліседі: 80 % WAMOCON GmbH және 20 % WAMOCON Academy GmbH.',
       capLabel: 'Қуаттағы үлес',
       refLabel: 'Тәжірибе',
@@ -624,7 +625,7 @@ export const universeCopy = {
     },
     timeline: {
       eyebrow: 'Уақыт желісі',
-      title: 'Ғаламымыз қалай пайда болды',
+      title: 'Портфолиомыз қалай қалыптасты',
       items: [
         { y: '2007', t: 'Алғашқы жобалар. Бүгін 15-тен астам салада 100-ден астам жоба бар.' },
         { y: '2015', t: 'WAMOCON GmbH Франкфурт маңындағы Эшборнда құрылды.' },

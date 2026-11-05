@@ -24,7 +24,7 @@ Firmenwebsite der WAMOCON GmbH (www.wamocon.com), gebaut mit Astro 7.3 als stati
   - `home.ts` und `faq.ts`: Startseite.
   - `systeme.ts`: `/unternehmenssysteme/`.
   - `webdesign.ts`: `/webdesign/`.
-  - `universe.ts`: `/universum/`. Alle Zahlen stammen aus WAMOCON_Portfolio.pdf, dort nichts erfinden.
+  - `universe.ts`: `/portfolio/` (Komponente `UniversePage`, Hauptmenüpunkt direkt hinter Start). Alle Zahlen stammen aus WAMOCON_Portfolio.pdf, dort nichts erfinden.
 - `src/layouts/BaseLayout.astro`: das einzige Layout. Props: `title`, `description`, `lang`, `image`, `noindex`, `schema` (JSON-LD) und `breadcrumbs`.
 - `src/components/layout/`: Header, Footer und CookieBanner. `src/components/ui/`: Button, AppCard, ChatWidget, PageHero usw.
 - `src/styles/tokens.css`: Design-Tokens (Farben, Schrift, Abstände). Die Seite hat einen dunklen Hintergrund (`#101010`) und das CI-Rot `#f40e0e`. Gefüllte Flächen mit weißer Schrift nutzen `--color-accent-surface`, kleiner roter Text `--color-accent-text`, damit die Kontraste WCAG AA erfüllen.
@@ -47,7 +47,7 @@ Zum Aktualisieren eine neue Datei liefern lassen und sie ersetzen. Eigene Ergän
 ## Sicherheit und Auslieferung
 
 - `vercel.json` enthält eine strenge CSP. Externe Schriften, Skripte und Medien sind nur in Ausnahmefällen erlaubt (Cloudflare Turnstile, YouTube nocookie, GitHub-Medien). `style-src`, `font-src` und `img-src` erlauben nur `'self'` (font und img zusätzlich `data:`). Lokal unter `astro dev` greift die CSP nicht. Was lokal läuft, kann deshalb online trotzdem blockiert werden.
-- Dort stehen außerdem 8 Redirects, z. B. vom alten `/apps/` auf `/systeme/`.
+- Dort stehen außerdem 16 Redirects, z. B. vom alten `/apps/` auf `/systeme/` und vom alten `/universum/` auf `/portfolio/`.
 - Das Deployment läuft nur manuell: GitHub Actions → „Deploy to Vercel“ → production oder preview (`.github/workflows/deploy.yml`). Ein Merge in `main` geht also nicht automatisch live.
 - `secret-scan.yml` prüft auf eingecheckte Secrets. Keine Schlüssel ins Repo.
 
