@@ -40,6 +40,17 @@ export const nav: NavLink[] = [
     kk: { label: 'Басты бет', href: '/kk/' },
   },
   {
+    // The portfolio, told as a universe: core, three worlds, reach. A top-level
+    // entry of its own, not a child of "Unser System". The old universe slugs
+    // (/universum/, /en/universe/, /tr/evren/, /kk/galam/) redirect here, see
+    // vercel.json.
+    key: 'portfolio',
+    de: { label: 'Portfolio', href: '/portfolio/' },
+    en: { label: 'Portfolio', href: '/en/portfolio/' },
+    tr: { label: 'Portföy', href: '/tr/portfoy/' },
+    kk: { label: 'Портфолио', href: '/kk/portfolio/' },
+  },
+  {
     // Dropdown group. The parent links to the primary child (the 360° page).
     key: 'system-group',
     de: { label: 'Unser System', href: '/unser-system/' },
@@ -56,10 +67,12 @@ export const nav: NavLink[] = [
       },
       {
         key: 'apps',
-        de: { label: 'Apps', href: '/apps/' },
-        en: { label: 'Apps', href: '/en/apps/' },
-        tr: { label: 'Uygulamalar', href: '/tr/uygulamalar/' },
-        kk: { label: 'Қосымшалар', href: '/kk/qosymshalar/' },
+        // Key stays 'apps' (footer and hreflang look it up). The old /apps/
+        // slugs redirect here, see vercel.json.
+        de: { label: 'Systeme', href: '/systeme/' },
+        en: { label: 'Systems', href: '/en/systems/' },
+        tr: { label: 'Sistemler', href: '/tr/sistemler/' },
+        kk: { label: 'Жүйелер', href: '/kk/juieler/' },
       },
       {
         key: 'about',

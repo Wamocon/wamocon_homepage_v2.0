@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import UniversePage from '../../components/sections/UniversePage.astro';
+
+const lang = 'en' as const;
+---
+
+<BaseLayout
+  title="The WAMOCON Portfolio: AI, SAP Consulting and Training"
+  description="AI checks, humans decide: the portfolio of WAMOCON GmbH and WAMOCON Academy GmbH with built-in governance, SAP consulting and training."
+  lang={lang}
+  breadcrumbs={[{ name: 'Portfolio', path: '/en/portfolio/' }]}
+>
+  <UniversePage lang={lang} />
+</BaseLayout>

@@ -1,0 +1,3292 @@
+---
+/**
+ * Portfolio (/portfolio/, formerly /universum/): the WAMOCON portfolio told
+ * as a universe.
+ *
+ * One page, seven scenes: a star field with a warp effect, the governance core
+ * as the sun, three orbiting worlds (the business units), constellations for
+ * the key figures, an interactive audit ring, a flight path for the first
+ * steps, a draggable globe and a timeline. Everything is plain Astro + CSS +
+ * a small vanilla script: no new dependencies.
+ *
+ * Motion respects prefers-reduced-motion (static scenes, no warp, no
+ * scroll-linked parallax). Every visual has a text equivalent on the page.
+ */
+import ContactBlock from './ContactBlock.astro';
+import type { Lang } from '../../i18n/config';
+import { universeCopy, geo, worldShares, type WorldId } from '../../data/universe';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const c = universeCopy[lang];
+
+const worldIds: WorldId[] = ['ki', 'sap', 'academy'];
+const anchors = ['start', 'sternbilder', 'kern', 'welten', 'einstieg', 'reichweite', 'zeitachse'];
+
+/** Percent in the local convention: "50 %" (de, kk), "50%" (en), "%50" (tr). */
+const pct = (n: number) => (lang === 'tr' ? `%${n}` : lang === 'en' ? `${n}%` : `${n} %`);
+
+/* ---------- Hero headline, split into characters for the fly-in ---------- */
+let charIndex = 0;
+const splitLine = (s: string) =>
+  s.split(' ').map((w) => [...w].map((ch) => ({ ch, i: charIndex++ })));
+const line1 = splitLine(c.hero.l1);
+const line2 = splitLine(c.hero.l2);
+
+/* ---------- Hero orbits ---------- */
+const orbits: { id: WorldId; size: number; dur: number; start: number; sz: number }[] = [
+  { id: 'ki', size: 54, dur: 26, start: 20, sz: 64 },
+  { id: 'sap', size: 76, dur: 40, start: 150, sz: 50 },
+  { id: 'academy', size: 97, dur: 58, start: 255, sz: 42 },
+];
+
+/* ---------- Geometry for the governance ring (SVG, viewBox centred on 0 0) ---------- */
+const rad = (a: number) => (a * Math.PI) / 180;
+const pt = (r: number, a: number): [number, number] => [
+  Number((r * Math.sin(rad(a))).toFixed(2)),
+  Number((-r * Math.cos(rad(a))).toFixed(2)),
+];
+const arcPath = (r0: number, r1: number, a0: number, a1: number) => {
+  const [x1, y1] = pt(r1, a0);
+  const [x2, y2] = pt(r1, a1);
+  const [x3, y3] = pt(r0, a1);
+  const [x4, y4] = pt(r0, a0);
+  return `M${x1} ${y1}A${r1} ${r1} 0 0 1 ${x2} ${y2}L${x3} ${y3}A${r0} ${r0} 0 0 0 ${x4} ${y4}Z`;
+};
+const ring = c.core.segments.map((lines, i) => {
+  const planned = i >= 6;
+  const mid = i * 45 + 22.5;
+  const [lx, ly] = pt(148, mid);
+  const all: string[] = planned ? [...lines, `(${c.core.planned})`] : [...lines];
+  return {
+    i,
+    planned,
+    mid,
+    d: arcPath(112, 184, i * 45 + 1.4, (i + 1) * 45 - 1.4),
+    lx,
+    ly0: Number((ly - ((all.length - 1) * 12.5) / 2 + 4).toFixed(2)),
+    lines: all,
+  };
+});
+const coreDots = Array.from({ length: 13 }, (_, i) => pt(95, (i * 360) / 13));
+const agents = [0, 90, 180, 270].map((a) => ({ at: pt(184, a), from: pt(106, a) }));
+
+const shieldPath = 'M0 -38L32 -27V2C32 22 17 33 0 41C-17 33 -32 22 -32 2V-27Z';
+const checkPath = 'M-14 1L-4 12L16 -10';
+const sealPath = (() => {
+  const n = 18;
+  let d = '';
+  for (let k = 0; k < n * 2; k++) {
+    const r = k % 2 ? 19.5 : 23;
+    const a = (k * Math.PI) / n;
+    d += `${k ? 'L' : 'M'}${(r * Math.sin(a)).toFixed(2)} ${(-r * Math.cos(a)).toFixed(2)}`;
+  }
+  return `${d}Z`;
+})();
+
+/* ---------- Constellations behind the key figures ---------- */
+const constellations: [number, number][][] = [
+  [[12, 62], [48, 30], [86, 48], [124, 18], [160, 40], [204, 26]],
+  [[14, 30], [52, 58], [92, 36], [128, 66], [170, 30], [206, 52]],
+  [[10, 50], [44, 20], [80, 58], [118, 34], [156, 64], [208, 22]],
+  [[16, 22], [56, 46], [94, 20], [132, 54], [172, 28], [206, 62]],
+];
+
+/* ---------- Flight path ---------- */
+const routePath = 'M0 120C60 120 100 60 166.7 60S400 100 500 100S760 60 833.3 60S960 110 1000 110';
+const routeNodes = [
+  { x: 16.67, y: 0.375 },
+  { x: 50, y: 0.625 },
+  { x: 83.33, y: 0.375 },
+];
+---
+
+<div class="uni" data-uni>
+  <!-- Star field: one sticky canvas behind every scene of the page. -->
+  <div class="uni-sky" aria-hidden="true">
+    <div class="uni-sky__sticky">
+      <div class="uni-sky__nebula uni-sky__nebula--a"></div>
+      <div class="uni-sky__nebula uni-sky__nebula--b"></div>
+      <canvas class="uni-sky__canvas" data-sky></canvas>
+    </div>
+  </div>
+
+  <nav class="u-map" aria-label={c.minimap.label} data-map>
+    <ol>
+      {anchors.map((id, i) => (
+        <li>
+          <a href={`#${id}`} data-map-link={id}>
+            <span class="u-map__label">{c.minimap.items[i]}</span>
+            <span class="u-map__dot" aria-hidden="true"></span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+
+  <!-- ============ 1. HERO: the sun and its worlds ============ -->
+  <section class="u-hero" id="start" data-hero data-track>
+    <div class="container u-hero__grid">
+      <div class="u-hero__copy">
+        <p class="u-hero__eyebrow">{c.hero.eyebrow}</p>
+        <h1 class="u-hero__title" aria-label={`${c.hero.l1} ${c.hero.l2}`}>
+          <span class="u-hero__line" aria-hidden="true">
+            {line1.map((w) => (
+              <span class="u-word">{w.map((x) => <span class="u-ch" style={`--i:${x.i}`}>{x.ch}</span>)}</span>
+            ))}
+          </span>
+          <span class="u-hero__line u-hero__line--red" aria-hidden="true">
+            {line2.map((w) => (
+              <span class="u-word">{w.map((x) => <span class="u-ch" style={`--i:${x.i}`}>{x.ch}</span>)}</span>
+            ))}
+          </span>
+        </h1>
+        <p class="u-hero__lead">{c.hero.lead}</p>
+        <div class="u-actions u-hero__actions">
+          <a class="u-btn u-btn--primary" href="#kontakt">{c.hero.demo}</a>
+          <a class="u-btn u-btn--ghost" href="#sternbilder">{c.hero.explore}</a>
+        </div>
+        <ul class="u-badges">
+          {c.badges.map((b, i) => (
+            <li class="u-badge" style={`--i:${i}`}>
+              <span class="u-seal" aria-hidden="true">
+                <svg viewBox="-26 -26 52 52">
+                  <path class="u-seal__edge" d={sealPath} />
+                  <path class="u-seal__check" d="M-8 0L-2 6L9 -6" />
+                </svg>
+              </span>
+              <span>
+                <strong>{b.t}</strong>
+                <small>{b.s}</small>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="u-hero__visual">
+        <nav class="u-sys" aria-label={c.hero.orbitLabel} data-sys>
+          <div class="u-sys__tilt">
+            <div class="u-sys__plane">
+              <div class="u-belt" aria-hidden="true"></div>
+              {orbits.map((o) => (
+                <div class="u-orbit" style={`--size:${o.size}%;--dur:${o.dur}s;--start:${o.start}deg`}>
+                  <div class="u-orbit__arm">
+                    <div class="u-orbit__body">
+                      <a class="u-planet" href={`#welt-${o.id}`} style={`--sz:${o.sz}px`}>
+                        <span class="orb-wrap" aria-hidden="true">
+                          {o.id === 'academy' && <span class="orb__ring orb__ring--back"></span>}
+                          <span class={`orb orb--${o.id}`}></span>
+                          {o.id === 'academy' && <span class="orb__ring orb__ring--front"></span>}
+                        </span>
+                        <span class="u-planet__label">
+                          <b>{pct(worldShares[o.id])}</b> {c.hero.planets[o.id]}
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              <div class="u-sun" aria-hidden="true">
+                <span class="u-sun__glow"></span>
+                <svg viewBox="-50 -50 100 100">
+                  <path class="u-sun__shield" d={shieldPath} />
+                  <path class="u-sun__check" d={checkPath} />
+                </svg>
+                <span class="u-sun__label">{c.hero.core}</span>
+              </div>
+            </div>
+          </div>
+        </nav>
+        <p class="u-sys__hint">{c.hero.orbitHint}</p>
+      </div>
+    </div>
+    <span class="u-scroll" aria-hidden="true"><span></span>{c.hero.scroll}</span>
+  </section>
+
+  <!-- ============ 2. CONSTELLATIONS: key figures ============ -->
+  <section class="u-sec" id="sternbilder" data-track>
+    <div class="container">
+      <header class="u-head" data-reveal>
+        <span class="eyebrow">{c.stats.eyebrow}</span>
+        <h2 class="u-h2">{c.stats.title}</h2>
+      </header>
+      <ul class="u-stats">
+        {c.stats.items.map((s, i) => (
+          <li class="u-stat" data-in style={`--i:${i}`}>
+            <svg class="u-stat__sky" viewBox="0 0 220 84" aria-hidden="true">
+              <polyline points={constellations[i].map((p) => p.join(',')).join(' ')} pathLength="1" />
+              {constellations[i].map(([x, y], k) => (
+                <circle cx={x} cy={y} r={k === 3 ? 3 : 1.9} style={`--k:${k}`} />
+              ))}
+            </svg>
+            <span class="u-stat__v" data-count>{s.v}</span>
+            <span class="u-stat__l">{s.l}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ 3. THE CORE: built-in governance ============ -->
+  <section class="u-sec u-core" id="kern" data-track data-core>
+    <div class="container u-core__grid">
+      <div class="u-core__copy">
+        <span class="eyebrow" data-reveal>{c.core.eyebrow}</span>
+        <h2 class="u-h2" data-reveal>{c.core.title}</h2>
+        <p class="u-core__sub" data-reveal>{c.core.sub}</p>
+        <p class="u-core__lead" data-reveal>{c.core.lead}</p>
+        <dl class="u-facts">
+          {c.core.facts.map((f, i) => (
+            <div class:list={['u-fact', { 'u-fact--human': i === 3 }]} data-reveal data-reveal-delay={i * 80}>
+              <dt>{f.v}</dt>
+              <dd>{f.l}</dd>
+            </div>
+          ))}
+        </dl>
+        <div class="u-live" data-reveal>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z" />
+          </svg>
+          <div>
+            <strong>{c.core.liveTitle}</strong>
+            <span>{c.core.liveText}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="u-core__visual">
+        <div class="u-ring" data-ring data-state="idle">
+          <svg class="u-ring__svg" viewBox="-215 -215 430 430" role="img" aria-label={c.core.ringLabel}>
+            <defs>
+              <radialGradient id="u-core-grad" cx="40%" cy="35%" r="75%">
+                <stop offset="0%" stop-color="#262626" />
+                <stop offset="70%" stop-color="#0b0b0b" />
+                <stop offset="100%" stop-color="#050505" />
+              </radialGradient>
+            </defs>
+            <circle class="u-ring__halo" r="204" />
+            <g>
+              {ring.map((s) => (
+                <g class:list={['u-seg', { 'u-seg--planned': s.planned }]} data-seg={s.i} data-mid={s.mid} data-planned={s.planned ? '1' : undefined}>
+                  <path d={s.d} />
+                  <text x={s.lx} y={s.ly0}>
+                    {s.lines.map((ln, k) => (
+                      <tspan x={s.lx} dy={k === 0 ? 0 : 12.5} class={s.planned && k === s.lines.length - 1 ? 'u-seg__tag' : undefined}>{ln}</tspan>
+                    ))}
+                  </text>
+                </g>
+              ))}
+            </g>
+            <circle class="u-ring__inner" r="104" />
+            <g>
+              {coreDots.map(([x, y]) => <circle class="u-dot" cx={x} cy={y} r="3.2" />)}
+            </g>
+            <g data-agents>
+              {agents.map((a) => (
+                <g class="u-agent">
+                  <line class="u-agent__beam" x1={a.from[0]} y1={a.from[1]} x2={a.at[0]} y2={a.at[1]} />
+                  <circle cx={a.at[0]} cy={a.at[1]} r="17" />
+                  <text x={a.at[0]} y={a.at[1] + 4.5} data-cx={a.at[0]} data-cy={a.at[1]}>{c.core.agent}</text>
+                </g>
+              ))}
+            </g>
+            <g transform="translate(0 -24)">
+              <path class="u-ring__shield" d={shieldPath} />
+              <path class="u-ring__check" d={checkPath} />
+            </g>
+            <text class="u-ring__score" y="50" data-score>0</text>
+            <text class="u-ring__score-l" y="70">{c.core.score}</text>
+            <g class="u-ring__stamp">
+              <rect x="-80" y="-22" width="160" height="44" rx="8" />
+              <text y="7">{c.core.stamp}</text>
+            </g>
+          </svg>
+        </div>
+        <div class="u-actions u-ring__controls">
+          <button type="button" class="u-btn u-btn--ghost" data-core-start data-restart={c.core.restart}>{c.core.start}</button>
+          <button type="button" class="u-btn u-btn--primary" data-core-approve disabled>{c.core.approve}</button>
+        </div>
+        <p
+          class="u-ring__status"
+          role="status"
+          data-core-status
+          data-idle={c.core.status.idle}
+          data-scan={c.core.status.scan}
+          data-ready={c.core.status.ready}
+          data-done={c.core.status.done}
+        >
+          {c.core.status.idle}
+        </p>
+        <p class="u-caption">{c.core.caption}</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="u-protect" data-reveal>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M17 10V8A5 5 0 0 0 7 8v2H5v12h14V10h-2Zm-8-2a3 3 0 0 1 6 0v2H9V8Zm4 9.7V19h-2v-1.3a2 2 0 1 1 2 0Z" />
+        </svg>
+        <strong>{c.core.protectTitle}:</strong>
+        <ul>
+          {c.core.protect.map((p) => <li>{p}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. THREE WORLDS: the portfolio ============ -->
+  <section class="u-sec u-worlds" id="welten" data-track data-worlds>
+    <div class="container">
+      <header class="u-head" data-reveal>
+        <span class="eyebrow">{c.worlds.eyebrow}</span>
+        <h2 class="u-h2">{c.worlds.title}</h2>
+        <p class="u-head__lead">{c.worlds.lead}</p>
+      </header>
+
+      <div class="u-cap" data-in>
+        <div class="u-cap__groups" aria-hidden="true">
+          <span style="--w:80"><b>WAMOCON GmbH</b>{pct(80)}</span>
+          <span style="--w:20" class="is-red"><b>Academy</b>{pct(20)}</span>
+        </div>
+        <ol class="u-cap__bar" aria-label={c.worlds.capLabel}>
+          {worldIds.map((id, i) => (
+            <li class={`u-cap__seg u-cap__seg--${id}`} style={`--w:${worldShares[id]};--i:${i}`}>
+              <a href={`#welt-${id}`}>
+                <b>{pct(worldShares[id])}</b>
+                <span>{c.worlds.items[id].title}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div class="u-worlds__body">
+        <div class="u-stage" aria-hidden="true">
+          <div class="u-stage__inner">
+            {worldIds.map((id, i) => (
+              <div class={`u-wp u-wp--${id}`} data-wp={i} style={`--d:${i};--ad:${Math.min(i, 1.6)}`}>
+                <div class="u-wp__scene">
+                  <div class="u-moons">
+                    <div class="u-moons__spin">
+                      {c.worlds.items[id].products.map((_, k, all) => (
+                        <span class="u-moon" data-moon={k} style={`--a:${(k * 360) / all.length}deg`}>
+                          <span class="u-moon__b"></span>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <span class="orb-wrap u-wp__orb">
+                    {id === 'academy' && <span class="orb__ring orb__ring--back"></span>}
+                    <span class={`orb orb--${id}`}></span>
+                    {id === 'academy' && <span class="orb__ring orb__ring--front"></span>}
+                  </span>
+                </div>
+              </div>
+            ))}
+            <ol class="u-stage__dots">
+              {worldIds.map((id, i) => (
+                <li data-wdot={i} class:list={[{ 'is-active': i === 0 }]}>
+                  <span></span>{c.hero.planets[id]}
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+
+        <div class="u-panels">
+          {worldIds.map((id, i) => {
+            const w = c.worlds.items[id];
+            return (
+              <article class:list={['u-panel', { 'is-active': i === 0 }]} id={`welt-${id}`} data-panel={i} data-world={id}>
+                <span class="orb-wrap u-panel__orb" aria-hidden="true">
+                  {id === 'academy' && <span class="orb__ring orb__ring--back"></span>}
+                  <span class={`orb orb--${id}`}></span>
+                  {id === 'academy' && <span class="orb__ring orb__ring--front"></span>}
+                </span>
+                <p class="u-panel__company">{w.company}</p>
+                <p class="u-panel__share"><span data-count>{pct(worldShares[id])}</span></p>
+                <h3 class="u-panel__title">{w.title}</h3>
+                <p class="u-panel__verbs">{w.verbs}</p>
+                <ul class="u-chips">
+                  {w.products.map((p, k) => <li data-chip={k}>{p}</li>)}
+                </ul>
+                <div class="u-ref">
+                  <span>{c.worlds.refLabel}</span>
+                  <p>{w.ref}</p>
+                </div>
+                {w.link.external ? (
+                  <a class="u-link" href={w.link.href} target="_blank" rel="noopener">
+                    {w.link.label} <span aria-hidden="true">↗</span>
+                  </a>
+                ) : (
+                  <a class="u-link" href={w.link.href}>
+                    {w.link.label} <span aria-hidden="true">→</span>
+                  </a>
+                )}
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. FLIGHT PATH: getting started ============ -->
+  <section class="u-sec u-route" id="einstieg" data-track data-route>
+    <div class="container">
+      <header class="u-head" data-reveal>
+        <span class="eyebrow">{c.route.eyebrow}</span>
+        <h2 class="u-h2">{c.route.title}</h2>
+      </header>
+      <div class="u-route__track">
+        <svg class="u-route__svg" viewBox="0 0 1000 160" preserveAspectRatio="none" aria-hidden="true">
+          <path class="u-route__base" d={routePath} pathLength="100" />
+          <path class="u-route__fill" d={routePath} pathLength="1" data-route-path />
+        </svg>
+        <span class="u-route__comet" data-comet aria-hidden="true"></span>
+        <span class="u-route__line" aria-hidden="true"><span></span></span>
+        <ol class="u-route__steps">
+          {c.route.steps.map((s, i) => (
+            <li class="u-step" data-step={i} style={`--x:${routeNodes[i].x}%;--yy:${routeNodes[i].y}`}>
+              <span class="u-step__node" aria-hidden="true">{i + 1}</span>
+              <div class="u-step__card">
+                <span class="u-step__k">{c.route.step} {i + 1}</span>
+                <h3>{s.t}</h3>
+                <p>{s.s}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 6. REACH: the globe ============ -->
+  <section class="u-sec u-globe" id="reichweite" data-track>
+    <div class="container u-globe__grid">
+      <div class="u-globe__copy">
+        <header class="u-head u-head--tight" data-reveal>
+          <span class="eyebrow">{c.globe.eyebrow}</span>
+          <h2 class="u-h2">{c.globe.title}</h2>
+          <p class="u-head__lead">{c.globe.lead}</p>
+        </header>
+        <ul class="u-countries">
+          {c.globe.countries.map((k, i) => (
+            <li>
+              <button type="button" class="u-country" data-country={i} aria-pressed="false">
+                <span class="u-country__code" aria-hidden="true">{geo[i].code}</span>
+                <span>
+                  <b>{k.n}</b>
+                  {k.note && <small>{k.note}</small>}
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+        <p class="u-globe__hint">{c.globe.hint}</p>
+      </div>
+      <div class="u-globe__visual">
+        <canvas
+          class="u-globe__canvas"
+          data-globe
+          data-geo={JSON.stringify(geo)}
+          data-map="/data/globe.json"
+          role="img"
+          aria-label={c.globe.canvasLabel}
+        ></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 7. TIMELINE ============ -->
+  <section class="u-sec u-time" id="zeitachse" data-track>
+    <div class="container">
+      <header class="u-head" data-reveal>
+        <span class="eyebrow">{c.timeline.eyebrow}</span>
+        <h2 class="u-h2">{c.timeline.title}</h2>
+      </header>
+      <ol class="u-time__list" data-in>
+        {c.timeline.items.map((t, i) => (
+          <li class="u-time__item" style={`--i:${i}`}>
+            <span class="u-time__node" aria-hidden="true"></span>
+            <span class="u-time__y">{t.y}</span>
+            <p>{t.t}</p>
+          </li>
+        ))}
+      </ol>
+      <ul class="u-time__facts">
+        {c.timeline.facts.map((f) => <li>{f}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ CTA: the portal ============ -->
+  <section class="u-sec u-cta">
+    <div class="container">
+      <div class="u-portal" data-in>
+        <span class="u-portal__ring" aria-hidden="true"></span>
+        <span class="u-portal__ring u-portal__ring--2" aria-hidden="true"></span>
+        <h2 class="u-h2">{c.cta.title}</h2>
+        <p>{c.cta.text}</p>
+        <div class="u-actions u-cta__actions">
+          <a class="u-btn u-btn--primary" href="#kontakt">{c.cta.primary}</a>
+          <a class="u-btn u-btn--ghost" href={c.cta.secondaryHref}>{c.cta.secondary}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<ContactBlock lang={lang} />
+
+<style>
+  /* ==========================================================================
+     Frame: the universe wrapper and its star field
+     ========================================================================== */
+  .uni {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+  }
+  .uni-sky {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .uni-sky__sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .uni-sky__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .uni-sky__nebula {
+    position: absolute;
+    border-radius: 50%;
+    will-change: transform;
+  }
+  .uni-sky__nebula--a {
+    width: 70vmax;
+    height: 70vmax;
+    left: -24vmax;
+    top: -26vmax;
+    background: radial-gradient(circle, rgba(244, 14, 14, 0.2), rgba(244, 14, 14, 0.06) 40%, transparent 66%);
+    transform: translate3d(calc(var(--sky-p, 0) * 30vw), calc(var(--sky-p, 0) * 60vh), 0);
+  }
+  .uni-sky__nebula--b {
+    width: 60vmax;
+    height: 60vmax;
+    right: -22vmax;
+    bottom: -26vmax;
+    background: radial-gradient(circle, rgba(255, 82, 82, 0.13), rgba(120, 0, 0, 0.07) 42%, transparent 68%);
+    transform: translate3d(calc(var(--sky-p, 0) * -24vw), calc(var(--sky-p, 0) * -50vh), 0);
+  }
+
+  .u-sec {
+    position: relative;
+    padding-block: var(--section-gap);
+    scroll-margin-top: var(--header-height);
+  }
+  .u-head {
+    max-width: 920px;
+    margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  }
+  .u-head--tight {
+    margin-bottom: 1.5rem;
+  }
+  .u-h2 {
+    font-size: clamp(2rem, 1.2rem + 3.4vw, 4.2rem);
+    font-weight: var(--fw-bold);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .u-head__lead {
+    margin-top: 1.1rem;
+    color: var(--color-text-muted);
+    font-size: clamp(1.02rem, 0.95rem + 0.35vw, 1.25rem);
+    max-width: 40em;
+  }
+  .u-caption {
+    margin-top: 0.6rem;
+    font-size: var(--fs-micro);
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+
+  /* ---------- Buttons ---------- */
+  .u-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+  .u-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 48px;
+    padding: 0.8rem 1.6rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid transparent;
+    font: inherit;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    color: #fff;
+    cursor: pointer;
+    transition:
+      transform 0.25s var(--ease-out),
+      background 0.25s var(--ease-out),
+      border-color 0.25s var(--ease-out),
+      box-shadow 0.25s var(--ease-out),
+      opacity 0.25s;
+  }
+  .u-btn--primary {
+    background: var(--color-accent-surface);
+    box-shadow: 0 12px 40px -12px rgba(244, 14, 14, 0.75);
+  }
+  .u-btn--primary:hover {
+    background: var(--color-accent-surface-hover);
+    transform: translateY(-2px);
+  }
+  .u-btn--ghost {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--border-strong);
+  }
+  .u-btn--ghost:hover {
+    border-color: #fff;
+    transform: translateY(-2px);
+  }
+  .u-btn[disabled] {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* ==========================================================================
+     1. Hero
+     ========================================================================== */
+  .u-hero {
+    position: relative;
+    min-height: calc(100svh - var(--header-height));
+    display: flex;
+    align-items: center;
+    padding-block: clamp(2rem, 5vw, 4rem) clamp(4.5rem, 8vw, 6.5rem);
+    scroll-margin-top: var(--header-height);
+  }
+  .u-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
+    align-items: center;
+  }
+  .u-hero__copy {
+    transform: translate3d(0, calc(var(--hp, 0) * -70px), 0);
+    opacity: calc(1 - var(--hp, 0) * 1.4);
+  }
+  .u-hero__eyebrow {
+    font-size: var(--fs-label);
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: 1.2rem;
+    animation: u-fade 0.8s var(--ease-out) both;
+  }
+  .u-hero__title {
+    font-size: clamp(2.4rem, 1.3rem + 4.6vw, 6rem);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    perspective: 600px;
+  }
+  .u-hero__line {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 0.26em;
+  }
+  .u-hero__line--red {
+    color: var(--color-accent);
+    text-shadow: 0 0 46px rgba(244, 14, 14, 0.45);
+  }
+  .u-word {
+    display: inline-flex;
+    white-space: nowrap;
+  }
+  .u-ch {
+    display: inline-block;
+    opacity: 0;
+    transform: translate3d(0, 0.55em, 0) rotateX(-75deg);
+    filter: blur(8px);
+    animation: u-ch-in 0.9s cubic-bezier(0.2, 0.9, 0.25, 1) forwards;
+    animation-delay: calc(var(--i) * 30ms + 150ms);
+  }
+  .u-hero__lead {
+    font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.35rem);
+    color: var(--color-text-muted);
+    max-width: 34em;
+    margin-bottom: 2rem;
+    animation: u-fade 1s var(--ease-out) 0.9s both;
+  }
+  .u-hero__actions {
+    animation: u-fade 1s var(--ease-out) 1.1s both;
+  }
+  .u-badges {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.6rem;
+    margin-top: 2.4rem;
+  }
+  .u-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    animation: u-fade 0.8s var(--ease-out) both;
+    animation-delay: calc(1.2s + var(--i) * 0.15s);
+  }
+  .u-badge strong {
+    display: block;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-bold);
+    line-height: 1.25;
+  }
+  .u-badge small {
+    display: block;
+    font-size: var(--fs-label);
+    color: var(--color-text-muted);
+  }
+  .u-seal {
+    flex: none;
+    width: 46px;
+    height: 46px;
+  }
+  .u-seal svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .u-seal__edge {
+    fill: var(--color-accent-surface);
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: u-spin 20s linear infinite;
+  }
+  .u-badge:first-child .u-seal__edge {
+    fill: #1e1e1e;
+    stroke: rgba(255, 255, 255, 0.55);
+    stroke-width: 1;
+  }
+  .u-seal__check {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 3.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 30;
+    stroke-dashoffset: 30;
+    animation: u-draw 0.7s var(--ease-out) forwards;
+    animation-delay: calc(1.5s + var(--i) * 0.2s);
+  }
+
+  /* ---------- The solar system ---------- */
+  .u-hero__visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .u-sys {
+    position: relative;
+    width: min(640px, 100%);
+    aspect-ratio: 1;
+    perspective: 1600px;
+    transform: scale(calc(1 + var(--hp, 0) * 1.5));
+    opacity: calc(1 - var(--hp, 0) * 1.25);
+  }
+  .is-warped .u-sys {
+    pointer-events: none;
+  }
+  .u-sys__tilt {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transform: rotateX(calc(var(--my, 0) * 7deg)) rotateY(calc(var(--mx, 0) * -9deg));
+    transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .u-sys__plane {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transform: rotateX(66deg);
+    animation: u-plane-in 1.8s cubic-bezier(0.2, 0.9, 0.25, 1) 0.2s both;
+  }
+  .u-belt {
+    position: absolute;
+    inset: 6%;
+    border-radius: 50%;
+    background: repeating-conic-gradient(from 0deg, rgba(255, 255, 255, 0.4) 0 0.35deg, transparent 0.35deg 3deg);
+    -webkit-mask: radial-gradient(circle, transparent 63%, #000 64%, #000 66.5%, transparent 67.5%);
+    mask: radial-gradient(circle, transparent 63%, #000 64%, #000 66.5%, transparent 67.5%);
+    animation: u-spin-z 120s linear infinite;
+  }
+  .u-orbit {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--size);
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.17);
+    box-shadow:
+      0 0 24px rgba(244, 14, 14, 0.08),
+      inset 0 0 40px rgba(244, 14, 14, 0.07);
+    transform-style: preserve-3d;
+  }
+  .u-orbit__arm {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    animation: u-orbit var(--dur) linear infinite;
+  }
+  .u-orbit__body {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    transform-style: preserve-3d;
+    animation: u-counter var(--dur) linear infinite;
+  }
+  .u-sys:hover .u-orbit__arm,
+  .u-sys:hover .u-orbit__body,
+  .u-sys:focus-within .u-orbit__arm,
+  .u-sys:focus-within .u-orbit__body {
+    animation-play-state: paused;
+  }
+  .u-planet {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: var(--sz);
+    height: var(--sz);
+    transform: translate(-50%, -50%);
+    display: block;
+    border-radius: 50%;
+    color: #fff;
+    --o-glow-size: calc(var(--sz) * 0.55);
+  }
+  .u-planet:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 6px;
+  }
+  .u-planet:hover .orb-wrap,
+  .u-planet:focus-visible .orb-wrap {
+    transform: scale(1.2);
+  }
+  .u-planet__label {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: var(--fs-label);
+    font-weight: var(--fw-semibold);
+    padding: 0.28rem 0.65rem;
+    border-radius: var(--radius-pill);
+    background: rgba(12, 12, 12, 0.82);
+    border: 1px solid var(--border-subtle);
+    transition: border-color 0.25s;
+  }
+  .u-planet:hover .u-planet__label,
+  .u-planet:focus-visible .u-planet__label {
+    border-color: var(--color-accent);
+  }
+  .u-planet__label b {
+    color: var(--color-accent-text);
+  }
+  .u-sun {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 25%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%) rotateX(-66deg);
+    display: grid;
+    place-items: center;
+  }
+  .u-sun::before {
+    content: '';
+    position: absolute;
+    inset: 6%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, #2b2b2b, #0b0b0b 70%);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow:
+      0 0 70px rgba(244, 14, 14, 0.45),
+      inset 0 0 30px rgba(244, 14, 14, 0.28);
+  }
+  .u-sun::after {
+    content: '';
+    position: absolute;
+    inset: -8%;
+    border-radius: 50%;
+    border: 1px dashed rgba(255, 82, 82, 0.55);
+    animation: u-spin 36s linear infinite;
+  }
+  .u-sun__glow {
+    position: absolute;
+    inset: -45%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(244, 14, 14, 0.5), rgba(244, 14, 14, 0.12) 42%, transparent 68%);
+    animation: u-pulse 4.5s ease-in-out infinite;
+  }
+  .u-sun svg {
+    position: relative;
+    width: 60%;
+    height: auto;
+    overflow: visible;
+  }
+  .u-sun__shield {
+    fill: var(--color-accent-surface);
+    filter: drop-shadow(0 0 14px rgba(244, 14, 14, 0.85));
+  }
+  .u-sun__check {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .u-sun__label {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: var(--fs-micro);
+    font-weight: var(--fw-bold);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  .u-sys__hint {
+    margin-top: 0.6rem;
+    font-size: var(--fs-label);
+    color: var(--color-text-muted);
+    text-align: center;
+    opacity: calc(1 - var(--hp, 0) * 2.5);
+  }
+  .u-scroll {
+    position: absolute;
+    left: 50%;
+    bottom: 1.2rem;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--fs-micro);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    opacity: calc(1 - var(--hp, 0) * 3);
+  }
+  .u-scroll span {
+    width: 1px;
+    height: 44px;
+    background: linear-gradient(to bottom, transparent, #fff);
+    animation: u-drip 2.2s ease-in-out infinite;
+  }
+
+  /* ---------- Planet bodies (shared by hero, stage and panels) ---------- */
+  .orb-wrap {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .orb {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    background: radial-gradient(circle at 32% 28%, var(--o-hi) 0%, var(--o-mid) 40%, var(--o-lo) 74%, #040404 100%);
+    box-shadow:
+      0 0 var(--o-glow-size, 30px) var(--o-glow),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+  }
+  .orb::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    background: repeating-linear-gradient(
+      96deg,
+      transparent 0 7%,
+      rgba(255, 255, 255, 0.11) 7% 9%,
+      transparent 9% 16%,
+      rgba(0, 0, 0, 0.2) 16% 19%,
+      transparent 19% 26%
+    );
+    background-size: 260% 100%;
+    mix-blend-mode: soft-light;
+    animation: u-surface 18s linear infinite;
+  }
+  .orb::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 72% 76%, rgba(0, 0, 0, 0.72), transparent 58%),
+      radial-gradient(circle at 30% 26%, rgba(255, 255, 255, 0.38), transparent 22%);
+  }
+  .orb--ki {
+    --o-hi: #ff9a8a;
+    --o-mid: #e3120f;
+    --o-lo: #4d0303;
+    --o-glow: rgba(244, 14, 14, 0.6);
+  }
+  .orb--sap {
+    --o-hi: #ffffff;
+    --o-mid: #9d9d9d;
+    --o-lo: #262626;
+    --o-glow: rgba(255, 255, 255, 0.26);
+  }
+  .orb--academy {
+    --o-hi: #ffffff;
+    --o-mid: #ff6b6b;
+    --o-lo: #5c0a0a;
+    --o-glow: rgba(255, 82, 82, 0.5);
+  }
+  .orb__ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 178%;
+    height: 42%;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 12px rgba(255, 82, 82, 0.55);
+    transform: translate(-50%, -50%) rotate(-18deg);
+    pointer-events: none;
+  }
+  .orb__ring--front {
+    clip-path: inset(50% 0 0 0);
+  }
+
+  /* ==========================================================================
+     2. Constellations
+     ========================================================================== */
+  .u-stats {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+  .u-stat {
+    position: relative;
+    padding: 1.4rem 1.5rem 1.7rem;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.015));
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition:
+      border-color 0.3s,
+      transform 0.4s var(--ease-out);
+  }
+  .u-stat:hover {
+    border-color: rgba(255, 82, 82, 0.5);
+    transform: translateY(-4px);
+  }
+  .u-stat__sky {
+    width: 100%;
+    height: auto;
+    margin-bottom: 0.5rem;
+    overflow: visible;
+  }
+  .u-stat__sky polyline {
+    fill: none;
+    stroke: rgba(255, 82, 82, 0.75);
+    stroke-width: 1.2;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 1.8s cubic-bezier(0.3, 0.7, 0.2, 1);
+    transition-delay: calc(var(--i) * 0.15s + 0.2s);
+  }
+  .u-stat.is-in polyline {
+    stroke-dashoffset: 0;
+  }
+  .u-stat__sky circle {
+    fill: #fff;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: opacity 0.4s;
+    transition-delay: calc(var(--i) * 0.15s + var(--k) * 0.2s);
+    animation: u-twinkle 3s ease-in-out infinite;
+    animation-delay: calc(var(--k) * 0.45s);
+  }
+  .u-stat.is-in circle {
+    opacity: 1;
+  }
+  .u-stat__v {
+    display: block;
+    font-size: clamp(2.6rem, 1.8rem + 3vw, 4.6rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+  .u-stat:last-child .u-stat__v {
+    color: var(--color-accent);
+    text-shadow: 0 0 32px rgba(244, 14, 14, 0.5);
+  }
+  .u-stat__l {
+    display: block;
+    margin-top: 0.6rem;
+    color: var(--color-text-muted);
+    font-size: var(--fs-small);
+  }
+
+  /* ==========================================================================
+     3. Core
+     ========================================================================== */
+  .u-core__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+  .u-core__sub {
+    margin: 0.7rem 0 1.2rem;
+    font-size: clamp(1.1rem, 1rem + 0.6vw, 1.5rem);
+    font-weight: var(--fw-semibold);
+    color: var(--color-accent-text);
+  }
+  .u-core__lead {
+    color: var(--color-text-muted);
+    max-width: 34em;
+    margin-bottom: 2rem;
+  }
+  .u-facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1.5rem;
+    border-top: 1px solid var(--border-subtle);
+    margin-bottom: 1.8rem;
+  }
+  .u-fact {
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .u-fact dt {
+    font-size: clamp(2rem, 1.5rem + 2vw, 3.2rem);
+    font-weight: var(--fw-light);
+    line-height: 1;
+  }
+  .u-fact dd {
+    margin-top: 0.35rem;
+    font-size: var(--fs-small);
+    color: var(--color-text-muted);
+  }
+  .u-fact--human dt {
+    color: var(--color-accent);
+    font-weight: var(--fw-semibold);
+  }
+  .u-live {
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+  }
+  .u-live svg {
+    flex: none;
+    width: 24px;
+    height: 24px;
+    fill: var(--color-accent);
+  }
+  .u-live strong {
+    display: block;
+    font-weight: var(--fw-bold);
+  }
+  .u-live span {
+    color: var(--color-text-muted);
+    font-size: var(--fs-small);
+  }
+
+  .u-ring {
+    position: relative;
+    width: min(620px, 100%);
+    aspect-ratio: 1;
+    margin-inline: auto;
+  }
+  .u-ring::before {
+    content: '';
+    position: absolute;
+    inset: 8%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(244, 14, 14, 0.24), transparent 62%);
+    animation: u-pulse 5s ease-in-out infinite;
+  }
+  .u-ring__svg {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    font-family: var(--font-sans);
+  }
+  .u-ring__halo {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.12);
+    stroke-dasharray: 2 7;
+  }
+  .u-seg path {
+    fill: #1b1b1b;
+    stroke: rgba(255, 255, 255, 0.16);
+    stroke-width: 1;
+    transition:
+      fill 0.5s,
+      stroke 0.5s;
+  }
+  .u-seg text {
+    fill: rgba(255, 255, 255, 0.8);
+    font-size: 11px;
+    font-weight: 600;
+    text-anchor: middle;
+    transition: fill 0.5s;
+  }
+  .u-seg.is-lit path {
+    fill: #f3f3f3;
+    stroke: #fff;
+  }
+  .u-seg.is-lit text {
+    fill: #111;
+  }
+  .u-seg--planned path {
+    fill: rgba(255, 255, 255, 0.025);
+    stroke: rgba(255, 255, 255, 0.45);
+    stroke-dasharray: 5 5;
+  }
+  .u-seg__tag {
+    font-weight: 400;
+    font-style: italic;
+  }
+  [data-state='done'] .u-seg.is-lit path {
+    stroke: var(--color-accent);
+    stroke-width: 2;
+  }
+  .u-ring__inner {
+    fill: url(#u-core-grad);
+    stroke: rgba(255, 255, 255, 0.15);
+  }
+  .u-dot {
+    fill: rgba(255, 255, 255, 0.3);
+    transition: fill 0.3s;
+  }
+  .u-dot.is-lit {
+    fill: var(--color-accent-text);
+  }
+  .u-agent circle {
+    fill: #111;
+    stroke: var(--color-accent);
+    stroke-width: 2.5;
+  }
+  .u-agent text {
+    fill: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    text-anchor: middle;
+  }
+  .u-agent__beam {
+    stroke: rgba(255, 82, 82, 0.8);
+    stroke-width: 2;
+    stroke-linecap: round;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  [data-state='scan'] .u-agent__beam {
+    opacity: 1;
+  }
+  [data-state='scan'] .u-agent circle {
+    fill: var(--color-accent-surface);
+  }
+  .u-ring__shield {
+    fill: var(--color-accent-surface);
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  [data-state='done'] .u-ring__shield {
+    animation: u-pop 0.7s cubic-bezier(0.2, 1.6, 0.4, 1);
+  }
+  .u-ring__check {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .u-ring__score {
+    fill: #fff;
+    font-size: 34px;
+    font-weight: 800;
+    text-anchor: middle;
+    font-variant-numeric: tabular-nums;
+  }
+  .u-ring__score-l {
+    fill: rgba(255, 255, 255, 0.66);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-anchor: middle;
+    text-transform: uppercase;
+  }
+  .u-ring__stamp {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: rotate(-14deg) scale(1.8);
+    transition:
+      opacity 0.25s,
+      transform 0.5s cubic-bezier(0.2, 1.5, 0.4, 1);
+    pointer-events: none;
+  }
+  .u-ring__stamp rect {
+    fill: rgba(12, 12, 12, 0.88);
+    stroke: var(--color-accent);
+    stroke-width: 3;
+  }
+  .u-ring__stamp text {
+    fill: var(--color-accent-text);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-anchor: middle;
+    text-transform: uppercase;
+  }
+  [data-state='done'] .u-ring__stamp {
+    opacity: 1;
+    transform: rotate(-14deg) scale(1);
+  }
+  .u-ring__controls {
+    justify-content: center;
+    margin-top: 1.2rem;
+  }
+  .u-ring__status {
+    margin-top: 1rem;
+    min-height: 1.6em;
+    text-align: center;
+    font-weight: var(--fw-semibold);
+  }
+  .u-protect {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.7rem 1rem;
+    padding: 1.1rem 1.4rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    background: rgba(255, 255, 255, 0.03);
+  }
+  .u-protect svg {
+    width: 22px;
+    height: 22px;
+    fill: var(--color-accent);
+  }
+  .u-protect ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .u-protect li {
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: var(--fs-label);
+    color: var(--color-text-muted);
+  }
+
+  /* ==========================================================================
+     4. Worlds
+     ========================================================================== */
+  .u-cap {
+    margin-bottom: clamp(2rem, 5vw, 4rem);
+  }
+  .u-cap__groups {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 0.7rem;
+    font-size: var(--fs-label);
+  }
+  .u-cap__groups span {
+    flex: var(--w) 1 0;
+    min-width: 0;
+    padding-top: 0.5rem;
+    border-top: 3px solid #fff;
+    color: var(--color-text-muted);
+  }
+  .u-cap__groups span.is-red {
+    border-color: var(--color-accent);
+  }
+  .u-cap__groups b {
+    color: #fff;
+    margin-right: 0.45rem;
+  }
+  .u-cap__bar {
+    list-style: none;
+    display: flex;
+    gap: 6px;
+  }
+  .u-cap__seg {
+    flex: var(--w) 1 0;
+    min-width: 0;
+  }
+  .u-cap__seg--ki {
+    --seg-c: #f40e0e;
+  }
+  .u-cap__seg--sap {
+    --seg-c: #9d9d9d;
+  }
+  .u-cap__seg--academy {
+    --seg-c: #ff5252;
+  }
+  .u-cap__seg a {
+    position: relative;
+    display: block;
+    height: 100%;
+    padding: 1rem 1.1rem 1.15rem;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #fff;
+    overflow: hidden;
+    transition:
+      border-color 0.3s,
+      transform 0.3s var(--ease-out);
+  }
+  .u-cap__seg a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--seg-c), transparent 92%);
+    opacity: 0.4;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition-delay: calc(var(--i) * 0.25s);
+  }
+  .u-cap.is-in .u-cap__seg a::before {
+    transform: scaleX(1);
+  }
+  .u-cap__seg a:hover {
+    border-color: rgba(255, 255, 255, 0.45);
+    transform: translateY(-3px);
+  }
+  .u-cap__seg b,
+  .u-cap__seg span {
+    position: relative;
+    display: block;
+  }
+  .u-cap__seg b {
+    font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.6rem);
+    font-weight: var(--fw-light);
+    line-height: 1;
+  }
+  .u-cap__seg span {
+    margin-top: 0.4rem;
+    font-size: var(--fs-label);
+    font-weight: var(--fw-semibold);
+  }
+
+  .u-worlds__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(2rem, 4vw, 4rem);
+  }
+  .u-stage {
+    position: sticky;
+    top: var(--header-height);
+    height: calc(100vh - var(--header-height));
+  }
+  .u-stage__inner {
+    position: relative;
+    height: 100%;
+    --ps: min(42vh, 30vw, 400px);
+  }
+  .u-wp {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    width: var(--ps);
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%) translate3d(calc(var(--d) * -16%), calc(var(--d) * 85%), 0)
+      scale(calc(var(--k, 1) * (1 - var(--ad) * 0.5)));
+    opacity: max(0, calc(1 - var(--ad) * 0.78));
+    will-change: transform, opacity;
+    --o-glow-size: calc(var(--ps) * 0.3);
+  }
+  .u-wp--sap {
+    --k: 0.84;
+  }
+  .u-wp--academy {
+    --k: 0.74;
+  }
+  .u-wp__scene {
+    position: absolute;
+    inset: 0;
+    perspective: 1200px;
+    transform-style: preserve-3d;
+  }
+  .u-wp__orb {
+    position: absolute;
+    inset: 0;
+  }
+  .u-moons {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: calc(var(--ps) * 1.72);
+    height: calc(var(--ps) * 1.72);
+    margin: calc(var(--ps) * -0.86) 0 0 calc(var(--ps) * -0.86);
+    border-radius: 50%;
+    border: 1px dashed rgba(255, 255, 255, 0.22);
+    transform: rotateX(74deg) rotateY(-12deg);
+    transform-style: preserve-3d;
+  }
+  .u-moons__spin {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    animation: u-spin-z 28s linear infinite;
+  }
+  .u-moon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    transform-style: preserve-3d;
+    transform: rotateZ(var(--a)) translateX(calc(var(--ps) * 0.86)) rotateZ(calc(var(--a) * -1));
+  }
+  .u-moon__b {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(var(--ps) * 0.09);
+    height: calc(var(--ps) * 0.09);
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #fff, #bdbdbd 45%, #3a3a3a);
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.35);
+    transform-style: preserve-3d;
+    animation: u-moon-counter 28s linear infinite;
+    transition:
+      background 0.3s,
+      box-shadow 0.3s;
+  }
+  .u-moon.is-hot .u-moon__b {
+    background: radial-gradient(circle at 35% 30%, #fff, #ff5252 45%, #6a0000);
+    box-shadow: 0 0 26px rgba(255, 82, 82, 0.95);
+  }
+  .u-stage__dots {
+    position: absolute;
+    left: 50%;
+    bottom: 5%;
+    transform: translateX(-50%);
+    list-style: none;
+    display: flex;
+    gap: 1.3rem;
+    font-size: var(--fs-label);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+  .u-stage__dots li {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    transition: color 0.3s;
+  }
+  .u-stage__dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transition:
+      background 0.3s,
+      box-shadow 0.3s,
+      transform 0.3s;
+  }
+  .u-stage__dots li.is-active {
+    color: #fff;
+  }
+  .u-stage__dots li.is-active span {
+    background: var(--color-accent);
+    box-shadow: 0 0 10px var(--color-accent);
+    transform: scale(1.4);
+  }
+
+  .u-panels {
+    display: flex;
+    flex-direction: column;
+  }
+  .u-panel {
+    min-height: calc(100vh - var(--header-height));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: 3rem;
+    scroll-margin-top: var(--header-height);
+    opacity: 0.35;
+    transition: opacity 0.5s;
+  }
+  .u-panel.is-active,
+  .u-panel:focus-within {
+    opacity: 1;
+  }
+  .u-panel__orb {
+    display: none;
+    width: 110px;
+    height: 110px;
+    margin-bottom: 1.8rem;
+    --o-glow-size: 36px;
+  }
+  .u-panel__company {
+    font-size: var(--fs-label);
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  .u-panel__share {
+    margin: 0.3rem 0 0.6rem;
+    font-size: clamp(4rem, 2.4rem + 6vw, 8.5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+    background: linear-gradient(180deg, #fff 20%, rgba(255, 255, 255, 0.4));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .u-panel[data-world='ki'] .u-panel__share,
+  .u-panel[data-world='academy'] .u-panel__share {
+    background-image: linear-gradient(180deg, #ff5252 15%, #b80000);
+  }
+  .u-panel__title {
+    font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.6rem);
+    font-weight: var(--fw-bold);
+    line-height: 1.1;
+    margin-bottom: 0.6rem;
+  }
+  .u-panel__verbs {
+    margin-bottom: 1.4rem;
+    font-size: var(--fs-label);
+    font-weight: var(--fw-bold);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-accent-text);
+  }
+  .u-chips {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-bottom: 1.6rem;
+  }
+  .u-chips li {
+    padding: 0.5rem 0.95rem;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-regular);
+    transition:
+      background 0.25s,
+      border-color 0.25s,
+      transform 0.25s;
+  }
+  .u-chips li:hover {
+    background: rgba(244, 14, 14, 0.16);
+    border-color: rgba(255, 82, 82, 0.6);
+    transform: translateY(-2px);
+  }
+  .u-ref {
+    border-left: 2px solid var(--color-accent);
+    padding-left: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .u-ref span {
+    font-size: var(--fs-label);
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  .u-ref p {
+    color: var(--color-text-muted);
+  }
+  .u-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    min-height: 32px;
+    padding-bottom: 0.2rem;
+    border-bottom: 1px solid var(--color-accent);
+    color: #fff;
+    font-weight: var(--fw-semibold);
+  }
+  .u-link span {
+    transition: transform 0.25s var(--ease-out);
+  }
+  .u-link:hover span {
+    transform: translateX(4px);
+  }
+
+  /* ==========================================================================
+     5. Flight path
+     ========================================================================== */
+  .u-route__track {
+    position: relative;
+  }
+  .u-route__svg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 160px;
+    overflow: visible;
+  }
+  .u-route__base {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.22);
+    stroke-width: 2;
+    stroke-dasharray: 0.4 1.2;
+    stroke-linecap: round;
+  }
+  .u-route__fill {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    filter: drop-shadow(0 0 6px rgba(244, 14, 14, 0.9));
+  }
+  .u-route__comet {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    width: 18px;
+    height: 18px;
+    margin: -9px 0 0 -9px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff 0 25%, #ff5252 45%, transparent 70%);
+    box-shadow: 0 0 26px 8px rgba(244, 14, 14, 0.7);
+    transform: translate3d(var(--cx, 0px), var(--cy, 120px), 0);
+    pointer-events: none;
+  }
+  .u-route__comet::after {
+    content: '';
+    position: absolute;
+    right: 50%;
+    top: 50%;
+    width: 110px;
+    height: 3px;
+    margin-top: -1.5px;
+    border-radius: 3px;
+    background: linear-gradient(to left, rgba(255, 82, 82, 0.95), transparent);
+    transform-origin: right center;
+    transform: rotate(var(--ang, 0deg));
+  }
+  .u-route__line {
+    display: none;
+  }
+  .u-route__steps {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 3vw, 2.5rem);
+    padding-top: 205px;
+  }
+  .u-step__node {
+    position: absolute;
+    left: var(--x);
+    top: calc(var(--yy) * 160px);
+    z-index: 1;
+    width: 48px;
+    height: 48px;
+    margin: -24px 0 0 -24px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+    background: #141414;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition:
+      background 0.4s,
+      border-color 0.4s,
+      box-shadow 0.4s,
+      transform 0.4s;
+  }
+  .u-step.is-on .u-step__node {
+    background: var(--color-accent-surface);
+    border-color: #fff;
+    box-shadow:
+      0 0 0 8px rgba(244, 14, 14, 0.18),
+      0 0 30px rgba(244, 14, 14, 0.8);
+    transform: scale(1.1);
+  }
+  .u-step__card {
+    height: 100%;
+    padding: 1.6rem;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transform: translateY(14px);
+    transition:
+      border-color 0.4s,
+      background 0.4s,
+      transform 0.5s var(--ease-out);
+  }
+  .u-step.is-on .u-step__card {
+    border-color: rgba(255, 82, 82, 0.55);
+    background: rgba(244, 14, 14, 0.07);
+    transform: none;
+  }
+  .u-step__k {
+    font-size: var(--fs-label);
+    font-weight: var(--fw-bold);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-accent-text);
+  }
+  .u-step h3 {
+    margin: 0.5rem 0 0.4rem;
+    font-size: var(--fs-h4);
+    line-height: 1.25;
+  }
+  .u-step p {
+    color: var(--color-text-muted);
+  }
+
+  /* ==========================================================================
+     6. Globe
+     ========================================================================== */
+  .u-globe__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+  .u-globe__visual {
+    position: relative;
+  }
+  .u-globe__visual::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(540px, 86%);
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle at 36% 30%, rgba(255, 255, 255, 0.06), rgba(16, 16, 16, 0.6) 62%, transparent 72%);
+    box-shadow: 0 0 120px 10px rgba(244, 14, 14, 0.18);
+  }
+  .u-globe__canvas {
+    position: relative;
+    display: block;
+    width: min(640px, 100%);
+    aspect-ratio: 1;
+    margin-inline: auto;
+    cursor: grab;
+    touch-action: pan-y;
+  }
+  .u-globe__canvas:active {
+    cursor: grabbing;
+  }
+  .u-countries {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+  .u-country {
+    width: 100%;
+    min-height: 58px;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.7rem 0.9rem;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    color: #fff;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      border-color 0.25s,
+      background 0.25s;
+  }
+  .u-country:hover {
+    border-color: rgba(255, 255, 255, 0.42);
+  }
+  .u-country[aria-pressed='true'] {
+    border-color: var(--color-accent);
+    background: rgba(244, 14, 14, 0.1);
+  }
+  .u-country__code {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #1b1b1b;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    font-size: var(--fs-micro);
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    transition: background 0.25s;
+  }
+  .u-country[aria-pressed='true'] .u-country__code {
+    background: var(--color-accent-surface);
+    border-color: transparent;
+  }
+  .u-country b {
+    display: block;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+  .u-country small {
+    display: block;
+    font-size: var(--fs-label);
+    color: var(--color-text-muted);
+  }
+  .u-globe__hint {
+    margin-top: 1rem;
+    font-size: var(--fs-small);
+    color: var(--color-text-muted);
+  }
+
+  /* ==========================================================================
+     7. Timeline
+     ========================================================================== */
+  .u-time__list {
+    list-style: none;
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 1.4rem;
+    padding-top: 2.8rem;
+  }
+  .u-time__list::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 9px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-accent), rgba(255, 255, 255, 0.45) 55%, var(--color-accent));
+    box-shadow: 0 0 12px rgba(244, 14, 14, 0.6);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 2.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .u-time__list.is-in::before {
+    transform: scaleX(1);
+  }
+  .u-time__item {
+    position: relative;
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.6s,
+      transform 0.6s var(--ease-out);
+    transition-delay: calc(var(--i) * 0.28s + 0.3s);
+  }
+  .u-time__list.is-in .u-time__item {
+    opacity: 1;
+    transform: none;
+  }
+  .u-time__node {
+    position: absolute;
+    left: 0;
+    top: calc(-2.8rem + 2px);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #101010;
+    border: 2px solid var(--color-accent);
+    box-shadow: 0 0 12px rgba(244, 14, 14, 0.85);
+  }
+  .u-time__y {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .u-time__item:last-child .u-time__y {
+    color: var(--color-accent);
+  }
+  .u-time__item p {
+    color: var(--color-text-muted);
+    font-size: var(--fs-small);
+  }
+  .u-time__facts {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 2rem;
+    margin-top: 3rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--border-subtle);
+    color: var(--color-text-muted);
+    font-size: var(--fs-small);
+  }
+
+  /* ==========================================================================
+     CTA portal
+     ========================================================================== */
+  .u-portal {
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: clamp(4rem, 10vw, 8rem) clamp(1rem, 4vw, 3rem);
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background:
+      radial-gradient(ellipse at 50% 120%, rgba(244, 14, 14, 0.36), transparent 60%),
+      rgba(255, 255, 255, 0.02);
+  }
+  .u-portal__ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(560px, 92%);
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent 0 58%, rgba(244, 14, 14, 0.75) 80%, #fff 82%, transparent 84%);
+    -webkit-mask: radial-gradient(circle, transparent 60%, #000 61%, #000 62.5%, transparent 63.5%);
+    mask: radial-gradient(circle, transparent 60%, #000 61%, #000 62.5%, transparent 63.5%);
+    animation: u-spin 7s linear infinite;
+    pointer-events: none;
+  }
+  .u-portal__ring--2 {
+    width: min(470px, 78%);
+    opacity: 0.6;
+    animation-duration: 11s;
+    animation-direction: reverse;
+  }
+  .u-portal > :not(.u-portal__ring) {
+    position: relative;
+  }
+  .u-portal p {
+    max-width: 36em;
+    margin: 1.2rem auto 2rem;
+    color: var(--color-text-muted);
+    font-size: clamp(1.02rem, 0.95rem + 0.35vw, 1.25rem);
+  }
+  .u-cta__actions {
+    justify-content: center;
+  }
+
+  /* ==========================================================================
+     Section minimap
+     ========================================================================== */
+  .u-map {
+    position: fixed;
+    right: clamp(0.6rem, 1.4vw, 1.4rem);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 40;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s;
+  }
+  .u-map.is-on,
+  .u-map:focus-within {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .u-map ol {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .u-map a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    min-height: 28px;
+    color: var(--color-text-muted);
+    font-size: var(--fs-label);
+    font-weight: var(--fw-semibold);
+  }
+  .u-map__label {
+    opacity: 0;
+    transform: translateX(6px);
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-pill);
+    background: rgba(14, 14, 14, 0.88);
+    border: 1px solid var(--border-subtle);
+    transition:
+      opacity 0.25s,
+      transform 0.25s;
+  }
+  .u-map a:hover .u-map__label,
+  .u-map a:focus-visible .u-map__label {
+    opacity: 1;
+    transform: none;
+  }
+  .u-map__dot {
+    flex: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.55);
+    transition:
+      background 0.3s,
+      border-color 0.3s,
+      box-shadow 0.3s,
+      transform 0.3s;
+  }
+  .u-map a[aria-current='true'] {
+    color: #fff;
+  }
+  .u-map a[aria-current='true'] .u-map__dot {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    box-shadow: 0 0 10px var(--color-accent);
+    transform: scale(1.3);
+  }
+
+  /* ==========================================================================
+     Keyframes
+     ========================================================================== */
+  @keyframes u-fade {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes u-ch-in {
+    to {
+      opacity: 1;
+      transform: none;
+      filter: blur(0);
+    }
+  }
+  @keyframes u-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes u-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes u-spin-z {
+    to {
+      transform: rotateZ(360deg);
+    }
+  }
+  @keyframes u-orbit {
+    from {
+      transform: rotateZ(var(--start));
+    }
+    to {
+      transform: rotateZ(calc(var(--start) + 360deg));
+    }
+  }
+  @keyframes u-counter {
+    from {
+      transform: rotateZ(calc(var(--start) * -1)) rotateX(-66deg);
+    }
+    to {
+      transform: rotateZ(calc(var(--start) * -1 - 360deg)) rotateX(-66deg);
+    }
+  }
+  @keyframes u-moon-counter {
+    from {
+      transform: translate(-50%, -50%) rotateZ(0deg) rotateY(12deg) rotateX(-74deg);
+    }
+    to {
+      transform: translate(-50%, -50%) rotateZ(-360deg) rotateY(12deg) rotateX(-74deg);
+    }
+  }
+  @keyframes u-plane-in {
+    from {
+      transform: rotateX(66deg) scale(0.3);
+    }
+    to {
+      transform: rotateX(66deg);
+    }
+  }
+  @keyframes u-pulse {
+    0%,
+    100% {
+      opacity: 0.75;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.08);
+    }
+  }
+  @keyframes u-surface {
+    to {
+      background-position: -260% 0;
+    }
+  }
+  @keyframes u-twinkle {
+    50% {
+      transform: scale(1.7);
+    }
+  }
+  @keyframes u-pop {
+    40% {
+      transform: scale(1.25);
+    }
+  }
+  @keyframes u-drip {
+    0% {
+      transform: scaleY(0);
+      transform-origin: top;
+    }
+    50% {
+      transform: scaleY(1);
+      transform-origin: top;
+    }
+    51% {
+      transform-origin: bottom;
+    }
+    100% {
+      transform: scaleY(0);
+      transform-origin: bottom;
+    }
+  }
+
+  /* ==========================================================================
+     Responsive
+     ========================================================================== */
+  @media (max-width: 1279px) {
+    .u-map {
+      display: none;
+    }
+  }
+  @media (max-width: 1100px) {
+    .u-time__list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      row-gap: 2.4rem;
+    }
+    .u-time__list::before {
+      display: none;
+    }
+    .u-time__item {
+      padding-top: 1.4rem;
+      border-top: 2px solid rgba(244, 14, 14, 0.6);
+    }
+    .u-time__node {
+      top: -9px;
+    }
+    .u-time__list {
+      padding-top: 0;
+    }
+  }
+  @media (max-width: 959px) {
+    .u-hero {
+      min-height: 0;
+    }
+    .u-hero__grid,
+    .u-core__grid,
+    .u-globe__grid,
+    .u-worlds__body {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .u-sys {
+      width: min(520px, 100%);
+    }
+    .u-stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .u-stage {
+      display: none;
+    }
+    .u-panel {
+      min-height: 0;
+      opacity: 1;
+      padding-block: 2.4rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+    .u-panel__orb {
+      display: block;
+    }
+  }
+  @media (max-width: 759px) {
+    .u-route__svg,
+    .u-route__comet {
+      display: none;
+    }
+    .u-route__line {
+      display: block;
+      position: absolute;
+      left: 23px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: rgba(255, 255, 255, 0.14);
+    }
+    .u-route__line span {
+      position: absolute;
+      inset: 0;
+      background: var(--color-accent);
+      box-shadow: 0 0 10px rgba(244, 14, 14, 0.8);
+      transform: scaleY(var(--route-p, 0));
+      transform-origin: top;
+    }
+    .u-route__steps {
+      grid-template-columns: minmax(0, 1fr);
+      padding: 0 0 0 64px;
+      gap: 1.2rem;
+    }
+    .u-step {
+      position: relative;
+    }
+    .u-step__node {
+      left: -64px;
+      top: 1.3rem;
+      margin: 0;
+    }
+    .u-step__card {
+      transform: none;
+    }
+    .u-cap__groups,
+    .u-cap__bar {
+      flex-direction: column;
+    }
+    .u-cap__groups span {
+      flex: none;
+    }
+    .u-cap__seg a::before {
+      width: calc(var(--w) * 1%);
+      background: var(--seg-c);
+      opacity: 0.3;
+    }
+    .u-time__list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 520px) {
+    .u-stats,
+    .u-countries,
+    .u-facts {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .u-sys__plane {
+      inset: 9%;
+    }
+    .u-planet__label {
+      font-size: var(--fs-micro);
+      white-space: normal;
+      width: max-content;
+      max-width: 8.5em;
+      text-align: center;
+      line-height: 1.25;
+    }
+    .u-hero__actions .u-btn {
+      flex: 1 1 100%;
+    }
+  }
+
+  /* Reduced motion: final states, no warp, no scroll-linked movement. The
+     global stylesheet already shortens every animation and transition. */
+  @media (prefers-reduced-motion: reduce) {
+    .u-ch,
+    .u-hero__eyebrow,
+    .u-hero__lead,
+    .u-hero__actions,
+    .u-badge {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      animation: none;
+    }
+    .u-seal__check {
+      stroke-dashoffset: 0;
+    }
+  }
+</style>
+
+<script>
+  type Frame = () => void;
+
+  const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+
+  /* ------------------------------------------------------------------
+     Star field: forward drift, mouse parallax, warp streaks that follow
+     the scroll speed, and the occasional shooting star.
+     ------------------------------------------------------------------ */
+  function initSky(root: HTMLElement, reduce: boolean, frames: Frame[]) {
+    const canvas = root.querySelector<HTMLCanvasElement>('[data-sky]');
+    const ctx = canvas?.getContext('2d');
+    if (!canvas || !ctx) return;
+
+    // k: fixed per star, decides which 30 % fade out while scrolling.
+    type Star = { x: number; y: number; z: number; tw: number; k: number };
+    let w = 0;
+    let h = 0;
+    let white: Star[] = [];
+    let red: Star[] = [];
+    const spawn = (z = Math.random()): Star => ({
+      x: Math.random() * 2 - 1,
+      y: Math.random() * 2 - 1,
+      z: 0.06 + z * 0.94,
+      tw: Math.random() * Math.PI * 2,
+      k: Math.random(),
+    });
+
+    let mx = 0;
+    let my = 0;
+    let pmx = 0;
+    let pmy = 0;
+    let warp = 0;
+    let lastY = window.scrollY;
+    let lastT = performance.now();
+    let shoot: { x: number; y: number; vx: number; vy: number; life: number } | null = null;
+    let nextShoot = performance.now() + 2500;
+
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = canvas.clientWidth;
+      h = canvas.clientHeight;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const n = Math.round(Math.min(950, (w * h) / 1500));
+      white = Array.from({ length: Math.round(n * 0.93) }, () => spawn());
+      red = Array.from({ length: Math.round(n * 0.07) }, () => spawn());
+    };
+
+    const drawSet = (set: Star[], color: string, now: number, dt: number, speed: number, cx: number, cy: number) => {
+      ctx.fillStyle = color;
+      ctx.strokeStyle = color;
+      // 0 at rest, 1 while scrolling fast: thins the field by 30 %.
+      const thin = clamp(warp / 0.35);
+      for (const s of set) {
+        s.z -= speed * dt;
+        const px = cx + (s.x / s.z) * w * 0.5;
+        const py = cy + (s.y / s.z) * h * 0.5;
+        if (s.z <= 0.04 || px < -40 || px > w + 40 || py < -40 || py > h + 40) {
+          Object.assign(s, spawn(1));
+          continue;
+        }
+        const depth = 1 - s.z;
+        // Kept in the background: smaller and dimmer than before, still visible.
+        const size = depth * 1.9 + 0.3;
+        let alpha = Math.min(1, depth * 1.1 + 0.12) * (0.72 + 0.28 * Math.sin(now * 0.002 + s.tw)) * 0.62;
+        if (s.k < 0.3) alpha *= 1 - thin;
+        if (alpha < 0.01) continue;
+        ctx.globalAlpha = alpha;
+        if (warp > 0.05) {
+          const tz = s.z + warp * 0.07;
+          const tx = cx + (s.x / tz) * w * 0.5;
+          const ty = cy + (s.y / tz) * h * 0.5;
+          ctx.globalAlpha = alpha * 0.8;
+          ctx.lineWidth = size * 0.75;
+          ctx.beginPath();
+          ctx.moveTo(tx, ty);
+          ctx.lineTo(px, py);
+          ctx.stroke();
+        } else if (size > 1.5) {
+          ctx.beginPath();
+          ctx.arc(px, py, size * 0.6, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.fillRect(px, py, size, size);
+        }
+      }
+    };
+
+    const draw = (now: number) => {
+      const dt = Math.min(now - lastT, 50) / 1000;
+      lastT = now;
+      const y = window.scrollY;
+      const v = Math.abs(y - lastY) / Math.max(dt, 0.001);
+      lastY = y;
+      if (!reduce) {
+        warp += (Math.min(v / 2600, 1.4) - warp) * Math.min(1, dt * 6);
+        pmx += (mx - pmx) * Math.min(1, dt * 3);
+        pmy += (my - pmy) * Math.min(1, dt * 3);
+      }
+      ctx.clearRect(0, 0, w, h);
+      ctx.lineCap = 'round';
+      const cx = w / 2 - pmx * 36;
+      const cy = h / 2 - pmy * 36;
+      const speed = reduce ? 0 : 0.02 + warp * 0.95;
+      drawSet(white, '#ffffff', now, dt, speed, cx, cy);
+      drawSet(red, '#ff5252', now, dt, speed, cx, cy);
+
+      if (!reduce) {
+        if (!shoot && now > nextShoot) {
+          const fromLeft = Math.random() < 0.5;
+          shoot = {
+            x: fromLeft ? Math.random() * w * 0.4 : w * (0.6 + Math.random() * 0.4),
+            y: Math.random() * h * 0.35,
+            vx: (fromLeft ? 1 : -1) * (700 + Math.random() * 400),
+            vy: 260 + Math.random() * 200,
+            life: 1,
+          };
+          nextShoot = now + 4000 + Math.random() * 6000;
+        }
+        if (shoot) {
+          shoot.x += shoot.vx * dt;
+          shoot.y += shoot.vy * dt;
+          shoot.life -= dt * 1.1;
+          const len = 0.14;
+          const g = ctx.createLinearGradient(shoot.x, shoot.y, shoot.x - shoot.vx * len, shoot.y - shoot.vy * len);
+          g.addColorStop(0, 'rgba(255,255,255,0.7)');
+          g.addColorStop(1, 'rgba(255,82,82,0)');
+          ctx.globalAlpha = Math.max(0, shoot.life);
+          ctx.strokeStyle = g;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(shoot.x, shoot.y);
+          ctx.lineTo(shoot.x - shoot.vx * len, shoot.y - shoot.vy * len);
+          ctx.stroke();
+          if (shoot.life <= 0) shoot = null;
+        }
+      }
+      ctx.globalAlpha = 1;
+    };
+
+    let raf = 0;
+    let visible = true;
+    const loop = (now: number) => {
+      draw(now);
+      raf = requestAnimationFrame(loop);
+    };
+    const start = () => {
+      if (reduce || raf || !visible || document.hidden) return;
+      lastT = performance.now();
+      raf = requestAnimationFrame(loop);
+    };
+    const stop = () => {
+      cancelAnimationFrame(raf);
+      raf = 0;
+    };
+
+    resize();
+    draw(performance.now());
+    new ResizeObserver(() => {
+      resize();
+      if (reduce) draw(performance.now());
+    }).observe(canvas);
+
+    if (!reduce) {
+      window.addEventListener(
+        'pointermove',
+        (e) => {
+          mx = (e.clientX / window.innerWidth - 0.5) * 2;
+          my = (e.clientY / window.innerHeight - 0.5) * 2;
+        },
+        { passive: true }
+      );
+      new IntersectionObserver((entries) => {
+        visible = entries[0].isIntersecting;
+        if (visible) start();
+        else stop();
+      }).observe(root);
+      document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+      start();
+
+      frames.push(() => {
+        const r = root.getBoundingClientRect();
+        const p = clamp(-r.top / Math.max(1, r.height - window.innerHeight));
+        root.style.setProperty('--sky-p', p.toFixed(4));
+      });
+    }
+  }
+
+  /* ------------------------------------------------------------------
+     Hero: warp into the universe on scroll, parallax tilt on pointer.
+     ------------------------------------------------------------------ */
+  function initHero(root: HTMLElement, reduce: boolean, fine: boolean, frames: Frame[]) {
+    const hero = root.querySelector<HTMLElement>('[data-hero]');
+    if (!hero || reduce) return;
+    frames.push(() => {
+      // Starts once the hero's bottom edge rises above the viewport bottom.
+      // On desktop that is the first pixel of scroll; on phones, where the
+      // solar system sits below the copy, it waits until the system is seen.
+      const r = hero.getBoundingClientRect();
+      const p = clamp((window.innerHeight - r.bottom) / (window.innerHeight * 0.8));
+      hero.style.setProperty('--hp', p.toFixed(3));
+      hero.classList.toggle('is-warped', p > 0.3);
+    });
+    if (!fine) return;
+    hero.addEventListener('pointermove', (e) => {
+      const r = hero.getBoundingClientRect();
+      hero.style.setProperty('--mx', (((e.clientX - r.left) / r.width - 0.5) * 2).toFixed(3));
+      hero.style.setProperty('--my', (((e.clientY - r.top) / r.height - 0.5) * 2).toFixed(3));
+    });
+    hero.addEventListener('pointerleave', () => {
+      hero.style.setProperty('--mx', '0');
+      hero.style.setProperty('--my', '0');
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     Core: four agents sweep the ring, the score climbs, a human approves.
+     ------------------------------------------------------------------ */
+  function initCore(root: HTMLElement, reduce: boolean) {
+    const sec = root.querySelector<HTMLElement>('[data-core]');
+    const ring = sec?.querySelector<HTMLElement>('[data-ring]');
+    const agents = sec?.querySelector<SVGGElement>('[data-agents]');
+    const scoreEl = sec?.querySelector<SVGTextElement>('[data-score]');
+    const statusEl = sec?.querySelector<HTMLElement>('[data-core-status]');
+    const startBtn = sec?.querySelector<HTMLButtonElement>('[data-core-start]');
+    const approveBtn = sec?.querySelector<HTMLButtonElement>('[data-core-approve]');
+    if (!sec || !ring || !agents || !scoreEl || !statusEl || !startBtn || !approveBtn) return;
+
+    const segs = Array.from(sec.querySelectorAll<SVGGElement>('[data-seg]')).filter((s) => !s.dataset.planned);
+    const dots = Array.from(sec.querySelectorAll<SVGCircleElement>('.u-dot'));
+    const agentLabels = Array.from(agents.querySelectorAll<SVGTextElement>('text'));
+    const TARGET = 94;
+    const DURATION = 4200;
+    let raf = 0;
+
+    type State = 'idle' | 'scan' | 'ready' | 'done';
+    const setState = (s: State) => {
+      ring.dataset.state = s;
+      statusEl.textContent = statusEl.dataset[s] || '';
+    };
+    const paint = (t: number) => {
+      const e = 1 - Math.pow(1 - t, 3);
+      const a = 90 * e;
+      agents.setAttribute('transform', `rotate(${a.toFixed(2)})`);
+      // Keep the agent labels upright while the group turns.
+      agentLabels.forEach((tx) => {
+        tx.setAttribute('transform', `rotate(${(-a).toFixed(2)} ${tx.dataset.cx} ${tx.dataset.cy})`);
+      });
+      segs.forEach((s) => s.classList.toggle('is-lit', t > 0 && Number(s.dataset.mid) % 90 <= a));
+      const lit = Math.floor(13 * e + 1e-6);
+      dots.forEach((d, i) => d.classList.toggle('is-lit', i < lit));
+      scoreEl.textContent = String(Math.round(TARGET * e));
+    };
+    const finish = () => {
+      setState('ready');
+      approveBtn.disabled = false;
+      startBtn.textContent = startBtn.dataset.restart || startBtn.textContent;
+    };
+    const run = () => {
+      cancelAnimationFrame(raf);
+      approveBtn.disabled = true;
+      setState('scan');
+      if (reduce) {
+        paint(1);
+        finish();
+        return;
+      }
+      const t0 = performance.now();
+      const step = (now: number) => {
+        const t = Math.min((now - t0) / DURATION, 1);
+        paint(t);
+        if (t < 1) raf = requestAnimationFrame(step);
+        else finish();
+      };
+      raf = requestAnimationFrame(step);
+    };
+
+    startBtn.addEventListener('click', run);
+    approveBtn.addEventListener('click', () => {
+      if (ring.dataset.state !== 'ready') return;
+      setState('done');
+      approveBtn.disabled = true;
+      startBtn.focus();
+    });
+
+    // Run once on its own the first time the ring is in view.
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            io.disconnect();
+            if (ring.dataset.state === 'idle') run();
+          }
+        },
+        { threshold: 0.5 }
+      );
+      io.observe(ring);
+    }
+  }
+
+  /* ------------------------------------------------------------------
+     Worlds: the panel nearest the viewport centre decides which planet
+     sits in the middle of the sticky stage.
+     ------------------------------------------------------------------ */
+  function initWorlds(root: HTMLElement, frames: Frame[]) {
+    const sec = root.querySelector<HTMLElement>('[data-worlds]');
+    if (!sec) return;
+    const panels = Array.from(sec.querySelectorAll<HTMLElement>('[data-panel]'));
+    const planets = Array.from(sec.querySelectorAll<HTMLElement>('[data-wp]'));
+    const dots = Array.from(sec.querySelectorAll<HTMLElement>('[data-wdot]'));
+    const narrow = window.matchMedia('(max-width: 959px)');
+    let active = 0;
+
+    frames.push(() => {
+      if (narrow.matches) return;
+      const sr = sec.getBoundingClientRect();
+      if (sr.bottom < -200 || sr.top > window.innerHeight + 200) return;
+      const vc = window.innerHeight * 0.5;
+      const cs = panels.map((p) => {
+        const r = p.getBoundingClientRect();
+        return r.top + r.height / 2;
+      });
+      let p = 0;
+      if (vc >= cs[cs.length - 1]) p = cs.length - 1;
+      else if (vc > cs[0]) {
+        for (let i = 0; i < cs.length - 1; i++) {
+          if (vc >= cs[i] && vc <= cs[i + 1]) {
+            p = i + (vc - cs[i]) / (cs[i + 1] - cs[i]);
+            break;
+          }
+        }
+      }
+      planets.forEach((el, i) => {
+        const d = i - p;
+        el.style.setProperty('--d', d.toFixed(3));
+        el.style.setProperty('--ad', Math.min(Math.abs(d), 1.6).toFixed(3));
+      });
+      const a = Math.round(p);
+      if (a !== active) {
+        active = a;
+        panels.forEach((el, i) => el.classList.toggle('is-active', i === a));
+        dots.forEach((el, i) => el.classList.toggle('is-active', i === a));
+      }
+    });
+
+    // Hovering an offering lights up its moon.
+    panels.forEach((panel, i) => {
+      panel.querySelectorAll<HTMLElement>('[data-chip]').forEach((chip) => {
+        const moon = planets[i]?.querySelector(`[data-moon="${chip.dataset.chip}"]`);
+        if (!moon) return;
+        chip.addEventListener('pointerenter', () => moon.classList.add('is-hot'));
+        chip.addEventListener('pointerleave', () => moon.classList.remove('is-hot'));
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     Flight path: the line draws and the comet flies with the scroll.
+     ------------------------------------------------------------------ */
+  function initRoute(root: HTMLElement, reduce: boolean, frames: Frame[]) {
+    const sec = root.querySelector<HTMLElement>('[data-route]');
+    const path = sec?.querySelector<SVGPathElement>('[data-route-path]');
+    const comet = sec?.querySelector<HTMLElement>('[data-comet]');
+    const track = sec?.querySelector<HTMLElement>('.u-route__track');
+    const svg = path?.ownerSVGElement;
+    if (!sec || !path || !comet || !track || !svg) return;
+    const steps = Array.from(sec.querySelectorAll<HTMLElement>('[data-step]'));
+    const len = path.getTotalLength();
+    const nodeX = [166.7, 500, 833.3];
+    const at = nodeX.map((x) => {
+      let lo = 0;
+      let hi = len;
+      for (let k = 0; k < 24; k++) {
+        const mid = (lo + hi) / 2;
+        if (path.getPointAtLength(mid).x < x) lo = mid;
+        else hi = mid;
+      }
+      return lo / len;
+    });
+
+    frames.push(() => {
+      const r = track.getBoundingClientRect();
+      const vh = window.innerHeight;
+      if (r.bottom < -vh || r.top > vh * 2) return;
+      const p = reduce ? 1 : clamp((vh * 0.85 - r.top) / Math.max(vh * 0.55, r.height * 0.75));
+      sec.style.setProperty('--route-p', p.toFixed(3));
+      path.style.strokeDashoffset = String(1 - p);
+      const box = svg.getBoundingClientRect();
+      const sx = box.width / 1000;
+      const sy = box.height / 160;
+      const pt = path.getPointAtLength(len * p);
+      const prev = path.getPointAtLength(Math.max(0, len * p - 6));
+      comet.style.setProperty('--cx', `${(pt.x * sx).toFixed(1)}px`);
+      comet.style.setProperty('--cy', `${(pt.y * sy).toFixed(1)}px`);
+      const ang = (Math.atan2((pt.y - prev.y) * sy, (pt.x - prev.x) * sx) * 180) / Math.PI;
+      comet.style.setProperty('--ang', `${ang.toFixed(1)}deg`);
+      comet.style.opacity = p > 0.005 ? '1' : '0';
+      steps.forEach((s, i) => s.classList.toggle('is-on', p >= at[i] - 0.02));
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     Globe: dotted sphere, great-circle arcs from Eschborn, drag to
+     rotate, country buttons turn it to the country.
+     ------------------------------------------------------------------ */
+  function initGlobe(root: HTMLElement, reduce: boolean) {
+    const canvas = root.querySelector<HTMLCanvasElement>('[data-globe]');
+    const ctx = canvas?.getContext('2d');
+    if (!canvas || !ctx) return;
+    type Geo = { code: string; lat: number; lon: number; hub: boolean };
+    type V3 = [number, number, number];
+    const places = JSON.parse(canvas.dataset.geo || '[]') as Geo[];
+    const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-country]'));
+    const D = Math.PI / 180;
+    const toV = (lat: number, lon: number): V3 => [
+      Math.cos(lat * D) * Math.sin(lon * D),
+      Math.sin(lat * D),
+      Math.cos(lat * D) * Math.cos(lon * D),
+    ];
+
+    // Until the map data has loaded: an even Fibonacci lattice over the
+    // whole sphere. Afterwards: dots on land only, plus country borders.
+    const n = window.innerWidth < 700 ? 750 : 1400;
+    let dotsV: V3[] = [];
+    const ga = Math.PI * (3 - Math.sqrt(5));
+    for (let i = 0; i < n; i++) {
+      const y = 1 - (i / (n - 1)) * 2;
+      const r = Math.sqrt(1 - y * y);
+      dotsV.push([Math.cos(ga * i) * r, y, Math.sin(ga * i) * r]);
+    }
+    let borders: V3[][] = [];
+    let countryRings = new Map<string, V3[][]>();
+    let hasMap = false;
+
+    /** Map data: Natural Earth 1:110m, degrees × 10 (see public/data/globe.json). */
+    type MapData = { arcs: number[][]; hi: Record<string, number[][]>; dots: number[] };
+    const unpack = (flat: number[]): V3[] => {
+      const out: V3[] = [];
+      for (let i = 0; i < flat.length; i += 2) out.push(toV(flat[i + 1] / 10, flat[i] / 10));
+      return out;
+    };
+    let mapRequested = false;
+    const loadMap = () => {
+      if (mapRequested || !canvas.dataset.map) return;
+      mapRequested = true;
+      fetch(canvas.dataset.map)
+        .then((r) => (r.ok ? (r.json() as Promise<MapData>) : Promise.reject(r.status)))
+        .then((m) => {
+          const keep = window.innerWidth < 700 ? 2 : 1; // thinner dot field on phones
+          dotsV = unpack(m.dots).filter((_, i) => i % keep === 0);
+          borders = m.arcs.map(unpack);
+          countryRings = new Map(Object.entries(m.hi).map(([code, rings]) => [code, rings.map(unpack)]));
+          hasMap = true;
+          draw(performance.now());
+        })
+        .catch(() => {
+          // Keep the lattice globe; the page works without the map.
+        });
+    };
+    const placeV = places.map((p) => toV(p.lat, p.lon));
+    const hubIndex = Math.max(0, places.findIndex((p) => p.hub));
+    const hubV = placeV[hubIndex];
+
+    // Great-circle arcs from the hub, lifted off the surface in the middle.
+    const arcs = placeV
+      .map((b, i) => ({ b, i }))
+      .filter(({ i }) => i !== hubIndex)
+      .map(({ b, i }) => {
+        const dot = clamp(hubV[0] * b[0] + hubV[1] * b[1] + hubV[2] * b[2], -1, 1);
+        const om = Math.acos(dot);
+        const samples: [number, number, number, number][] = [];
+        const steps = 56;
+        for (let k = 0; k <= steps; k++) {
+          const t = k / steps;
+          const s0 = om < 1e-4 ? 1 - t : Math.sin((1 - t) * om) / Math.sin(om);
+          const s1 = om < 1e-4 ? t : Math.sin(t * om) / Math.sin(om);
+          const lift = 1 + Math.sin(Math.PI * t) * (0.06 + om * 0.16);
+          samples.push([
+            (s0 * hubV[0] + s1 * b[0]) * lift,
+            (s0 * hubV[1] + s1 * b[1]) * lift,
+            (s0 * hubV[2] + s1 * b[2]) * lift,
+            t,
+          ]);
+        }
+        return { i, samples };
+      });
+
+    let size = 0;
+    let lon0 = 20 * D;
+    let tilt = 0.42;
+    let target: { lon: number; tilt: number } | null = null;
+    let pauseUntil = 0;
+    let selected = -1;
+    let dragging = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      size = canvas.clientWidth;
+      canvas.width = Math.round(size * dpr);
+      canvas.height = Math.round(size * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    const project = (v: V3 | [number, number, number, number], R: number, c: number) => {
+      const cl = Math.cos(lon0);
+      const sl = Math.sin(lon0);
+      const x1 = v[0] * cl - v[2] * sl;
+      const z1 = v[0] * sl + v[2] * cl;
+      const ct = Math.cos(tilt);
+      const st = Math.sin(tilt);
+      const y2 = v[1] * ct - z1 * st;
+      const z2 = v[1] * st + z1 * ct;
+      return { x: c + x1 * R, y: c - y2 * R, z: z2, r2: x1 * x1 + y2 * y2 };
+    };
+
+    let lastT = performance.now();
+    const draw = (now: number) => {
+      const dt = Math.min(now - lastT, 50) / 1000;
+      lastT = now;
+      if (target) {
+        let dl = target.lon - lon0;
+        dl = Math.atan2(Math.sin(dl), Math.cos(dl));
+        const k = Math.min(1, dt * 3.5);
+        lon0 += dl * k;
+        tilt += (target.tilt - tilt) * k;
+        if (Math.abs(dl) < 0.002 && Math.abs(target.tilt - tilt) < 0.002) target = null;
+      } else if (!dragging && !reduce && now > pauseUntil) {
+        lon0 += dt * 0.16;
+      }
+
+      const c = size / 2;
+      const R = size * 0.4;
+      ctx.clearRect(0, 0, size, size);
+
+      // Rim light
+      const rim = ctx.createRadialGradient(c, c, R * 0.82, c, c, R * 1.18);
+      rim.addColorStop(0, 'rgba(244,14,14,0)');
+      rim.addColorStop(0.45, 'rgba(244,14,14,0.16)');
+      rim.addColorStop(1, 'rgba(244,14,14,0)');
+      ctx.fillStyle = rim;
+      ctx.beginPath();
+      ctx.arc(c, c, R * 1.18, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Dots: land only once the map is in, the whole sphere before that.
+      ctx.fillStyle = '#ffffff';
+      for (let i = 0; i < dotsV.length; i++) {
+        const p = project(dotsV[i], R, c);
+        if (p.z < 0) {
+          if (i % 3) continue;
+          ctx.globalAlpha = hasMap ? 0.05 : 0.07;
+          ctx.fillRect(p.x, p.y, 1, 1);
+        } else {
+          ctx.globalAlpha = hasMap ? 0.14 + p.z * 0.5 : 0.18 + p.z * 0.62;
+          const s = hasMap ? 0.8 + p.z * 1.1 : 0.9 + p.z * 1.2;
+          ctx.fillRect(p.x - s / 2, p.y - s / 2, s, s);
+        }
+      }
+
+      if (hasMap) {
+        // Project countries: tinted fill (only when the whole outline faces
+        // the viewer, a half-hidden polygon cannot be filled correctly) and a
+        // red outline on the visible part.
+        places.forEach((pl, i) => {
+          const rings = countryRings.get(pl.code);
+          if (!rings) return;
+          const hot = i === selected;
+          rings.forEach((ringV) => {
+            const pts = ringV.map((v) => project(v, R, c));
+            if (pts.every((p) => p.z > 0.02)) {
+              ctx.globalAlpha = hot ? 0.55 : 0.26;
+              ctx.fillStyle = '#f40e0e';
+              ctx.beginPath();
+              pts.forEach((p, k) => (k ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
+              ctx.closePath();
+              ctx.fill();
+            }
+          });
+        });
+
+        // Country borders: one path, broken wherever it turns away.
+        ctx.lineJoin = 'round';
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = Math.max(0.6, size / 900);
+        ctx.globalAlpha = 0.3;
+        ctx.beginPath();
+        for (const line of borders) {
+          let pen = false;
+          for (const v of line) {
+            const p = project(v, R, c);
+            if (p.z > 0) {
+              if (pen) ctx.lineTo(p.x, p.y);
+              else ctx.moveTo(p.x, p.y);
+              pen = true;
+            } else pen = false;
+          }
+        }
+        ctx.stroke();
+
+        places.forEach((pl, i) => {
+          const rings = countryRings.get(pl.code);
+          if (!rings) return;
+          const hot = i === selected;
+          ctx.strokeStyle = hot ? '#ffffff' : '#ff5252';
+          ctx.lineWidth = hot ? 1.8 : 1.3;
+          ctx.globalAlpha = hot ? 1 : 0.9;
+          ctx.beginPath();
+          rings.forEach((ringV) => {
+            let pen = false;
+            ringV.forEach((v) => {
+              const p = project(v, R, c);
+              if (p.z > 0) {
+                if (pen) ctx.lineTo(p.x, p.y);
+                else ctx.moveTo(p.x, p.y);
+                pen = true;
+              } else pen = false;
+            });
+          });
+          ctx.stroke();
+        });
+      }
+
+      // Arcs with a travelling pulse
+      ctx.lineCap = 'round';
+      arcs.forEach((arc, ai) => {
+        const hot = selected === arc.i;
+        ctx.strokeStyle = hot ? '#ffffff' : '#ff5252';
+        ctx.lineWidth = hot ? 2 : 1.4;
+        ctx.globalAlpha = hot ? 0.95 : 0.6;
+        ctx.beginPath();
+        let pen = false;
+        const pts = arc.samples.map((s) => project(s, R, c));
+        pts.forEach((p) => {
+          const seen = p.z >= 0 || p.r2 > 1;
+          if (seen && !pen) {
+            ctx.moveTo(p.x, p.y);
+            pen = true;
+          } else if (seen) ctx.lineTo(p.x, p.y);
+          else pen = false;
+        });
+        ctx.stroke();
+        if (!reduce) {
+          const t = (now / 2400 + ai * 0.21) % 1;
+          const p = pts[Math.round(t * (pts.length - 1))];
+          if (p.z >= 0 || p.r2 > 1) {
+            ctx.globalAlpha = Math.sin(Math.PI * t);
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 2.6, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+      });
+
+      // Markers and labels
+      ctx.font = `700 ${Math.max(11, size * 0.022)}px system-ui, -apple-system, 'Segoe UI', sans-serif`;
+      ctx.textBaseline = 'middle';
+      placeV.forEach((v, i) => {
+        const p = project(v, R, c);
+        if (p.z < 0) return;
+        const hub = i === hubIndex;
+        const hot = i === selected;
+        const pulse = reduce ? 0.5 : (now / 1700 + i * 0.17) % 1;
+        ctx.globalAlpha = (1 - pulse) * 0.8 * p.z;
+        ctx.strokeStyle = '#ff5252';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 4 + pulse * (hot ? 22 : 14), 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.globalAlpha = 0.4 + p.z * 0.6;
+        ctx.fillStyle = hub || hot ? '#ffffff' : '#ff3030';
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, hub || hot ? 5.5 : 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.globalAlpha = 0.35 + p.z * 0.65;
+        // Switzerland sits right next to the hub: label it below-left so the
+        // two codes never overlap.
+        if (places[i].code === 'CH') {
+          ctx.textAlign = 'right';
+          ctx.fillText(places[i].code, p.x - 9, p.y + 12);
+          ctx.textAlign = 'left';
+        } else {
+          ctx.fillText(places[i].code, p.x + 10, p.y - 10);
+        }
+      });
+      ctx.globalAlpha = 1;
+    };
+
+    let raf = 0;
+    let visible = false;
+    const loop = (now: number) => {
+      draw(now);
+      raf = requestAnimationFrame(loop);
+    };
+    const start = () => {
+      if (raf || !visible || document.hidden) return;
+      lastT = performance.now();
+      raf = requestAnimationFrame(loop);
+    };
+    const stop = () => {
+      cancelAnimationFrame(raf);
+      raf = 0;
+    };
+
+    resize();
+    draw(performance.now());
+    new ResizeObserver(() => {
+      resize();
+      draw(performance.now());
+    }).observe(canvas);
+    new IntersectionObserver((entries) => {
+      visible = entries[0].isIntersecting;
+      if (visible) start();
+      else stop();
+    }).observe(canvas);
+    // Fetch the map a little before the globe scrolls into view.
+    new IntersectionObserver(
+      (entries, obs) => {
+        if (!entries[0].isIntersecting) return;
+        obs.disconnect();
+        loadMap();
+      },
+      { rootMargin: '900px 0px' }
+    ).observe(canvas);
+    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+
+    canvas.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      target = null;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      canvas.setPointerCapture(e.pointerId);
+    });
+    canvas.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      lon0 -= (e.clientX - lastX) * 0.008;
+      tilt = clamp(tilt + (e.clientY - lastY) * 0.006, -0.3, 1.1);
+      lastX = e.clientX;
+      lastY = e.clientY;
+      pauseUntil = performance.now() + 3000;
+    });
+    const end = () => {
+      dragging = false;
+    };
+    canvas.addEventListener('pointerup', end);
+    canvas.addEventListener('pointercancel', end);
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const i = Number(btn.dataset.country);
+        const p = places[i];
+        if (!p) return;
+        selected = i;
+        target = { lon: p.lon * D, tilt: clamp(p.lat * D * 0.85, -0.3, 1.1) };
+        pauseUntil = performance.now() + 6000;
+        buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        start();
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     Minimap: highlights the scene that crosses the middle of the screen.
+     ------------------------------------------------------------------ */
+  function initMap(root: HTMLElement) {
+    const map = root.querySelector<HTMLElement>('[data-map]');
+    if (!map || !('IntersectionObserver' in window)) return;
+    const links = Array.from(map.querySelectorAll<HTMLAnchorElement>('[data-map-link]'));
+    const secs = Array.from(root.querySelectorAll<HTMLElement>('[data-track]'));
+    const seen = new Set<string>();
+    const update = () => {
+      const current = secs.find((s) => seen.has(s.id))?.id;
+      map.classList.toggle('is-on', Boolean(current));
+      links.forEach((a) => {
+        if (a.dataset.mapLink === current) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+      });
+    };
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          const id = (e.target as HTMLElement).id;
+          if (e.isIntersecting) seen.add(id);
+          else seen.delete(id);
+        });
+        update();
+      },
+      { rootMargin: '-48% 0px -48% 0px' }
+    );
+    secs.forEach((s) => io.observe(s));
+  }
+
+  /* ------------------------------------------------------------------
+     One-shot "in view" class for the drawn-in effects.
+     ------------------------------------------------------------------ */
+  function initInView(root: HTMLElement, reduce: boolean) {
+    const els = Array.from(root.querySelectorAll<HTMLElement>('[data-in]'));
+    if (reduce || !('IntersectionObserver' in window)) {
+      els.forEach((el) => el.classList.add('is-in'));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          e.target.classList.add('is-in');
+          io.unobserve(e.target);
+        });
+      },
+      { threshold: 0.2 }
+    );
+    els.forEach((el) => io.observe(el));
+  }
+
+  const root = document.querySelector<HTMLElement>('[data-uni]');
+  if (root) {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const frames: Frame[] = [];
+    let queued = false;
+    const schedule = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        frames.forEach((f) => f());
+      });
+    };
+
+    initSky(root, reduce, frames);
+    initHero(root, reduce, fine, frames);
+    initCore(root, reduce);
+    initWorlds(root, frames);
+    initRoute(root, reduce, frames);
+    initGlobe(root, reduce);
+    initMap(root);
+    initInView(root, reduce);
+
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    schedule();
+  }
+</script>

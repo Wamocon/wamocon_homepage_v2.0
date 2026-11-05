@@ -1,0 +1,19 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+
+// The Damicon one-pager is a self-contained HTML file (images, audio and
+// texts embedded), served as-is like the KfBM page. Replace
+// src/data/damicon.html to update it.
+//
+// Not ready for production yet: the file loads its fonts from Google Fonts
+// and builds the film from embedded data, which the site's CSP (vercel.json)
+// does not allow online. Locally (astro dev) no CSP applies.
+const filePath = path.resolve('src/data/damicon.html');
+const html = fs.readFileSync(filePath, 'utf-8');
+
+return new Response(html, {
+  status: 200,
+  headers: { 'Content-Type': 'text/html; charset=utf-8' },
+});
+---
