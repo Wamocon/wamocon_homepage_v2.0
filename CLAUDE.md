@@ -34,7 +34,7 @@ Firmenwebsite der WAMOCON GmbH (www.wamocon.com), gebaut mit Astro 7.3 als stati
 Diese Seiten werden unverändert als fertige HTML-Dateien ausgeliefert. Die `.astro`-Datei liest die Datei aus `src/data/` und gibt sie als `Response` zurück, ohne BaseLayout, Header oder Footer:
 
 - `/lfa-kfbm/` → `src/data/lfa-kfbm.html`. Der Film liegt in `public/videos/kfbm-spot.mp4`, weil die CSP keine `blob:`-Medien erlaubt.
-- `/damicon/` → `src/data/damicon.html` (4,9 MB). Der Rücklink zu WAMOCON folgt der Sprache über `data-wmc`.
+- `/damicon/` → `src/data/damicon.html`. Der Rücklink zu WAMOCON folgt der Sprache über `data-wmc`. Die Tonspuren des Films liegen in `public/audio/damicon/`, die Schriften (Inter, Poppins) in `public/fonts/damicon/`, weil die CSP weder `blob:`/`data:`-Medien noch Google Fonts erlaubt. Bei einer neuen Fassung der Datei beides wieder so umbauen.
 - `/berber-siparis/` und `/berber-veri-koruma/`: nicht in der Sitemap.
 
 Zum Aktualisieren eine neue Datei liefern lassen und sie ersetzen. Eigene Ergänzungen wie den Rücklink danach wieder einbauen.
@@ -61,6 +61,5 @@ Zum Aktualisieren eine neue Datei liefern lassen und sie ersetzen. Eigene Ergän
 
 ## Offene Punkte (Stand 04.11.2026)
 
-- Damicon (`/damicon/`) ist über PR #18 in `main`, aber noch nicht online-tauglich: Google Fonts und der Filmton (`blob:`) scheitern an der CSP. Lösung wie bei KfBM: Audio nach `public/` auslagern und die Schriften lokal einbinden.
 - `src/data/webdesign.html` wird von keiner Seite eingebunden.
 - `docs/` enthält Arbeitsnotizen zum Portfolio-Abgleich und einen Leitfaden für die Stimmen zu den Systemen (`systeme.ts` → `voices` sind nur Entwürfe und werden nicht angezeigt).
