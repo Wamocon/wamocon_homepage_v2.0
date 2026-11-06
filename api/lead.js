@@ -554,13 +554,13 @@ function portfolioEmail(submission) {
     ? [
         ['Der Kern', 'Built-in Governance: Vier KI-Agenten prüfen gegen 13 Prüfpunkte, freigeben kann nur ein Mensch.'],
         ['Drei Bereiche', 'KI-Lösungen &amp; Branchen-Software, IT-Consulting &amp; SAP sowie Training &amp; Enablement, für regulierte Konzerne in DACH und Zentralasien.'],
-        ['Erfahrung und Nachweise', 'Über 100 Projekte seit 2007 in mehr als 15 Branchen und sechs Ländern, über 50 eigene Systeme, mehr als 500 Kursteilnehmende, über sieben Jahre Governance in Konzern-IT. Ausgezeichnet als „KI-Innovator 2025“, AZAV-zertifiziert und ISTQB-akkreditiert.'],
+        ['Erfahrung und Nachweise', 'Über 100 Projekte seit 2007 in mehr als 15 Branchen und sechs Ländern, über 50 eigene Systeme, mehr als 500 Kursteilnehmende, über sieben Jahre Governance in Konzern-IT. Ausgezeichnet als „KI-Innovator 2026“, AZAV-zertifiziert und ISTQB-akkreditiert.'],
         ['Ihr Einstieg', 'Live-Demo und Governance-Check, dann ein Pilot in zwei Monaten zum Festpreis, danach Skalierung und Partnering.'],
       ]
     : [
         ['The core', 'Built-in Governance: four AI agents check against 13 checkpoints, and only a human can sign off.'],
         ['Three areas', 'AI solutions &amp; industry-specific software, IT consulting &amp; SAP, and training &amp; enablement, for regulated corporations in the DACH region and Central Asia.'],
-        ['Experience and credentials', 'More than 100 projects since 2007 across over 15 sectors and six countries, over 50 in-house systems, more than 500 course participants and over seven years of governance in corporate IT. Awarded ‘AI Innovator 2025’, AZAV-certified and ISTQB-accredited.'],
+        ['Experience and credentials', 'More than 100 projects since 2007 across over 15 sectors and six countries, over 50 in-house systems, more than 500 course participants and over seven years of governance in corporate IT. Awarded ‘AI Innovator 2026’, AZAV-certified and ISTQB-accredited.'],
         ['Your first steps', 'A live demo and governance check, then a two-month pilot at a fixed price, followed by scaling and partnering.'],
       ];
   const reply = isDe
